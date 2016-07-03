@@ -28,7 +28,6 @@
 *.out
 *.app
 
-Game/out/*
 Game/tmp/*
 Engine/out/*
 Engine/tmp/*
@@ -38,4 +37,6 @@ Engine/tmp/*
 *.suo
 *.db
 *.opendb
+*.ilk
+*.pdb
 notes.txt
