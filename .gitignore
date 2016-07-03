@@ -11,7 +11,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -21,9 +21,21 @@
 *.lai
 *.la
 *.a
-*.lib
+#*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+Game/out/*
+Game/tmp/*
+Engine/out/*
+Engine/tmp/*
+*.log
+*.tlog
+*.user
+*.suo
+*.db
+*.opendb
+notes.txt
