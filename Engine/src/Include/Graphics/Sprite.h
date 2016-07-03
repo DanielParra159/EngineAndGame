@@ -11,10 +11,14 @@ namespace graphics
 	{
 	public:
 
-		Sprite(const Vector2D<int32>& aPosition, Texture* aTexture);
+		Sprite(Texture* aTexture);
 		virtual ~Sprite();
 
 		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition);
+		virtual void									Render(SDL_Renderer* aRenderer, int32 aX, int32 aY);
+
+		void											SetSize(const Vector2D<int32>& aSize);
+		void											SetSize(uint32 aX, uint32 aY);
 
 	private:
 		Vector2D<int32> mSize;

@@ -1,5 +1,5 @@
-#ifndef _ENGINE_SYSTEM_GAMESDESCRIPTION_H_
-#define _ENGINE_SYSTEM_GAMESDESCRIPTION_H_
+#ifndef _SYS_GAMESDESCRIPTION_H_
+#define _SYS_GAMESDESCRIPTION_H_
 
 #include "Types.h"
 #include "Core\Color.h"
@@ -24,4 +24,4 @@ namespace sys
 			
 	}; // GameDescription
 } // namespace sys
-#endif // _ENGINE_SYSTEM_GAMESDESCRIPTION_H_
+#endif // _SYS_GAMESDESCRIPTION_H_

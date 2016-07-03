@@ -9,7 +9,7 @@ private:
 	T mX, mY;
 
 public:
-	Vector2D() { x = 0; y = 0; };
+	Vector2D() { mX = 0; mY = 0; };
 	Vector2D(T aX, T aY) : mX(aX), mY(aY) {}
 	Vector2D(const Vector2D<T>& aV2) : mX(aV2.mX), mY(aV2.mY) {};
 	T GetX() const { return mX; }

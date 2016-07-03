@@ -1,5 +1,6 @@
 #include "Graphics\TextureManager.h"
 #include "System\Game.h"
+#include "Core\Log.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -42,12 +43,21 @@ namespace graphics
 		{
 			SDL_Texture* pTexture = SDL_CreateTextureFromSurface(sys::Game::Instance()->GetRenderer(), lTempSurface);
 			SDL_FreeSurface(lTempSurface);
-			
+
 			if (pTexture != 0)
 			{
+				result = new Texture(pTexture);
 				std::hash<std::string> lHash;
 				mLoadedTextures[lHash(fileName)] = result;
 			}
+			else
+			{
+				core::LogFormatString("Can't create texture %s", fileName.c_str());
+			}
+		}
+		else 
+		{
+			core::LogFormatString("Can't load image %s", fileName.c_str());
 		}
 
 		return result;

@@ -13,7 +13,8 @@ namespace graphics
 		AnimateSprite();
 		virtual ~AnimateSprite();
 
-		virtual void									Render(SDL_Renderer* aRenderer);
+		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition);
+		virtual void									Render(SDL_Renderer* aRenderer, int32 aX, int32 aY);
 
 	}; // AnimateSprite
 } // namespace graphics

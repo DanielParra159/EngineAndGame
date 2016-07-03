@@ -111,6 +111,7 @@
     <ClInclude Include="..\..\src\Include\System\Game.h" />
     <ClInclude Include="..\..\src\Include\System\GameDescription.h" />
     <ClInclude Include="..\..\src\Include\System\GameState.h" />
+    <ClInclude Include="..\..\src\Include\System\Time.h" />
     <ClInclude Include="..\..\src\Include\System\Window.h" />
     <ClInclude Include="..\..\src\Include\Types.h" />
   </ItemGroup>
@@ -123,6 +124,7 @@
     <ClCompile Include="..\..\src\Source\Graphics\TextureManager.cpp" />
     <ClCompile Include="..\..\src\Source\System\Game.cpp" />
     <ClCompile Include="..\..\src\Source\System\GameDescription.cpp" />
+    <ClCompile Include="..\..\src\Source\System\Time.cpp" />
     <ClCompile Include="..\..\src\Source\System\Window.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,8 @@
 #include <System\GameDescription.h>
 #include <Core\Log.h>
 
+#include "Graphics\TextureManager.h"
+
 using namespace sys;
 using namespace core;
 
@@ -22,6 +24,8 @@ int main(int argc, char* argv[])
 		LogString("!game->Init(gameDescription)");
 		return -1;
 	}
+
+	
 
 	game->Run();
 

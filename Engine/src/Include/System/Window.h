@@ -1,5 +1,5 @@
-#ifndef _ENGINE_SYSTEM_WINDOW_H_
-#define _ENGINE_SYSTEM_WINDOW_H_
+#ifndef _SYS_WINDOW_H_
+#define _SYS_WINDOW_H_
 
 #include "Types.h"
 
@@ -13,4 +13,4 @@ namespace sys
 
 	}; // Window
 } // namespace sys
-#endif // _ENGINE_SYSTEM_WINDOW_H_
+#endif // _SYS_WINDOW_H_

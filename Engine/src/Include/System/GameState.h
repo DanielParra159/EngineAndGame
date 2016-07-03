@@ -1,5 +1,5 @@
-#ifndef _ENGINE_SYSTEM_GAMESTATE_H_
-#define _ENGINE_SYSTEM_GAMESTATE_H_
+#ifndef _SYS_GAMESTATE_H_
+#define _SYS_GAMESTATE_H_
 
 #include "Types.h"
 
@@ -20,4 +20,4 @@ namespace sys
 		virtual const int8*						GetStateName(void) const = 0;
 	}; // IGameState
 } // namespace sys
-#endif // _ENGINE_SYSTEM_GAMESTATE_H_
+#endif // _SYS_GAMESTATE_H_

@@ -18,7 +18,7 @@ namespace graphics
 		static TextureManager*							sInstance;
 		TLoadedTextures									mLoadedTextures;
 	public:
-		TextureManager*									Instance();
+		static TextureManager*							Instance();
 
 		Texture*										LoadTexture(std::string fileName);
 

@@ -3,6 +3,9 @@
 #include "System\GameState.h"
 #include "System\GameDescription.h"
 
+#include "Graphics\TextureManager.h"
+#include "Graphics\Sprite.h"
+
 namespace sys
 {
 	Game* Game::sInstance = 0;
@@ -58,6 +61,9 @@ namespace sys
 	void Game::Run() {
 		mRunning = TRUE;
 
+		aux = new graphics::Sprite(graphics::TextureManager::Instance()->LoadTexture("assets/prueba.png"));
+		aux->SetSize(450, 450);
+
 		while (mRunning)
 		{
 			HandleEvents();
@@ -75,6 +81,8 @@ namespace sys
 	void Game::Render() {
 		SDL_RenderClear(mRenderer);
 			
+		aux->Render(mRenderer, 100, 100);
+
 		SDL_RenderPresent(mRenderer); // draw to the screen
 
 		//mCurrentGameState->Render();

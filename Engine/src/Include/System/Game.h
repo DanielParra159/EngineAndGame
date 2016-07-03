@@ -1,9 +1,14 @@
-#ifndef _ENGINE_SYSTEM_GAME_H_
-#define _ENGINE_SYSTEM_GAME_H_
+#ifndef _SYS_GAME_H_
+#define _SYS_GAME_H_
 
 #include "Types.h"
 
 #include <SDL.h>
+
+namespace graphics
+{
+	class Sprite;
+}
 
 namespace sys
 {
@@ -18,6 +23,8 @@ namespace sys
 		SDL_Window*									mWindow;	
 		SDL_Renderer*								mRenderer;
 		BOOL										mRunning;
+
+		graphics::Sprite *aux;
 	public:
 		static Game*								Instance();
 
@@ -36,4 +43,4 @@ namespace sys
 		
 	}; // Game
 } // namespace sys
-#endif // _ENGINE_SYSTEM_GAME_H_
+#endif // _SYS_GAME_H_
