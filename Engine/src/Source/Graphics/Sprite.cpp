@@ -1,5 +1,6 @@
 #include "Graphics\Sprite.h"
 #include "Graphics\TextureManager.h"
+#include "Graphics\RenderManager.h"
 
 #include <SDL.h>
 
@@ -15,32 +16,40 @@ namespace graphics
 		mTexture->Release();
 	}
 
-	void Sprite::Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition)
+	void Sprite::Render(const Vector2D<>* aPosition)
 	{
-		Render(aRenderer, aPosition->GetX(), aPosition->GetY());
+		Render(aPosition->GetX(), aPosition->GetY());
 	}
 
-	void Sprite::Render(SDL_Renderer* aRenderer, int32 aX, int32 aY)
+	void Sprite::Render(int32 aX, int32 aY)
 	{
-		SDL_Rect srcRect;
-		SDL_Rect destRect;
-		srcRect.x = 0;
-		srcRect.y = 0;
-		srcRect.w = destRect.w = mSize.GetX();
-
-		srcRect.h = destRect.h = mSize.GetY();
-		destRect.x = aX;
-		destRect.y = aY;
-		SDL_RenderCopyEx(aRenderer, mTexture->GetTextureData(), &srcRect, &destRect, 0, 0, SDL_FLIP_NONE);
+		RenderManager::Instance()->RenderTexture(mTexture, mSize, aX, aY, mAngle);
 	}
 
-	void Sprite::SetSize(const Vector2D<int32>& aSize)
+
+	void Sprite::SetSize(const Rect<int32>& aSize)
 	{
 		mSize = aSize;
 	}
-	void Sprite::SetSize(uint32 aX, uint32 aY)
+	void Sprite::SetSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH)
 	{
 		mSize.SetX(aX);
 		mSize.SetY(aY);
+		mSize.SetW(aW);
+		mSize.SetH(aH);
+	}
+	const Rect<int32>* Sprite::GetSize()
+	{
+		return &mSize;
+	}
+
+
+	void Sprite::SetAngle(float64 aAngle)
+	{
+		mAngle = aAngle;
+	}
+	float64 Sprite::GetAngle()
+	{
+		return mAngle;
 	}
 } // namespace graphics

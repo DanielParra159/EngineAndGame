@@ -4,14 +4,14 @@
 #include "Types.h"
 #include "Types\Vector2D.h"
 
-struct SDL_Renderer;
-
 namespace graphics
 {
+	class RenderManager;
+
 	class IRenderable {
 	public:
-		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition) = 0;
-		virtual void									Render(SDL_Renderer* aRenderer, int32 aX, int32 aY) = 0;
+		virtual void									Render(const Vector2D<>* aPosition) = 0;
+		virtual void									Render(int32 aX, int32 aY) = 0;
 
 	}; // IRenderable
 } // namespace graphics

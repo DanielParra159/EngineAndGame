@@ -1,5 +1,5 @@
-#ifndef _ENGINE_CORE_VECTOR2D_H_
-#define _ENGINE_CORE_VECTOR2D_H_
+#ifndef _ENGINE_VECTOR2D_H_
+#define _ENGINE_VECTOR2D_H_
 
 #include<math.h>
 template <typename T = int32>
@@ -134,4 +134,4 @@ public:
 		return *this;
 	}
 };
-#endif // _ENGINE_CORE_VECTOR2D_H_
+#endif // _ENGINE_VECTOR2D_H_

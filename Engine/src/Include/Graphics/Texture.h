@@ -15,7 +15,7 @@ namespace graphics
 		
 		virtual void									Release();
 
-		SDL_Texture*									GetTextureData();
+		SDL_Texture*									GetTextureData() const;
 
 	private:
 		int32 mId;

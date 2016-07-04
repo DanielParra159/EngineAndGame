@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\src\Include\Graphics\AnimateSprite.h" />
     <ClInclude Include="..\..\src\Include\Graphics\MatrixScene.h" />
     <ClInclude Include="..\..\src\Include\Graphics\Renderable.h" />
+    <ClInclude Include="..\..\src\Include\Graphics\RenderManager.h" />
     <ClInclude Include="..\..\src\Include\Graphics\Scene.h" />
     <ClInclude Include="..\..\src\Include\Graphics\SceneCell.h" />
     <ClInclude Include="..\..\src\Include\Graphics\SceneManager.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="..\..\src\Include\System\Window.h" />
     <ClInclude Include="..\..\src\Include\Types.h" />
     <ClInclude Include="..\..\src\Include\Types\Color.h" />
+    <ClInclude Include="..\..\src\Include\Types\Rect.h" />
     <ClInclude Include="..\..\src\Include\Types\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +126,7 @@
     <ClCompile Include="..\..\src\Source\Core\Log.cpp" />
     <ClCompile Include="..\..\src\Source\Graphics\AnimateSprite.cpp" />
     <ClCompile Include="..\..\src\Source\Graphics\MatrixScene.cpp" />
+    <ClCompile Include="..\..\src\Source\Graphics\RenderManager.cpp" />
     <ClCompile Include="..\..\src\Source\Graphics\SceneCell.cpp" />
     <ClCompile Include="..\..\src\Source\Graphics\SceneManager.cpp" />
     <ClCompile Include="..\..\src\Source\Graphics\Sprite.cpp" />

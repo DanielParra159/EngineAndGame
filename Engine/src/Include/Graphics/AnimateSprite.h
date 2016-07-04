@@ -8,13 +8,21 @@ namespace graphics
 {
 	class AnimateSprite : public Sprite
 	{
+	protected:
+		float32											mSpeed;
 	public:
 
-		AnimateSprite();
-		virtual ~AnimateSprite();
+		virtual void									Render(const Vector2D<>* aPosition);
+		virtual void									Render(int32 aX, int32 aY);
 
-		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition);
-		virtual void									Render(SDL_Renderer* aRenderer, int32 aX, int32 aY);
+		virtual void									Update();
+
+		void											SetSpeed(float32 aSpeed);
+		float32											GetSpeed();
+
+	protected:
+		AnimateSprite() : Sprite(), mSpeed(0.0f) {}
+		virtual ~AnimateSprite(){}
 
 	}; // AnimateSprite
 } // namespace graphics

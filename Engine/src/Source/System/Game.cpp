@@ -4,6 +4,7 @@
 #include "System\GameDescription.h"
 
 #include "Graphics\TextureManager.h"
+#include "Graphics\RenderManager.h"
 #include "Graphics\Sprite.h"
 
 namespace sys
@@ -34,7 +35,7 @@ namespace sys
 
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 			return FALSE;
-
+		//TODO: Should be another who initialize SDL and create the windows
 		mWindow = SDL_CreateWindow(title,
 									aGameDescription->mScreenPositionX, aGameDescription->mScreenPositionY,
 									aGameDescription->mScreenSizeX, aGameDescription->mScreenSizeY,
@@ -57,6 +58,7 @@ namespace sys
 
 
 		graphics::TextureManager::Instance()->Init();
+		graphics::RenderManager::Instance()->Init(mRenderer);
 
 		return TRUE;
 	}
@@ -65,7 +67,7 @@ namespace sys
 		mRunning = TRUE;
 
 		aux = graphics::TextureManager::Instance()->CreateSprite("assets/prueba.png");
-		aux->SetSize(450, 450);
+		aux->SetSize(0, 0, 450, 450);
 
 		while (mRunning)
 		{
@@ -84,7 +86,7 @@ namespace sys
 	void Game::Render() {
 		SDL_RenderClear(mRenderer);
 			
-		aux->Render(mRenderer, 100, 100);
+		aux->Render(100, 100);
 
 		SDL_RenderPresent(mRenderer); // draw to the screen
 
@@ -95,6 +97,7 @@ namespace sys
 	{
 		//mCurrentGameState->Release();
 
+		graphics::RenderManager::Instance()->Release();
 		graphics::TextureManager::Instance()->Release();
 
 		SDL_DestroyWindow(mWindow);

@@ -16,7 +16,7 @@ namespace graphics
 		delete mTextureData;
 	}
 
-	SDL_Texture* Texture::GetTextureData()
+	SDL_Texture* Texture::GetTextureData() const
 	{
 		return mTextureData;
 	}
