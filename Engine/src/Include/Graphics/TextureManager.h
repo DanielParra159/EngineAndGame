@@ -8,6 +8,7 @@
 namespace graphics
 {
 	class Texture;
+	class Sprite;
 
 	class TextureManager
 	{
@@ -21,11 +22,13 @@ namespace graphics
 		void											Release();
 
 		void											UnloadTexture(int32 aId);
-		Texture*										LoadTexture(std::string fileName);
+		Texture*										LoadTexture(std::string aFileName);
+		
+		Sprite*											CreateSprite(std::string aFileName);
 
 	private:
-		TextureManager();
-		~TextureManager();
+		TextureManager() : mLoadedTextures() {}
+		~TextureManager() {}
 
 	}; // TextureManager
 } // namespace graphics

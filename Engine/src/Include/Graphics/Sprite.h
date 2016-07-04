@@ -5,13 +5,15 @@
 #include "Renderable.h"
 #include "Graphics\Texture.h"
 
+#include <string>
+
 namespace graphics
 {
 	class Sprite : public IRenderable
 	{
+		friend class TextureManager;
 	public:
-
-		Sprite(Texture* aTexture);
+		virtual void									Init(Texture *aTexture);
 		virtual void									Release();
 
 		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition);
@@ -21,8 +23,9 @@ namespace graphics
 		void											SetSize(uint32 aX, uint32 aY);
 
 	private:
-		Vector2D<int32> mSize;
-		Texture *mTexture;
+		Sprite() : mSize(), mTexture(0) {}
+		Vector2D<int32>									mSize;
+		Texture*										mTexture;
 
 	}; // Renderer
 } // namespace graphics

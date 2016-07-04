@@ -1,5 +1,7 @@
 #include "Graphics\TextureManager.h"
 #include "Graphics\Texture.h"
+#include "Graphics\Sprite.h"
+
 #include "System\Game.h"
 #include "Core\Log.h"
 
@@ -35,16 +37,6 @@ namespace graphics
 
 	}
 
-	TextureManager::TextureManager() : mLoadedTextures()
-	{
-		
-	}
-
-	TextureManager::~TextureManager()
-	{
-		
-	}
-
 	void TextureManager::UnloadTexture(int32 aId)
 	{
 		//@TODO: Contar y mantener referencias?
@@ -55,7 +47,15 @@ namespace graphics
 
 	Texture* TextureManager::LoadTexture(std::string aFileName)
 	{
-		Texture *result = 0;
+		Texture *lResult = 0;
+		std::hash<std::string> lHash;
+		int32 lId = lHash(aFileName);
+		TLoadedTextures::const_iterator lTextureIterator = mLoadedTextures.find(lId);
+
+		if (lTextureIterator != mLoadedTextures.end())
+		{
+			return lTextureIterator->second;
+		}
 
 		SDL_Surface* lTempSurface = IMG_Load(aFileName.c_str());
 		if (lTempSurface != 0)
@@ -66,10 +66,8 @@ namespace graphics
 			if (pTexture != 0)
 			{
 				//@TODO: Contar y mantener referencias?
-				std::hash<std::string> lHash;
-				int32 lId = lHash(aFileName);
-				result = new Texture(lId, pTexture);
-				mLoadedTextures[lHash(aFileName)] = result;
+				lResult = new Texture(lId, pTexture);
+				mLoadedTextures[lHash(aFileName)] = lResult;
 			}
 			else
 			{
@@ -79,6 +77,19 @@ namespace graphics
 		else 
 		{
 			core::LogFormatString("Can't load image %s", aFileName.c_str());
+		}
+
+		return lResult;
+	}
+
+	Sprite* TextureManager::CreateSprite(std::string aFileName)
+	{
+		Sprite *result = 0;
+		Texture *lTexture = LoadTexture(aFileName);
+		if (lTexture)
+		{
+			result = new Sprite();
+			result->Init(lTexture);
 		}
 
 		return result;

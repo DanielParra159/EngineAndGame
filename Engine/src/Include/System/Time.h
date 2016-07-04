@@ -7,9 +7,33 @@
 
 namespace sys 
 {
-    //  Time from application start.
-    double      GetCurrentSec   ();
-    uint32      GetCurrentMili  ();
+	static class Time {
+	private:
+		static float32									mDeltaSec;
+	public:
+		/**
+		Get the number of seconds since the aplication start
+		@return seconds since the Aplication start
+		*/
+		static float64									GetCurrentSec();
+		/**
+		Get the number of milliseconds since the aplication start
+		@return milliseconds since the aplication start
+		*/
+		static uint32									GetCurrentMili();
+		/**
+		Get the number of seconds since the last update
+		@return seconds since the last update
+		*/
+		static float32									GetDeltaSec();
+	private:
+		/**
+		Set the number of seconds since the last update
+		@param seconds since the last update
+		*/
+		static void										SetDeltaSec(float32 aDeltaSec);
+	};
+
 } // namespace sys 
 
 #endif // _SYS_TIME_H_

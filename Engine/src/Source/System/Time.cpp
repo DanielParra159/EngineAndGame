@@ -4,12 +4,22 @@
 
 namespace sys
 {
-	double GetCurrentSec()
+	float64 Time::GetCurrentSec()
 	{
 		return SDL_GetTicks() / 1000.0;
 	}
 
-	uint32 GetCurrentMili()
+	float32 Time::GetDeltaSec()
+	{
+		return mDeltaSec;
+	}
+
+	void Time::SetDeltaSec(float32 aDeltaSec)
+	{
+		mDeltaSec = aDeltaSec;
+	}
+
+	uint32 Time::GetCurrentMili()
 	{
 		return SDL_GetTicks();
 	}

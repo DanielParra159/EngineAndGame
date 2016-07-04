@@ -64,7 +64,7 @@ namespace sys
 	void Game::Run() {
 		mRunning = TRUE;
 
-		aux = new graphics::Sprite(graphics::TextureManager::Instance()->LoadTexture("assets/prueba.png"));
+		aux = graphics::TextureManager::Instance()->CreateSprite("assets/prueba.png");
 		aux->SetSize(450, 450);
 
 		while (mRunning)

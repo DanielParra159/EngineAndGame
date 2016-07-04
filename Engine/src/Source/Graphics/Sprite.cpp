@@ -1,12 +1,13 @@
 #include "Graphics\Sprite.h"
+#include "Graphics\TextureManager.h"
 
 #include <SDL.h>
 
 namespace graphics
 {
-	Sprite::Sprite(Texture* aTexture) : mSize(), mTexture(aTexture)
+	void Sprite::Init(Texture *aTexture)
 	{
-		
+		mTexture = aTexture;
 	}
 
 	void Sprite::Release()

@@ -84,6 +84,18 @@
     <ClInclude Include="..\..\src\Include\Types\Color.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Graphics\SceneManager.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Graphics\Scene.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Graphics\MatrixScene.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Graphics\SceneCell.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Core\Log.cpp">
@@ -115,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\System\Time.cpp">
       <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Graphics\SceneManager.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Graphics\MatrixScene.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Graphics\SceneCell.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
