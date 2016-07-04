@@ -9,9 +9,9 @@ namespace graphics
 		
 	}
 
-	Sprite::~Sprite()
+	void Sprite::Release()
 	{
-
+		mTexture->Release();
 	}
 
 	void Sprite::Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition)

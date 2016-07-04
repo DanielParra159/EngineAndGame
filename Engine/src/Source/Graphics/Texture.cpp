@@ -1,17 +1,19 @@
 #include "Graphics\Texture.h"
+#include "Graphics\TextureManager.h"
 
 #include <SDL.h>
 
 namespace graphics
 {
-	Texture::Texture(SDL_Texture* aTexture) : mTextureData(aTexture)
+	Texture::Texture(int32 aId, SDL_Texture* aTexture) : mId(aId), mTextureData(aTexture)
 	{
 
 	}
 
-	Texture::~Texture()
+	void Texture::Release()
 	{
-		
+		TextureManager::Instance()->UnloadTexture(mId);
+		delete mTextureData;
 	}
 
 	SDL_Texture* Texture::GetTextureData()

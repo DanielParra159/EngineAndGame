@@ -11,13 +11,14 @@ namespace graphics
 	{
 	public:
 
-		Texture(SDL_Texture* aTexture);
-		virtual ~Texture();
+		Texture(int32 aId, SDL_Texture* aTexture);
+		
+		virtual void									Release();
 
 		SDL_Texture*									GetTextureData();
 
 	private:
-		int32 mID;
+		int32 mId;
 		SDL_Texture* mTextureData;
 
 	}; // Texture

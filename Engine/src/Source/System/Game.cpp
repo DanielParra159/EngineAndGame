@@ -55,6 +55,9 @@ namespace sys
 			aGameDescription->mRenderDrawColor.GetB(),
 			aGameDescription->mRenderDrawColor.GetA());
 
+
+		graphics::TextureManager::Instance()->Init();
+
 		return TRUE;
 	}
 
@@ -91,6 +94,8 @@ namespace sys
 	void Game::Release()
 	{
 		//mCurrentGameState->Release();
+
+		graphics::TextureManager::Instance()->Release();
 
 		SDL_DestroyWindow(mWindow);
 		SDL_DestroyRenderer(mRenderer);

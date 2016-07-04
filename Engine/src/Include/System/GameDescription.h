@@ -2,7 +2,7 @@
 #define _SYS_GAMESDESCRIPTION_H_
 
 #include "Types.h"
-#include "Core\Color.h"
+#include "Types\Color.h"
 
 namespace sys
 {
@@ -12,14 +12,14 @@ namespace sys
 		GameDescription();
 		void SetScreenSize(uint32 aX, uint32 aY);
 		void SetScreenPosition(uint32 aX, uint32 aY);
-		void SetRenderDrawColor(const core::Color &aColor);
+		void SetRenderDrawColor(const Color &aColor);
 		void SetRenderDrawColor(uint8 aR, uint8 aG, uint8 aB, uint8 aA);
 		void SetFullScreen(BOOL aFullScreen);
 
 	protected:
 		uint32 mScreenSizeX, mScreenSizeY;
 		uint32 mScreenPositionX, mScreenPositionY;
-		core::Color mRenderDrawColor;
+		Color mRenderDrawColor;
 		BOOL mFullScreen;
 			
 	}; // GameDescription

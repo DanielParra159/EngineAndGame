@@ -12,7 +12,7 @@ namespace graphics
 	public:
 
 		Sprite(Texture* aTexture);
-		virtual ~Sprite();
+		virtual void									Release();
 
 		virtual void									Render(SDL_Renderer* aRenderer, const Vector2D<>* aPosition);
 		virtual void									Render(SDL_Renderer* aRenderer, int32 aX, int32 aY);

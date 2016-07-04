@@ -99,9 +99,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Include\Core\Color.h" />
     <ClInclude Include="..\..\src\Include\Core\Log.h" />
-    <ClInclude Include="..\..\src\Include\Core\Vector2D.h" />
     <ClInclude Include="..\..\src\Include\Defs.h" />
     <ClInclude Include="..\..\src\Include\Graphics\AnimateSprite.h" />
     <ClInclude Include="..\..\src\Include\Graphics\Renderable.h" />
@@ -114,6 +112,8 @@
     <ClInclude Include="..\..\src\Include\System\Time.h" />
     <ClInclude Include="..\..\src\Include\System\Window.h" />
     <ClInclude Include="..\..\src\Include\Types.h" />
+    <ClInclude Include="..\..\src\Include\Types\Color.h" />
+    <ClInclude Include="..\..\src\Include\Types\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Core\Color.cpp" />

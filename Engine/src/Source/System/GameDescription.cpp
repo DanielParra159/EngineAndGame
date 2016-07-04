@@ -1,6 +1,6 @@
 #include "System\GameDescription.h"
 
-#include "Core\Color.h"
+#include "Types\Color.h"
 
 namespace sys
 {
@@ -36,9 +36,9 @@ namespace sys
 	/// <summary>Assign draw color
 	/// <param name="aColor">Color to assign</param>
 	/// </summary>
-	void GameDescription::SetRenderDrawColor(const core::Color &aColor)
+	void GameDescription::SetRenderDrawColor(const Color &aColor)
 	{
-		mRenderDrawColor = core::Color(aColor);
+		mRenderDrawColor = Color(aColor);
 	}
 
 	/// <summary>Assign draw color
@@ -49,7 +49,7 @@ namespace sys
 	/// </summary>
 	void GameDescription::SetRenderDrawColor(uint8 aR, uint8 aG, uint8 aB, uint8 aA)
 	{
-		mRenderDrawColor = core::Color(aR, aG, aB, aA);
+		mRenderDrawColor = Color(aR, aG, aB, aA);
 	}
 
 	/// <summary>Start windows in full screen

@@ -39,4 +39,5 @@ Engine/tmp/*
 *.opendb
 *.ilk
 *.pdb
+*.sdf
 notes.txt

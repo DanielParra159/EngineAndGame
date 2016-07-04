@@ -3,14 +3,12 @@
 
 #include "Types.h"
 
-#include "Texture.h"
-
 #include <unordered_map>
-
-struct SDL_Texture;
 
 namespace graphics
 {
+	class Texture;
+
 	class TextureManager
 	{
 		typedef std::unordered_map<int32, Texture*> TLoadedTextures;
@@ -19,7 +17,10 @@ namespace graphics
 		TLoadedTextures									mLoadedTextures;
 	public:
 		static TextureManager*							Instance();
+		void											Init();
+		void											Release();
 
+		void											UnloadTexture(int32 aId);
 		Texture*										LoadTexture(std::string fileName);
 
 	private:
