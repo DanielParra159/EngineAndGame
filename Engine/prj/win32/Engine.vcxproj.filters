@@ -34,6 +34,12 @@
     <Filter Include="Header Files\Types">
       <UniqueIdentifier>{28495439-f2bb-4f61-9e3a-d86877f746e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Logic">
+      <UniqueIdentifier>{691c2bc4-953f-43a0-8815-d490f0c84baf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Logic">
+      <UniqueIdentifier>{e8fd7b67-4a43-43fd-90f7-2dd69eafa0e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -43,12 +49,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Include\System\GameState.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\System\Game.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\System\GameDescription.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Include\Types.h">
@@ -66,12 +66,6 @@
     <ClInclude Include="..\..\src\Include\Graphics\Sprite.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\TextureManager.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\Texture.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Include\Graphics\Renderable.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -84,40 +78,34 @@
     <ClInclude Include="..\..\src\Include\Types\Color.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\SceneManager.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\Scene.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\MatrixScene.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Graphics\SceneCell.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Include\Types\Rect.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Include\Graphics\RenderManager.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Core\Application.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Logic\World.h">
+      <Filter>Header Files\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Logic\WorldCell.h">
+      <Filter>Header Files\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Core\GameDescription.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Core\Game.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Core\Log.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Source\System\Game.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Source\System\GameDescription.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Source\System\Window.cpp">
       <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Source\Core\Color.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Graphics\AnimateSprite.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -125,26 +113,23 @@
     <ClCompile Include="..\..\src\Source\Graphics\Sprite.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Source\Graphics\TextureManager.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Source\Graphics\Texture.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Source\System\Time.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Source\Graphics\SceneManager.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Source\Graphics\MatrixScene.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Source\Graphics\SceneCell.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Source\Graphics\RenderManager.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Core\Application.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Core\Game.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Core\GameDescription.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Logic\World.cpp">
+      <Filter>Source Files\Logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

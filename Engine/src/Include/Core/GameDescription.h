@@ -1,15 +1,16 @@
-#ifndef _SYS_GAMESDESCRIPTION_H_
-#define _SYS_GAMESDESCRIPTION_H_
+#ifndef _CORE_GAMESDESCRIPTION_H_
+#define _CORE_GAMESDESCRIPTION_H_
 
 #include "Types.h"
 #include "Types\Color.h"
+#include "Types\Vector2D.h"
 
-namespace sys
+namespace core
 {
 	class GameDescription {
 	friend class Game;
 	public:
-		GameDescription();
+		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mRenderDrawColor(), mFullScreen(FALSE) {}
 		void SetScreenSize(uint32 aX, uint32 aY);
 		void SetScreenPosition(uint32 aX, uint32 aY);
 		void SetRenderDrawColor(const Color &aColor);
@@ -17,11 +18,11 @@ namespace sys
 		void SetFullScreen(BOOL aFullScreen);
 
 	protected:
-		uint32 mScreenSizeX, mScreenSizeY;
-		uint32 mScreenPositionX, mScreenPositionY;
+		Vector2D<uint32> mScreenSize;
+		Vector2D<uint32> mScreenPosition;
 		Color mRenderDrawColor;
 		BOOL mFullScreen;
 			
 	}; // GameDescription
-} // namespace sys
-#endif // _SYS_GAMESDESCRIPTION_H_
+} // namespace core
+#endif // _CORE_GAMESDESCRIPTION_H_

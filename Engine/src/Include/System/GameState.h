@@ -17,7 +17,7 @@ namespace sys
 		virtual void 								OnPause(void) = 0;
 		virtual void 								OnResume(void) = 0;
 
-		virtual const int8*						GetStateName(void) const = 0;
+		virtual const int8*							GetStateName(void) const = 0;
 	}; // IGameState
 } // namespace sys
 #endif // _SYS_GAMESTATE_H_

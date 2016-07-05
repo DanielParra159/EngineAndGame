@@ -1,26 +1,17 @@
-#include "System\GameDescription.h"
+#include "Core\GameDescription.h"
 
 #include "Types\Color.h"
 
-namespace sys
+namespace core
 {
-	/**Constructor
-	*/
-	GameDescription::GameDescription() : mRenderDrawColor(),
-		mScreenSizeX(500), mScreenSizeY(500), mScreenPositionX(50), mScreenPositionY(50),
-		mFullScreen(FALSE)
-	{
-
-	}
-
 	/** Assigns screen size
 	@param aX width
 	@param aY height
 	*/
 	void GameDescription::SetScreenSize(uint32 aX, uint32 aY)
 	{
-		mScreenSizeX = aX;
-		mScreenSizeY = aY;
+		mScreenSize.mX = aX;
+		mScreenSize.mY = aY;
 	}
 
 	/** Assigns screen position
@@ -29,8 +20,8 @@ namespace sys
 	*/
 	void GameDescription::SetScreenPosition(uint32 aX, uint32 aY)
 	{
-		mScreenPositionX = aX;
-		mScreenPositionY = aY;
+		mScreenPosition.mX = aX;
+		mScreenPosition.mY = aY;
 	}
 
 	/** Assigns draw color
@@ -60,4 +51,4 @@ namespace sys
 		mFullScreen = aFullScreen;
 	}
 
-} // namespace sys
+} // namespace core

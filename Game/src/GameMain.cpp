@@ -1,12 +1,10 @@
 #include <stdio.h>
 
-#include <System\Game.h>
-#include <System\GameDescription.h>
+#include <Core\Game.h>
+#include <Core\GameDescription.h>
 #include <Core\Log.h>
 
-#include "Graphics\TextureManager.h"
 
-using namespace sys;
 using namespace core;
 
 int main(int argc, char* argv[])
@@ -19,13 +17,13 @@ int main(int argc, char* argv[])
 	gameDescription->SetScreenSize(600, 600);
 	gameDescription->SetFullScreen(FALSE);
 
-	if (!game->Init("Titulo", gameDescription))
+	if (!game->Init("Titulo", *gameDescription))
 	{
 		LogString("!game->Init(gameDescription)");
 		return -1;
 	}
 
-	
+	delete gameDescription;
 
 	game->Run();
 

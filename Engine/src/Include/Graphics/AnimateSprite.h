@@ -18,7 +18,7 @@ namespace graphics
 		virtual void									Update();
 
 		void											SetSpeed(float32 aSpeed);
-		float32											GetSpeed();
+		float32											GetSpeed() const { return mSpeed; };
 
 	protected:
 		AnimateSprite() : Sprite(), mSpeed(0.0f) {}

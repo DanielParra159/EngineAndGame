@@ -1,29 +1,28 @@
 #include "Graphics\Sprite.h"
-#include "Graphics\TextureManager.h"
 #include "Graphics\RenderManager.h"
 
 #include <SDL.h>
 
 namespace graphics
 {
-	void Sprite::Init(Texture *aTexture)
+	void Sprite::Init(int32 aTextureId)
 	{
-		mTexture = aTexture;
+		mTextureId = aTextureId;
 	}
 
 	void Sprite::Release()
 	{
-		mTexture->Release();
+		//RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
 	void Sprite::Render(const Vector2D<>* aPosition)
 	{
-		Render(aPosition->GetX(), aPosition->GetY());
+		Render(aPosition->mX, aPosition->mY);
 	}
 
 	void Sprite::Render(int32 aX, int32 aY)
 	{
-		RenderManager::Instance()->RenderTexture(mTexture, mSize, aX, aY, mAngle);
+		RenderManager::Instance()->RenderTexture(mTextureId, mSize, aX, aY, mAngle);
 	}
 
 
@@ -33,23 +32,14 @@ namespace graphics
 	}
 	void Sprite::SetSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH)
 	{
-		mSize.SetX(aX);
-		mSize.SetY(aY);
-		mSize.SetW(aW);
-		mSize.SetH(aH);
+		mSize.mX = aX;
+		mSize.mY = aY;
+		mSize.mW = aW;
+		mSize.mH = aH;
 	}
-	const Rect<int32>* Sprite::GetSize()
-	{
-		return &mSize;
-	}
-
 
 	void Sprite::SetAngle(float64 aAngle)
 	{
 		mAngle = aAngle;
-	}
-	float64 Sprite::GetAngle()
-	{
-		return mAngle;
 	}
 } // namespace graphics

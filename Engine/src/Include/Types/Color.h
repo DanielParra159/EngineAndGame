@@ -4,23 +4,14 @@
 #include "Types.h"
 
 class Color {
-private:
+public:
 	uint8 mR, mG, mB, mA;
 public:
-	Color();
-	Color(const Color& aColor);
-	Color(uint8 aR, uint8 aG, uint8 aB, uint8 aA);
-	Color(float32 aR, float32 aG, float32 aB, float32 aA);
-	~Color();
-
-	uint8 GetR() const;
-	uint8 GetG() const;
-	uint8 GetB() const;
-	uint8 GetA() const;
-	void SetR(uint8 aR);
-	void SetG(uint8 aG);
-	void SetB(uint8 aB);
-	void SetA(uint8 aA);
+	Color() : mR(0), mG(0), mB(0), mA(0) {}
+	Color(const Color& aColor) : Color(aColor.mR, aColor.mG, aColor.mB, aColor.mA) {}
+	Color(uint8 aR, uint8 aG, uint8 aB, uint8 aA) : mR(aR), mG(aG), mB(aB), mA(aA) {}
+	Color(float32 aR, float32 aG, float32 aB, float32 aA) : mR((uint32)(aR * 255)), mG((uint32)(aG * 255)), mB((uint32)(aB * 255)), mA((uint32)(aA * 255)) {}
+	~Color() {}
 
 }; // Color
 

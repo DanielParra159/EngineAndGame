@@ -7,10 +7,13 @@
 
 namespace sys 
 {
-	static class Time {
+	class Time {
 	private:
+		static Time*									sInstance;
 		static float32									mDeltaSec;
+		uint32											lLastUpdateMili;
 	public:
+		static Time*									Instance();
 		/**
 		Get the number of seconds since the aplication start
 		@return seconds since the Aplication start
@@ -26,12 +29,14 @@ namespace sys
 		@return seconds since the last update
 		*/
 		static float32									GetDeltaSec();
-	private:
+
 		/**
-		Set the number of seconds since the last update
-		@param seconds since the last update
+		Update the deltaSec passed since the last update
 		*/
-		static void										SetDeltaSec(float32 aDeltaSec);
+		void Update();
+	private:
+		Time() {}
+		~Time() {}
 	};
 
 } // namespace sys 

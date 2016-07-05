@@ -5,17 +5,12 @@
 template <typename T = int32>
 class Vector2D
 {
-private:
+public:
 	T mX, mY;
-
 public:
 	Vector2D() { mX = 0; mY = 0; };
 	Vector2D(T aX, T aY) : mX(aX), mY(aY) {}
 	Vector2D(const Vector2D<T>& aV2) : mX(aV2.mX), mY(aV2.mY) {};
-	T GetX() const { return mX; }
-	T GetY() const { return mY; }
-	void SetX(T aX) { mX = aX; }
-	void SetY(T aY) { mY = aY; }
 
 	T Length() const
 	{
@@ -26,14 +21,6 @@ public:
 		return (mX*mX + mY*mY);
 	}
 
-	void NormalizeThis()
-	{
-		T l = Length();
-		if (l > 0)
-		{
-			(*this) *= 1 / l;
-		}
-	}
 	Vector2D<T>& Normalize()
 	{
 		T l = (T)Length();

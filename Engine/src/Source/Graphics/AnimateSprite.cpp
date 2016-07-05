@@ -20,8 +20,4 @@ namespace graphics
 	{
 		mSpeed = aSpeed;
 	}
-	float32 AnimateSprite::GetSpeed()
-	{
-		return mSpeed;
-	}
 } // namespace graphics
