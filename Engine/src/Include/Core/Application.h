@@ -17,6 +17,8 @@ namespace core
 
 		BOOL											Init();
 		void											Release();
+
+		BOOL											HandleEvents();
 	private:
 		Application() {}
 		~Application() {}

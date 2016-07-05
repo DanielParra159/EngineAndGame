@@ -23,7 +23,6 @@ namespace core
 	private:
 		void										Update();
 		void										Render();
-		void										HandleEvents();
 		void										Release();
 		Game() : mRunning(FALSE) {}
 		~Game() {}

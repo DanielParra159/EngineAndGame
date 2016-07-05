@@ -12,7 +12,7 @@ namespace graphics
 
 	void Sprite::Release()
 	{
-		//RenderManager::Instance()->UnloadTexture(mTextureId);
+		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
 	void Sprite::Render(const Vector2D<>* aPosition)

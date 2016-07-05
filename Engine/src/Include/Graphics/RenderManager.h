@@ -44,11 +44,11 @@ namespace graphics
 		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, float64 aAngle);
 		
 		Sprite*											CreateSprite(std::string aFileName);
+		void											UnloadTexture(int32 aId);
+		int32											LoadTexture(std::string aFileName);
 	private:
 		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0), mRenderer(0), mWindow(0){}
 		~RenderManager(){}
-		void											UnloadTexture(int32 aId);
-		int32											LoadTexture(std::string aFileName);
 
 	}; // Renderer
 } // namespace graphics

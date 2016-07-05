@@ -11,7 +11,7 @@
 
 #include "Logic\World.h"
 
-#include <SDL.h>
+#include "Defs.h"
 
 namespace core
 {
@@ -48,7 +48,7 @@ namespace core
 		while (mRunning)
 		{
 			sys::Time::Instance()->Update();			
-			HandleEvents();
+			mRunning = core::Application::Instance()->HandleEvents();
 			Update();
 			Render();
 		}
@@ -74,22 +74,6 @@ namespace core
 		core::Application::Instance()->Release();
 
 		logic::World::Instance()->Release();
-	}
-
-	void Game::HandleEvents()
-	{
-		SDL_Event event;
-		if (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-				case SDL_QUIT:
-					mRunning = false;
-					break;
-				default:
-					break;
-			}
-		}
 	}
 
 	void Game::CloseGame()
