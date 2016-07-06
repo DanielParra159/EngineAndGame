@@ -30,16 +30,25 @@ namespace logic
 
 		mWorldCells = new WorldCell*[aWidth *aHeight];
 		uint32 lNumCells = mWidth * mHeight;
+		//@TODO create here the cells only to test
 		for (uint32 i = 0; i < lNumCells; ++i)
 		{
 			mWorldCells[i] = new WorldCell();
+			mWorldCells[i]->mType = 2;
 		}
-		mWorldCells[12]->mType = 1;
 
 		mSpriteCells = new graphics::Sprite*[mSpriteCellTypes];
 
-		mSpriteCells[0] = graphics::RenderManager::Instance()->CreateSprite("assets/prueba.png");
-		mSpriteCells[0]->SetSize(0, 0, 400, 400);
+		mSpriteCells[0] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
+		mSpriteCells[0]->SetSize(0, 32 * 2, 32, 32);
+		mSpriteCells[1] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
+		mSpriteCells[1]->SetSize(0, 32 * 3, 32, 32);
+		mSpriteCells[2] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
+		mSpriteCells[2]->SetSize(32 * 8, 32 * 2, 32, 32);
+		mSpriteCells[3] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
+		mSpriteCells[3]->SetSize(32 * 9, 32 * 9, 32, 32);
+		mSpriteCells[4] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
+		mSpriteCells[4]->SetSize(32 * 10, 32 * 9, 32, 32);
 	}
 
 	void World::Release()
@@ -72,7 +81,7 @@ namespace logic
 				if (lCell->mLife <= 0.0f)
 				{
 					lCell->mLife = 0;
-					lCell->mType = 0;
+					lCell->mType = 2;
 				}
 			}
 		}
@@ -84,10 +93,23 @@ namespace logic
 		for (uint32 i = 0; i < lNumCells; ++i)
 		{
 			WorldCell* lCell = mWorldCells[i];
-			if (lCell->mType == 1)
-			{
-				mSpriteCells[0]->Render(10, 10);
-			}
+
+			mSpriteCells[lCell->mType]->Render((i % mWidth)*32, (i/ mWidth)*32);
+
 		}
+	}
+
+	void World::SetCell(uint32 aX, uint32 aY, float32 aLife) 
+	{ 
+		mWorldCells[(aY*mWidth) + aX]->mLife = aLife;
+	}
+	void World::SetCell(uint32 aX, uint32 aY, uint32 aType) 
+	{ 
+		mWorldCells[(aY*mWidth) + aX]->mType = aType;
+	}
+	void World::SetCell(uint32 aX, uint32 aY, float32 aLife, uint32 aType) 
+	{ 
+		mWorldCells[(aY*mWidth) + aX]->mType = aType;
+		mWorldCells[(aY*mWidth) + aX]->mLife = aLife;
 	}
 } // namespace logic

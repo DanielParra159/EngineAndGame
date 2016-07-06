@@ -19,12 +19,14 @@ namespace core
 		BOOL		 								Init(const int8* title, const GameDescription& aGameDescription);
 		void										Run();
 
+		BOOL										SetGameState(IGameState* aGameState);
+
 		void										CloseGame();
 	private:
 		void										Update();
 		void										Render();
 		void										Release();
-		Game() : mRunning(FALSE) {}
+		Game() : mRunning(FALSE), mCurrentGameState(0) {}
 		~Game() {}
 		
 	}; // Game

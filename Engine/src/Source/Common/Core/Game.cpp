@@ -1,15 +1,15 @@
 #include "Core\Game.h"
 #include "Core\GameDescription.h"
+#include "Core\IGameState.h"
 #include "Core\Log.h"
 
-#include "System\GameState.h"
 #include "System\Time.h"
 
 #include "Graphics\RenderManager.h"
 
-#include "Core\Application.h"
+#include "Input\InputManager.h"
 
-#include "Logic\World.h"
+#include "Core\Application.h"
 
 #include "Defs.h"
 
@@ -35,8 +35,6 @@ namespace core
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
 												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);
 
-		logic::World::Instance()->Init(32, 32);
-
 		return TRUE;
 	}
 
@@ -48,7 +46,8 @@ namespace core
 		while (mRunning)
 		{
 			sys::Time::Instance()->Update();			
-			mRunning = core::Application::Instance()->HandleEvents();
+			input::InputManager::Instance()->Update();
+			input::InputManager::Instance()->GetActionId();
 			Update();
 			Render();
 		}
@@ -57,8 +56,8 @@ namespace core
 	}
 
 	void Game::Update() {
-		logic::World::Instance()->Update();
-		//mCurrentGameState->Update(0.2f);
+		if (mCurrentGameState)
+			mRunning = mCurrentGameState->Update();
 	}
 
 	void Game::Render() {
@@ -67,14 +66,20 @@ namespace core
 
 	void Game::Release()
 	{
-		//mCurrentGameState->Release();
+		if (mCurrentGameState)
+			mCurrentGameState->Release();
 
 		graphics::RenderManager::Instance()->Release();
-
 		core::Application::Instance()->Release();
 
-		logic::World::Instance()->Release();
 	}
+
+	BOOL Game::SetGameState(IGameState* aGameState)
+	{
+		mCurrentGameState = aGameState;
+		return aGameState->Init();
+	}
+
 
 	void Game::CloseGame()
 	{

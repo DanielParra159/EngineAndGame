@@ -1,4 +1,5 @@
 #include "Core\Application.h"
+#include "Core\Log.h"
 
 #include <SDL.h>
 
@@ -28,21 +29,5 @@ namespace core
 		SDL_Quit();
 	}
 
-	BOOL Application::HandleEvents()
-	{
-		SDL_Event event;
-		if (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-				case SDL_QUIT:
-					return FALSE;
-					break;
-				default:
-					break;
-			}
-		}
-		return TRUE;
-	}
 } // namespace core
 

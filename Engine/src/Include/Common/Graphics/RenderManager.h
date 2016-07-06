@@ -20,7 +20,16 @@ namespace graphics
 	class Texture;
 	class Sprite;
 
-	typedef std::unordered_map<std::string, int32>		TTexturesIds;
+	class TextureReferences //@TODO: move this
+	{
+	public:
+		int32											mId;
+		uint32											mReferences;
+	public:
+		TextureReferences(int32 aId, uint32 aReferences) : mId(aId), mReferences(aReferences) {}
+	};
+
+	typedef std::unordered_map<std::string, TextureReferences*>		TTexturesIds;
 	typedef std::vector<SDL_Texture*>					TLoadedTextures;
 	class RenderManager
 	{

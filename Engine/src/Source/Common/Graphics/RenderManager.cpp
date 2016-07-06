@@ -45,7 +45,11 @@ namespace graphics
 							   aRenderDrawColor.mB,
 							   aRenderDrawColor.mA);
 
+		return TRUE;
+	}
 
+	void RenderManager::Release()
+	{
 		TLoadedTextures::const_iterator lIterator;
 		TLoadedTextures::const_iterator lEndElement = mLoadedTextures.end();
 		for (lIterator = mLoadedTextures.begin(); lIterator != lEndElement; ++lIterator)
@@ -55,11 +59,6 @@ namespace graphics
 		mLoadedTextures.clear();
 		mTexturesIds.clear();
 
-		return TRUE;
-	}
-
-	void RenderManager::Release()
-	{
 		SDL_DestroyWindow(mWindow);
 		SDL_DestroyRenderer(mRenderer);
 	}
@@ -94,19 +93,24 @@ namespace graphics
 
 	void RenderManager::UnloadTexture(int32 aId)
 	{
-		//@TODO: Count references?
-		SDL_Texture *lTexture = mLoadedTextures[aId];
-		mLoadedTextures[aId] = 0;
-		SDL_DestroyTexture(lTexture);
-
 		TTexturesIds::const_iterator lIterator = mTexturesIds.begin();
 		TTexturesIds::const_iterator lIteratorEnd = mTexturesIds.end();
-		while (lIterator != lIteratorEnd && lIterator->second != aId)
+		while (lIterator != lIteratorEnd && lIterator->second->mId != aId)
 		{
 			++lIterator;
 		}
-		mTexturesIds.erase(lIterator);
-		--mNumLoadedTextures;
+		if (--lIterator->second->mReferences == 0)
+		{
+			SDL_Texture *lTexture = mLoadedTextures[aId];
+			mLoadedTextures[aId] = 0;
+			SDL_DestroyTexture(lTexture);
+
+			delete lIterator->second;
+
+			mTexturesIds.erase(lIterator);
+			--mNumLoadedTextures;
+
+		}
 	}
 
 	int32 RenderManager::LoadTexture(std::string aFileName)
@@ -117,7 +121,8 @@ namespace graphics
 
 		if (lTextureIterator != mTexturesIds.end())
 		{
-			return lTextureIterator->second;
+			++lTextureIterator->second->mReferences;
+			return lTextureIterator->second->mId;
 		}
 
 		SDL_Surface* lTempSurface = IMG_Load(aFileName.c_str());
@@ -146,7 +151,6 @@ namespace graphics
 					
 					if (i < lSize)
 					{
-						//@TODO: Count references?
 						mLoadedTextures[lResult] = lTexture;
 					}
 					else
@@ -155,7 +159,7 @@ namespace graphics
 					}
 				}
 
-				mTexturesIds[aFileName] = lResult;
+				mTexturesIds[aFileName] = new TextureReferences(lResult, 1);
 				++mNumLoadedTextures;
 			}
 			else
