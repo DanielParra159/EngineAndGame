@@ -37,9 +37,6 @@ namespace game
 
 		virtual BOOL									Update();
 
-		virtual void 									OnPause();
-		virtual void 									OnResume();
-
 		virtual const int8*								GetStateName() const { return "Game"; }
 	}; // IGameState
 } // namespace game

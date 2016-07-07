@@ -108,7 +108,6 @@
     <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Include\Common\Core\Application.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\Game.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\GameDescription.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\IGameState.h" />
@@ -131,7 +130,6 @@
     <ClInclude Include="..\..\src\Include\Win32\Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Source\Common\Core\Application.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Game.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\GameDescription.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp" />

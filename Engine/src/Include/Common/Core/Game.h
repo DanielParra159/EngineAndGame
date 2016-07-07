@@ -8,6 +8,11 @@ namespace core
 	class IGameState;
 	class GameDescription;
 
+	/**
+	This class is responsible for init all manager and contains the game loop.
+	Also it contains  the current state.
+	The user must instantiate it, assign a state and run it.
+	*/
 	class Game {
 	private:
 		IGameState*									mCurrentGameState;
@@ -21,6 +26,10 @@ namespace core
 		static Game*								Instance();
 
 		BOOL		 								Init(const int8* title, const GameDescription& aGameDescription);
+		/**
+		Eject the game loop.
+		@note Bloking call.
+		*/
 		void										Run();
 
 		/**

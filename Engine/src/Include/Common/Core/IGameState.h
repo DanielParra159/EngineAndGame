@@ -6,6 +6,10 @@
 namespace core
 {
 	class Game;
+	/**
+	Pure abstract class than defines a GameState
+	The user must overwrite to implemers their states
+	*/
 	class IGameState {
 		friend class Game;
 	protected:
@@ -13,9 +17,6 @@ namespace core
 		virtual void 									Release() = 0;
 		
 		virtual BOOL									Update() = 0;
-
-		virtual void 									OnPause() = 0;
-		virtual void 									OnResume() = 0;
 
 		virtual const int8*								GetStateName() const = 0;
 	}; // IGameState

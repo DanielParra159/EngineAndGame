@@ -89,14 +89,4 @@ namespace game
 
 		return TRUE;
 	}
-
-
-	void GameState::OnPause()
-	{
-
-	}
-	void GameState::OnResume()
-	{
-
-	}
 } // namespace game

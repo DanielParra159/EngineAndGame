@@ -26,6 +26,9 @@ namespace graphics
 
 	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor, BOOL aFullscreen)
 	{
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+			return FALSE;
+
 		mWindow = SDL_CreateWindow(aWindowsTitle,
 								   aWindowsPosition.mX, aWindowsPosition.mY,
 								   aWindowsSize.mX, aWindowsSize.mY,

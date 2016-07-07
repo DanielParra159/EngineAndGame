@@ -6,6 +6,9 @@
 
 namespace graphics
 {
+	/**
+	
+	*/
 	class AnimateSprite : public Sprite
 	{
 	protected:

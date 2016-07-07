@@ -17,6 +17,10 @@ namespace input
 
 	int32 KeyboardController::Update()
 	{
+		/*const Uint8 *state = SDL_GetKeyboardState(NULL);
+		if (state[SDL_SCANCODE_RETURN]) {
+			printf("<RETURN> is pressed.\n");
+		}*/
 		SDL_Event event;
 		int32 lResult = -1;
 		InputAction *lInputAction = 0;

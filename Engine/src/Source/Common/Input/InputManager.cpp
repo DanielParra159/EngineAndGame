@@ -2,6 +2,7 @@
 #include "Input\KeyboardController.h"
 #include "Input\InputAction.h"
 
+#include <SDL.h>
 
 namespace input
 {
@@ -19,6 +20,8 @@ namespace input
 
 	BOOL InputManager::Init()
 	{
+		if (SDL_Init(SDL_INIT_EVENTS) < 0)
+			return FALSE;
 		return TRUE;
 	}
 	void InputManager::Release()

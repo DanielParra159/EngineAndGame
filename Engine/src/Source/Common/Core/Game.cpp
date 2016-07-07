@@ -9,9 +9,9 @@
 
 #include "Input\InputManager.h"
 
-#include "Core\Application.h"
-
 #include "Defs.h"
+
+#include <SDL.h>
 
 namespace core
 {
@@ -29,11 +29,10 @@ namespace core
 
 	BOOL Game::Init(const int8* title, const GameDescription& aGameDescription)
 	{
-
-		core::Application::Instance()->Init();
-
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
 												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);
+		
+		input::InputManager::Instance()->Init();
 
 		return TRUE;
 	}
@@ -70,7 +69,10 @@ namespace core
 			mCurrentGameState->Release();
 
 		graphics::RenderManager::Instance()->Release();
-		core::Application::Instance()->Release();
+
+		input::InputManager::Instance()->Release();
+		
+		SDL_Quit();
 
 	}
 
