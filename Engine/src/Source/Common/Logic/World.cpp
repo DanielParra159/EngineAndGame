@@ -7,6 +7,7 @@
 #include "Graphics\RenderManager.h"
 
 #include "System\Time.h"
+#include "Core\Log.h"
 
 namespace logic
 {
@@ -45,10 +46,12 @@ namespace logic
 		mSpriteCells[1]->SetSize(0, 32 * 3, 32, 32);
 		mSpriteCells[2] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
 		mSpriteCells[2]->SetSize(32 * 8, 32 * 2, 32, 32);
-		mSpriteCells[3] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[3]->SetSize(32 * 9, 32 * 9, 32, 32);
-		mSpriteCells[4] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[4]->SetSize(32 * 10, 32 * 9, 32, 32);
+		mSpriteCells[3] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
+		mSpriteCells[3]->SetSize(32 * 4, 32 * 0, 32, 32);
+		mSpriteCells[4] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
+		mSpriteCells[4]->SetSize(32 * 4, 32 * 2, 32, 32);
+		mSpriteCells[5] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
+		mSpriteCells[5]->SetSize(32 * 0, 32 * 3, 32, 32);
 	}
 
 	void World::Release()
@@ -94,6 +97,7 @@ namespace logic
 		{
 			WorldCell* lCell = mWorldCells[i];
 
+			mSpriteCells[lCell->mType]->SetAngle(lCell->mAngle);
 			mSpriteCells[lCell->mType]->Render((i % mWidth)*32, (i/ mWidth)*32);
 
 		}
@@ -111,5 +115,9 @@ namespace logic
 	{ 
 		mWorldCells[(aY*mWidth) + aX]->mType = aType;
 		mWorldCells[(aY*mWidth) + aX]->mLife = aLife;
+	}
+	void World::SetCellAngle(uint32 aX, uint32 aY, float64 aAngle)
+	{
+		mWorldCells[(aY*mWidth) + aX]->mAngle = aAngle;
 	}
 } // namespace logic

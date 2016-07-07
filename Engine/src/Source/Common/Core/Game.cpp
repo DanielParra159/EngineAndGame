@@ -80,9 +80,4 @@ namespace core
 		return aGameState->Init();
 	}
 
-
-	void Game::CloseGame()
-	{
-		mRunning = FALSE;
-	}
 } // namespace core

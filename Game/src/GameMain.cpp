@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 
 	GameDescription *lGameDescription = new GameDescription();
 
-	lGameDescription->SetRenderDrawColor(0, 0, 0, 255);
+	lGameDescription->SetRenderDrawColor(102, 150, 23, 255);
 	lGameDescription->SetScreenSize(576, 576);
 	lGameDescription->SetFullScreen(FALSE);
 

@@ -14,6 +14,18 @@ namespace input
 		friend class InputManager;
 
 		typedef std::unordered_map<uint32, InputAction*> TActionsByKey; //@TODO: positive/negative
+
+	public:
+		enum EKeyCode
+		{
+			eUnknown = -1,
+
+			eUp, eDown, eLeft, eRight,
+
+			eEscape
+		};
+
+
 	private:
 		TActionsByKey									mActionsByKey;
 	private:
@@ -25,6 +37,7 @@ namespace input
 
 		virtual int32									Update();
 
+		EKeyCode										TranslateKeyCode(uint32 aKey);
 	public:
 		virtual void									RegisterInputAction(const InputAction *inputAction);
 	}; // ControlKeyboard

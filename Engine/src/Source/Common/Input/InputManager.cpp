@@ -28,6 +28,8 @@ namespace input
 
 	void InputManager::Update()
 	{
+		mLastAction = -1;
+
 		TControllers::const_iterator lIterator = mControllers.begin();
 		TControllers::const_iterator lIteratorEnd = mControllers.end();
 
@@ -42,13 +44,13 @@ namespace input
 		}
 	}
 
-	IController* InputManager::CreateController(eTypeControls aType)
+	IController* InputManager::CreateController(ETypeControls aType)
 	{
 		IController* lResult;
 
 		switch (aType)
 		{
-			case eTypeControls::Keyboard:
+			case ETypeControls::eKeyboard:
 				lResult = new KeyboardController();
 				if (!lResult->Init())
 				{
@@ -64,11 +66,6 @@ namespace input
 				break;
 		}
 		return lResult;
-	}
-
-	int32 InputManager::PullActionId()
-	{
-		return mLastAction;
 	}
 
 	int32 InputManager::GetActionId()

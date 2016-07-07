@@ -7,10 +7,10 @@
 
 namespace input
 {
-	enum eTypeControls
+	enum ETypeControls
 	{
-		Keyboard,
-		Mouse
+		eKeyboard,
+		eMouse
 	};
 
 	class IController;
@@ -32,11 +32,10 @@ namespace input
 
 		void											Update();
 
-		IController*									CreateController(eTypeControls aType);
-		int32											PullActionId();
+		IController*									CreateController(ETypeControls aType);
 		int32											GetActionId();
 	private:
-		InputManager() : mControllers(1), mLastAction(-1) {}
+		InputManager() : mControllers(0), mLastAction(-1) {}
 		~InputManager() {}
 
 	}; // InputManager

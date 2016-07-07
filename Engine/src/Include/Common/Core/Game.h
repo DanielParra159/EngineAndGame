@@ -12,6 +12,10 @@ namespace core
 	private:
 		IGameState*									mCurrentGameState;
 		static Game*								sInstance;		
+
+		/**
+		indicates if the application should keep running
+		*/
 		BOOL										mRunning;
 	public:
 		static Game*								Instance();
@@ -19,9 +23,11 @@ namespace core
 		BOOL		 								Init(const int8* title, const GameDescription& aGameDescription);
 		void										Run();
 
+		/**
+		Set the current GameState and initialize it
+		@param aGameState the game state to assign
+		*/
 		BOOL										SetGameState(IGameState* aGameState);
-
-		void										CloseGame();
 	private:
 		void										Update();
 		void										Render();

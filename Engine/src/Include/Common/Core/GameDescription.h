@@ -7,6 +7,9 @@
 
 namespace core
 {
+	/**
+	GameDescription is used to describe the Game, this indicates the screen size, screen position, if is fullscreen...
+	*/
 	class GameDescription {
 	friend class Game;
 	public:

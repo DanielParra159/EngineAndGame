@@ -21,7 +21,7 @@ namespace logic
 		uint32											mHeight;
 		WorldCell**										mWorldCells;
 
-		const uint32									mSpriteCellTypes = 5;
+		const uint32									mSpriteCellTypes = 6;
 		graphics::Sprite**								mSpriteCells;
 
 	public:
@@ -34,10 +34,11 @@ namespace logic
 
 		uint32											GetWith() const { return mWidth; }
 		uint32											GetHeight() const { return mHeight; }
-		WorldCell*										GetCell(uint32 aX, uint32 aY) { return mWorldCells[(aY*mWidth) + aX]; }
+		const WorldCell*								GetCell(uint32 aX, uint32 aY) { return mWorldCells[(aY*mWidth) + aX]; }
 		void											SetCell(uint32 aX, uint32 aY, float32 aLife);
 		void											SetCell(uint32 aX, uint32 aY, uint32 aType);
 		void											SetCell(uint32 aX, uint32 aY, float32 aLife, uint32 aType);
+		void											SetCellAngle(uint32 aX, uint32 aY, float64 aAngle);
 	private:
 		World() {}
 		~World() {}

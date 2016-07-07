@@ -7,13 +7,29 @@
 
 namespace game
 {
+	enum EInputActions
+	{
+		eExit,
+		eUp, eDown, eLeft, eRight
+	};
+
+	enum ETypeEntities
+	{
+		eWall0 = 0,
+		eWall1 = 1,
+		eNothing = 2,
+		eSnakeHead = 3,
+		eSnakeTail = 4,
+		ePoint = 5
+	};
+
 	class Player;
 	class GameState : public core::IGameState
 	{
 	private:
 		Player*											mPlayer;
 	public:
-		GameState() {}
+		GameState() : mPlayer(0) {}
 		~GameState() {}
 	protected:
 		virtual BOOL 									Init();
