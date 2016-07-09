@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "GameState.h"
-
+#include "GameOverState.h"
 
 #include "Logic\World.h"
 #include "Logic\WorldCell.h"
@@ -8,6 +8,8 @@
 #include "Input\InputManager.h"
 
 #include "System\Time.h"
+
+#include "Core\Game.h"
 
 namespace game
 {
@@ -109,7 +111,10 @@ namespace game
 
 		if (lWorldCell->GetType() == ETypeEntities::eWall0 || lWorldCell->GetType() == ETypeEntities::eWall1)
 		{
+			//HACK
+			game::GameOverState *lGameState = new game::GameOverState();
 
+			core::Game::Instance()->ChangeGameState(lGameState);
 		}
 		else {
 			if (lWorldCell->GetType() == ETypeEntities::ePoint)
