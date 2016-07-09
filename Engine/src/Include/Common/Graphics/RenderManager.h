@@ -47,12 +47,14 @@ namespace graphics
 															 BOOL aFullscreen);
 		void											Release();
 
-		void											Render();
+		void											BeginRender();
+		void											EndRender();
 
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, float64 aAngle);
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, float64 aAngle);
+		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
+		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
 		
 		Sprite*											CreateSprite(std::string aFileName);
+		void											DeleteSprite(Sprite* aSprite);
 		void											UnloadTexture(int32 aId);
 		int32											LoadTexture(std::string aFileName);
 	private:

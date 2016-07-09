@@ -1,7 +1,8 @@
-#ifndef _INPUT_KEYBOARDCONTROLLER_H_
-#define _INPUT_KEYBOARDCONTROLLER_H_
+#ifndef _INPUT_MOUSECONTROLLER_H_
+#define _INPUT_MOUSECONTROLLER_H_
 
 #include "Types.h"
+#include "Types\Vector2D.h"
 #include "Input\IController.h"
 #include "Input\InputManager.h"
 
@@ -10,21 +11,19 @@
 namespace input
 {
 	class InputAction;
-	class KeyboardController : public IController
+	class MouseController : public IController
 	{
 		friend class InputManager;
 
-		typedef std::unordered_map<uint32, InputAction*> TActionsByKey; //@TODO: positive/negative
+		typedef std::unordered_map<uint32, InputAction*> TActionsByKey;
 		typedef std::unordered_map<uint32, uint32> TKeyByAction;
 
 	public:
-		enum EKeyCode
+		enum EButtonCode
 		{
 			eUnknown = -1,
 
-			eUp, eDown, eLeft, eRight,
-
-			eEscape
+			eLeftButton, eMiddleButton, eRightButton,
 		};
 
 
@@ -32,19 +31,22 @@ namespace input
 		TActionsByKey									mActionsByKey;
 		TKeyByAction									mKeysByActions;
 	private:
-		KeyboardController() : mActionsByKey(4), mKeysByActions(4) {}
-		~KeyboardController() {}
+		MouseController() : mActionsByKey(4), mKeysByActions(4) {}
+		~MouseController() {}
 
 		virtual BOOL									Init();
 		virtual void									Release();
 
 		virtual int32									Update(SDL_Event& aEvent);
 
-		EKeyCode										TranslateKeyCode(uint32 aKey);
+		EButtonCode										TranslateButtonCode(uint32 aKey);
 	public:
 		virtual void									RegisterInputAction(const InputAction *aInputAction);
 		virtual BOOL									IsActionPressed(uint32 aActionId);
-		virtual int32									GetType() { return input::eKeyboard; }
-	}; // KeyboardController
+		BOOL											IsButtonPressed(EButtonCode aButton);
+
+		void											GetMousePos(Vector2D<int32>& aMousePos);
+		virtual int32									GetType() { return input::eMouse; }
+	}; // MouseController
 } // namespace input
-#endif // _INPUT_KEYBOARDCONTROLLER_H_
+#endif // _INPUT_MOUSECONTROLLER_H_

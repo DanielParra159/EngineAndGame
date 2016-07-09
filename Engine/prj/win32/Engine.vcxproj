@@ -126,7 +126,11 @@
     <ClInclude Include="..\..\src\Include\Common\Types\Color.h" />
     <ClInclude Include="..\..\src\Include\Common\Types\Rect.h" />
     <ClInclude Include="..\..\src\Include\Common\Types\Vector2D.h" />
+    <ClInclude Include="..\..\src\Include\Common\UI\ButtonMenu.h" />
+    <ClInclude Include="..\..\src\Include\Common\UI\Menu.h" />
+    <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h" />
     <ClInclude Include="..\..\src\Include\Win32\Input\KeyboardController.h" />
+    <ClInclude Include="..\..\src\Include\Win32\Input\MouseController.h" />
     <ClInclude Include="..\..\src\Include\Win32\Types.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +143,11 @@
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\UI\Menu.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp" />
     <ClCompile Include="..\..\src\Source\Win32\Input\KeyboardController.cpp" />
+    <ClCompile Include="..\..\src\Source\Win32\Input\MouseController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

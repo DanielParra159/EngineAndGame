@@ -13,26 +13,29 @@ namespace graphics
 	{
 		friend class RenderManager;
 	protected:
-		Rect<int32>										mSize;
+		Rect<int32>										mTextureSize;
 		float64											mAngle;
 		int32											mTextureId;
 	public:
-		virtual void									Init(int32 mTextureId);
-		virtual void									Release();
 
 		virtual void									Render(const Vector2D<>* aPosition);
+		virtual void									Render(const Vector2D<>* aPosition, const Vector2D<>* aSize);
 		virtual void									Render(int32 aX, int32 aY);
+		virtual void									Render(int32 aX, int32 aY, int32 aW, int32 aH);
 
-		void											SetSize(const Rect<int32>& aSize);
-		void											SetSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH);
-		const Rect<int32>*								GetSize() const	{ return &mSize;	}
+		void											SetTextureSize(const Rect<int32>& aTextureSize);
+		void											SetTextureSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH);
+		const Rect<int32>*								GetTextureSize() const	{ return &mTextureSize; }
 
 		void											SetAngle(float64 aAngle);
 		float64											GetAngle() const { return mAngle; }
 
 	protected:
-		Sprite() : mSize(), mTextureId(-1), mAngle(0) {}
+		Sprite() : mTextureSize(), mTextureId(-1), mAngle(0) {}
 		virtual ~Sprite() {}
+
+		virtual void									Init(int32 mTextureId);
+		virtual void									Release();
 
 	}; // Renderer
 } // namespace graphics

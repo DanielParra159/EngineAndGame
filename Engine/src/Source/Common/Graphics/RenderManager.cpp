@@ -5,8 +5,6 @@
 
 #include "Core\Log.h"
 
-#include "Logic\World.h"
-
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -66,30 +64,33 @@ namespace graphics
 		SDL_DestroyRenderer(mRenderer);
 	}
 
-	void RenderManager::Render()
+	void RenderManager::BeginRender()
 	{
 		SDL_RenderClear(mRenderer);
+	}
 
-		logic::World::Instance()->Render();
-
+	void RenderManager::EndRender()
+	{
 		SDL_RenderPresent(mRenderer);
 	}
 
-	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, float64 aAngle)
+	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
 	{
-		RenderTexture(aId, aSrcRect, aPosition.mX, aPosition.mY, aAngle);
+		RenderTexture(aId, aSrcRect, aPosition.mX, aPosition.mY, aSize.mX, aSize.mY, aAngle);
 	}
-	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, float64 aAngle)
+	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle)
 	{
 		SDL_Rect srcRect;
 		SDL_Rect destRect;
 		srcRect.x = aSrcRect.mX;
 		srcRect.y = aSrcRect.mY;
-		srcRect.w = destRect.w = aSrcRect.mW;
+		srcRect.w = aSrcRect.mW;
 
-		srcRect.h = destRect.h = aSrcRect.mH;
+		srcRect.h = aSrcRect.mH;
 		destRect.x = aX;
 		destRect.y = aY;
+		destRect.w = aW;
+		destRect.h = aH;
 		
 		SDL_RenderCopyEx(mRenderer, mLoadedTextures[aId], &srcRect, &destRect, aAngle, 0, SDL_FLIP_NONE);
 	}
@@ -190,6 +191,13 @@ namespace graphics
 		}
 
 		return result;
+	}
+
+	void RenderManager::DeleteSprite(Sprite* aSprite)
+	{
+		aSprite->Release();
+		delete aSprite;
+		aSprite = 0;
 	}
 
 } // namespace graphics

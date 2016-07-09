@@ -1,9 +1,10 @@
 #include <stdio.h>
 
-#include <Core\Game.h>
-#include <Core\GameDescription.h>
-#include <Core\Log.h>
+#include "Core\Game.h"
+#include "Core\GameDescription.h"
+#include "Core\Log.h"
 #include "GameState.h"
+#include "MenuState.h"
 
 
 using namespace core;
@@ -24,9 +25,9 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	game::GameState *lGameState = new game::GameState();
+	game::MenuState *lGameState = new game::MenuState();
 
-	game->SetGameState(lGameState);
+	game->ChangeGameState(lGameState);
 
 	delete lGameDescription;
 

@@ -92,11 +92,17 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\GameMain.cpp" />
     <ClCompile Include="..\..\src\GameState.cpp" />
+    <ClCompile Include="..\..\src\MenuState.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
+    <ClCompile Include="..\..\src\UI\Button.cpp" />
+    <ClCompile Include="..\..\src\UI\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GameState.h" />
+    <ClInclude Include="..\..\src\MenuState.h" />
     <ClInclude Include="..\..\src\Player.h" />
+    <ClInclude Include="..\..\src\UI\Button.h" />
+    <ClInclude Include="..\..\src\UI\MainMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -33,6 +33,7 @@ namespace input
 		void											Update();
 
 		IController*									CreateController(ETypeControls aType);
+		IController*									GetController(ETypeControls aType);
 		int32											GetActionId();
 	private:
 		InputManager() : mControllers(0), mLastAction(-1) {}

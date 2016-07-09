@@ -16,6 +16,7 @@ namespace core
 	class Game {
 	private:
 		IGameState*									mCurrentGameState;
+		IGameState*									mNextGameState;
 		static Game*								sInstance;		
 
 		/**
@@ -33,16 +34,25 @@ namespace core
 		void										Run();
 
 		/**
+		Prepare the next game state to be changed in the next update
+		@param aGameState the game state to assign
+		*/
+		void										ChangeGameState(IGameState* aGameState);
+	private:
+		Game() : mRunning(FALSE), mCurrentGameState(0) {}
+		~Game() {}
+
+		void										Update();
+		void										Render();
+		void										Release();
+
+		/**
 		Set the current GameState and initialize it
 		@param aGameState the game state to assign
 		*/
 		BOOL										SetGameState(IGameState* aGameState);
-	private:
-		void										Update();
-		void										Render();
-		void										Release();
-		Game() : mRunning(FALSE), mCurrentGameState(0) {}
-		~Game() {}
+
+		
 		
 	}; // Game
 } // namespace core

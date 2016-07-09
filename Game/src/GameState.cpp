@@ -2,12 +2,20 @@
 #include "Player.h"
 
 #include "Types.h"
+#include "Types\Vector2D.h"
+#include "Core\Log.h"
+
 #include "Logic\World.h"
 
 #include "Input\InputManager.h"
 #include "Input\IController.h"
 #include "Input\KeyboardController.h"
+#include "Input\MouseController.h"
 #include "Input\InputAction.h"
+
+#include "Graphics\RenderManager.h"
+
+#include "UI\MenuManager.h"
 
 #include "Defs.h"
 
@@ -30,6 +38,11 @@ namespace game
 		lInputAction->Init(eLeft, input::KeyboardController::eLeft);
 		lController->RegisterInputAction(lInputAction);
 		lInputAction->Init(eRight, input::KeyboardController::eRight);
+		lController->RegisterInputAction(lInputAction);
+
+		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
+			return FALSE;
+		lInputAction->Init(eRight, input::MouseController::eLeftButton);
 		lController->RegisterInputAction(lInputAction);
 
 		GET_WORLD;
@@ -78,7 +91,6 @@ namespace game
 
 		mPlayer->Update();
 
-
 		int32 lAction = input::InputManager::Instance()->GetActionId();
 
 		switch (lAction)
@@ -89,4 +101,14 @@ namespace game
 
 		return TRUE;
 	}
+
+	void GameState::Render()
+	{
+		graphics::RenderManager::Instance()->BeginRender();
+		logic::World::Instance()->Render();
+		ui::MenuManager::Instance()->Render();
+		graphics::RenderManager::Instance()->EndRender();
+	}
+
+
 } // namespace game

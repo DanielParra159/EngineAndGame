@@ -55,6 +55,12 @@
     <Filter Include="Source Files\Input\Win32">
       <UniqueIdentifier>{705e812f-e314-44ce-ae1c-068217893366}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{bbd2770c-b058-4988-9242-e127b8ff7d68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{1731ba39-098b-4379-8ea4-285c3e8c5367}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -129,6 +135,18 @@
     <ClInclude Include="..\..\src\Include\Common\Input\InputAction.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Win32\Input\MouseController.h">
+      <Filter>Header Files\Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\UI\Menu.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\UI\ButtonMenu.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -160,6 +178,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Win32\Input\KeyboardController.cpp">
       <Filter>Source Files\Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Win32\Input\MouseController.cpp">
+      <Filter>Source Files\Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\UI\Menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

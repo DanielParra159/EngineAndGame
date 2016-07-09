@@ -9,6 +9,10 @@
 
 #include "Input\InputManager.h"
 
+#include "Logic\World.h"
+
+#include "UI\MenuManager.h"
+
 #include "Defs.h"
 
 #include <SDL.h>
@@ -34,6 +38,8 @@ namespace core
 		
 		input::InputManager::Instance()->Init();
 
+		ui::MenuManager::Instance()->Init();
+
 		return TRUE;
 	}
 
@@ -47,6 +53,7 @@ namespace core
 			sys::Time::Instance()->Update();			
 			input::InputManager::Instance()->Update();
 			input::InputManager::Instance()->GetActionId();
+			ui::MenuManager::Instance()->Update();
 			Update();
 			Render();
 		}
@@ -55,12 +62,18 @@ namespace core
 	}
 
 	void Game::Update() {
-		if (mCurrentGameState)
+		if (mNextGameState)
+		{
+			SetGameState(mNextGameState);
+			mNextGameState = 0;
+		}
+		else if (mCurrentGameState)
 			mRunning = mCurrentGameState->Update();
 	}
 
 	void Game::Render() {
-		graphics::RenderManager::Instance()->Render();
+		if (mCurrentGameState)
+			mCurrentGameState->Render();
 	}
 
 	void Game::Release()
@@ -68,9 +81,11 @@ namespace core
 		if (mCurrentGameState)
 			mCurrentGameState->Release();
 
-		graphics::RenderManager::Instance()->Release();
+		ui::MenuManager::Instance()->Release();
 
 		input::InputManager::Instance()->Release();
+
+		graphics::RenderManager::Instance()->Release();
 		
 		SDL_Quit();
 
@@ -78,8 +93,18 @@ namespace core
 
 	BOOL Game::SetGameState(IGameState* aGameState)
 	{
+		if (mCurrentGameState)
+		{
+			mCurrentGameState->Release();
+			delete mCurrentGameState;
+		}
 		mCurrentGameState = aGameState;
 		return aGameState->Init();
+	}
+
+	void Game::ChangeGameState(IGameState* aGameState)
+	{
+		mNextGameState = aGameState;
 	}
 
 } // namespace core

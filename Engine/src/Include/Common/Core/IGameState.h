@@ -17,6 +17,7 @@ namespace core
 		virtual void 									Release() = 0;
 		
 		virtual BOOL									Update() = 0;
+		virtual void									Render() = 0;
 
 		virtual const int8*								GetStateName() const = 0;
 	}; // IGameState

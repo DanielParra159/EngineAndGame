@@ -19,23 +19,30 @@ namespace graphics
 	{
 		Render(aPosition->mX, aPosition->mY);
 	}
-
+	void Sprite::Render(const Vector2D<>* aPosition, const Vector2D<>* aSize)
+	{
+		Render(aPosition->mX, aPosition->mY, aSize->mX, aSize->mY);
+	}
+	
 	void Sprite::Render(int32 aX, int32 aY)
 	{
-		RenderManager::Instance()->RenderTexture(mTextureId, mSize, aX, aY, mAngle);
+		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, aX, aY, mTextureSize.mW, mTextureSize.mH, mAngle);
+	}
+	void Sprite::Render(int32 aX, int32 aY, int32 aW, int32 aH)
+	{
+		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, aX, aY, aW, aH, mAngle);
 	}
 
-
-	void Sprite::SetSize(const Rect<int32>& aSize)
+	void Sprite::SetTextureSize(const Rect<int32>& aTextureSize)
 	{
-		mSize = aSize;
+		mTextureSize = aTextureSize;
 	}
-	void Sprite::SetSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH)
+	void Sprite::SetTextureSize(uint32 aX, uint32 aY, uint32 aW, uint32 aH)
 	{
-		mSize.mX = aX;
-		mSize.mY = aY;
-		mSize.mW = aW;
-		mSize.mH = aH;
+		mTextureSize.mX = aX;
+		mTextureSize.mY = aY;
+		mTextureSize.mW = aW;
+		mTextureSize.mH = aH;
 	}
 
 	void Sprite::SetAngle(float64 aAngle)

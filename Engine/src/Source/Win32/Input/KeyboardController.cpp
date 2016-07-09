@@ -15,27 +15,19 @@ namespace input
 
 	}
 
-	int32 KeyboardController::Update()
+	int32 KeyboardController::Update(SDL_Event& aEvent)
 	{
-		/*const Uint8 *state = SDL_GetKeyboardState(NULL);
-		if (state[SDL_SCANCODE_RETURN]) {
-			printf("<RETURN> is pressed.\n");
-		}*/
-		SDL_Event event;
 		int32 lResult = -1;
 		InputAction *lInputAction = 0;
-		if (SDL_PollEvent(&event))
+
+		switch (aEvent.type)
 		{
-			switch (event.type)
-			{
-				case SDL_QUIT:
-					break;
-				case SDL_KEYDOWN:
-				case SDL_KEYUP:
-					lInputAction = mActionsByKey[TranslateKeyCode(event.key.keysym.scancode)];
-					break;
-			}
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+				lInputAction = mActionsByKey[TranslateKeyCode(aEvent.key.keysym.scancode)];
+				break;
 		}
+
 		if (lInputAction)
 		{
 			lResult = lInputAction->GetId();
@@ -46,7 +38,20 @@ namespace input
 	void KeyboardController::RegisterInputAction(const InputAction *aInputAction)
 	{
 		InputAction *linputAction = new InputAction(*aInputAction);
-		mActionsByKey[aInputAction->GetKey()] = linputAction;
+		uint32 lKey = aInputAction->GetKey();
+		mActionsByKey[lKey] = linputAction;
+		mKeysByActions[aInputAction->GetId()] = lKey;
+	}
+
+	BOOL KeyboardController::IsActionPressed(uint32 aActionId)
+	{
+		//&& state[SDL_SCANCODE_UP]
+		const Uint8 *state = SDL_GetKeyboardState(NULL);
+		uint32 lKey = mKeysByActions[aActionId];
+		if (state[lKey]) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	KeyboardController::EKeyCode KeyboardController::TranslateKeyCode(uint32 aKey)

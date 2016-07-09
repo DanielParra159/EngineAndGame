@@ -41,17 +41,17 @@ namespace logic
 		mSpriteCells = new graphics::Sprite*[mSpriteCellTypes];
 
 		mSpriteCells[0] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[0]->SetSize(0, 32 * 2, 32, 32);
+		mSpriteCells[0]->SetTextureSize(0, 32 * 2, 32, 32);
 		mSpriteCells[1] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[1]->SetSize(0, 32 * 3, 32, 32);
+		mSpriteCells[1]->SetTextureSize(0, 32 * 3, 32, 32);
 		mSpriteCells[2] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[2]->SetSize(32 * 8, 32 * 2, 32, 32);
+		mSpriteCells[2]->SetTextureSize(32 * 8, 32 * 2, 32, 32);
 		mSpriteCells[3] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[3]->SetSize(32 * 4, 32 * 0, 32, 32);
+		mSpriteCells[3]->SetTextureSize(32 * 4, 32 * 0, 32, 32);
 		mSpriteCells[4] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[4]->SetSize(32 * 4, 32 * 2, 32, 32);
+		mSpriteCells[4]->SetTextureSize(32 * 4, 32 * 2, 32, 32);
 		mSpriteCells[5] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[5]->SetSize(32 * 0, 32 * 3, 32, 32);
+		mSpriteCells[5]->SetTextureSize(32 * 0, 32 * 3, 32, 32);
 	}
 
 	void World::Release()
@@ -65,7 +65,7 @@ namespace logic
 		{
 			for (uint32 i = 0; i < mSpriteCellTypes; ++i)
 			{
-				mSpriteCells[i]->Release();
+				graphics::RenderManager::Instance()->DeleteSprite(mSpriteCells[i]);
 			}
 			delete[](mSpriteCells);
 			mSpriteCells = 0;

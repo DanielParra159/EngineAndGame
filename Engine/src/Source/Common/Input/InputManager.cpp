@@ -1,5 +1,6 @@
 #include "Input\InputManager.h"
 #include "Input\KeyboardController.h"
+#include "Input\MouseController.h"
 #include "Input\InputAction.h"
 
 #include <SDL.h>
@@ -32,19 +33,22 @@ namespace input
 	void InputManager::Update()
 	{
 		mLastAction = -1;
-
-		TControllers::const_iterator lIterator = mControllers.begin();
-		TControllers::const_iterator lIteratorEnd = mControllers.end();
-
-		if (*lIterator == 0)
-			return;
-
-		for (; lIterator != lIteratorEnd; ++lIterator)
+		SDL_Event lEvent;
+		if (SDL_PollEvent(&lEvent))
 		{
-			//@TODO: this only allows an action for frame, the fist controller detects an action
-			if ((mLastAction = (*lIterator)->Update()) != 0)
-				break;
+			//if (lEvent.type == SDL_QUIT)
+			TControllers::const_iterator lIterator = mControllers.begin();
+			TControllers::const_iterator lIteratorEnd = mControllers.end();
+
+			for (; lIterator != lIteratorEnd; ++lIterator)
+			{
+				//@TODO: this only allows an action for frame, the fist controller detects an action
+				if ((mLastAction = (*lIterator)->Update(lEvent)) > -1)
+					break;
+			}
 		}
+
+		
 	}
 
 	IController* InputManager::CreateController(ETypeControls aType)
@@ -65,9 +69,39 @@ namespace input
 					mControllers.push_back(lResult);
 				}
 				break;
+			case ETypeControls::eMouse:
+				lResult = new MouseController();
+				if (!lResult->Init())
+				{
+					delete lResult;
+					lResult = 0;
+				}
+				else
+				{
+					mControllers.push_back(lResult);
+				}
+				break;
 			default:
 				break;
 		}
+		return lResult;
+	}
+
+	IController* InputManager::GetController(ETypeControls aType)
+	{
+		IController* lResult = 0;
+
+		TControllers::const_iterator lIterator = mControllers.begin();
+		TControllers::const_iterator lIteratorEnd = mControllers.end();
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			if ((*lIterator)->GetType() == aType)
+			{
+				lResult = *lIterator;
+				break;
+			}
+		}
+
 		return lResult;
 	}
 
