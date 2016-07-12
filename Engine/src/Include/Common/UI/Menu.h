@@ -16,13 +16,26 @@ namespace graphics
 namespace ui
 {
 	class ButtonMenu;
+	/**
+
+	*/
 	class Menu
 	{
 		friend class MenuManager;
 		typedef std::vector<ButtonMenu*>				TButtons;
 	private:
+		/**
+		All the buttons that contains this menu
+		*/
 		TButtons										mButtons;
 	public:
+		/**
+		Add a button to the menu
+		@param aPositionRect, position and size of the button
+		@param aButtonRect, position and size on the texture
+		@param aCallback, function to callback if the button is clicked
+		@param aImage, image of the button, can be null
+		*/
 		void											AddButton(const Rect<int32>& aPositionRect, const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage = 0);
 	protected:
 		Menu() : mButtons() {};
@@ -31,6 +44,10 @@ namespace ui
 	private:
 		void											Render();
 		void											Release();
+		/**
+		This function is called when the user clicked on screen and communicates to the buttons that contains
+		@param aPos, the cursor position on the screen
+		*/
 		void											OnMouseClick(const Vector2D<>& aPos);
 
 

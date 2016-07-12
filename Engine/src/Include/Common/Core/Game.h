@@ -15,12 +15,12 @@ namespace core
 	*/
 	class Game {
 	private:
+		static Game*								sInstance;		
 		IGameState*									mCurrentGameState;
 		IGameState*									mNextGameState;
-		static Game*								sInstance;		
 
 		/**
-		indicates if the application should keep running
+		Indicates if the application should keep running
 		*/
 		BOOL										mRunning;
 	public:

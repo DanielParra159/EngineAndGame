@@ -105,9 +105,4 @@ namespace input
 		return lResult;
 	}
 
-	int32 InputManager::GetActionId()
-	{
-		return mLastAction;
-	}
-
 } // namespace input

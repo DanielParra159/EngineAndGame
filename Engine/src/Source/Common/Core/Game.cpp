@@ -52,7 +52,7 @@ namespace core
 		{
 			sys::Time::Instance()->Update();			
 			input::InputManager::Instance()->Update();
-			input::InputManager::Instance()->GetActionId();
+			input::InputManager::Instance()->GetLastActionId();
 			ui::MenuManager::Instance()->Update();
 			Update();
 			Render();

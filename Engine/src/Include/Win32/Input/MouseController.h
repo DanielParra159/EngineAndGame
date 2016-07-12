@@ -11,6 +11,10 @@
 namespace input
 {
 	class InputAction;
+	/**
+	Implements a mouse controller
+	@see input::IController
+	*/
 	class MouseController : public IController
 	{
 		friend class InputManager;
@@ -19,6 +23,9 @@ namespace input
 		typedef std::unordered_map<uint32, uint32> TKeyByAction;
 
 	public:
+		/**
+		Recognizing buttons
+		*/
 		enum EButtonCode
 		{
 			eUnknown = -1,
@@ -39,14 +46,35 @@ namespace input
 
 		virtual int32									Update(SDL_Event& aEvent);
 
+		/**
+		Translate SDL key to interneal button
+		*/
 		EButtonCode										TranslateButtonCode(uint32 aKey);
 	public:
+		/**
+		Register an input action associating key and action id
+		@param aInputActio, an the action
+		*/
 		virtual void									RegisterInputAction(const InputAction *aInputAction);
+		/**
+		Check if is pressed the button associated with an action
+		@param aActionId, action id to check
+		@return TRUE if is pressed FALSE in other case
+		*/
 		virtual BOOL									IsActionPressed(uint32 aActionId);
+		/**
+		Check if is pressed the button
+		@param aButton, button to check
+		@return TRUE if is pressed FALSE in other case
+		*/
 		BOOL											IsButtonPressed(EButtonCode aButton);
 
 		void											GetMousePos(Vector2D<int32>& aMousePos);
-		virtual int32									GetType() { return input::eMouse; }
+		/**
+		Gets the type of controller
+		@return The type of controller (input::eMouse)
+		*/
+		virtual input::ETypeControls					GetType() { return input::eMouse; }
 	}; // MouseController
 } // namespace input
 #endif // _INPUT_MOUSECONTROLLER_H_

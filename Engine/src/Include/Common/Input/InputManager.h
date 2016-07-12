@@ -4,9 +4,11 @@
 #include "Types.h"
 
 #include <vector>
-
 namespace input
 {
+	/**
+	Types of controls
+	*/
 	enum ETypeControls
 	{
 		eKeyboard,
@@ -16,13 +18,22 @@ namespace input
 	class IController;
 	class InputAction;
 
+	/**
+	The InputManager is in charge of manage everything related to the input and create the controllers
+	*/
 	class InputManager
 	{
 		typedef std::vector<IController*>				TControllers;
 	private:
 		static InputManager*							sInstance;
 
+		/**
+		All the controllers
+		*/
 		TControllers									mControllers;
+		/**
+		Last action pressed, this is reset each
+		*/
 		int32											mLastAction;
 
 	public:
@@ -32,9 +43,23 @@ namespace input
 
 		void											Update();
 
+		/**
+		Create and initializes a controller
+		@param aType, controller type
+		@return the controller created or null
+		*/
 		IController*									CreateController(ETypeControls aType);
+		/**
+		Gets a controller by type
+		@param aType, controller type
+		@return the controller
+		*/
 		IController*									GetController(ETypeControls aType);
-		int32											GetActionId();
+		/**
+		Gets the last action id pressed, this is reset each
+		@return the last action id or -1
+		*/
+		int32											GetLastActionId() { return mLastAction; }
 	private:
 		InputManager() : mControllers(0), mLastAction(-1) {}
 		~InputManager() {}

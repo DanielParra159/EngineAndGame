@@ -6,5 +6,6 @@
 #define GET_TIME			sys::Time* lTime = sys::Time::Instance();
 #define GET_INPUT_MANAGER	input::InputManager* lInputManager = input::InputManager::Instance();
 #define GET_WORLD			logic::World *lWorld = logic::World::Instance();
+#define GET_MENU_MANAGER	ui::MenuManager *lMenuManager = ui::MenuManager::Instance();
 
 #endif // _ENGINE_CORE_DEFINES_H_

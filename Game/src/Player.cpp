@@ -46,7 +46,7 @@ namespace game
 
 	void Player::Update()
 	{
-		int32 lAction = input::InputManager::Instance()->GetActionId();
+		int32 lAction = input::InputManager::Instance()->GetLastActionId();
 		if (mLastAction < 0 && lAction > -1)
 			mLastAction = lAction;
 

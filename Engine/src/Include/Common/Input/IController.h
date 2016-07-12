@@ -7,7 +7,11 @@ union SDL_Event;
 
 namespace input
 {
+	enum ETypeControls;
 	class InputAction;
+	/**
+	Pure abstract class that defines a controller behavior
+	*/
 	class IController
 	{
 		friend class InputManager;
@@ -18,9 +22,23 @@ namespace input
 		virtual int32									Update(SDL_Event& aEvent) = 0;
 
 	public:
+		/**
+		Register an input action associating key and action id
+		@param aInputActio, an the action
+		*/
 		virtual void									RegisterInputAction(const InputAction *aInputAction) = 0;
+		/**
+		Check if is pressed the button associated with an action
+		@param aActionId, action id to check
+		@return TRUE if is pressed FALSE in other case
+		*/
 		virtual BOOL									IsActionPressed(uint32 aActionId) = 0;
-		virtual int32									GetType() = 0;
+		/**
+		Gets the type of controller
+		@return The type of controller
+		@see input::ETypeControls
+		*/
+		virtual input::ETypeControls					GetType() = 0;
 	}; // IControl
 } // namespace input
 #endif // _INPUT_ICONTROL_H_

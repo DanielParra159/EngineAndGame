@@ -12,6 +12,10 @@ namespace logic
 {
 	class WorldCell;
 
+	/**
+	It represents the world in the scene. This uses a matrix of WorldCell
+	@see logic::WorldCell
+	*/
 	class World
 	{
 	private:

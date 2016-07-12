@@ -113,7 +113,6 @@
     <ClInclude Include="..\..\src\Include\Common\Core\IGameState.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h" />
     <ClInclude Include="..\..\src\Include\Common\Defs.h" />
-    <ClInclude Include="..\..\src\Include\Common\Graphics\AnimateSprite.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Renderable.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\RenderManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Sprite.h" />

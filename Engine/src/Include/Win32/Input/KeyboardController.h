@@ -10,6 +10,10 @@
 namespace input
 {
 	class InputAction;
+	/**
+	Implements a keyboard controller
+	@see input::IController
+	*/
 	class KeyboardController : public IController
 	{
 		friend class InputManager;
@@ -18,6 +22,9 @@ namespace input
 		typedef std::unordered_map<uint32, uint32> TKeyByAction;
 
 	public:
+		/**
+		Recognizing keys
+		*/
 		enum EKeyCode
 		{
 			eUnknown = -1,
@@ -40,11 +47,27 @@ namespace input
 
 		virtual int32									Update(SDL_Event& aEvent);
 
+		/**
+		Translate SDL key to interneal key
+		*/
 		EKeyCode										TranslateKeyCode(uint32 aKey);
 	public:
+		/**
+		Register an input action associating key and action id
+		@param aInputActio, an the action
+		*/
 		virtual void									RegisterInputAction(const InputAction *aInputAction);
+		/**
+		Check if is pressed the key associated with an action
+		@param aActionId, action id to check
+		@return TRUE if is pressed FALSE in other case
+		*/
 		virtual BOOL									IsActionPressed(uint32 aActionId);
-		virtual int32									GetType() { return input::eKeyboard; }
+		/**
+		Gets the type of controller
+		@return The type of controller (input::eKeyboard)
+		*/
+		virtual input::ETypeControls					GetType() { return input::eKeyboard; }
 	}; // KeyboardController
 } // namespace input
 #endif // _INPUT_KEYBOARDCONTROLLER_H_

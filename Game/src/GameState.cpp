@@ -91,7 +91,7 @@ namespace game
 
 		mPlayer->Update();
 
-		int32 lAction = input::InputManager::Instance()->GetActionId();
+		int32 lAction = input::InputManager::Instance()->GetLastActionId();
 
 		switch (lAction)
 		{
