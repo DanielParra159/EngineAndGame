@@ -3,6 +3,7 @@
 
 #include "Types.h"
 #include "Types\Rect.h"
+#include "Types\Vector2D.h"
 #include "Renderable.h"
 
 #include <string>
@@ -24,18 +25,18 @@ namespace graphics
 		Render the sprite
 		@param aPosition, position on screen
 		*/
-		virtual void									Render(const Vector2D<>* aPosition);
+		virtual void									Render(const Vector3D<float32>* aPosition);
 		/**
 		Render the sprite
 		@param aPosition, position on screen
 		@param aSize, size on screen
 		*/
-		virtual void									Render(const Vector2D<>* aPosition, const Vector2D<>* aSize);
+		virtual void									Render(const Vector2D<int32>* aPosition, const Vector2D<int32>* aSize);
 		/**
 		Render the sprite
-		@param aX, aY, position on screen
+		@param aX, aY, position on screen, aZ is ignored
 		*/
-		virtual void									Render(int32 aX, int32 aY);
+		virtual void									Render(float32 aX, float32 aY, float32 aZ);
 		/**
 		Render the sprite
 		@param aX, aY, position on screen

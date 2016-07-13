@@ -2,18 +2,17 @@
 #define _ENGINE_LOGIC_MATRIXSCENE_H_
 
 #include "Types.h"
-
-namespace graphics
-{
-	class Sprite;
-}
+#include <vector>
+#include <unordered_set>
 
 namespace logic
 {
-	class WorldCell;
+	class IGameObject;
 
+	typedef std::vector<IGameObject*>					TGameObjectsList;
+	typedef std::unordered_set<IGameObject*>			TGameObjectsSet;
 	/**
-	It represents the world in the scene. This uses a matrix of WorldCell
+	It represents the world in the scene. This uses a vector of GameObjects
 	@see logic::WorldCell
 	*/
 	class World
@@ -21,30 +20,19 @@ namespace logic
 	private:
 		static World*									sInstance;
 
-		uint32											mWidth;
-		uint32											mHeight;
-		WorldCell**										mWorldCells;
-
-		const uint32									mSpriteCellTypes = 6;
-		graphics::Sprite**								mSpriteCells;
-
+		TGameObjectsSet									mActivatedGameObjects;
+		TGameObjectsList								mGameObjectsToBeActivated;
+		TGameObjectsSet									mDisabledGameObjects;
+		TGameObjectsList								mGameObjectsToBeDisabled;
 	public:
 		static World*									Instance();
-		virtual void									Init(uint32 aWidth, uint32 aHeight);
+		virtual void									Init();
 		virtual void									Release();
 
 		virtual void									Update();
 		virtual void									Render();
-
-		uint32											GetWith() const { return mWidth; }
-		uint32											GetHeight() const { return mHeight; }
-		const WorldCell*								GetCell(uint32 aX, uint32 aY) { return mWorldCells[(aY*mWidth) + aX]; }
-		void											SetCell(uint32 aX, uint32 aY, float32 aLife);
-		void											SetCell(uint32 aX, uint32 aY, uint32 aType);
-		void											SetCell(uint32 aX, uint32 aY, float32 aLife, uint32 aType);
-		void											SetCellAngle(uint32 aX, uint32 aY, float64 aAngle);
 	private:
-		World() {}
+		World() : mActivatedGameObjects(), mGameObjectsToBeActivated(), mDisabledGameObjects(), mGameObjectsToBeDisabled() {}
 		~World() {}
 
 	}; // World

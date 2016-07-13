@@ -119,12 +119,13 @@
     <ClInclude Include="..\..\src\Include\Common\Input\IController.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputAction.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h" />
+    <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
-    <ClInclude Include="..\..\src\Include\Common\Logic\WorldCell.h" />
     <ClInclude Include="..\..\src\Include\Common\System\Time.h" />
     <ClInclude Include="..\..\src\Include\Common\Types\Color.h" />
     <ClInclude Include="..\..\src\Include\Common\Types\Rect.h" />
     <ClInclude Include="..\..\src\Include\Common\Types\Vector2D.h" />
+    <ClInclude Include="..\..\src\Include\Common\Types\Vector3D.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\ButtonMenu.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\Menu.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="..\..\src\Source\Common\Graphics\RenderManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />
     <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp" />

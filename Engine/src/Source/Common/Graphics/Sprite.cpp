@@ -15,18 +15,18 @@ namespace graphics
 		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
-	void Sprite::Render(const Vector2D<>* aPosition)
+	void Sprite::Render(const Vector3D<float32>* aPosition)
 	{
-		Render(aPosition->mX, aPosition->mY);
+		Render(aPosition->mX, aPosition->mY, aPosition->mZ);
 	}
-	void Sprite::Render(const Vector2D<>* aPosition, const Vector2D<>* aSize)
+	void Sprite::Render(const Vector2D<int32>* aPosition, const Vector2D<int32>* aSize)
 	{
 		Render(aPosition->mX, aPosition->mY, aSize->mX, aSize->mY);
 	}
 	
-	void Sprite::Render(int32 aX, int32 aY)
+	void Sprite::Render(float32 aX, float32 aY, float32 aZ)
 	{
-		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, aX, aY, mTextureSize.mW, mTextureSize.mH, mAngle);
+		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, (int32)aX, (int32)aY, mTextureSize.mW, mTextureSize.mH, mAngle);
 	}
 	void Sprite::Render(int32 aX, int32 aY, int32 aW, int32 aH)
 	{

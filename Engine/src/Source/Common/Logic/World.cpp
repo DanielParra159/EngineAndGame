@@ -1,5 +1,5 @@
 #include "Logic\World.h"
-#include "Logic\WorldCell.h"
+#include "Logic\IGameObject.h"
 
 #include "Defs.h"
 
@@ -24,100 +24,74 @@ namespace logic
 		return World::sInstance;
 	}
 
-	void World::Init(uint32 aWidth, uint32 aHeight)
+	void World::Init()
 	{
-		mWidth = aWidth;
-		mHeight = aHeight;
-
-		mWorldCells = new WorldCell*[aWidth *aHeight];
-		uint32 lNumCells = mWidth * mHeight;
-		//@TODO create here the cells only to test
-		for (uint32 i = 0; i < lNumCells; ++i)
-		{
-			mWorldCells[i] = new WorldCell();
-			mWorldCells[i]->mType = 2;
-		}
-
-		mSpriteCells = new graphics::Sprite*[mSpriteCellTypes];
-
-		mSpriteCells[0] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[0]->SetTextureSize(0, 32 * 2, 32, 32);
-		mSpriteCells[1] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[1]->SetTextureSize(0, 32 * 3, 32, 32);
-		mSpriteCells[2] = graphics::RenderManager::Instance()->CreateSprite("assets/Tiles.png");
-		mSpriteCells[2]->SetTextureSize(32 * 8, 32 * 2, 32, 32);
-		mSpriteCells[3] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[3]->SetTextureSize(32 * 4, 32 * 0, 32, 32);
-		mSpriteCells[4] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[4]->SetTextureSize(32 * 4, 32 * 2, 32, 32);
-		mSpriteCells[5] = graphics::RenderManager::Instance()->CreateSprite("assets/snake-graphics.png");
-		mSpriteCells[5]->SetTextureSize(32 * 0, 32 * 3, 32, 32);
+		
 	}
 
 	void World::Release()
 	{
-		if (mWorldCells)
+		TGameObjectsSet::const_iterator lIterator = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lIteratorEnd = mActivatedGameObjects.begin();
+		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
-			delete[](mWorldCells);
-			mWorldCells = 0;
+			(*lIterator)->Release();
+			delete (*lIterator);
 		}
-		if (mSpriteCells)
+		mActivatedGameObjects.clear();
+
+		lIterator = mDisabledGameObjects.begin();
+		lIteratorEnd = mDisabledGameObjects.begin();
+		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
-			for (uint32 i = 0; i < mSpriteCellTypes; ++i)
-			{
-				graphics::RenderManager::Instance()->DeleteSprite(mSpriteCells[i]);
-			}
-			delete[](mSpriteCells);
-			mSpriteCells = 0;
+			(*lIterator)->Release();
+			delete (*lIterator);
 		}
+		mDisabledGameObjects.clear();
+
+		mGameObjectsToBeActivated.clear();
+		mGameObjectsToBeDisabled.clear();
+
 	}
 
 	void World::Update()
 	{
-		uint32 lNumCells = mWidth * mHeight;
-		for (uint32 i = 0; i<lNumCells; ++i)
+		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.begin();
+		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
 		{
-			WorldCell* lCell = mWorldCells[i];
-			if (lCell->mLife > 0.0f)
-			{
-				lCell->mLife -= sys::Time::GetDeltaSec();
-				if (lCell->mLife <= 0.0f)
-				{
-					lCell->mLife = 0;
-					lCell->mType = 2;
-				}
-			}
+			(*lSetIterator)->Update();
 		}
+
+		TGameObjectsList::const_iterator lListIterator = mGameObjectsToBeDisabled.begin();
+		TGameObjectsList::const_iterator lListIteratorEnd = mGameObjectsToBeDisabled.begin();
+		for (; lListIterator != lListIteratorEnd; ++lListIterator)
+		{
+			mActivatedGameObjects.erase(*(lListIterator));
+			mDisabledGameObjects.insert(*(lListIterator));
+		}
+		mGameObjectsToBeDisabled.clear();
+
+		lListIterator = mGameObjectsToBeActivated.begin();
+		lListIteratorEnd = mGameObjectsToBeActivated.begin();
+		for (; lListIterator != lListIteratorEnd; ++lListIterator)
+		{
+			mDisabledGameObjects.erase(*(lListIterator));
+			mActivatedGameObjects.insert(*(lListIterator));
+		}
+		mGameObjectsToBeActivated.clear();
+		
 	}
 
 	void World::Render()
 	{
-		uint32 lNumCells = mWidth * mHeight;
-		for (uint32 i = 0; i < lNumCells; ++i)
+		//@TODO: sort
+		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.begin();
+		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
 		{
-			WorldCell* lCell = mWorldCells[i];
-
-			mSpriteCells[lCell->mType]->SetAngle(lCell->mAngle);
-			mSpriteCells[lCell->mType]->Render((i % mWidth)*32, (i/ mWidth)*32);
-
+			(*lSetIterator)->Render();
 		}
 	}
 
-	void World::SetCell(uint32 aX, uint32 aY, float32 aLife) 
-	{ 
-		mWorldCells[(aY*mWidth) + aX]->mLife = aLife;
-	}
-	void World::SetCell(uint32 aX, uint32 aY, uint32 aType) 
-	{ 
-		mWorldCells[(aY*mWidth) + aX]->mType = aType;
-	}
-	void World::SetCell(uint32 aX, uint32 aY, float32 aLife, uint32 aType) 
-	{ 
-		mWorldCells[(aY*mWidth) + aX]->mType = aType;
-		mWorldCells[(aY*mWidth) + aX]->mLife = aLife;
-	}
-	void World::SetCellAngle(uint32 aX, uint32 aY, float64 aAngle)
-	{
-		mWorldCells[(aY*mWidth) + aX]->mAngle = aAngle;
-	}
 } // namespace logic

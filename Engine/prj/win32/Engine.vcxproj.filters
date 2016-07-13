@@ -99,9 +99,6 @@
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Logic\WorldCell.h">
-      <Filter>Header Files\Logic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h">
       <Filter>Header Files\Logic</Filter>
     </ClInclude>
@@ -143,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Types\Vector3D.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h">
+      <Filter>Header Files\Logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp">
+      <Filter>Source Files\Logic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #define _ENGINE_GRAPHICS_IRENDERABLE_H_
 
 #include "Types.h"
-#include "Types\Vector2D.h"
+#include "Types\Vector3D.h"
 
 namespace graphics
 {
@@ -10,8 +10,8 @@ namespace graphics
 
 	class IRenderable {
 	public:
-		virtual void									Render(const Vector2D<>* aPosition) = 0;
-		virtual void									Render(int32 aX, int32 aY) = 0;
+		virtual void									Render(const Vector3D<float32>* aPosition) = 0;
+		virtual void									Render(float32 aX, float32 aY, float32 aZ) = 0;
 
 	}; // IRenderable
 } // namespace graphics

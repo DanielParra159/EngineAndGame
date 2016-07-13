@@ -15,8 +15,8 @@ namespace graphics
 		float32											mSpeed;
 	public:
 
-		virtual void									Render(const Vector2D<>* aPosition);
-		virtual void									Render(int32 aX, int32 aY);
+		virtual void									Render(const Vector3D<float32>* aPosition);
+		virtual void									Render(float32 aX, float32 aY, float32 aZ);
 
 		virtual void									Update();
 
