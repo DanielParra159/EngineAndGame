@@ -1,6 +1,6 @@
 #include "Audio\AudioManager.h"
 #include "Audio\Sound.h"
-//#include "Audio\Sound3D.h"
+#include "Audio\Sound3D.h"
 
 #include "fmod_errors.h"
 
@@ -30,26 +30,26 @@ namespace audio {
 	
 	BOOL AudioManager::Init()
 	{
-		if (!ERRCHECK(FMOD::System_Create(&mFmodSystem)))
+		if (!ERRCHECK(FMOD::System_Create(&mAudioSystem)))
 			return FALSE;
 
 		int32 driverCount = 0;
-		if (!ERRCHECK(mFmodSystem->getNumDrivers(&driverCount)))
+		if (!ERRCHECK(mAudioSystem->getNumDrivers(&driverCount)))
 			return FALSE;
 
 		if (driverCount == 0)
 			return FALSE;
 
-		if (!ERRCHECK(mFmodSystem->init(mNumChannels, FMOD_INIT_NORMAL, 0)))
+		if (!ERRCHECK(mAudioSystem->init(mNumChannels, FMOD_INIT_NORMAL, 0)))
 			return FALSE;
 
-		if (!ERRCHECK(mFmodSystem->set3DSettings(1.0, mDistanceFactor, 1.0f)))
+		if (!ERRCHECK(mAudioSystem->set3DSettings(1.0, mDistanceFactor, 1.0f)))
 			return FALSE;
 
-		if (!ERRCHECK(mFmodSystem->createChannelGroup(NULL, &mChannelMusic)))
+		if (!ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelMusic)))
 			return FALSE;
 
-		if (ERRCHECK(mFmodSystem->createChannelGroup(NULL, &mChannelEffects)))
+		if (ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelEffects)))
 			return FALSE;
 
 		SetEffectsVolume(1.0f);
@@ -73,23 +73,24 @@ namespace audio {
 		mLoadedSounds.clear();
 		mSoundsIds.clear();
 
-		ERRCHECK(mFmodSystem->close());
+		ERRCHECK(mAudioSystem->close());
 
-		ERRCHECK(mFmodSystem->release());
+		ERRCHECK(mAudioSystem->release());
 
 	}
 
-	/*void AudioManager::setListenerAttributes(const Vector3D<float32> &pos, const Vector3D<float32> &vel, const Vector3D<float32> &forward, const Vector3D<float32> &up)
+	void AudioManager::SetListenerAttributes(const Vector3D<float32>& aPosition, const Vector3D<float32>& aVelocity,
+											 const Vector3D<float32>& aForward, const Vector3D<float32>& aUp)
 	{
-		FMOD_VECTOR listener_pos = { pos.mX, pos.mY, pos.mZ };
-		FMOD_VECTOR listener_vel = { vel.mX, vel.mY, vel.mZ };
-		FMOD_VECTOR listener_forward = { forward.mX, forward.mY, forward.mZ };
-		FMOD_VECTOR listener_up = { up.mX, up.mY, up.mZ };
-		fmodSystem->set3DListenerAttributes(0, &listener_pos, &listener_vel, &listener_forward, &listener_up);
-	}*/
+		FMOD_VECTOR listener_pos = { aPosition.mX, aPosition.mY, aPosition.mZ };
+		FMOD_VECTOR listener_vel = { aVelocity.mX, aVelocity.mY, aVelocity.mZ };
+		FMOD_VECTOR listener_forward = { aForward.mX, aForward.mY, aForward.mZ };
+		FMOD_VECTOR listener_up = { aUp.mX, aUp.mY, aUp.mZ };
+		mAudioSystem->set3DListenerAttributes(0, &listener_pos, &listener_vel, &listener_forward, &listener_up);
+	}
 
 	void AudioManager::Update(){
-		mFmodSystem->update();
+		mAudioSystem->update();
 	}
 
 	Sound* AudioManager::CreateSound(const std::string &aFileName)
@@ -106,6 +107,22 @@ namespace audio {
 		return result;
 	}
 
+	Sound3D* AudioManager::CreateSound3D(const std::string &aFileName, float32 aMinDistance, float32 aMaxDistance)
+	{
+		Sound3D *result = 0;
+
+		int32 lSoundId = LoadSound3D(aFileName, aMinDistance, aMaxDistance);
+
+		if (lSoundId > -1)
+		{
+			result = new Sound3D();
+			result->Init(lSoundId);
+		}
+
+		return result;
+	}
+
+
 	int32 AudioManager::LoadSound(const std::string &aFileName)
 	{
 		int32 lResult = -1;
@@ -118,73 +135,76 @@ namespace audio {
 			return lSoundterator->second->mId;
 		}
 
-		TSound lFmodSound;
+		TSound lSound;
 
-		if (ERRCHECK(mFmodSystem->createSound(aFileName.c_str(), FMOD_2D, 0, &lFmodSound)))
+		if (ERRCHECK(mAudioSystem->createSound(aFileName.c_str(), FMOD_2D, 0, &lSound)))
 		{
-			uint32 lCapacity = mLoadedSounds.capacity();
-			if (mNumLoadedSounds == lCapacity)
-			{
-				mLoadedSounds.push_back(lFmodSound);
-				lResult = ++lCapacity;
-			}
-			else
-			{
-				uint32 lSize = mLoadedSounds.size();
-				uint32 i = 0;
-				while (i < lSize && mLoadedSounds[i] != 0)
-				{
-					++i;
-				}
-				lResult = i;
-
-				if (i < lSize)
-				{
-					mLoadedSounds[lResult] = lFmodSound;
-				}
-				else
-				{
-					mLoadedSounds.push_back(lFmodSound);
-				}
-			}
-
-			mSoundsIds[aFileName] = new IdReferences(lResult, 1);
-			++mNumLoadedSounds;
+			AddSoundToList(aFileName, lSound);
 		}
 
 		return lResult;
 	}
 
-	/*Sound3D* AudioManager::createSound3D(const std::string &aKeyName, float minDistance, float maxDistance)
+	int32 AudioManager::LoadSound3D(const std::string &aFileName, float32 aMinDistance, float32 aMaxDistance)
 	{
-		if (m_soundsName.find(aKeyName) == m_soundsName.end()) return 0;
+		int32 lResult = -1;
 
-		if (m_fmodSounds.find(aKeyName) != m_fmodSounds.end())
+		TSoundsIds::const_iterator lSoundterator = mSoundsIds.find(aFileName);
+
+		if (lSoundterator != mSoundsIds.end())
 		{
-			Sound3D *sound = new Sound3D(m_fmodSounds[aKeyName], aKeyName);
-			m_soundList.push_back(sound);
-			return sound;
+			++lSoundterator->second->mReferences;
+			return lSoundterator->second->mId;
 		}
 
-		TFmodSound fmodSound;
-		std::string name = audioPath + m_soundsName[aKeyName];
-		if ((result = fmodSystem->createSound(name.c_str(), FMOD_3D, 0, &fmodSound)) != FMOD_OK)
+		TSound lSound;
+
+		if (ERRCHECK(mAudioSystem->createSound(aFileName.c_str(), FMOD_3D, 0, &lSound)))
 		{
-			ERRCHECK(result);
-			return 0;
+			if (ERRCHECK(lSound->set3DMinMaxDistance(aMinDistance * mDistanceFactor, aMaxDistance * mDistanceFactor)))
+			{
+				AddSoundToList(aFileName, lSound);
+			}
 		}
 
-		if ((result = fmodSound->set3DMinMaxDistance(minDistance * DISTANCEFACTOR, maxDistance * DISTANCEFACTOR)) != FMOD_OK)
+		return lResult;
+	}
+
+	int32 AudioManager::AddSoundToList(const std::string &aFileName, TSound aSound)
+	{
+		int32 lResult = -1;
+
+		uint32 lCapacity = mLoadedSounds.capacity();
+		if (mNumLoadedSounds == lCapacity)
 		{
-			ERRCHECK(result);
-			return 0;
+			mLoadedSounds.push_back(aSound);
+			lResult = ++lCapacity;
+		}
+		else
+		{
+			uint32 lSize = mLoadedSounds.size();
+			uint32 i = 0;
+			while (i < lSize && mLoadedSounds[i] != 0)
+			{
+				++i;
+			}
+			lResult = i;
+
+			if (i < lSize)
+			{
+				mLoadedSounds[lResult] = aSound;
+			}
+			else
+			{
+				mLoadedSounds.push_back(aSound);
+			}
 		}
 
-		Sound3D *sound = new Sound3D(fmodSound, aKeyName);
-		m_fmodSounds[aKeyName] = fmodSound;
-		m_soundList.push_back(sound);
-		return sound;
-	}*/
+		mSoundsIds[aFileName] = new IdReferences(lResult, 1);
+		++mNumLoadedSounds;
+
+		return lResult;
+	}
 
 	void AudioManager::PlaySound(Sound *aSound, eAudioGroups aGroup, BOOL aLoop)
 	{
@@ -203,7 +223,7 @@ namespace audio {
 			//sound->m_fmodSound->setLoopCount(-1);
 		}
 
-		ERRCHECK(mFmodSystem->playSound(mLoadedSounds[aSound->mSoundId], 0, true, &lChannel));
+		ERRCHECK(mAudioSystem->playSound(mLoadedSounds[aSound->mSoundId], 0, true, &lChannel));
 		
 		mSoundChannels[++mNextChannelId] = lChannel;
 		aSound->mChannelId = mNextChannelId;
@@ -269,6 +289,13 @@ namespace audio {
 		ERRCHECK(lChannel->setVolume(aSound->mVolume));
 	}
 
+	void AudioManager::SetSound3DAttributes(Sound3D *aSound)
+	{
+		FMOD_VECTOR lPosition = { aSound->mPosition.mX, aSound->mPosition.mY, aSound->mPosition.mZ };
+		FMOD_VECTOR lVelocity = { aSound->mVelocity.mX, aSound->mVelocity.mY, aSound->mVelocity.mZ };
+		
+		mSoundChannels[aSound->mChannelId]->set3DAttributes(&lPosition, &lVelocity);
+	}
 
 	void AudioManager::SetEffectsVolume(float32 aVolume)
 	{

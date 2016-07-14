@@ -153,6 +153,9 @@
     <ClInclude Include="..\..\src\Include\Common\Support\Vector3D.h">
       <Filter>Header Files\Support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Audio\Sound3D.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -204,6 +207,9 @@
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Audio\Sound3D.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
   </ItemGroup>

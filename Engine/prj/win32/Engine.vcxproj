@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Audio\AudioManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Audio\Sound.h" />
+    <ClInclude Include="..\..\src\Include\Common\Audio\Sound3D.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\Game.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\GameDescription.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\IGameState.h" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Audio\Sound.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Audio\Sound3D.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Game.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\GameDescription.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp" />
