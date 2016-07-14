@@ -1,7 +1,7 @@
 #include "Graphics\RenderManager.h"
 #include "Graphics\Sprite.h"
 
-#include "Types\Color.h"
+#include "Support\Color.h"
 
 #include "Core\Log.h"
 
@@ -117,7 +117,7 @@ namespace graphics
 		}
 	}
 
-	int32 RenderManager::LoadTexture(std::string aFileName)
+	int32 RenderManager::LoadTexture(const std::string& aFileName)
 	{
 		int32 lResult = -1;
 		
@@ -163,7 +163,7 @@ namespace graphics
 					}
 				}
 
-				mTexturesIds[aFileName] = new TextureReferences(lResult, 1);
+				mTexturesIds[aFileName] = new IdReferences(lResult, 1);
 				++mNumLoadedTextures;
 			}
 			else
@@ -179,18 +179,18 @@ namespace graphics
 		return lResult;
 	}
 
-	Sprite* RenderManager::CreateSprite(std::string aFileName)
+	Sprite* RenderManager::CreateSprite(const std::string& aFileName)
 	{
-		Sprite *result = 0;
+		Sprite *lResult = 0;
 
 		int32 lTextureId = LoadTexture(aFileName);
 		if (lTextureId > -1)
 		{
-			result = new Sprite();
-			result->Init(lTextureId);
+			lResult = new Sprite();
+			lResult->Init(lTextureId);
 		}
 
-		return result;
+		return lResult;
 	}
 
 	void RenderManager::DeleteSprite(Sprite* aSprite)

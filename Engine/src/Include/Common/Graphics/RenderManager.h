@@ -2,8 +2,9 @@
 #define _ENGINE_GRAPHICS_RENDERER_H_
 
 #include "Types.h"
-#include "Types\Rect.h"
-#include "Types\Vector2D.h"
+#include "Support\Rect.h"
+#include "Support\Vector2D.h"
+#include "Support\IdReferences.h"
 
 #include <string>
 #include <unordered_map>
@@ -20,20 +21,9 @@ namespace graphics
 	class Texture;
 	class Sprite;
 
-	/**
-	Auxiliar class to keep the number of references of a texture id
-	*/
-	class TextureReferences
-	{
-	public:
-		int32											mId;
-		uint32											mReferences;
-	public:
-		TextureReferences(int32 aId, uint32 aReferences) : mId(aId), mReferences(aReferences) {}
-	};
 
-	typedef std::unordered_map<std::string, TextureReferences*>		TTexturesIds;
-	typedef std::vector<SDL_Texture*>					TLoadedTextures;
+	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
+	typedef std::vector<SDL_Texture*>							TLoadedTextures;
 	/**
 	This manager is responsible for painting in screen.
 	*/
@@ -80,7 +70,7 @@ namespace graphics
 		@param aFileName, file name
 		@return the sprite created or null
 		*/
-		Sprite*											CreateSprite(std::string aFileName);
+		Sprite*											CreateSprite(const std::string& aFileName);
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
@@ -96,7 +86,7 @@ namespace graphics
 		@param aFileName, file name
 		@return aId, id of the texture loaded
 		*/
-		int32											LoadTexture(std::string aFileName);
+		int32											LoadTexture(const std::string& aFileName);
 	private:
 		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0), mRenderer(0), mWindow(0){}
 		~RenderManager(){}

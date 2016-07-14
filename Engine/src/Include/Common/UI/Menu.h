@@ -2,8 +2,8 @@
 #define _ENGINE_UI_MENU_H_
 
 #include "Types.h"
-#include "Types\Rect.h"
-#include "Types\Vector2D.h"
+#include "Support\Rect.h"
+#include "Support\Vector2D.h"
 #include "UI\MenuManager.h"
 
 #include <vector>

@@ -9,9 +9,11 @@
 
 #include "Input\InputManager.h"
 
-#include "Logic\World.h"
-
 #include "UI\MenuManager.h"
+
+#include "Audio\AudioManager.h"
+
+#include "Logic\World.h"
 
 #include "Defs.h"
 
@@ -40,6 +42,8 @@ namespace core
 
 		ui::MenuManager::Instance()->Init();
 
+		audio::AudioManager::Instance()->Init();
+
 		return TRUE;
 	}
 
@@ -54,6 +58,7 @@ namespace core
 			input::InputManager::Instance()->Update();
 			input::InputManager::Instance()->GetLastActionId();
 			ui::MenuManager::Instance()->Update();
+			audio::AudioManager::Instance()->Update();
 			Update();
 			Render();
 		}
@@ -80,6 +85,8 @@ namespace core
 	{
 		if (mCurrentGameState)
 			mCurrentGameState->Release();
+
+		audio::AudioManager::Instance()->Release();
 
 		ui::MenuManager::Instance()->Release();
 

@@ -1,5 +1,5 @@
-#ifndef _ENGINE_CORE_COLOR_H_
-#define _ENGINE_CORE_COLOR_H_
+#ifndef _ENGINE_COLOR_H_
+#define _ENGINE_COLOR_H_
 
 #include "Types.h"
 
@@ -15,4 +15,4 @@ public:
 
 }; // Color
 
-#endif // _ENGINE_CORE_COLOR_H_
+#endif // _ENGINE_SUPPORT_COLOR_H_

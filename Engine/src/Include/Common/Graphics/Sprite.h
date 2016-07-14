@@ -2,8 +2,9 @@
 #define _ENGINE_GRAPHICS_SPRITE_H_
 
 #include "Types.h"
-#include "Types\Rect.h"
-#include "Types\Vector2D.h"
+#include "Support\Rect.h"
+#include "Support\Vector2D.h"
+#include "Support\Vector3D.h"
 #include "Renderable.h"
 
 #include <string>

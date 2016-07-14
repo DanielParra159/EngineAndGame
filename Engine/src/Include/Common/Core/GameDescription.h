@@ -2,8 +2,8 @@
 #define _CORE_GAMESDESCRIPTION_H_
 
 #include "Types.h"
-#include "Types\Color.h"
-#include "Types\Vector2D.h"
+#include "Support\Color.h"
+#include "Support\Vector2D.h"
 
 namespace core
 {
