@@ -1,4 +1,4 @@
-#include "Audio\Sound.h"
+#include "Audio\Sound2D.h"
 
 #include <cassert>
 #include <algorithm>    // std::max
@@ -6,43 +6,43 @@
 
 namespace audio {
 
-	void Sound::Init(int32 aSoundId)
+	void Sound2D::Init(int32 aSoundId)
 	{
 		mSoundId = aSoundId;
 		mChannelId = -1;
 	}
 
-	void Sound::Release()
+	void Sound2D::Release()
 	{
 		
 	}
 
-	void Sound::Play(eAudioGroups aGroup, BOOL aLoop)
+	void Sound2D::Play(eAudioGroups aGroup, BOOL aLoop)
 	{
 		AudioManager::Instance()->PlaySound(this, aGroup, aLoop);
 	}
 
-	void Sound::Stop()
+	void Sound2D::Stop()
 	{
 		return AudioManager::Instance()->StopSound(this);
 	}
 
-	void Sound::Pause()
+	void Sound2D::Pause()
 	{
 		return AudioManager::Instance()->PauseSound(this);
 	}
 
-	void Sound::Resume()
+	void Sound2D::Resume()
 	{
 		return AudioManager::Instance()->ResumeSound(this);
 	}
 
-	void Sound::SetMute(BOOL aMute)
+	void Sound2D::SetMute(BOOL aMute)
 	{
 		return AudioManager::Instance()->MuteSound(this, aMute);
 	}
 
-	BOOL Sound::IsPlaying()
+	BOOL Sound2D::IsPlaying()
 	{
 		return AudioManager::Instance()->IsPlayingSound(this);
 	}

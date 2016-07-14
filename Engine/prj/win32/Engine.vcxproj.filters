@@ -129,9 +129,6 @@
     <ClInclude Include="..\..\src\Include\Common\Audio\AudioManager.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Audio\Sound.h">
-      <Filter>Header Files\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\Support\IdReferences.h">
       <Filter>Header Files\Support</Filter>
     </ClInclude>
@@ -154,6 +151,9 @@
       <Filter>Header Files\Support</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\Audio\Sound3D.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Audio\Sound2D.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
   </ItemGroup>
@@ -203,13 +203,13 @@
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp">
       <Filter>Source Files\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Source\Common\Audio\Sound.cpp">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Audio\Sound3D.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Audio\Sound2D.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
   </ItemGroup>

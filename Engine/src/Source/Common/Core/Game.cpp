@@ -42,7 +42,7 @@ namespace core
 
 		ui::MenuManager::Instance()->Init();
 
-		audio::AudioManager::Instance()->Init();
+		audio::AudioManager::Instance()->Init(1.0f);
 
 		return TRUE;
 	}

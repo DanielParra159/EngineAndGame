@@ -1,5 +1,5 @@
 #include "Audio\AudioManager.h"
-#include "Audio\Sound.h"
+#include "Audio\Sound2D.h"
 #include "Audio\Sound3D.h"
 
 #include "fmod_errors.h"
@@ -28,7 +28,7 @@ namespace audio {
 		return AudioManager::sInstance;
 	}
 	
-	BOOL AudioManager::Init()
+	BOOL AudioManager::Init(float32 aDistanceFactor)
 	{
 		if (!ERRCHECK(FMOD::System_Create(&mAudioSystem)))
 			return FALSE;
@@ -52,9 +52,10 @@ namespace audio {
 		if (ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelEffects)))
 			return FALSE;
 
+		mDistanceFactor = aDistanceFactor;
+
 		SetEffectsVolume(1.0f);
 		SetMusicVolume(1.0f);
-		mAudioPath = "./assets/audio/";
 
 		mNextChannelId = 0;
 		mNumLoadedSounds = 0;
@@ -93,14 +94,14 @@ namespace audio {
 		mAudioSystem->update();
 	}
 
-	Sound* AudioManager::CreateSound(const std::string &aFileName)
+	Sound2D* AudioManager::CreateSound2D(const std::string &aFileName)
 	{
-		Sound *result = 0;
+		Sound2D *result = 0;
 
-		int32 lSoundId = LoadSound(aFileName);
+		int32 lSoundId = LoadSound2D(aFileName);
 		if (lSoundId > -1)
 		{
-			result = new Sound();
+			result = new Sound2D();
 			result->Init(lSoundId);
 		}
 
@@ -123,7 +124,7 @@ namespace audio {
 	}
 
 
-	int32 AudioManager::LoadSound(const std::string &aFileName)
+	int32 AudioManager::LoadSound2D(const std::string &aFileName)
 	{
 		int32 lResult = -1;
 
@@ -206,7 +207,7 @@ namespace audio {
 		return lResult;
 	}
 
-	void AudioManager::PlaySound(Sound *aSound, eAudioGroups aGroup, BOOL aLoop)
+	void AudioManager::PlaySound(Sound2D *aSound, eAudioGroups aGroup, BOOL aLoop)
 	{
 		
 		TSoundChannel lChannel = 0;
@@ -237,7 +238,7 @@ namespace audio {
 
 	}
 
-	void AudioManager::StopSound(Sound* aSound)
+	void AudioManager::StopSound(Sound2D* aSound)
 	{
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
 		lChannel->stop();
@@ -245,25 +246,25 @@ namespace audio {
 		mSoundChannels.erase(aSound->mChannelId);
 	}
 
-	void AudioManager::PauseSound(Sound* aSound)
+	void AudioManager::PauseSound(Sound2D* aSound)
 	{
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
 		lChannel->setPaused(TRUE);
 	}
 
-	void AudioManager::ResumeSound(Sound* aSound)
+	void AudioManager::ResumeSound(Sound2D* aSound)
 	{
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
 		lChannel->setPaused(FALSE);
 	}
 
-	void AudioManager::MuteSound(Sound* aSound, BOOL aMute)
+	void AudioManager::MuteSound(Sound2D* aSound, BOOL aMute)
 	{
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
 		lChannel->setMute(aMute);
 	}
 
-	BOOL AudioManager::IsPlayingSound(const Sound* aSound)
+	BOOL AudioManager::IsPlayingSound(const Sound2D* aSound)
 	{
 		TSound lSound;
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
@@ -277,7 +278,7 @@ namespace audio {
 		return lValue;
 	}
 
-	void AudioManager::SetSoundVolume(Sound *aSound)
+	void AudioManager::SetSoundVolume(Sound2D *aSound)
 	{
 		TSound lSound;
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
