@@ -2,7 +2,7 @@
 #define _GAME_PLAYER_H_
 
 #include "Types.h"
-#include "Types\Vector2D.h"
+#include "Support\Vector2D.h"
 
 namespace game
 {

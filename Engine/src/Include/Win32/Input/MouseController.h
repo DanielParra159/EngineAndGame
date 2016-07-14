@@ -2,7 +2,7 @@
 #define _INPUT_MOUSECONTROLLER_H_
 
 #include "Types.h"
-#include "Types\Vector2D.h"
+#include "Support\Vector2D.h"
 #include "Input\IController.h"
 #include "Input\InputManager.h"
 

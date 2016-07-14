@@ -31,9 +31,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{009f0cd5-692f-4c89-97dd-027b9191ba4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Types">
-      <UniqueIdentifier>{28495439-f2bb-4f61-9e3a-d86877f746e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Logic">
       <UniqueIdentifier>{691c2bc4-953f-43a0-8815-d490f0c84baf}</UniqueIdentifier>
     </Filter>
@@ -61,18 +58,15 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{1731ba39-098b-4379-8ea4-285c3e8c5367}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\extern\SDL2\lib\SDL2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2main.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2test.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{acb51397-9663-4642-9bba-e1f4c151e9bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{87c9574f-f352-4029-a5b2-f4141a368940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Support">
+      <UniqueIdentifier>{28495439-f2bb-4f61-9e3a-d86877f746e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -108,15 +102,6 @@
     <ClInclude Include="..\..\src\Include\Common\System\Time.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Types\Rect.h">
-      <Filter>Header Files\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Types\Vector2D.h">
-      <Filter>Header Files\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Types\Color.h">
-      <Filter>Header Files\Types</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\Defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -143,6 +128,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Audio\AudioManager.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Audio\Sound.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\IdReferences.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\Rect.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\Vector2D.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\Color.h">
+      <Filter>Header Files\Support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,5 +191,17 @@
     <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Audio\Sound.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
+    <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
+    <Library Include="..\..\extern\FMOD\lib\fmod_vc.lib" />
+    <Library Include="..\..\extern\FMOD\lib\fmodL_vc.lib" />
   </ItemGroup>
 </Project>

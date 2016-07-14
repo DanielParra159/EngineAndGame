@@ -2,7 +2,7 @@
 #define _GAME_MENU_H_
 
 #include "Types.h"
-#include "Types\Rect.h"
+#include "Support\Rect.h"
 
 #include "UI\Menu.h"
 

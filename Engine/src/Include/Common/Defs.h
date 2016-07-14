@@ -7,5 +7,6 @@
 #define GET_INPUT_MANAGER	input::InputManager* lInputManager = input::InputManager::Instance();
 #define GET_WORLD			logic::World *lWorld = logic::World::Instance();
 #define GET_MENU_MANAGER	ui::MenuManager *lMenuManager = ui::MenuManager::Instance();
+#define GET_AUDIO_MANAGER	audio::AudioManager *lAudioManager = audio::AudioManager::Instance();
 
 #endif // _ENGINE_CORE_DEFINES_H_

@@ -1,6 +1,6 @@
 #include "Core\GameDescription.h"
 
-#include "Types\Color.h"
+#include "Support\Color.h"
 
 namespace core
 {

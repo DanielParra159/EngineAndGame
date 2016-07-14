@@ -58,13 +58,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\extern\SDL2\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -80,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,7 +89,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\extern\SDL2\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\extern\SDL2\lib;..\..\extern\FMOD\lib</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -96,18 +97,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\extern\SDL2\lib\SDL2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2main.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2test.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="..\..\src\Include\Common\Audio\AudioManager.h" />
+    <ClInclude Include="..\..\src\Include\Common\Audio\Sound.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\Game.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\GameDescription.h" />
     <ClInclude Include="..\..\src\Include\Common\Core\IGameState.h" />
@@ -121,10 +112,11 @@
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\WorldCell.h" />
+    <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />
+    <ClInclude Include="..\..\src\Include\Common\Support\IdReferences.h" />
+    <ClInclude Include="..\..\src\Include\Common\Support\Rect.h" />
+    <ClInclude Include="..\..\src\Include\Common\Support\Vector2D.h" />
     <ClInclude Include="..\..\src\Include\Common\System\Time.h" />
-    <ClInclude Include="..\..\src\Include\Common\Types\Color.h" />
-    <ClInclude Include="..\..\src\Include\Common\Types\Rect.h" />
-    <ClInclude Include="..\..\src\Include\Common\Types\Vector2D.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\ButtonMenu.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\Menu.h" />
     <ClInclude Include="..\..\src\Include\Common\UI\MenuManager.h" />
@@ -133,6 +125,8 @@
     <ClInclude Include="..\..\src\Include\Win32\Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Audio\Sound.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Game.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\GameDescription.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp" />
@@ -147,6 +141,12 @@
     <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp" />
     <ClCompile Include="..\..\src\Source\Win32\Input\KeyboardController.cpp" />
     <ClCompile Include="..\..\src\Source\Win32\Input\MouseController.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\extern\FMOD\lib\fmodL_vc.lib" />
+    <Library Include="..\..\extern\FMOD\lib\fmod_vc.lib" />
+    <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
+    <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
