@@ -1,7 +1,7 @@
 #include "Graphics\Sprite.h"
 #include "Graphics\RenderManager.h"
 
-#include <SDL.h>
+#include "SDL.h"
 
 namespace graphics
 {

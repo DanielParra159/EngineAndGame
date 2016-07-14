@@ -15,7 +15,7 @@
 
 #include "Defs.h"
 
-#include <SDL.h>
+#include "SDL.h"
 
 namespace core
 {

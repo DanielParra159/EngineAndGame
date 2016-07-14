@@ -1,7 +1,7 @@
 #include "Input\KeyboardController.h"
 #include "Input\InputAction.h"
 
-#include <SDL.h>
+#include "SDL.h"
 
 namespace input
 {

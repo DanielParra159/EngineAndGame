@@ -1,5 +1,5 @@
-#ifndef _LOGIC_IGAMEOBJECT_H_
-#define _LOGIC_IGAMEOBJECT_H_
+#ifndef _ENGINE_LOGIC_IGAMEOBJECT_H_
+#define _ENGINE_LOGIC_IGAMEOBJECT_H_
 
 #include "Types.h"
 
@@ -55,4 +55,4 @@ namespace logic
 
 	}; // IGameObject
 } // namespace logic
-#endif // _LOGIC_IGAMEOBJECT_H_
+#endif // _ENGINE_LOGIC_IGAMEOBJECT_H_

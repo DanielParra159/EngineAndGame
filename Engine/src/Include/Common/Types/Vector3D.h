@@ -1,8 +1,9 @@
 #ifndef _ENGINE_VECTOR3D_H_
 #define _ENGINE_VECTOR3D_H_
 
-#include<math.h>
-template <typename T = int32>
+#include <math.h>
+
+template <typename T = float32>
 class Vector3D
 {
 public:

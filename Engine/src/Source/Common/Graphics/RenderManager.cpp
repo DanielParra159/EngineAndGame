@@ -5,8 +5,8 @@
 
 #include "Core\Log.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 
 namespace graphics
 {
