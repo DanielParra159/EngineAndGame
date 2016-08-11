@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "Support\Rect.h"
 #include "Support\Vector2D.h"
+#include "Support\Vector3D.h"
 #include "Support\IdReferences.h"
 
 #include <string>
@@ -20,10 +21,16 @@ namespace graphics
 {
 	class Texture;
 	class Sprite;
+	class Material;
+	class Mesh;
 
 
 	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
 	typedef std::vector<SDL_Texture*>							TLoadedTextures;
+	typedef std::unordered_map<std::string, IdReferences*>		TMaterialsIds;
+	typedef std::vector<Material*>								TLoadedMaterials;
+	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
+	typedef std::vector<Mesh*>									TLoadedMeshes;
 	/**
 	This manager is responsible for painting in screen.
 	*/
@@ -34,7 +41,14 @@ namespace graphics
 		TTexturesIds									mTexturesIds;
 		TLoadedTextures									mLoadedTextures;
 		uint32											mNumLoadedTextures;
+		TMaterialsIds									mMaterialsIds;
+		TLoadedMaterials								mLoadedMaterials;
+		uint32											mNumLoadedMaterials;
+		TMeshesIds										mMeshesIds;
+		TLoadedMeshes									mLoadedMeshes;
+		uint32											mNumLoadedMeshes;
 		SDL_Renderer*									mRenderer;
+		void *											mContext;
 		SDL_Window*										mWindow;
 	public:
 		static RenderManager*							Instance();
@@ -87,10 +101,48 @@ namespace graphics
 		@return aId, id of the texture loaded
 		*/
 		int32											LoadTexture(const std::string& aFileName);
-	private:
-		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0), mRenderer(0), mWindow(0){}
-		~RenderManager(){}
 
+
+		//-----------------------------------------MATERIALS-----------------------------------------
+		
+		/**
+		Deteles a material
+		*/
+		void											DeleteShader(int32 aShaderId);
+
+		/**
+		Load material from file
+		@param aFileName, file name
+		*/
+		Material*										LoadMaterial(const std::string& aFileName, const int8* tempSourceVertex, const int8* tempSourceFragment);
+		/**
+		Unload a material
+		@param aMaterial, material to unload
+		*/
+		void											UnloadMaterial(Material* aMaterial);
+
+		//----------------------------------------END MATERIALS---------------------------------------
+
+		//-----------------------------------------MESHES-----------------------------------------
+		/**
+		Load mesh from file
+		@param aFileName, file name
+		*/
+		Mesh*											LoadMesh(const std::string& aFileName);
+		/**
+		Unload mesh
+		@param aMesh, mesh to Unload
+		*/
+		void											UnloadMesh(Mesh* aMesh);
+
+		void											RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial);
+		//-----------------------------------------END MESHES-----------------------------------------
+	private:
+		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0),
+			mMaterialsIds(50), mLoadedMaterials(50), mNumLoadedMaterials(0),
+			mMeshesIds(50), mLoadedMeshes(50), mNumLoadedMeshes(0),
+			mRenderer(0), mWindow(0){}
+		~RenderManager(){}
 	}; // Renderer
 } // namespace graphics
 #endif // _ENGINE_GRAPHICS_RENDERER_H_

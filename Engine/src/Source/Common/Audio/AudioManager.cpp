@@ -43,7 +43,7 @@ namespace audio {
 		if (!ERRCHECK(mAudioSystem->init(mNumChannels, FMOD_INIT_NORMAL, 0)))
 			return FALSE;
 
-		if (!ERRCHECK(mAudioSystem->set3DSettings(1.0, mDistanceFactor, 1.0f)))
+		if (!ERRCHECK(mAudioSystem->set3DSettings(1.0, aDistanceFactor, 1.0f)))
 			return FALSE;
 
 		if (!ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelMusic)))

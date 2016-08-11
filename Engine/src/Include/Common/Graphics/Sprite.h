@@ -5,7 +5,7 @@
 #include "Support\Rect.h"
 #include "Support\Vector2D.h"
 #include "Support\Vector3D.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 
 #include <string>
 
@@ -76,7 +76,7 @@ namespace graphics
 		Sprite() : mTextureSize(), mTextureId(-1), mAngle(0) {}
 		virtual ~Sprite() {}
 
-		virtual void									Init(int32 mTextureId);
+		virtual void									Init(int32 aTextureId);
 		virtual void									Release();
 
 	}; // Renderer

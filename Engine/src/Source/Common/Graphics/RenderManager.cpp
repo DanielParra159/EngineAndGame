@@ -1,11 +1,17 @@
 #include "Graphics\RenderManager.h"
 #include "Graphics\Sprite.h"
+#include "Graphics\Material.h"
+#include "Graphics\Mesh.h"
 
 #include "Support\Color.h"
+#include "Support\Matrix4.h"
 
 #include "Core\Log.h"
 
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include "SDL.h"
+#include <SDL_opengl.h>
 #include "SDL_image.h"
 
 namespace graphics
@@ -24,18 +30,51 @@ namespace graphics
 
 	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor, BOOL aFullscreen)
 	{
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+		//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 			return FALSE;
 
 		mWindow = SDL_CreateWindow(aWindowsTitle,
 								   aWindowsPosition.mX, aWindowsPosition.mY,
 								   aWindowsSize.mX, aWindowsSize.mY,
-								   aFullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN);
+								   SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+								   //aFullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN); @TODO
 
 		if (mWindow == 0)
 			return FALSE;
 
-		mRenderer = SDL_CreateRenderer(mWindow, -1, 0);
+		int oglIdx = -1;
+		int nRD = SDL_GetNumRenderDrivers();
+		for (int i = 0; i<nRD; i++)
+		{
+			SDL_RendererInfo info;
+			if (!SDL_GetRenderDriverInfo(i, &info))
+			{
+				if (!strcmp(info.name, "opengl"))
+				{
+					oglIdx = i;
+				}
+			}
+		}
+
+		mContext = SDL_GL_CreateContext(mWindow);
+
+		glewExperimental = GL_TRUE;
+		GLenum err = glewInit();
+		if (GLEW_OK != err)
+		{
+			// Problem: glewInit failed, something is seriously wrong.
+			fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+		}
+
+		glEnable(GL_DEPTH_TEST);
+
+		mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
 		if (mRenderer == 0)
 			return FALSE;
@@ -60,18 +99,48 @@ namespace graphics
 		mLoadedTextures.clear();
 		mTexturesIds.clear();
 
-		SDL_DestroyWindow(mWindow);
+		SDL_GL_DeleteContext(mContext);
 		SDL_DestroyRenderer(mRenderer);
+		SDL_DestroyWindow(mWindow);
 	}
 
 	void RenderManager::BeginRender()
 	{
-		SDL_RenderClear(mRenderer);
+		// Clear the screen to black
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//SDL_RenderClear(mRenderer);
+
+		// Draw cube
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glEnable(GL_STENCIL_TEST);
+
+		// Draw floor
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF);
+		glDepthMask(GL_FALSE);
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glDrawArrays(GL_TRIANGLES, 36, 6);
+
+		// Draw cube reflection
+		glStencilFunc(GL_EQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDepthMask(GL_TRUE);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glDisable(GL_STENCIL_TEST);
+		SDL_GL_SwapWindow(mWindow);
+		
 	}
 
 	void RenderManager::EndRender()
 	{
-		SDL_RenderPresent(mRenderer);
+		
+		//SDL_RenderPresent(mRenderer);
 	}
 
 	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
@@ -198,6 +267,224 @@ namespace graphics
 		aSprite->Release();
 		delete aSprite;
 		aSprite = 0;
+	}
+
+
+	//-----------------------------------------MATERIALS-----------------------------------------
+
+	void RenderManager::DeleteShader(int32 aShaderId)
+	{
+		glDeleteShader(aShaderId);
+		//@TODO: references
+		//Shared program?
+	}
+
+	Material* RenderManager::LoadMaterial(const std::string& aFileName, const int8* tempSourceVertex, const int8* tempSourceFragment)
+	{
+		Material* lResult = 0;
+
+		TMaterialsIds::const_iterator lMaterialIterator = mMaterialsIds.find(aFileName);
+
+		if (lMaterialIterator != mMaterialsIds.end())
+		{
+			++lMaterialIterator->second->mReferences;
+			return mLoadedMaterials[lMaterialIterator->second->mId]->CreateInstance();
+		}
+
+		//@TODO: load from file
+		const int8* aVertexSource = tempSourceVertex;
+		const int8* aFragmentSource = tempSourceFragment;
+
+		if (aVertexSource != 0 && aFragmentSource != 0)
+		{
+			int32 lVertexShader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(lVertexShader, 1, &aVertexSource, NULL);
+			glCompileShader(lVertexShader);
+
+			int32 lStatus;
+			glGetShaderiv(lVertexShader, GL_COMPILE_STATUS, &lStatus);
+			if (lStatus == FALSE)
+			{
+				int8 lBuffer[512];
+				glGetShaderInfoLog(lVertexShader, 512, NULL, lBuffer);
+				core::LogFormatString("Can't compile vertex shader %s", aFileName.c_str());
+				return lResult;
+			}
+
+			int32 lFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(lFragmentShader, 1, &aFragmentSource, NULL);
+			glCompileShader(lFragmentShader);
+
+			glGetShaderiv(lFragmentShader, GL_COMPILE_STATUS, &lStatus);
+
+			if (lStatus == FALSE)
+			{
+				int8 lBuffer[512];
+				glGetShaderInfoLog(lFragmentShader, 512, NULL, lBuffer);
+				core::LogFormatString("Can't compile fragment shader %s", aFileName.c_str());
+				return lResult;
+			}
+
+			int32 lShaderPorgram = glCreateProgram();
+			glAttachShader(lShaderPorgram, lVertexShader);
+			glAttachShader(lShaderPorgram, lFragmentShader);
+			glBindFragDataLocation(lShaderPorgram, 0, "outColor");
+			glLinkProgram(lShaderPorgram);
+
+			lResult = new Material();
+			lResult->Init(aFileName, lVertexShader, lFragmentShader, lShaderPorgram);
+
+			uint32 lIndex = 0;
+			if (mNumLoadedMaterials == mLoadedMaterials.capacity())
+			{
+				mLoadedMaterials.push_back(lResult);
+			}
+			else
+			{
+				uint32 lSize = mLoadedMaterials.size();
+				while (lIndex < lSize && mLoadedMaterials[lIndex] != 0)
+				{
+					++lIndex;
+				}
+
+				if (lIndex < lSize)
+				{
+					mLoadedMaterials[lIndex] = lResult;
+				}
+				else
+				{
+					mLoadedMaterials.push_back(lResult);
+				}
+			}
+
+			mMaterialsIds[aFileName] = new IdReferences(lIndex, 1);
+			++mNumLoadedMaterials;
+		}
+		else
+		{
+			core::LogFormatString("Can't load shader %s", aFileName.c_str());
+		}
+		return lResult;
+	}
+	void RenderManager::UnloadMaterial(Material* aMaterial)
+	{
+		TMaterialsIds::const_iterator lIterator = mMaterialsIds.begin();
+		TMaterialsIds::const_iterator lIteratorEnd = mMaterialsIds.end();
+		while (lIterator != lIteratorEnd && lIterator->second->mId != aMaterial->mId)
+		{
+			++lIterator;
+		}
+		if (--lIterator->second->mReferences == 0)
+		{
+			mLoadedMaterials[aMaterial->mId] = 0;
+
+			mMaterialsIds.erase(lIterator);
+			--mNumLoadedMaterials;
+
+
+			glDetachShader(aMaterial->mShaderPorgram, aMaterial->mVertexShaderId);
+			glDetachShader(aMaterial->mShaderPorgram, aMaterial->mFragmentShaderId);
+			glDeleteShader(aMaterial->mVertexShaderId);
+			glDeleteShader(aMaterial->mFragmentShaderId);
+			glDeleteProgram(aMaterial->mShaderPorgram);
+		}
+		aMaterial->Release();
+		delete aMaterial;
+	}
+	//----------------------------------------END MATERIALS---------------------------------------
+
+	//-----------------------------------------MESHES-----------------------------------------
+	Mesh* RenderManager::LoadMesh(const std::string& aFileName)
+	{
+		Mesh* lResult;
+
+		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aFileName);
+
+		if (lMeshIterator != mTexturesIds.end())
+		{
+			++lMeshIterator->second->mReferences;
+			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
+		}
+
+		float32* lVertexData = 0;
+		float32* lTextureCoords = 0;
+
+		//TODO: load from file
+		if (lVertexData != 0 && lTextureCoords != 0)
+		{
+
+			lResult = new Mesh();
+
+			uint32 mVBO;
+			glGenBuffers(1, &mVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
+
+			lResult->Init(aFileName, mVBO, lVertexData, lTextureCoords);
+
+			uint32 lIndex = 0;
+			uint32 lCapacity = mLoadedMeshes.capacity();
+			if (mNumLoadedMeshes == lCapacity)
+			{
+				mLoadedMeshes.push_back(lResult);
+			}
+			else
+			{
+				uint32 lSize = mLoadedMeshes.size();
+				
+				while (lIndex < lSize && mLoadedMeshes[lIndex] != 0)
+				{
+					++lIndex;
+				}
+
+				if (lIndex < lSize)
+				{
+					mLoadedMeshes[lIndex] = lResult;
+				}
+				else
+				{
+					mLoadedMeshes.push_back(lResult);
+				}
+			}
+
+			mMeshesIds[aFileName] = new IdReferences(lIndex, 1);
+			++mNumLoadedMeshes;
+			
+		}
+		else
+		{
+			core::LogFormatString("Can't load mesh %s", aFileName.c_str());
+		}
+
+		return lResult;
+	}
+
+	void RenderManager::UnloadMesh(Mesh* aMesh)
+	{
+		TMeshesIds::const_iterator lIterator = mMeshesIds.begin();
+		TMeshesIds::const_iterator lIteratorEnd = mMeshesIds.end();
+		while (lIterator != lIteratorEnd && lIterator->second->mId != aMesh->mId)
+		{
+			++lIterator;
+		}
+		if (--lIterator->second->mReferences == 0)
+		{
+			mLoadedMeshes[aMesh->mId] = 0;
+
+			mMeshesIds.erase(lIterator);
+			--mNumLoadedMeshes;
+		}
+		aMesh->Release();
+		delete aMesh;
+	}
+	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial)
+	{
+		Matrix4 lModelMatrix = Matrix4x4::translate(&lModelMatrix, aPosition);
+
+		mMaterial->SetMatrix4("model", &lModelMatrix);
+		//mMaterial->SetMatrix4("view", &);
+		//mMaterial->SetMatrix4("proj", &);
 	}
 
 } // namespace graphics
