@@ -2,9 +2,9 @@
 
 namespace graphics
 {
-	void Camera::Init(const Vector3D<float32>* aEye, const Vector3D<float32>* aCenter, const Vector3D<float32>* aUp)
+	void Camera::Init(eTypeCameras aType)
 	{
-
+		mType = aType;
 	}
 
 	void Camera::Release()
@@ -14,25 +14,14 @@ namespace graphics
 
 	void Camera::LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp)
 	{
-
+		mViewMatrix = Matrix4x4::lookAt(aEye, aPosition, aUp);
 	}
 
-	void Camera::LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aUp)
+	void Camera::Perspective(float32 aFov, float32 aAspect, float32 aNear, float32 aFar)
 	{
-		
+		mProjMatrix = Matrix4x4::Perspective(aFov, aAspect, aNear, aFar);
 	}
-	void Camera::SetPosition(const Vector3D<float32>& aPosition)
-	{
-		mPosition.mX = aPosition.mX;
-		mPosition.mY = aPosition.mY;
-		mPosition.mZ = aPosition.mZ;
-	}
-	void Camera::SetPosition(float32 aX, float32 aY, float32 aZ)
-	{
-		mPosition.mX = aX;
-		mPosition.mY = aY;
-		mPosition.mZ = aZ;
-	}
+
 
 } // namespace graphics
 

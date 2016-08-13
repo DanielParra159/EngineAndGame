@@ -23,10 +23,11 @@ namespace graphics
 	class Sprite;
 	class Material;
 	class Mesh;
+	class Camera;
 
 
 	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
-	typedef std::vector<SDL_Texture*>							TLoadedTextures;
+	typedef std::vector<int32>									TLoadedTextures;
 	typedef std::unordered_map<std::string, IdReferences*>		TMaterialsIds;
 	typedef std::vector<Material*>								TLoadedMaterials;
 	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
@@ -50,6 +51,7 @@ namespace graphics
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
+		const Camera*									mRenderCamera;
 	public:
 		static RenderManager*							Instance();
 		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, 
@@ -137,6 +139,11 @@ namespace graphics
 
 		void											RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial);
 		//-----------------------------------------END MESHES-----------------------------------------
+
+		Camera*											CreatePerspectiveCamera(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp,
+																				float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
+		void											SetRenderCamera(const Camera* aCamera);
+
 	private:
 		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0),
 			mMaterialsIds(50), mLoadedMaterials(50), mNumLoadedMaterials(0),

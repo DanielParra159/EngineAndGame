@@ -2,6 +2,7 @@
 #include "Graphics\Sprite.h"
 #include "Graphics\Material.h"
 #include "Graphics\Mesh.h"
+#include "Graphics\Camera.h"
 
 #include "Support\Color.h"
 #include "Support\Matrix4.h"
@@ -12,7 +13,7 @@
 #include <GL/glut.h>
 #include "SDL.h"
 #include <SDL_opengl.h>
-#include "SDL_image.h"
+#include <SOIL.h>
 
 namespace graphics
 {
@@ -94,7 +95,8 @@ namespace graphics
 		TLoadedTextures::const_iterator lEndElement = mLoadedTextures.end();
 		for (lIterator = mLoadedTextures.begin(); lIterator != lEndElement; ++lIterator)
 		{
-			SDL_DestroyTexture(*lIterator);
+			uint32 lAux = *lIterator;
+			glDeleteTextures(1, &lAux);
 		}
 		mLoadedTextures.clear();
 		mTexturesIds.clear();
@@ -107,39 +109,16 @@ namespace graphics
 	void RenderManager::BeginRender()
 	{
 		// Clear the screen to black
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//SDL_RenderClear(mRenderer);
 
-		// Draw cube
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		glEnable(GL_STENCIL_TEST);
-
-		// Draw floor
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glStencilMask(0xFF);
-		glDepthMask(GL_FALSE);
-		glClear(GL_STENCIL_BUFFER_BIT);
-
-		glDrawArrays(GL_TRIANGLES, 36, 6);
-
-		// Draw cube reflection
-		glStencilFunc(GL_EQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDepthMask(GL_TRUE);
-
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		glDisable(GL_STENCIL_TEST);
-		SDL_GL_SwapWindow(mWindow);
 		
 	}
 
 	void RenderManager::EndRender()
 	{
-		
+		SDL_GL_SwapWindow(mWindow);
 		//SDL_RenderPresent(mRenderer);
 	}
 
@@ -161,7 +140,7 @@ namespace graphics
 		destRect.w = aW;
 		destRect.h = aH;
 		
-		SDL_RenderCopyEx(mRenderer, mLoadedTextures[aId], &srcRect, &destRect, aAngle, 0, SDL_FLIP_NONE);
+		//SDL_RenderCopyEx(mRenderer, mLoadedTextures[aId], &srcRect, &destRect, aAngle, 0, SDL_FLIP_NONE);
 	}
 
 	void RenderManager::UnloadTexture(int32 aId)
@@ -174,9 +153,9 @@ namespace graphics
 		}
 		if (--lIterator->second->mReferences == 0)
 		{
-			SDL_Texture *lTexture = mLoadedTextures[aId];
+			uint32 lAux = mLoadedTextures[aId];
+			glDeleteTextures(1, &lAux);
 			mLoadedTextures[aId] = 0;
-			SDL_DestroyTexture(lTexture);
 
 			delete lIterator->second;
 
@@ -189,7 +168,6 @@ namespace graphics
 	int32 RenderManager::LoadTexture(const std::string& aFileName)
 	{
 		int32 lResult = -1;
-		
 		TTexturesIds::const_iterator lTextureIterator = mTexturesIds.find(aFileName);
 
 		if (lTextureIterator != mTexturesIds.end())
@@ -198,47 +176,53 @@ namespace graphics
 			return lTextureIterator->second->mId;
 		}
 
-		SDL_Surface* lTempSurface = IMG_Load(aFileName.c_str());
-		if (lTempSurface != 0)
+		uint32 lTextureId;
+		glGenTextures(1, &lTextureId);
+
+		int width, height;
+		unsigned char* image;
+
+		glBindTexture(GL_TEXTURE_2D, lTextureId);
+		image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
+
+		if (image != 0)
 		{
-			SDL_Texture* lTexture = SDL_CreateTextureFromSurface(mRenderer, lTempSurface);
-			SDL_FreeSurface(lTempSurface);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+			SOIL_free_image_data(image);
 
-			if (lTexture != 0)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			uint32 lCapacity = mLoadedTextures.capacity();
+			lResult = 0;
+			if (mNumLoadedTextures == lCapacity)
 			{
-				uint32 lCapacity = mLoadedTextures.capacity();
-				if (mNumLoadedTextures == lCapacity)
+				mLoadedTextures.push_back(lTextureId);
+				lResult = ++lCapacity;
+			} 
+			else 
+			{
+				int32 lSize = mLoadedTextures.size();
+				
+				while (lResult < lSize && mLoadedTextures[lResult] != 0)
 				{
-					mLoadedTextures.push_back(lTexture);
-					lResult = ++lCapacity;
-				} 
-				else 
-				{
-					uint32 lSize = mLoadedTextures.size();
-					uint32 i = 0;
-					while (i < lSize && mLoadedTextures[i] != 0)
-					{
-						++i;
-					}
-					lResult = i;
-					
-					if (i < lSize)
-					{
-						mLoadedTextures[lResult] = lTexture;
-					}
-					else
-					{
-						mLoadedTextures.push_back(lTexture);
-					}
+					++lResult;
 				}
+					
+				if (lResult < lSize)
+				{
+					mLoadedTextures[lResult] = lTextureId;
+				}
+				else
+				{
+					mLoadedTextures.push_back(lTextureId);
+				}
+			}
 
-				mTexturesIds[aFileName] = new IdReferences(lResult, 1);
-				++mNumLoadedTextures;
-			}
-			else
-			{
-				core::LogFormatString("Can't create texture %s", aFileName.c_str());
-			}
+			mTexturesIds[aFileName] = new IdReferences(lResult, 1);
+			++mNumLoadedTextures;
 		}
 		else
 		{
@@ -307,6 +291,7 @@ namespace graphics
 			{
 				int8 lBuffer[512];
 				glGetShaderInfoLog(lVertexShader, 512, NULL, lBuffer);
+				core::LogFormatString("%s", lBuffer);
 				core::LogFormatString("Can't compile vertex shader %s", aFileName.c_str());
 				return lResult;
 			}
@@ -321,6 +306,7 @@ namespace graphics
 			{
 				int8 lBuffer[512];
 				glGetShaderInfoLog(lFragmentShader, 512, NULL, lBuffer);
+				core::LogFormatString("%s", lBuffer);
 				core::LogFormatString("Can't compile fragment shader %s", aFileName.c_str());
 				return lResult;
 			}
@@ -330,6 +316,7 @@ namespace graphics
 			glAttachShader(lShaderPorgram, lFragmentShader);
 			glBindFragDataLocation(lShaderPorgram, 0, "outColor");
 			glLinkProgram(lShaderPorgram);
+			glUseProgram(lShaderPorgram);
 
 			lResult = new Material();
 			lResult->Init(aFileName, lVertexShader, lFragmentShader, lShaderPorgram);
@@ -382,11 +369,11 @@ namespace graphics
 			--mNumLoadedMaterials;
 
 
-			glDetachShader(aMaterial->mShaderPorgram, aMaterial->mVertexShaderId);
-			glDetachShader(aMaterial->mShaderPorgram, aMaterial->mFragmentShaderId);
+			glDetachShader(aMaterial->mShaderProgram, aMaterial->mVertexShaderId);
+			glDetachShader(aMaterial->mShaderProgram, aMaterial->mFragmentShaderId);
 			glDeleteShader(aMaterial->mVertexShaderId);
 			glDeleteShader(aMaterial->mFragmentShaderId);
-			glDeleteProgram(aMaterial->mShaderPorgram);
+			glDeleteProgram(aMaterial->mShaderProgram);
 		}
 		aMaterial->Release();
 		delete aMaterial;
@@ -400,17 +387,69 @@ namespace graphics
 
 		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aFileName);
 
-		if (lMeshIterator != mTexturesIds.end())
+		if (lMeshIterator != mMeshesIds.end())
 		{
 			++lMeshIterator->second->mReferences;
 			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
 		}
 
-		float32* lVertexData = 0;
+		float32 lVertexData[] = {
+			// X      Y     Z     R     G     B     U     V
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+
+			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+
+
+
+			-1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+			1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+			1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+			-1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+		};;
 		float32* lTextureCoords = 0;
 
 		//TODO: load from file
-		if (lVertexData != 0 && lTextureCoords != 0)
+		if (lVertexData != 0 /*&& lTextureCoords != 0*/)
 		{
 
 			lResult = new Mesh();
@@ -419,7 +458,8 @@ namespace graphics
 			glGenBuffers(1, &mVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
 			lResult->Init(aFileName, mVBO, lVertexData, lTextureCoords);
 
@@ -480,11 +520,39 @@ namespace graphics
 	}
 	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial)
 	{
-		Matrix4 lModelMatrix = Matrix4x4::translate(&lModelMatrix, aPosition);
+		Matrix4 lModelMatrix;
+		lModelMatrix = Matrix4x4::translate(&lModelMatrix, aPosition);
 
-		mMaterial->SetMatrix4("model", &lModelMatrix);
-		//mMaterial->SetMatrix4("view", &);
-		//mMaterial->SetMatrix4("proj", &);
+		mMaterial->PrepareToRender(&lModelMatrix);
+		//@TODO: if is the same material only need to asign these attrib. one time
+		mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
+		mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
+		if (mMaterial->mTextureId > -1)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glUniform1i(mMaterial->mTextureParam, 0);
+		}
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+	}
+
+	//-----------------------------------------END MESHES-----------------------------------------
+
+	Camera* RenderManager::CreatePerspectiveCamera(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp,
+																			float32 aFov, float32 aAspect, float32 aNear, float32 aFar)
+	{
+		Camera* lResult = new Camera();
+		lResult->Init(ePerspective);
+		lResult->Perspective(aFov, aAspect, aNear, aFar);
+		lResult->LookAt(aEye, aPosition, aUp);
+
+		return lResult;
+	}
+
+	void RenderManager::SetRenderCamera(const Camera* aCamera)
+	{
+		mRenderCamera = aCamera;
 	}
 
 } // namespace graphics

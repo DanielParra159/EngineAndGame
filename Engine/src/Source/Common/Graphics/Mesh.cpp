@@ -13,37 +13,36 @@ namespace graphics
 			"#version 150 core\n"
 			""
 			"in vec3 position;"
-			"in vec3 color;"
 			"in vec2 texcoord;"
 			""
-			"out vec3 Color;"
+			"out vec4 Color;"
 			"out vec2 Texcoord;"
 			""
 			"uniform mat4 model;"
 			"uniform mat4 view;"
 			"uniform mat4 proj;"
-			"uniform vec3 overrideColor;"
+			"uniform vec4 color;"
 			""
 			"void main()"
 			"{"
-			"    Color = vec3(1.0, 1.0, 1.0);"
+			"    Color = color * vec4(1.0, 1.0, 1.0, 1.0);"
 			"    Texcoord = texcoord;"
 			"    gl_Position = proj * view * model * vec4(position, 1.0);"
 			"}";
 		const int8* lTempFragmentSource =
 			"#version 150 core\n"
 			""
-			"in vec3 Color;"
+			"in vec4 Color;"
 			"in vec2 Texcoord;"
 			""
 			"out vec4 outColor;"
 			""
-			"uniform sampler2D texKitten;"
-			"uniform sampler2D texPuppy;"
+			"uniform sampler2D texSample;"
 			""
 			"void main()"
 			"{"
-			"    outColor = vec4(Color, 1.0) * texture(texPuppy, Texcoord);"
+			"    outColor = Color * texture(texSample, Texcoord);"
+			//"    outColor = vec4(Color, 1.0) * texture(texSample, Texcoord);"
 			"}";
 
 		mName = aName;
@@ -53,8 +52,10 @@ namespace graphics
 
 		mMaterial = RenderManager::Instance()->LoadMaterial("Default", lTempVertexSource, lTempFragmentSource);
 
-		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 3, 0, mVBO);
-		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 2, 0, mVBO);
+		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
+		mMaterial->SetColor(&Color(0.5f, 0.5f, 0.5f, 1.0f));
+		//mMaterial->SetVertexFloatAttribPointer("color", 3, FALSE, 8, 3, mVBO);
+		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, mVBO);
 	}
 
 	void Mesh::Release()
@@ -76,7 +77,7 @@ namespace graphics
 
 	void Mesh::Render(const Vector3D<float32>* aPosition)
 	{
-		
+		RenderManager::Instance()->RenderMesh(aPosition, this, mMaterial);
 	}
 
 

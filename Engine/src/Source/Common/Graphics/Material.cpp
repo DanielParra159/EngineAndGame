@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 
+#include <SOIL.h>
+
 namespace graphics
 {
 	void Material::Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aShaderPorgram)
@@ -12,7 +14,11 @@ namespace graphics
 
 		mVertexShaderId = aVertexShaderId;
 		mFragmentShaderId = aFragmentShaderId;
-		mShaderPorgram = aShaderPorgram;
+		mShaderProgram = aShaderPorgram;
+
+		mTextureId = -1;
+		mColorParam = glGetUniformLocation(mShaderProgram, "color");
+		mTextureParam = glGetUniformLocation(mShaderProgram, "texSample");
 	}
 
 	void Material::Release()
@@ -20,14 +26,9 @@ namespace graphics
 
 	}
 
-	void Material::SetId(int32 aId)
-	{
-		mId = aId;
-	}
-
 	Material* Material::CreateInstance() {
 		Material* lMaterial = new Material();
-		lMaterial->Init(mName, mVertexShaderId, mFragmentShaderId, mShaderPorgram);
+		lMaterial->Init(mName, mVertexShaderId, mFragmentShaderId, mShaderProgram);
 		lMaterial->mId = mId;
 		return lMaterial;
 	}
@@ -42,7 +43,7 @@ namespace graphics
 		}
 		else
 		{
-			lUniParam = glGetUniformLocation(mShaderPorgram, aParamName.c_str());
+			lUniParam = glGetUniformLocation(mShaderProgram, aParamName.c_str());
 			mParameters[aParamName] = lUniParam;
 		}
 
@@ -54,14 +55,34 @@ namespace graphics
 		glUniformMatrix4fv(aParamId, 1, GL_FALSE, Matrix4x4::value_ptr(aParamValue));
 	}
 
-	void Material::SetVector3(const std::string& aParamName, const Vector3D<float32>* aParamValue)
+	/*void Material::SetVector3(const std::string& aParamName, const Vector3D<float32>* aParamValue)
 	{
+		TParameters::const_iterator lParameterIterator = mParameters.find(aParamName);
+		int32 lParam = -1;
+		if (lParameterIterator != mParameters.end())
+		{
+			lParam = lParameterIterator->second;
+		}
+		else
+		{
+			lParam = glGetUniformLocation(mShaderProgram, aParamName.c_str());
+			mParameters[aParamName] = lParam;
+		}
 
+		SetVector3(lParam, aParamValue);
 	}
 
 	void Material::SetVector3(int32 aParamId, const Vector3D<float32>* aParamValue)
 	{
+		glUniform3f(aParamId, aParamValue->mX, aParamValue->mY, aParamValue->mZ);
+	}*/
 
+	void Material::SetColor(const Color* aParamValue)
+	{
+		mColor.mR = aParamValue->mR;
+		mColor.mG = aParamValue->mG;
+		mColor.mB = aParamValue->mB;
+		mColor.mA = aParamValue->mA;
 	}
 
 	void Material::SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO)
@@ -74,7 +95,7 @@ namespace graphics
 		}
 		else
 		{
-			lAttrib = glGetUniformLocation(mShaderPorgram, aAttribName.c_str());
+			lAttrib = glGetAttribLocation(mShaderProgram, aAttribName.c_str());
 			mParameters[aAttribName] = lAttrib;
 		}
 
@@ -86,7 +107,13 @@ namespace graphics
 		glBindBuffer(GL_ARRAY_BUFFER, aVBO);
 		glEnableVertexAttribArray(aAttribId);
 		glVertexAttribPointer(aAttribId, aNumberValues, GL_FLOAT, aNormalize ? GL_TRUE : GL_FALSE, aStride * sizeof(float32), (void*)(aOffset * sizeof(float32)));
-		glBindVertexArray(0);
+		//glBindVertexArray(0);
 	}
 
+	void Material::PrepareToRender(const Matrix4* aModelMatrix)
+	{
+		glUseProgram(mShaderProgram);
+		SetMatrix4("model", aModelMatrix);
+		glUniform4f(mColorParam, mColor.mR / 255.0f, mColor.mG / 255.0f, mColor.mB / 255.0f, mColor.mA / 255.0f);
+	}
 } // namespace graphics

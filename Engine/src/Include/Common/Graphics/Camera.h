@@ -3,27 +3,36 @@
 
 #include "Types.h"
 #include "Support\Vector3D.h"
+#include "Support\Matrix4.h"
 
 namespace graphics
 {
+	/**
+	Type of cameras
+	*/
+	enum eTypeCameras
+	{
+		ePerspective
+	};
 
-	class Camera
+	class		Camera
 	{
 	friend class RenderManager;
 	protected:
-		Vector3D<float32>								mPosition;
-		Vector3D<float32>								mLookAt;
-		Vector3D<float32>								mUp;
+		Matrix4											mViewMatrix;
+		Matrix4											mProjMatrix;
+		eTypeCameras									mType;
 	public:
 		virtual void									LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp);
-		virtual void									LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aUp);
-		void											SetPosition(const Vector3D<float32>& aPosition);
-		void											SetPosition(float32 aX, float32 aY, float32 aZ);
+
+		const Matrix4*									GetView() const { return &mViewMatrix; }
+		eTypeCameras									GetType() const { return mType; }
 	protected:
 		Camera() {}
 		virtual ~Camera() {}
-		virtual void									Init(const Vector3D<float32>* aEye, const Vector3D<float32>* aCenter, const Vector3D<float32>* aUp);
+		virtual void									Init(eTypeCameras aType);
 		virtual void									Release();
+		virtual void									Perspective(float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
 
 	}; // Camera
 } // namespace graphics
