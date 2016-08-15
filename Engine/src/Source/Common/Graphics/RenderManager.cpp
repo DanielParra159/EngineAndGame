@@ -81,22 +81,50 @@ namespace graphics
 			return FALSE;
 
 		SDL_SetRenderDrawColor(mRenderer,
-							   aRenderDrawColor.mR,
-							   aRenderDrawColor.mG,
-							   aRenderDrawColor.mB,
-							   aRenderDrawColor.mA);
+							   (uint32)(aRenderDrawColor.mR * 255),
+							   (uint32)(aRenderDrawColor.mG * 255),
+							   (uint32)(aRenderDrawColor.mB * 255),
+							   (uint32)(aRenderDrawColor.mA * 255));
 
 		return TRUE;
 	}
 
 	void RenderManager::Release()
 	{
-		TLoadedTextures::const_iterator lIterator;
-		TLoadedTextures::const_iterator lEndElement = mLoadedTextures.end();
-		for (lIterator = mLoadedTextures.begin(); lIterator != lEndElement; ++lIterator)
+		TLoadedMeshes::const_iterator lMeshesIterator;
+		TLoadedMeshes::const_iterator lMeshesEndElement = mLoadedMeshes.end();
+		for (lMeshesIterator = mLoadedMeshes.begin(); lMeshesIterator != lMeshesEndElement; ++lMeshesIterator)
 		{
-			uint32 lAux = *lIterator;
-			glDeleteTextures(1, &lAux);
+			Mesh* lMesh = *lMeshesIterator;
+			lMesh->Release();
+			glDeleteBuffers(1, &lMesh->mVBO);
+		}
+		mLoadedMeshes.clear();
+		mMeshesIds.clear();
+
+
+		TLoadedMaterials::const_iterator lMaterialsIterator;
+		TLoadedMaterials::const_iterator lMaterialsEndElement = mLoadedMaterials.end();
+		for (lMaterialsIterator = mLoadedMaterials.begin(); lMaterialsIterator != lMaterialsEndElement; ++lMaterialsIterator)
+		{
+			Material* lMaterial = *lMaterialsIterator;
+			lMaterial->Release();
+			
+			glDetachShader(lMaterial->mShaderProgram, lMaterial->mVertexShaderId);
+			glDetachShader(lMaterial->mShaderProgram, lMaterial->mFragmentShaderId);
+			glDeleteShader(lMaterial->mVertexShaderId);
+			glDeleteShader(lMaterial->mFragmentShaderId);
+			glDeleteProgram(lMaterial->mShaderProgram);
+		}
+		mLoadedMaterials.clear();
+		mMaterialsIds.clear();
+
+		TLoadedTextures::const_iterator lTexturesIterator;
+		TLoadedTextures::const_iterator lTexturesEndElement = mLoadedTextures.end();
+		for (lTexturesIterator = mLoadedTextures.begin(); lTexturesIterator != lTexturesEndElement; ++lTexturesIterator)
+		{
+			uint32 lTexture = *lTexturesIterator;
+			glDeleteTextures(1, &lTexture);
 		}
 		mLoadedTextures.clear();
 		mTexturesIds.clear();
@@ -145,6 +173,7 @@ namespace graphics
 
 	void RenderManager::UnloadTexture(int32 aId)
 	{
+		if (aId < 0) return;
 		TTexturesIds::const_iterator lIterator = mTexturesIds.begin();
 		TTexturesIds::const_iterator lIteratorEnd = mTexturesIds.end();
 		while (lIterator != lIteratorEnd && lIterator->second->mId != aId)
@@ -183,7 +212,7 @@ namespace graphics
 		unsigned char* image;
 
 		glBindTexture(GL_TEXTURE_2D, lTextureId);
-		image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
+		image = SOIL_load_image(aFileName.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
 
 		if (image != 0)
 		{
@@ -194,6 +223,7 @@ namespace graphics
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glBindTexture(GL_TEXTURE_2D, 0);
 
 			uint32 lCapacity = mLoadedTextures.capacity();
 			lResult = 0;
@@ -256,13 +286,6 @@ namespace graphics
 
 	//-----------------------------------------MATERIALS-----------------------------------------
 
-	void RenderManager::DeleteShader(int32 aShaderId)
-	{
-		glDeleteShader(aShaderId);
-		//@TODO: references
-		//Shared program?
-	}
-
 	Material* RenderManager::LoadMaterial(const std::string& aFileName, const int8* tempSourceVertex, const int8* tempSourceFragment)
 	{
 		Material* lResult = 0;
@@ -320,6 +343,9 @@ namespace graphics
 
 			lResult = new Material();
 			lResult->Init(aFileName, lVertexShader, lFragmentShader, lShaderPorgram);
+
+			//@TODO: Read from file defaul params and assign it
+			lResult->mTextureId = LoadTexture("sample.png");
 
 			uint32 lIndex = 0;
 			if (mNumLoadedMaterials == mLoadedMaterials.capacity())
@@ -511,6 +537,7 @@ namespace graphics
 		if (--lIterator->second->mReferences == 0)
 		{
 			mLoadedMeshes[aMesh->mId] = 0;
+			glDeleteBuffers(1, &aMesh->mVBO);
 
 			mMeshesIds.erase(lIterator);
 			--mNumLoadedMeshes;
@@ -530,11 +557,11 @@ namespace graphics
 		if (mMaterial->mTextureId > -1)
 		{
 			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, mLoadedTextures[mMaterial->mTextureId]);
 			glUniform1i(mMaterial->mTextureParam, 0);
 		}
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+		glDrawArrays(GL_TRIANGLES, 0, 36);		
 	}
 
 	//-----------------------------------------END MESHES-----------------------------------------

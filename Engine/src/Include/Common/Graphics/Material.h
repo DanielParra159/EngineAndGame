@@ -37,6 +37,7 @@ namespace graphics
 		//void											SetVector3(int32 aParamId, const Vector3D<float32>* aParamValue);
 		void											SetColor(const Color* aParamValue);
 		const Color*									GetColor() const { return &mColor; }
+		void											SetTextureId(int32 aTextureId) { mTextureId = aTextureId; }
 		int32											GetTextureId() const { return mTextureId; }
 
 		void											SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);

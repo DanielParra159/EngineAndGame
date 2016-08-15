@@ -19,17 +19,23 @@ namespace graphics
 		mTextureId = -1;
 		mColorParam = glGetUniformLocation(mShaderProgram, "color");
 		mTextureParam = glGetUniformLocation(mShaderProgram, "texSample");
+
+		mColor.mR = 1.0f;
+		mColor.mG = 1.0f;
+		mColor.mB = 1.0f;
+		mColor.mA = 1.0f;
 	}
 
 	void Material::Release()
 	{
-
+		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
 	Material* Material::CreateInstance() {
 		Material* lMaterial = new Material();
 		lMaterial->Init(mName, mVertexShaderId, mFragmentShaderId, mShaderProgram);
 		lMaterial->mId = mId;
+		lMaterial->mTextureId = mTextureId;
 		return lMaterial;
 	}
 
@@ -114,6 +120,6 @@ namespace graphics
 	{
 		glUseProgram(mShaderProgram);
 		SetMatrix4("model", aModelMatrix);
-		glUniform4f(mColorParam, mColor.mR / 255.0f, mColor.mG / 255.0f, mColor.mB / 255.0f, mColor.mA / 255.0f);
+		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
 	}
 } // namespace graphics

@@ -60,13 +60,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;E:\Datos\Proyectos\EngineAndGame\Engine\extern\GLEW\lib;E:\Datos\Proyectos\EngineAndGame\Engine\extern\SDL2\lib;E:\Datos\Proyectos\EngineAndGame\Engine\extern\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,20 +91,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GameMain.cpp" />
-    <ClCompile Include="..\..\src\GameOverState.cpp" />
-    <ClCompile Include="..\..\src\GameState.cpp" />
-    <ClCompile Include="..\..\src\MenuState.cpp" />
-    <ClCompile Include="..\..\src\Player.cpp" />
-    <ClCompile Include="..\..\src\UI\Button.cpp" />
-    <ClCompile Include="..\..\src\UI\MainMenu.cpp" />
+    <ClCompile Include="..\..\src\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\GameOverState.h" />
-    <ClInclude Include="..\..\src\GameState.h" />
-    <ClInclude Include="..\..\src\MenuState.h" />
-    <ClInclude Include="..\..\src\Player.h" />
-    <ClInclude Include="..\..\src\UI\Button.h" />
-    <ClInclude Include="..\..\src\UI\MainMenu.h" />
+    <ClInclude Include="..\..\src\TestState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

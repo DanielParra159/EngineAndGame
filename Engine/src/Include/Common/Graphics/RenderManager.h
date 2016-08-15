@@ -27,7 +27,7 @@ namespace graphics
 
 
 	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
-	typedef std::vector<int32>									TLoadedTextures;
+	typedef std::vector<uint32>									TLoadedTextures;
 	typedef std::unordered_map<std::string, IdReferences*>		TMaterialsIds;
 	typedef std::vector<Material*>								TLoadedMaterials;
 	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
@@ -106,11 +106,6 @@ namespace graphics
 
 
 		//-----------------------------------------MATERIALS-----------------------------------------
-		
-		/**
-		Deteles a material
-		*/
-		void											DeleteShader(int32 aShaderId);
 
 		/**
 		Load material from file

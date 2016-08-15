@@ -53,7 +53,6 @@ namespace graphics
 		mMaterial = RenderManager::Instance()->LoadMaterial("Default", lTempVertexSource, lTempFragmentSource);
 
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
-		mMaterial->SetColor(&Color(0.5f, 0.5f, 0.5f, 1.0f));
 		//mMaterial->SetVertexFloatAttribPointer("color", 3, FALSE, 8, 3, mVBO);
 		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, mVBO);
 	}
