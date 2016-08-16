@@ -10,6 +10,10 @@
 namespace graphics
 {
 	class Material;
+
+	/**
+	This class allow to render meshes using a material and texture
+	*/
 	class Mesh : public IRenderable
 	{
 	friend class RenderManager;

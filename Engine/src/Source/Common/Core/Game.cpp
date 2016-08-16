@@ -13,11 +13,13 @@
 
 #include "Audio\AudioManager.h"
 
+#include "IO\FileSystem.h"
+
 #include "Logic\World.h"
 
 #include "Defs.h"
 
-#include "SDL.h"
+#include <SDL.h>
 
 namespace core
 {
@@ -35,6 +37,8 @@ namespace core
 
 	BOOL Game::Init(const int8* title, const GameDescription& aGameDescription)
 	{
+		io::FileSystem::Instance()->Init(aGameDescription.mRootDir);
+
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
 												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);
 		
@@ -94,6 +98,8 @@ namespace core
 
 		graphics::RenderManager::Instance()->Release();
 		
+		io::FileSystem::Instance()->Release();
+
 		SDL_Quit();
 
 	}

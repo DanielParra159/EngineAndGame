@@ -16,6 +16,10 @@ namespace graphics
 	//typedef std::unordered_map<int32, float32>			TParameterValues;
 	//typedef std::unordered_map<std::string, int32>		TAttrib;
 
+	/**
+	This class contains the vertex and fragment shader and communicates the user with the shaders.
+	RenderManager access to this information during the render
+	*/
 	class Material {
 	friend class RenderManager;
 	protected:

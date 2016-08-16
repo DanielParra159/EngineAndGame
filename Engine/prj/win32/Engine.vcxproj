@@ -115,6 +115,7 @@
     <ClInclude Include="..\..\src\Include\Common\Input\InputAction.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h" />
     <ClInclude Include="..\..\src\Include\Common\IO\File.h" />
+    <ClInclude Include="..\..\src\Include\Common\IO\FileSystem.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="..\..\src\Source\Common\Graphics\RenderManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />

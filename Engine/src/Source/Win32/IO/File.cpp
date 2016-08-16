@@ -1,14 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "IO/File.h"
+#include "IO/FileSystem.h"
 
 #include  <stdio.h>
 
 namespace io
 {
-	BOOL File::Open(const int8* aName, eOpenModes aOpenMode)
+	BOOL File::Open(const std::string& aName, eOpenModes aOpenMode)
 	{
-		//@TODO
-		mFileData = fopen(aName, "rb");
+		//@TODO add more modes
+		mFileData = fopen((FileSystem::Instance()->GetCurrentDirectory()+"\\"+aName).c_str(), aOpenMode == eRead ? "rb" : "wb");
 		mOpen = mFileData != 0;
 
 		return mOpen;
@@ -48,5 +49,10 @@ namespace io
 	uint32 File::GetPosition() const
 	{
 		return ftell((FILE*)mFileData);
+	}
+
+	BOOL File::EndOfFile() const
+	{
+		return GetPosition() == GetSize();
 	}
 } // namespace io
