@@ -67,6 +67,15 @@
     <Filter Include="Header Files\Support">
       <UniqueIdentifier>{28495439-f2bb-4f61-9e3a-d86877f746e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\IO">
+      <UniqueIdentifier>{c0c6673a-a504-46db-83c8-ac35684706d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IO">
+      <UniqueIdentifier>{47157156-47c5-4527-95c0-806491b80f0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IO\Win32">
+      <UniqueIdentifier>{6e7ca73f-2d93-4868-ad3c-14bc8bf7245d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -165,6 +174,9 @@
     <ClInclude Include="..\..\src\Include\Common\Graphics\Camera.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\IO\File.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -229,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Graphics\Camera.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Win32\IO\File.cpp">
+      <Filter>Source Files\IO\Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

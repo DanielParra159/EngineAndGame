@@ -114,6 +114,7 @@
     <ClInclude Include="..\..\src\Include\Common\Input\IController.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputAction.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h" />
+    <ClInclude Include="..\..\src\Include\Common\IO\File.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="..\..\src\Source\Common\UI\MenuManager.cpp" />
     <ClCompile Include="..\..\src\Source\Win32\Input\KeyboardController.cpp" />
     <ClCompile Include="..\..\src\Source\Win32\Input\MouseController.cpp" />
+    <ClCompile Include="..\..\src\Source\Win32\IO\File.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\extern\FMOD\lib\fmodL_vc.lib" />
