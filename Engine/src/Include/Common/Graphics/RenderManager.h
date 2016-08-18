@@ -28,8 +28,9 @@ namespace graphics
 
 	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
 	typedef std::vector<uint32>									TLoadedTextures;
-	typedef std::unordered_map<std::string, IdReferences*>		TMaterialsIds;
 	typedef std::vector<Material*>								TLoadedMaterials;
+	typedef std::unordered_map<std::string, IdReferences*>		TShaderIds;
+	typedef std::vector<int32>									TLoadedShaders;
 	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
 	typedef std::vector<Mesh*>									TLoadedMeshes;
 	/**
@@ -42,9 +43,14 @@ namespace graphics
 		TTexturesIds									mTexturesIds;
 		TLoadedTextures									mLoadedTextures;
 		uint32											mNumLoadedTextures;
-		TMaterialsIds									mMaterialsIds;
 		TLoadedMaterials								mLoadedMaterials;
 		uint32											mNumLoadedMaterials;
+		TShaderIds										mVertexShaderIds;
+		TLoadedShaders									mLoadedVertexShaders;
+		uint32											mNumLoadedVertexShaders;
+		TShaderIds										mFragmentShaderIds;
+		TLoadedShaders									mLoadedFragmentShaders;
+		uint32											mNumLoadedFragmentShaders;
 		TMeshesIds										mMeshesIds;
 		TLoadedMeshes									mLoadedMeshes;
 		uint32											mNumLoadedMeshes;
@@ -140,9 +146,11 @@ namespace graphics
 		void											SetRenderCamera(const Camera* aCamera);
 
 	private:
-		RenderManager() : mTexturesIds(50), mLoadedTextures(50), mNumLoadedTextures(0),
-			mMaterialsIds(50), mLoadedMaterials(50), mNumLoadedMaterials(0),
-			mMeshesIds(50), mLoadedMeshes(50), mNumLoadedMeshes(0),
+		RenderManager() : mTexturesIds(), mLoadedTextures(), mNumLoadedTextures(0),
+			mLoadedMaterials(), mNumLoadedMaterials(0),
+			mVertexShaderIds(), mLoadedVertexShaders(), mNumLoadedVertexShaders(0),
+			mFragmentShaderIds(), mLoadedFragmentShaders(), mNumLoadedFragmentShaders(0),
+			mMeshesIds(), mLoadedMeshes(), mNumLoadedMeshes(0),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
 	}; // Renderer

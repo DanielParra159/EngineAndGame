@@ -8,17 +8,18 @@
 
 namespace graphics
 {
-	void Material::Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aShaderPorgram)
+	void Material::Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader)
 	{
 		mName = aName;
 
 		mVertexShaderId = aVertexShaderId;
 		mFragmentShaderId = aFragmentShaderId;
-		mShaderProgram = aShaderPorgram;
+		mProgramShader = aProgramShader;
 
 		mTextureId = -1;
-		mColorParam = glGetUniformLocation(mShaderProgram, "color");
-		mTextureParam = glGetUniformLocation(mShaderProgram, "texSample");
+
+		mColorParam = glGetUniformLocation(aProgramShader, "color");
+		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
 
 		mColor.mR = 1.0f;
 		mColor.mG = 1.0f;
@@ -31,13 +32,13 @@ namespace graphics
 		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
-	Material* Material::CreateInstance() {
+	/*Material* Material::CreateInstance() {
 		Material* lMaterial = new Material();
-		lMaterial->Init(mName, mVertexShaderId, mFragmentShaderId, mShaderProgram);
+		lMaterial->Init(mName, mVertexShaderId, mFragmentShaderId, mProgramShader);
 		lMaterial->mId = mId;
 		lMaterial->mTextureId = mTextureId;
 		return lMaterial;
-	}
+	}*/
 
 	void Material::SetMatrix4(const std::string& aParamName, const Matrix4* aParamValue)
 	{
@@ -49,7 +50,7 @@ namespace graphics
 		}
 		else
 		{
-			lUniParam = glGetUniformLocation(mShaderProgram, aParamName.c_str());
+			lUniParam = glGetUniformLocation(mProgramShader, aParamName.c_str());
 			mParameters[aParamName] = lUniParam;
 		}
 
@@ -101,7 +102,7 @@ namespace graphics
 		}
 		else
 		{
-			lAttrib = glGetAttribLocation(mShaderProgram, aAttribName.c_str());
+			lAttrib = glGetAttribLocation(mProgramShader, aAttribName.c_str());
 			mParameters[aAttribName] = lAttrib;
 		}
 
@@ -118,7 +119,7 @@ namespace graphics
 
 	void Material::PrepareToRender(const Matrix4* aModelMatrix)
 	{
-		glUseProgram(mShaderProgram);
+		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
 	}

@@ -22,6 +22,8 @@
 
 #include "Support\Vector3D.h"
 
+#include "IO\FileSystem.h"
+
 #include "Defs.h"
 
 namespace game
@@ -34,6 +36,7 @@ namespace game
 																	 &Vector3D<float32>(0.0f, 0.0f, 1.0f),
 																	 45.0f, 800.0f / 600.0f, 1.0f, 10.0f));
 
+		io::FileSystem::Instance()->ChangeDirectory("materials");
 		mMesh = graphics::RenderManager::Instance()->LoadMesh("Prueba");
 		mMesh2 = graphics::RenderManager::Instance()->LoadMesh("Prueba2");
 		mMesh2->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));

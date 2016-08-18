@@ -24,7 +24,7 @@ namespace graphics
 	friend class RenderManager;
 	protected:
 		TParameters										mParameters;
-		int32											mShaderProgram;
+		int32											mProgramShader;
 		int32											mVertexShaderId;
 		int32											mFragmentShaderId;
 		int32											mColorParam;
@@ -52,10 +52,10 @@ namespace graphics
 	protected:
 		Material() : mParameters(0) {}
 		virtual ~Material() {}
-		virtual void									Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aShaderPorgram);
+		virtual void									Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader);
 		virtual void									Release();
 		virtual void									PrepareToRender(const Matrix4* aModelMatrix);
-		virtual Material*								CreateInstance();
+		//virtual Material*								CreateInstance();
 
 	}; // Material
 } // namespace graphics

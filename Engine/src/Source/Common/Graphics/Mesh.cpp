@@ -50,7 +50,7 @@ namespace graphics
 		mVertexData = aVertexData;
 		mTextureCoords = aTextureCoords;
 
-		mMaterial = RenderManager::Instance()->LoadMaterial("Default", lTempVertexSource, lTempFragmentSource);
+		mMaterial = RenderManager::Instance()->LoadMaterial("Test01", lTempVertexSource, lTempFragmentSource);
 
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
 		//mMaterial->SetVertexFloatAttribPointer("color", 3, FALSE, 8, 3, mVBO);

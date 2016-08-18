@@ -1,0 +1,5 @@
+material Test01
+{
+	vertexShader Default_vs;
+	fragmentProgram Default_fs;
+}
