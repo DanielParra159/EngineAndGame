@@ -117,7 +117,7 @@ namespace graphics
 		Load material from file
 		@param aFileName, file name
 		*/
-		Material*										LoadMaterial(const std::string& aFileName, const int8* tempSourceVertex, const int8* tempSourceFragment);
+		Material*										LoadMaterial(const std::string& aFileName);
 		/**
 		Unload a material
 		@param aMaterial, material to unload

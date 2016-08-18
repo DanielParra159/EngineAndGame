@@ -313,33 +313,34 @@ namespace graphics
 
 	//-----------------------------------------MATERIALS-----------------------------------------
 
-	Material* RenderManager::LoadMaterial(const std::string& aFileName, const int8* tempSourceVertex, const int8* tempSourceFragment)
+	Material* RenderManager::LoadMaterial(const std::string& aFileName)
 	{
 		Material* lResult = 0;
 
-		io::File lFileMaterial = io::File();
-		if (!lFileMaterial.Open(aFileName+".material"))
+		io::File lFileAux = io::File();
+		if (!lFileAux.Open(aFileName+".material"))
 		{
 			core::LogFormatString("Can't open material %s", aFileName.c_str());
 			return lResult;
 		}
-		uint32 lFileSize = lFileMaterial.GetSize();
+		uint32 lFileSize = lFileAux.GetSize();
 		std::string lBuffer(lFileSize, ' ');
 
-		if (!lFileMaterial.Read(&lBuffer[0], sizeof(int8), lFileSize))
+		if (!lFileAux.Read(&lBuffer[0], sizeof(int8), lFileSize))
 		{
 			core::LogFormatString("Can't read material %s", aFileName.c_str());
 			return lResult;
 		}
-		lFileMaterial.Close();
+		lFileAux.Close();
 
 		int lIndex = lBuffer.find("{");
 		std::string lMaterialName = lBuffer.substr(9, lIndex - 11).c_str();
-
-
 		lIndex = lBuffer.find("vertexShader");
 		int lIndex2 = lBuffer.find(";", lIndex);
 		std::string lVertexShaderName = lBuffer.substr(lIndex + 13, lIndex2 - (lIndex + 13)).c_str();
+		lIndex = lBuffer.find("fragmentProgram");
+		lIndex2 = lBuffer.find(";", lIndex);
+		std::string lFragmentShaderName = lBuffer.substr(lIndex + 16, lIndex2 - (lIndex + 16)).c_str();
 
 		TShaderIds::const_iterator lShaderIterator = mVertexShaderIds.find(lVertexShaderName);
 		int32 lVertexShader = -1;
@@ -351,8 +352,22 @@ namespace graphics
 			++lShaderIterator->second->mReferences;
 		}
 		else {
-			//@TODO: load from file
-			const int8* aVertexSource = tempSourceVertex;
+			if (!lFileAux.Open(lVertexShaderName + ".glvs"))
+			{
+				core::LogFormatString("Can't open vertex shader %s", (lVertexShaderName + ".glvs").c_str());
+				return lResult;
+			}
+			lFileSize = lFileAux.GetSize();
+
+			lBuffer = std::string(lFileSize, ' ');
+
+			if (!lFileAux.Read(&lBuffer[0], sizeof(int8), lFileSize))
+			{
+				core::LogFormatString("Can't read vertex shader %s", (lVertexShaderName + ".glvs").c_str());
+				return lResult;
+			}
+			lFileAux.Close();
+			const int8* aVertexSource = lBuffer.c_str();
 			lVertexShader = glCreateShader(GL_VERTEX_SHADER);
 			glShaderSource(lVertexShader, 1, &aVertexSource, NULL);
 			glCompileShader(lVertexShader);
@@ -396,9 +411,6 @@ namespace graphics
 			++mNumLoadedVertexShaders;
 		}
 
-		lIndex = lBuffer.find("fragmentProgram");
-		lIndex2 = lBuffer.find(";", lIndex);
-		std::string lFragmentShaderName = lBuffer.substr(lIndex + 16, lIndex2 - (lIndex + 16)).c_str();
 		lShaderIterator = mFragmentShaderIds.find(lFragmentShaderName);
 		int32 lFragmentShader = -1;
 		int32 lFragmentShaderId = 0;
@@ -410,8 +422,23 @@ namespace graphics
 		}
 		else
 		{
-			//@TODO: load from file
-			const int8* aFragmentSource = tempSourceFragment;
+			if (!lFileAux.Open(lFragmentShaderName + ".glfs"))
+			{
+				core::LogFormatString("Can't open fragment shader %s", (lFragmentShaderName + ".glfs").c_str());
+				return lResult;
+			}
+			lFileSize = lFileAux.GetSize();
+
+			lBuffer = std::string(lFileSize, ' ');
+
+			if (!lFileAux.Read(&lBuffer[0], sizeof(int8), lFileSize))
+			{
+				core::LogFormatString("Can't read fragment shader %s", (lFragmentShaderName + ".glfs").c_str());
+				return lResult;
+			}
+			lFileAux.Close();
+
+			const int8* aFragmentSource = lBuffer.c_str();
 			lFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 			glShaderSource(lFragmentShader, 1, &aFragmentSource, NULL);
 			glCompileShader(lFragmentShader);
