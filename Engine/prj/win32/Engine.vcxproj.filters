@@ -76,6 +76,9 @@
     <Filter Include="Source Files\IO\Win32">
       <UniqueIdentifier>{6e7ca73f-2d93-4868-ad3c-14bc8bf7245d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Support">
+      <UniqueIdentifier>{81822a9f-fdf9-4e99-97d6-ac0d6dd332d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -250,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp">
       <Filter>Source Files\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Support\Vector3D.cpp">
+      <Filter>Source Files\Support</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

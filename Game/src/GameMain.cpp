@@ -19,6 +19,9 @@
 #include "Core\Game.h"
 #include "Core\GameDescription.h"
 #include "Core\Log.h"
+
+#include "IO\File.h"
+
 #include "TestState.h"
 
 using namespace core;
@@ -62,6 +65,7 @@ const GLchar* fragmentSource =
 "}";
 //"    outColor = vec4(triangleColor, 1.0);"
 
+
 int main(int argc, char* argv[])
 {
 
@@ -72,8 +76,9 @@ int main(int argc, char* argv[])
 	GameDescription *lGameDescription = new GameDescription();
 
 	lGameDescription->SetRenderDrawColor(102, 150, 23, 255);
-	lGameDescription->SetScreenSize(576, 576);
+	lGameDescription->SetScreenSize(800, 600);
 	lGameDescription->SetFullScreen(FALSE);
+	lGameDescription->SetRootDir(".\\assets");
 
 	if (!game->Init("Titulo", *lGameDescription))
 	{
@@ -88,8 +93,5 @@ int main(int argc, char* argv[])
 	delete lGameDescription;
 
 	game->Run();
-
-	
 	return 0;
-
 }

@@ -8,6 +8,11 @@ class Vector3D
 {
 public:
 	T mX, mY, mZ;
+	static const Vector3D<T> zero;
+	static const Vector3D<T> one;
+	static const Vector3D<T> right;
+	static const Vector3D<T> up;
+	static const Vector3D<T> forward;
 public:
 	Vector3D() { mX = 0; mY = 0; mZ = 0; };
 	Vector3D(T aX, T aY, T aZ) : mX(aX), mY(aY), mZ(aZ) {}
@@ -136,4 +141,6 @@ public:
 		return *this;
 	}
 };
+
+//Vector3D<float32> Vector3D<float32>::zero = Vector3D();
 #endif // _ENGINE_VECTOR3D_H_

@@ -25,8 +25,9 @@ namespace graphics
 		/**
 		Render the sprite
 		@param aPosition, position on screen
+		@param aRotation, rotation on screen
 		*/
-		virtual void									Render(const Vector3D<float32>* aPosition);
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
 		/**
 		Render the sprite
 		@param aPosition, position on screen

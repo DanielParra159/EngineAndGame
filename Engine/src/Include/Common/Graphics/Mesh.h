@@ -19,13 +19,15 @@ namespace graphics
 	friend class RenderManager;
 	protected:
 		Material*										mMaterial;
+		uint32*											mElementData;
 		float32*										mVertexData;
 		float32*										mTextureCoords;
 		uint32											mVBO;
+		uint32											mEBO;
 		std::string										mName;
 		int32											mId;
 	public:
-		virtual void									Render(const Vector3D<float32>* aPosition);
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
 		virtual void									Render(float32 aX, float32 aY, float32 aZ);
 
 		const std::string&								GetName() const { return mName; }
@@ -36,7 +38,7 @@ namespace graphics
 		Mesh() : mMaterial(0), mVertexData(0) {}
 		virtual ~Mesh() {}
 
-		virtual void									Init(const std::string& aName, uint32 aVBO, float32* aVertexData, float32* aTextureCoords);
+		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, float32* aVertexData, uint32* aElementData, float32* aTextureCoords);
 		virtual void									Release();
 
 		virtual Mesh*									CreateInstance();

@@ -12,9 +12,9 @@ namespace graphics
 
 	}
 
-	void Camera::LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp)
+	void Camera::LookAt(const Vector3D<float32>* aCameraPosition, const Vector3D<float32>* aCameraLookAt, const Vector3D<float32>* aUp)
 	{
-		mViewMatrix = Matrix4x4::lookAt(aEye, aPosition, aUp);
+		mViewMatrix = Matrix4x4::lookAt(aCameraPosition, aCameraLookAt, aUp);
 	}
 
 	void Camera::Perspective(float32 aFov, float32 aAspect, float32 aNear, float32 aFar)

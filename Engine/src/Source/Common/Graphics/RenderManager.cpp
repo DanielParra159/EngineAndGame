@@ -653,14 +653,14 @@ namespace graphics
 
 			lResult = new Mesh();
 
-			uint32 mVBO;
-			glGenBuffers(1, &mVBO);
-			glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+			uint32 lVBO;
+			glGenBuffers(1, &lVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, lVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
-			lResult->Init(aFileName, mVBO, lVertexData, lTextureCoords);
+			lResult->Init(aFileName, lVBO, 0, lVertexData, 0, lTextureCoords);
 
 			uint32 lIndex = 0;
 			uint32 lCapacity = mLoadedMeshes.capacity();
@@ -719,10 +719,12 @@ namespace graphics
 		aMesh->Release();
 		delete aMesh;
 	}
-	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial)
+	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial)
 	{
 		Matrix4 lModelMatrix;
-		lModelMatrix = Matrix4x4::translate(&lModelMatrix, aPosition);
+		Matrix4x4::translate(&lModelMatrix, aPosition);
+		Matrix4x4::rotate(&lModelMatrix, aRotation);
+		Matrix4x4::scale(&lModelMatrix, aScale);
 
 		mMaterial->PrepareToRender(&lModelMatrix);
 		//@TODO: if is the same material only need to asign these attrib. one time

@@ -15,7 +15,7 @@ namespace graphics
 		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
-	void Sprite::Render(const Vector3D<float32>* aPosition)
+	void Sprite::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
 	{
 		Render(aPosition->mX, aPosition->mY, aPosition->mZ);
 	}

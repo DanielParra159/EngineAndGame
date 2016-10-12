@@ -10,7 +10,7 @@ namespace graphics
 
 	class IRenderable {
 	public:
-		virtual void									Render(const Vector3D<float32>* aPosition) = 0;
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero) = 0;
 		virtual void									Render(float32 aX, float32 aY, float32 aZ) = 0;
 
 	}; // IRenderable

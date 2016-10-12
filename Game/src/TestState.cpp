@@ -31,10 +31,10 @@ namespace game
 	BOOL TestState::Init()
 	{
 		graphics::RenderManager::Instance()->SetRenderCamera(
-		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(2.5f, 0.5f, 2.0f),
-																	 &Vector3D<float32>(), 
-																	 &Vector3D<float32>(0.0f, 0.0f, 1.0f),
-																	 45.0f, 800.0f / 600.0f, 1.0f, 10.0f));
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 4.2f, 2.0f),
+																	 &Vector3D<float32>(0.0f, 0.0f, -2.0f), 
+																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
+																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory("materials");
 		mMesh = graphics::RenderManager::Instance()->LoadMesh("Prueba");
@@ -60,7 +60,8 @@ namespace game
 	{
 		graphics::RenderManager::Instance()->BeginRender();
 		ui::MenuManager::Instance()->Render();
-		mMesh->Render(&Vector3D<float32>());
+		mMesh->Render(&Vector3D<float32>(0, 0, -1));
+		mMesh->Render(&Vector3D<float32>(0, -1, -1), &Vector3D<float32>(2, 2, 2), &Vector3D<float32>(0, 45, 0));
 
 		mMesh2->Render(&Vector3D<float32>(1,0,0));
 		graphics::RenderManager::Instance()->EndRender();

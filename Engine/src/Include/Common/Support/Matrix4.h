@@ -21,6 +21,30 @@ public:
 	{
 		return glm::translate(*aM, glm::tvec3<float>(aV->mX, aV->mY, aV->mZ));
 	}
+	static void translate(Matrix4* aM, const Vector3D<float32>* aV)
+	{
+		*aM = glm::translate(*aM, glm::tvec3<float>(aV->mX, aV->mY, aV->mZ));
+	}
+	static Matrix4 scale(const Matrix4* aM, const Vector3D<float32>* aV)
+	{
+		return glm::scale(*aM, glm::tvec3<float>(aV->mX, aV->mY, aV->mZ));
+	}
+	static void scale(Matrix4* aM, const Vector3D<float32>* aV)
+	{
+		*aM = glm::scale(*aM, glm::tvec3<float>(aV->mX, aV->mY, aV->mZ));
+	}
+	static Matrix4 rotate(const Matrix4* aM, const Vector3D<float32>* aV)
+	{
+		Matrix4 lM = glm::rotate(*aM, glm::radians(aV->mX), glm::tvec3<float>(1.0f, 0.0f, 0.0f));
+		lM = glm::rotate(lM, glm::radians(aV->mY), glm::tvec3<float>(0.0f, 1.0f, 0.0f));
+		return glm::rotate(lM, glm::radians(aV->mZ), glm::tvec3<float>(0.0f, 0.0f, 1.0f));
+	}
+	static void rotate(Matrix4* aM, const Vector3D<float32>* aV)
+	{
+		*aM = glm::rotate(*aM, glm::radians(aV->mX), glm::tvec3<float>(1.0f, 0.0f, 0.0f));
+		*aM = glm::rotate(*aM, glm::radians(aV->mY), glm::tvec3<float>(0.0f, 1.0f, 0.0f));
+		*aM = glm::rotate(*aM, glm::radians(aV->mZ), glm::tvec3<float>(0.0f, 0.0f, 1.0f));
+	}
 	static Matrix4 lookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp)
 	{
 		return glm::lookAt(

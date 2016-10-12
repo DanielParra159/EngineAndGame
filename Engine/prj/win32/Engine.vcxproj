@@ -149,6 +149,7 @@
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Support\Vector3D.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />
     <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp" />
     <ClCompile Include="..\..\src\Source\Common\UI\Menu.cpp" />

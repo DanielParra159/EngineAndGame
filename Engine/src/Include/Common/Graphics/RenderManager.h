@@ -138,7 +138,7 @@ namespace graphics
 		*/
 		void											UnloadMesh(Mesh* aMesh);
 
-		void											RenderMesh(const Vector3D<float32>* aPosition, const Mesh* aMesh, Material* mMaterial);
+		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial);
 		//-----------------------------------------END MESHES-----------------------------------------
 
 		Camera*											CreatePerspectiveCamera(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp,

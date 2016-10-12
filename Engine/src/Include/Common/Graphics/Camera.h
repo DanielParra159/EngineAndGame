@@ -23,7 +23,7 @@ namespace graphics
 		Matrix4											mProjMatrix;
 		eTypeCameras									mType;
 	public:
-		virtual void									LookAt(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp);
+		virtual void									LookAt(const Vector3D<float32>* aCameraPosition, const Vector3D<float32>* aCameraLookAt, const Vector3D<float32>* aUp);
 
 		const Matrix4*									GetView() const { return &mViewMatrix; }
 		eTypeCameras									GetType() const { return mType; }
