@@ -3,9 +3,14 @@
 namespace logic
 {
 
-	void IGameObject::SetEnabled(BOOL aEnabled)
+	void IGameObject::Init(BOOL aActive)
 	{
-		mEnabled = aEnabled;
+		mActive = aActive;
+	}
+
+	void IGameObject::SetEnabled(BOOL aActive)
+	{
+		mActive = aActive;
 		//@TODO: Notify to world
 	}
 

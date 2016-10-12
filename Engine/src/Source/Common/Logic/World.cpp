@@ -32,7 +32,7 @@ namespace logic
 	void World::Release()
 	{
 		TGameObjectsSet::const_iterator lIterator = mActivatedGameObjects.begin();
-		TGameObjectsSet::const_iterator lIteratorEnd = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lIteratorEnd = mActivatedGameObjects.end();
 		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
 			(*lIterator)->Release();
@@ -41,7 +41,7 @@ namespace logic
 		mActivatedGameObjects.clear();
 
 		lIterator = mDisabledGameObjects.begin();
-		lIteratorEnd = mDisabledGameObjects.begin();
+		lIteratorEnd = mDisabledGameObjects.end();
 		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
 			(*lIterator)->Release();
@@ -57,14 +57,14 @@ namespace logic
 	void World::Update()
 	{
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
-		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
 		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
 		{
 			(*lSetIterator)->Update();
 		}
 
 		TGameObjectsList::const_iterator lListIterator = mGameObjectsToBeDisabled.begin();
-		TGameObjectsList::const_iterator lListIteratorEnd = mGameObjectsToBeDisabled.begin();
+		TGameObjectsList::const_iterator lListIteratorEnd = mGameObjectsToBeDisabled.end();
 		for (; lListIterator != lListIteratorEnd; ++lListIterator)
 		{
 			mActivatedGameObjects.erase(*(lListIterator));
@@ -73,7 +73,7 @@ namespace logic
 		mGameObjectsToBeDisabled.clear();
 
 		lListIterator = mGameObjectsToBeActivated.begin();
-		lListIteratorEnd = mGameObjectsToBeActivated.begin();
+		lListIteratorEnd = mGameObjectsToBeActivated.end();
 		for (; lListIterator != lListIteratorEnd; ++lListIterator)
 		{
 			mDisabledGameObjects.erase(*(lListIterator));
@@ -87,11 +87,20 @@ namespace logic
 	{
 		//@TODO: sort
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
-		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
 		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
 		{
 			(*lSetIterator)->Render();
 		}
+	}
+
+	void World::AddGameObject(IGameObject* aGameObject, BOOL aActivated)
+	{
+		aGameObject->Init(aActivated);
+		if (aActivated)
+			mActivatedGameObjects.insert(aGameObject);
+		else
+			mDisabledGameObjects.insert(aGameObject);
 	}
 
 } // namespace logic

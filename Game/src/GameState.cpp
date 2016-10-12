@@ -1,11 +1,6 @@
 #include "GameState.h"
+#include "Map.h"
 #include "Player.h"
-
-#include "Types.h"
-#include "Support\Vector2D.h"
-#include "Core\Log.h"
-
-#include "Logic\World.h"
 
 #include "Input\InputManager.h"
 #include "Input\IController.h"
@@ -14,8 +9,17 @@
 #include "Input\InputAction.h"
 
 #include "Graphics\RenderManager.h"
+#include "Graphics\Camera.h"
 
 #include "UI\MenuManager.h"
+#include "UI\Menu.h"
+
+#include "Core\Log.h"
+#include "Core\Game.h"
+
+#include "Logic\World.h"
+
+
 
 #include "Defs.h"
 
@@ -47,40 +51,27 @@ namespace game
 
 		GET_WORLD;
 
-		lWorld->Init(18, 18);
+		lWorld->Init();
 
-		for (uint32 i = 0; i < 18; ++i)
-		{
-			lWorld->SetCell(i, 1, (uint32)ETypeEntities::eWall1);  //up2
-		}
+		graphics::RenderManager::Instance()->SetRenderCamera(
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 4.2f, 2.0f),
+																	 &Vector3D<float32>(0.0f, 0.0f, -2.0f), 
+																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
+																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
 
-		for (uint32 i = 0; i < 18; ++i)
-		{
-			lWorld->SetCell(i, 0, (uint32)ETypeEntities::eWall0); //up1
-			lWorld->SetCell(17, i, (uint32)ETypeEntities::eWall0); //left
+		Map* lMap = new Map();
+		lWorld->AddGameObject(lMap, TRUE);
 
-			lWorld->SetCell(0, i, (uint32)ETypeEntities::eWall0); //right
-
-		}
-
-		for (uint32 i = 0; i < 18; ++i)
-		{
-			lWorld->SetCell(i, 16, (uint32)ETypeEntities::eWall0);
-			lWorld->SetCell(i, 17, (uint32)ETypeEntities::eWall1);
-		}
-
-		mPlayer = new Player();
-
-		lWorld->SetCell(4, 6, 5.0f, ETypeEntities::ePoint);
-
-		mPlayer->Init(7,7,3);
+		Player* lPlayer = new Player();
+		lWorld->AddGameObject(lPlayer, TRUE);
 
 		return TRUE;
 	}
 
 	void GameState::Release()
 	{
-		mPlayer->Release();
+		ui::MenuManager::Instance()->RemoveMenu(mMenu);
+		mMenu = 0;
 
 		logic::World::Instance()->Release();
 	}
@@ -88,8 +79,6 @@ namespace game
 	BOOL GameState::Update()
 	{
 		logic::World::Instance()->Update();
-
-		mPlayer->Update();
 
 		int32 lAction = input::InputManager::Instance()->GetLastActionId();
 
@@ -109,6 +98,5 @@ namespace game
 		ui::MenuManager::Instance()->Render();
 		graphics::RenderManager::Instance()->EndRender();
 	}
-
 
 } // namespace game

@@ -11,22 +11,23 @@ namespace logic
 	
 	*/
 	class IGameObject {
-	private:
+		friend class World;
+	protected:
 		Vector3D<float32>								mPosition;
 		Vector3D<float32>								mScale;
 		Vector3D<float32>								mRotation; //@TODO: Quaternion
-		BOOL											mEnabled;
-	public:
-		IGameObject() {}
-		virtual ~IGameObject() {}
-
-		virtual void									Init() = 0;
+		BOOL											mActive;
+	protected:
+		virtual void									Init(BOOL aActive);
 		virtual void									Update() = 0;
 		virtual void									Render() = 0;
 		virtual void									Release() = 0;
+	public:
+		IGameObject() : mPosition(), mScale(1,1,1), mRotation(), mActive(FALSE) {}
+		virtual ~IGameObject() {}
 
-		void											SetEnabled(BOOL aEnabled);
-		BOOL											GetEnabled() { return mEnabled;	}
+		void											SetEnabled(BOOL aActive);
+		BOOL											GetEnabled() { return mActive;	}
 
 		//POSITION FUNCTIONS
 		void											SetPosition(const Vector3D<float32>& aPosition);

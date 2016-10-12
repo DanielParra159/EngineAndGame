@@ -31,6 +31,8 @@ namespace logic
 
 		virtual void									Update();
 		virtual void									Render();
+
+		virtual void									AddGameObject(IGameObject* aGameObject, BOOL aActivated);
 	private:
 		World() : mActivatedGameObjects(), mGameObjectsToBeActivated(), mDisabledGameObjects(), mGameObjectsToBeDisabled() {}
 		~World() {}

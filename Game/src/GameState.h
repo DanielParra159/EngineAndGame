@@ -5,6 +5,16 @@
 
 #include "Core\IGameState.h"
 
+namespace ui
+{
+	class Menu;
+}
+
+namespace graphics
+{
+	class Mesh;
+}
+
 namespace game
 {
 	enum EInputActions
@@ -13,23 +23,14 @@ namespace game
 		eUp, eDown, eLeft, eRight
 	};
 
-	enum ETypeEntities
-	{
-		eWall0 = 0,
-		eWall1 = 1,
-		eNothing = 2,
-		eSnakeHead = 3,
-		eSnakeTail = 4,
-		ePoint = 5
-	};
+	class Map;
 
-	class Player;
 	class GameState : public core::IGameState
 	{
 	private:
-		Player*											mPlayer;
+		ui::Menu*										mMenu;
 	public:
-		GameState() : mPlayer(0) {}
+		GameState() {}
 		~GameState() {}
 	protected:
 		virtual BOOL 									Init();
@@ -38,7 +39,7 @@ namespace game
 		virtual BOOL									Update();
 		virtual void									Render();
 
-		virtual const int8*								GetStateName() const { return "Game"; }
-	}; // IGameState
+		virtual const int8*								GetStateName() const { return "Snake"; }
+	}; // GameState
 } // namespace game
 #endif // _GAME_GAMESTATE_H_

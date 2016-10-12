@@ -2,35 +2,42 @@
 #define _GAME_PLAYER_H_
 
 #include "Types.h"
-#include "Support\Vector2D.h"
+#include "Logic\IGameObject.h"
+
+namespace graphics
+{
+	class Mesh;
+}
 
 namespace game
 {
-	class Player
+
+	class Player : public logic::IGameObject
 	{
 	private:
 		enum EDirections
 		{
 			eUp, eDown, eLeft, eRight
 		};
-		Vector2D<uint32>								mPosition;
 		EDirections										mDirection;
 		uint32											mSnakeLenght;
 		float64											mTimeNextMovement;
 		float32											mDelayBetweenMovements;
 		int32											mLastAction;
+		graphics::Mesh*									mMesh;
 	public:
-		Player() : mPosition(), mSnakeLenght(), mDirection(), mTimeNextMovement(), 
+		Player() : IGameObject(), mSnakeLenght(), mDirection(), mTimeNextMovement(),
 			mLastAction(), mDelayBetweenMovements(){}
-		~Player() {}
+		virtual ~Player() {}
 	
-		BOOL											Init(uint32 aX, uint32 aY, uint32 aSnakeLenght);
-		void 											Release();
-
-		void											Update();
+		virtual void									Init(BOOL aActive);
+		virtual void									Update();
+		virtual void									Render();
+		virtual void									Release();
 
 	private:
-		void											ChangePos(uint32 aNextX, uint32 aNextY);
+		void											ChangePos(float32 aNextX, float32 aNextZ);
+
 
 	
 	}; // Player
