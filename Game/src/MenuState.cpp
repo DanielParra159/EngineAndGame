@@ -16,7 +16,7 @@
 #include "Core\Game.h"
 
 #include "Audio\AudioManager.h"
-#include "Audio\Sound.h"
+#include "Audio\Sound2D.h"
 
 #include "Defs.h"
 
@@ -62,7 +62,7 @@ namespace game
 	{
 		core::LogString("START GAME");
 
-		audio::AudioManager::Instance()->CreateSound("assets/audio/button.mp3")->Play(audio::eAudioGroups::eEffects);
+		audio::AudioManager::Instance()->CreateSound2D("audio/button.mp3")->Play(audio::eAudioGroups::eEffects);
 		
 		game::GameState *lGameState = new game::GameState();
 

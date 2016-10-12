@@ -2,6 +2,7 @@
 #define _GAME_MAP_H_
 
 #include "Types.h"
+#include "Support\Vector2D.h"
 #include "Logic\IGameObject.h"
 
 namespace graphics
@@ -16,6 +17,8 @@ namespace game
 	private:
 		graphics::Mesh*									mGround;
 		graphics::Mesh*									mWall;
+	public:
+		static const Vector2D<float32>					sMapSize;
 	public:
 		Map() : IGameObject() {}
 		virtual ~Map() {}

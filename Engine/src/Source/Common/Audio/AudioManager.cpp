@@ -2,6 +2,8 @@
 #include "Audio\Sound2D.h"
 #include "Audio\Sound3D.h"
 
+#include "IO\FileSystem.h"
+
 #include "fmod_errors.h"
 
 #include <algorithm>
@@ -138,9 +140,9 @@ namespace audio {
 
 		TSound lSound;
 
-		if (ERRCHECK(mAudioSystem->createSound(aFileName.c_str(), FMOD_2D, 0, &lSound)))
+		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDirectory() + "\\" + aFileName).c_str(), FMOD_2D, 0, &lSound)))
 		{
-			AddSoundToList(aFileName, lSound);
+			lResult = AddSoundToList(aFileName, lSound); 
 		}
 
 		return lResult;
@@ -160,11 +162,11 @@ namespace audio {
 
 		TSound lSound;
 
-		if (ERRCHECK(mAudioSystem->createSound(aFileName.c_str(), FMOD_3D, 0, &lSound)))
+		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDirectory() + "\\" + aFileName).c_str(), FMOD_3D, 0, &lSound)))
 		{
 			if (ERRCHECK(lSound->set3DMinMaxDistance(aMinDistance * mDistanceFactor, aMaxDistance * mDistanceFactor)))
 			{
-				AddSoundToList(aFileName, lSound);
+				lResult = AddSoundToList(aFileName, lSound);
 			}
 		}
 

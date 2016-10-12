@@ -30,6 +30,12 @@
     <ClCompile Include="..\..\src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GameOverState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Player.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GameOverState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\MenuState.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,7 @@
 
 #include "IO\File.h"
 
-#include "GameState.h"
+#include "MenuState.h"
 
 using namespace core;
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	game::GameState *lGameState = new game::GameState();
+	game::MenuState *lGameState = new game::MenuState();
 
 	game->ChangeGameState(lGameState);
 

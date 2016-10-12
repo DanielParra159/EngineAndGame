@@ -19,12 +19,23 @@ namespace game
 		{
 			eUp, eDown, eLeft, eRight
 		};
+		struct TTailState {
+			Vector3D<float32>							mPosition;
+			uint32										mLife;
+			TTailState()
+				: mPosition()
+				, mLife(0)
+			{}
+		};
 		EDirections										mDirection;
-		uint32											mSnakeLenght;
 		float64											mTimeNextMovement;
 		float32											mDelayBetweenMovements;
 		int32											mLastAction;
-		graphics::Mesh*									mMesh;
+		graphics::Mesh*									mHead;
+		graphics::Mesh*									mTail;
+		static const int32								mMaxTailLength = 10;
+		TTailState*										mTailStates[mMaxTailLength];
+		uint32											mSnakeLenght;
 	public:
 		Player() : IGameObject(), mSnakeLenght(), mDirection(), mTimeNextMovement(),
 			mLastAction(), mDelayBetweenMovements(){}

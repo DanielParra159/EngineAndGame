@@ -11,6 +11,8 @@
 
 namespace game
 {
+	const Vector2D<float32> Map::sMapSize = Vector2D<float32>(18.0f, 18.0f);
+
 	void Map::Init(BOOL aActive)
 	{
 		IGameObject::Init(aActive);
@@ -30,7 +32,7 @@ namespace game
 
 	void Map::Render()
 	{
-		mGround->Render(&Vector3D<float32>(0, -1, 0), &Vector3D<float32>(18, 1, 18), &Vector3D<float32>(0, 0, 0));
+		mGround->Render(&Vector3D<float32>(0, -1, 0), &Vector3D<float32>(sMapSize.mX, 1, sMapSize.mY), &Vector3D<float32>(0, 0, 0));
 
 		mWall->Render(&Vector3D<float32>(-8.5f, 0, -8.5f));
 		mWall->Render(&Vector3D<float32>(-7.5f, 0, -8.5f));
