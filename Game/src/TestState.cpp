@@ -37,8 +37,8 @@ namespace game
 																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory("materials");
-		mMesh = graphics::RenderManager::Instance()->LoadMesh("Prueba");
-		mMesh2 = graphics::RenderManager::Instance()->LoadMesh("Prueba2");
+		mMesh = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
+		mMesh2 = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mMesh2->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));
 		mMesh2->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png"));
 

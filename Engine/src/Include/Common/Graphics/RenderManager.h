@@ -131,7 +131,15 @@ namespace graphics
 		Load mesh from file
 		@param aFileName, file name
 		*/
-		Mesh*											LoadMesh(const std::string& aFileName);
+		Mesh*											LoadMeshFromFile(const std::string& aFileName);
+		/**
+		Load mesh from vertex data
+		@param aMeshName, mesh name
+		@param aVertexData, vertex data
+		@param aVertexDataLength, vertex date length
+		@param aNumVertex, number of vertex
+		*/
+		Mesh*											LoadMeshFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
 		/**
 		Unload mesh
 		@param aMesh, mesh to Unload
@@ -153,6 +161,15 @@ namespace graphics
 			mMeshesIds(), mLoadedMeshes(), mNumLoadedMeshes(0),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
+
+		/**
+		Load mesh from vertex data
+		@param aMeshName, mesh name
+		@param aVertexData, vertex data
+		@param aVertexDataLength, vertex date length
+		@param aNumVertex, number of vertex
+		*/
+		Mesh*											LoadMesh(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
 	}; // Renderer
 } // namespace graphics
 #endif // _ENGINE_GRAPHICS_RENDERER_H_

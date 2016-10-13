@@ -6,13 +6,14 @@
 
 namespace graphics
 {
-	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, float32* aVertexData, uint32* aElementData, float32* aTextureCoords)
+	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
 	{
 		mName = aName;
 		mVBO = aVBO;
 		mEBO = aEBO;
 		mElementData = aElementData;
 		mVertexData = aVertexData;
+		mNumVertex = aNumVertex;
 		mTextureCoords = aTextureCoords;
 
 		mMaterial = RenderManager::Instance()->LoadMaterial("Test01");
@@ -34,7 +35,7 @@ namespace graphics
 	Mesh* Mesh::CreateInstance()
 	{
 		Mesh* lMesh = new Mesh();
-		lMesh->Init(mName, mVBO, mEBO, mVertexData, mElementData, mTextureCoords);
+		lMesh->Init(mName, mVBO, mEBO, mVertexData, mElementData, mTextureCoords, mNumVertex);
 		lMesh->mId = mId;
 		return lMesh;
 	}

@@ -19,8 +19,8 @@ namespace game
 	{
 		IGameObject::Init(aActive);
 
-		mHead = graphics::RenderManager::Instance()->LoadMesh("Prueba");
-		mTail = graphics::RenderManager::Instance()->LoadMesh("Prueba2");
+		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
+		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 
 		mDirection = EDirections::eRight;
 

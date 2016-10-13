@@ -19,9 +19,10 @@ namespace graphics
 	friend class RenderManager;
 	protected:
 		Material*										mMaterial;
-		uint32*											mElementData;
-		float32*										mVertexData;
-		float32*										mTextureCoords;
+		const uint32*									mElementData;
+		const float32*									mVertexData;
+		uint32											mNumVertex;
+		const float32*									mTextureCoords;
 		uint32											mVBO;
 		uint32											mEBO;
 		std::string										mName;
@@ -38,7 +39,7 @@ namespace graphics
 		Mesh() : mMaterial(0), mVertexData(0) {}
 		virtual ~Mesh() {}
 
-		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, float32* aVertexData, uint32* aElementData, float32* aTextureCoords);
+		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex);
 		virtual void									Release();
 
 		virtual Mesh*									CreateInstance();

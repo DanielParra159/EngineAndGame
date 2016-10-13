@@ -18,8 +18,8 @@ namespace game
 		IGameObject::Init(aActive);
 
 		io::FileSystem::Instance()->ChangeDirectory("materials");
-		mGround = graphics::RenderManager::Instance()->LoadMesh("Prueba");
-		mWall = graphics::RenderManager::Instance()->LoadMesh("Prueba2");
+		mGround = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
+		mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mWall->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));
 		mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png"));
 

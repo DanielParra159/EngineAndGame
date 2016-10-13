@@ -580,10 +580,8 @@ namespace graphics
 	//----------------------------------------END MATERIALS---------------------------------------
 
 	//-----------------------------------------MESHES-----------------------------------------
-	Mesh* RenderManager::LoadMesh(const std::string& aFileName)
+	Mesh* RenderManager::LoadMeshFromFile(const std::string& aFileName)
 	{
-		Mesh* lResult;
-
 		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aFileName);
 
 		if (lMeshIterator != mMeshesIds.end())
@@ -592,7 +590,7 @@ namespace graphics
 			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
 		}
 
-		float32 lVertexData[] = {
+		static const float32 lVertexData[] = {
 			// X      Y     Z     R     G     B     U     V
 			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
@@ -644,23 +642,39 @@ namespace graphics
 			1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
 			-1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
-		};;
+		};
+		
+		return LoadMesh(aFileName, lVertexData, sizeof(lVertexData), 36);
+	}
+	Mesh* RenderManager::LoadMeshFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
+	{
+		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aMeshName);
+
+		if (lMeshIterator != mMeshesIds.end())
+		{
+			++lMeshIterator->second->mReferences;
+			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
+		}
+
+		return LoadMesh(aMeshName, aVertexData, aVertexDataLength, aNumVertex);
+	}
+	Mesh* RenderManager::LoadMesh(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
+	{
+		Mesh* lResult;
 		float32* lTextureCoords = 0;
 
-		//TODO: load from file
-		if (lVertexData != 0 /*&& lTextureCoords != 0*/)
+		if (aVertexData != 0 /*&& lTextureCoords != 0*/)
 		{
-
 			lResult = new Mesh();
 
 			uint32 lVBO;
 			glGenBuffers(1, &lVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, lVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(lVertexData), lVertexData, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, aVertexData, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, aVertexData, GL_STATIC_DRAW);
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
-			lResult->Init(aFileName, lVBO, 0, lVertexData, 0, lTextureCoords);
+			lResult->Init(aMeshName, lVBO, 0, aVertexData, 0, lTextureCoords, aNumVertex);
 
 			uint32 lIndex = 0;
 			uint32 lCapacity = mLoadedMeshes.capacity();
@@ -672,7 +686,7 @@ namespace graphics
 			else
 			{
 				uint32 lSize = mLoadedMeshes.size();
-				
+
 				while (lIndex < lSize && mLoadedMeshes[lIndex] != 0)
 				{
 					++lIndex;
@@ -688,13 +702,13 @@ namespace graphics
 				}
 			}
 
-			mMeshesIds[aFileName] = new IdReferences(lIndex, 1);
+			mMeshesIds[aMeshName] = new IdReferences(lIndex, 1);
 			++mNumLoadedMeshes;
-			
+
 		}
 		else
 		{
-			core::LogFormatString("Can't load mesh %s", aFileName.c_str());
+			core::LogFormatString("Can't load mesh %s", aMeshName.c_str());
 		}
 
 		return lResult;
@@ -737,7 +751,7 @@ namespace graphics
 			glUniform1i(mMaterial->mTextureParam, 0);
 		}
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);		
+		glDrawArrays(GL_TRIANGLES, 0, aMesh->mNumVertex);		
 	}
 
 	//-----------------------------------------END MESHES-----------------------------------------
