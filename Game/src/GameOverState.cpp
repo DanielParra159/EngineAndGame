@@ -33,7 +33,7 @@ namespace game
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		mMenu->AddButton(Rect<>(0, 0, 576, 576), Rect<>(0, 0, 480, 480), &StartGame, "assets/GameOver.jpg");
-		mMenu->AddButton(Rect<>(188, 455, 200, 100), Rect<>(0, 0, 200, 100), &StartGame, "assets/RestartButton.png");
+		mMenu->AddButton(Rect<>(0, 0, 800, 600), Rect<>(0, 0, 200, 100), &StartGame, "assets/RestartButton.png");
 
 		return TRUE;
 	}
