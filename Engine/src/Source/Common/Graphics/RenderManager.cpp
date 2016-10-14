@@ -19,17 +19,8 @@
 
 namespace graphics
 {
-	RenderManager* RenderManager::sInstance = 0;
+	SINGLETON_BODY(RenderManager);
 
-	RenderManager* RenderManager::Instance()
-	{
-		if (RenderManager::sInstance == 0)
-		{
-			RenderManager::sInstance = new RenderManager();
-			return RenderManager::sInstance;
-		}
-		return RenderManager::sInstance;
-	}
 
 	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor, BOOL aFullscreen)
 	{

@@ -2,17 +2,7 @@
 
 namespace io
 {
-	FileSystem* FileSystem::sInstance = 0;
-
-	FileSystem* FileSystem::Instance()
-	{
-		if (FileSystem::sInstance == 0)
-		{
-			FileSystem::sInstance = new FileSystem();
-			return FileSystem::sInstance;
-		}
-		return FileSystem::sInstance;
-	}
+	SINGLETON_BODY(FileSystem);
 
 	BOOL FileSystem::Init(const std::string& aRootDir)
 	{

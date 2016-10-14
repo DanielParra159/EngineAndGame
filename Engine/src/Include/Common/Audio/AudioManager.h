@@ -1,6 +1,7 @@
 #ifndef _ENGINE_AUDIO_AUDIOMANAGER_H_
 #define _ENGINE_AUDIO_AUDIOMANAGER_H_
 
+#include "Defs.h"
 #include "Types.h"
 #include "Support\Vector3D.h"
 #include "Support\IdReferences.h"
@@ -37,9 +38,8 @@ namespace audio {
 	typedef std::vector<TSound>									TLoadedSounds;
 	typedef std::unordered_map<int32, TSoundChannel>			TSoundChannels;
 
+	SINGLETON_HEAD(AudioManager);
 	private:
-		static AudioManager*							sInstance;
-
 		/**
 		Sounds ids list referenced by name
 		*/
@@ -72,8 +72,6 @@ namespace audio {
 
 
 	public:
-		static AudioManager*							Instance();
-
 		BOOL											Init(float32 aDistanceFactor);
 		void											Update();
 		void											Release();

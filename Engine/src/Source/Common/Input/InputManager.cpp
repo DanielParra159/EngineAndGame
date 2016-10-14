@@ -7,17 +7,7 @@
 
 namespace input
 {
-	InputManager* InputManager::sInstance = 0;
-
-	InputManager* InputManager::Instance()
-	{
-		if (InputManager::sInstance == 0)
-		{
-			InputManager::sInstance = new InputManager();
-			return InputManager::sInstance;
-		}
-		return InputManager::sInstance;
-	}
+	SINGLETON_BODY(InputManager);
 
 	BOOL InputManager::Init()
 	{

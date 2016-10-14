@@ -1,6 +1,7 @@
 #ifndef _INPUT_INPUTMANAGER_H_
 #define _INPUT_INPUTMANAGER_H_
 
+#include "Defs.h"
 #include "Types.h"
 
 #include <vector>
@@ -24,9 +25,8 @@ namespace input
 	class InputManager
 	{
 		typedef std::vector<IController*>				TControllers;
+		SINGLETON_HEAD(InputManager);
 	private:
-		static InputManager*							sInstance;
-
 		/**
 		All the controllers
 		*/
@@ -37,7 +37,6 @@ namespace input
 		int32											mLastAction;
 
 	public:
-		static InputManager*							Instance();
 		BOOL											Init();
 		void 											Release();
 

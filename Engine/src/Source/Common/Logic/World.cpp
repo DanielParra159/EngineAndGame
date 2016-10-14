@@ -12,17 +12,7 @@
 namespace logic
 {
 
-	World* World::sInstance = 0;
-
-	World* World::Instance()
-	{
-		if (World::sInstance == 0)
-		{
-			World::sInstance = new World();
-			return World::sInstance;
-		}
-		return World::sInstance;
-	}
+	SINGLETON_BODY(World);
 
 	void World::Init()
 	{

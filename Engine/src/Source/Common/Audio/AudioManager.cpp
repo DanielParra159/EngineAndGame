@@ -18,17 +18,7 @@ namespace audio {
 		return TRUE;
 	}
 
-	AudioManager* AudioManager::sInstance = 0;
-
-	AudioManager* AudioManager::Instance()
-	{
-		if (AudioManager::sInstance == 0)
-		{
-			AudioManager::sInstance = new AudioManager();
-			return AudioManager::sInstance;
-		}
-		return AudioManager::sInstance;
-	}
+	SINGLETON_BODY(AudioManager);
 	
 	BOOL AudioManager::Init(float32 aDistanceFactor)
 	{

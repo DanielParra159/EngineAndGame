@@ -1,7 +1,9 @@
 #ifndef _ENGINE_LOGIC_MATRIXSCENE_H_
 #define _ENGINE_LOGIC_MATRIXSCENE_H_
 
+#include "Defs.h"
 #include "Types.h"
+
 #include <vector>
 #include <unordered_set>
 
@@ -17,15 +19,13 @@ namespace logic
 	*/
 	class World
 	{
+		SINGLETON_HEAD(World);
 	private:
-		static World*									sInstance;
-
 		TGameObjectsSet									mActivatedGameObjects;
 		TGameObjectsList								mGameObjectsToBeActivated;
 		TGameObjectsSet									mDisabledGameObjects;
 		TGameObjectsList								mGameObjectsToBeDisabled;
 	public:
-		static World*									Instance();
 		virtual void									Init();
 		virtual void									Release();
 

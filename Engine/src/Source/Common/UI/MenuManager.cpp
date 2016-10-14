@@ -7,17 +7,7 @@
 namespace ui
 {
 
-	MenuManager* MenuManager::sInstance = 0;
-
-	MenuManager* MenuManager::Instance()
-	{
-		if (MenuManager::sInstance == 0)
-		{
-			MenuManager::sInstance = new MenuManager();
-			return MenuManager::sInstance;
-		}
-		return MenuManager::sInstance;
-	}
+	SINGLETON_BODY(MenuManager);
 
 	BOOL MenuManager::Init()
 	{

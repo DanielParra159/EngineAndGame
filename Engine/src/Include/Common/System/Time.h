@@ -1,6 +1,7 @@
 #ifndef _SYS_TIME_H_
 #define _SYS_TIME_H_
 
+#include "Defs.h"
 #include "Types.h"
 
 namespace sys 
@@ -9,12 +10,11 @@ namespace sys
 	System time access functions
 	*/
 	class Time {
+		SINGLETON_HEAD(Time);
 	private:
-		static Time*									sInstance;
 		static float32									mDeltaSec;
 		uint32											lLastUpdateMili;
 	public:
-		static Time*									Instance();
 		/**
 		Get the number of seconds since the aplication start
 		@return seconds since the Aplication start

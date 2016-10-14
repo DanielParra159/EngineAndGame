@@ -7,18 +7,9 @@
 
 namespace sys
 {
-	Time* Time::sInstance = 0;
+	SINGLETON_BODY(Time);
 	float32 Time::mDeltaSec = 0.0f;
 
-	Time* Time::Instance()
-	{
-		if (Time::sInstance == 0)
-		{
-			Time::sInstance = new Time();
-			return Time::sInstance;
-		}
-		return Time::sInstance;
-	}
 
 	float64 Time::GetCurrentSec()
 	{

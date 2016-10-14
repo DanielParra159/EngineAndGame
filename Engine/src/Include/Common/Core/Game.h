@@ -1,6 +1,7 @@
 #ifndef _CORE_GAME_H_
 #define _CORE_GAME_H_
 
+#include "Defs.h"
 #include "Types.h"
 
 namespace core
@@ -14,8 +15,8 @@ namespace core
 	The user must instantiate it, assign a state and run it.
 	*/
 	class Game {
-	private:
-		static Game*								sInstance;		
+		SINGLETON_HEAD(Game);
+	private:	
 		IGameState*									mCurrentGameState;
 		IGameState*									mNextGameState;
 
@@ -24,8 +25,6 @@ namespace core
 		*/
 		BOOL										mRunning;
 	public:
-		static Game*								Instance();
-
 		BOOL		 								Init(const int8* title, const GameDescription& aGameDescription);
 		/**
 		Eject the game loop.

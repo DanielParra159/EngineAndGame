@@ -1,6 +1,7 @@
 #ifndef _ENGINE_IO_FILESYSTEM_H_
 #define _ENGINE_IO_FILESYSTEM_H_
 
+#include "Defs.h"
 #include "Types.h"
 #include <string>
 
@@ -12,13 +13,12 @@ namespace io
 	*/
 	class FileSystem
 	{
+		SINGLETON_HEAD(FileSystem);
 	private:
-		static FileSystem*								sInstance;
 		std::string										mCurrentDir;
 		std::string										mRootDir;
 
 	public:
-		static FileSystem*								Instance();
 		BOOL											Init(const std::string& aRootDir);
 		void											Release();
 

@@ -23,17 +23,7 @@
 
 namespace core
 {
-	Game* Game::sInstance = 0;
-
-	Game* Game::Instance()
-	{
-		if (Game::sInstance == 0)
-		{
-			Game::sInstance = new Game();
-			return Game::sInstance;
-		}
-		return Game::sInstance;
-	}
+	SINGLETON_BODY(Game);
 
 	BOOL Game::Init(const int8* title, const GameDescription& aGameDescription)
 	{

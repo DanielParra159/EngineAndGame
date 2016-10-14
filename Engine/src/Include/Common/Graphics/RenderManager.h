@@ -1,6 +1,7 @@
 #ifndef _ENGINE_GRAPHICS_RENDERER_H_
 #define _ENGINE_GRAPHICS_RENDERER_H_
 
+#include "Defs.h"
 #include "Types.h"
 #include "Support\Rect.h"
 #include "Support\Vector2D.h"
@@ -38,8 +39,8 @@ namespace graphics
 	*/
 	class RenderManager
 	{
+		SINGLETON_HEAD(RenderManager);
 	private:
-		static RenderManager*							sInstance;
 		TTexturesIds									mTexturesIds;
 		TLoadedTextures									mLoadedTextures;
 		uint32											mNumLoadedTextures;
@@ -59,7 +60,6 @@ namespace graphics
 		SDL_Window*										mWindow;
 		const Camera*									mRenderCamera;
 	public:
-		static RenderManager*							Instance();
 		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, 
 															 const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor,  
 															 BOOL aFullscreen);

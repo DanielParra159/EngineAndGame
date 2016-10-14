@@ -1,6 +1,7 @@
 #ifndef _ENGINE_UI_MENUMANAGER_H_
 #define _ENGINE_UI_MENUMANAGER_H_
 
+#include "Defs.h"
 #include "Types.h"
 
 #include <vector>
@@ -15,14 +16,14 @@ namespace ui
 	class MenuManager
 	{
 		typedef	std::vector<Menu*>						TMenus;
+
+		SINGLETON_HEAD(MenuManager);
 	private:
-		static MenuManager*								sInstance;
 		/**
 		All the menus
 		*/
 		TMenus											mMenus;
 	public:
-		static MenuManager*								Instance();
 		BOOL											Init();
 		void											Release();
 
