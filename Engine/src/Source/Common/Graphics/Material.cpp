@@ -29,6 +29,7 @@ namespace graphics
 
 	void Material::Release()
 	{
+		mParameters.clear();
 		RenderManager::Instance()->UnloadTexture(mTextureId);
 	}
 
