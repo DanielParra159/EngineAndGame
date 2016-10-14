@@ -16,7 +16,7 @@ namespace graphics
 		mNumVertex = aNumVertex;
 		mTextureCoords = aTextureCoords;
 
-		mMaterial = RenderManager::Instance()->LoadMaterial("Test01");
+ 		mMaterial = RenderManager::Instance()->LoadMaterial("Test01");
 
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
 		//mMaterial->SetVertexFloatAttribPointer("color", 3, FALSE, 8, 3, mVBO);

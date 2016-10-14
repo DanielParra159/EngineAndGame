@@ -103,6 +103,8 @@ namespace graphics
 		int32 size = mLoadedMeshes.size();
 		for (int i=0; i < size; ++i)
 		{
+			if (mLoadedMeshes[i] == 0)
+				continue;
 			Mesh* lMesh = mLoadedMeshes[i];
 			lMesh->Release();
 			glDeleteBuffers(1, &lMesh->mVBO);
@@ -703,6 +705,7 @@ namespace graphics
 			}
 
 			mMeshesIds[aMeshName] = new IdReferences(lIndex, 1);
+			lResult->SetId(lIndex);
 			++mNumLoadedMeshes;
 
 		}

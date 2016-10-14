@@ -121,6 +121,8 @@ namespace game
 			delete mTailStates[i];
 			mTailStates[i] = 0;
 		}
+		graphics::RenderManager::Instance()->UnloadMesh(mHead);
+		graphics::RenderManager::Instance()->UnloadMesh(mTail);
 	}
 
 	void Player::ChangePos(float32 aNextX, float32 aNextZ)

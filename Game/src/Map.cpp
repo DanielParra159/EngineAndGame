@@ -17,11 +17,11 @@ namespace game
 	{
 		IGameObject::Init(aActive);
 
-		io::FileSystem::Instance()->ChangeDirectory("materials");
+		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		mGround = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mWall->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));
-		mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png"));
+		//mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png"));
 
 	}
 
@@ -56,7 +56,8 @@ namespace game
 
 	void Map::Release()
 	{
-
+		graphics::RenderManager::Instance()->UnloadMesh(mGround);
+		graphics::RenderManager::Instance()->UnloadMesh(mWall);
 	}
 } // namespace game
 
