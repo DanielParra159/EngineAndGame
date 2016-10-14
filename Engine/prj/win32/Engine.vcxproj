@@ -58,7 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +163,8 @@
     <Library Include="..\..\extern\FMOD\lib\fmod_vc.lib" />
     <Library Include="..\..\extern\GLEW\lib\freeglut.lib" />
     <Library Include="..\..\extern\GLEW\lib\glew32.lib" />
+    <Library Include="..\..\extern\LUABIND\lib\luabind.lib" />
+    <Library Include="..\..\extern\LUA\lib\lua51.lib" />
     <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
     <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
     <Library Include="..\..\extern\SOIL\lib\SOIL.lib" />
