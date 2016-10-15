@@ -21,10 +21,9 @@ namespace game
 		};
 		struct TTailState {
 			Vector3D<float32>							mPosition;
+			Vector3D<float32>							mRotation;
 			uint32										mLife;
-			TTailState()
-				: mPosition()
-				, mLife(0)
+			TTailState() : mPosition(), mRotation(), mLife(0)
 			{}
 		};
 		EDirections										mDirection;

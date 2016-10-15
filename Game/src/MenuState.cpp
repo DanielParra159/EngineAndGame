@@ -35,7 +35,7 @@ namespace game
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
-		mMenu->AddButton(Rect<>(0, 0, 800, 600), Rect<>(0, 0, 200, 100), &StartGame, "StartButton.png");
+		mMenu->AddButton(Rect<>(0, 0, 800, 600), Rect<>(0, 0, 200, 100), &StartGame);
 
 		return TRUE;
 	}

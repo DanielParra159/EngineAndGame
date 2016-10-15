@@ -20,7 +20,8 @@ namespace graphics
 	protected:
 		Material*										mMaterial;
 		const uint32*									mElementData;
-		const float32*									mVertexData;
+		float32*										mVertexData;
+		uint32											mVertexDataLength;
 		uint32											mNumVertex;
 		const float32*									mTextureCoords;
 		uint32											mVBO;
@@ -39,7 +40,7 @@ namespace graphics
 		Mesh() : mMaterial(0), mVertexData(0) {}
 		virtual ~Mesh() {}
 
-		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex);
+		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex);
 		virtual void									Release();
 
 		virtual Mesh*									CreateInstance();

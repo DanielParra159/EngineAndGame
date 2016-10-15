@@ -86,20 +86,20 @@ namespace game
 		switch (mDirection)
 		{
 			case game::Player::eUp:
-				mRotation.mY = 90;
 				ChangePos(mPosition.mX, mPosition.mZ - 1);
+				mRotation.mY = 90;
 				break;
 			case game::Player::eDown:
-				mRotation.mY = 270;
 				ChangePos(mPosition.mX, mPosition.mZ + 1);
+				mRotation.mY = 270;
 				break;
 			case game::Player::eLeft:
-				mRotation.mY = 180;
 				ChangePos(mPosition.mX - 1, mPosition.mZ);
+				mRotation.mY = 180;
 				break;
 			case game::Player::eRight:
-				mRotation.mY = 0;
 				ChangePos(mPosition.mX + 1, mPosition.mZ);
+				mRotation.mY = 0;
 				break;
 		}
 	}
@@ -112,7 +112,7 @@ namespace game
 		{
 			//@TODO Can be optimized
 			if (mTailStates[i]->mLife > 0)
-				mTail->Render(&mTailStates[i]->mPosition);
+				mTail->Render(&mTailStates[i]->mPosition, &Vector3D<float32>::one, &mTailStates[i]->mRotation);
 		}
 		
 	}
@@ -148,6 +148,7 @@ namespace game
 
 		mTailStates[i]->mLife = mSnakeLenght+1;
 		mTailStates[i]->mPosition = mPosition;
+		mTailStates[i]->mRotation = mRotation;
 
 		mPosition.mX = aNextX;
 		mPosition.mZ = aNextZ;

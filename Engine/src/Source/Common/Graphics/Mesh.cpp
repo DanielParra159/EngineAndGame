@@ -6,26 +6,27 @@
 
 namespace graphics
 {
-	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
+	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
 	{
 		mName = aName;
 		mVBO = aVBO;
 		mEBO = aEBO;
 		mElementData = aElementData;
-		mVertexData = aVertexData;
+
+		mVertexData = new float32[aVertexDataLength];
+		memcpy(mVertexData, aVertexData, aVertexDataLength);
+		mVertexDataLength = aVertexDataLength;
+
 		mNumVertex = aNumVertex;
 		mTextureCoords = aTextureCoords;
 
  		mMaterial = RenderManager::Instance()->LoadMaterial("Test01");
-
-		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
-		//mMaterial->SetVertexFloatAttribPointer("color", 3, FALSE, 8, 3, mVBO);
-		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, mVBO);
 	}
 
 	void Mesh::Release()
 	{
 		RenderManager::Instance()->UnloadMaterial(mMaterial);
+		delete[] mVertexData;
 	}
 
 	void Mesh::SetId(int32 aId) {
@@ -35,7 +36,7 @@ namespace graphics
 	Mesh* Mesh::CreateInstance()
 	{
 		Mesh* lMesh = new Mesh();
-		lMesh->Init(mName, mVBO, mEBO, mVertexData, mElementData, mTextureCoords, mNumVertex);
+		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex);
 		lMesh->mId = mId;
 		return lMesh;
 	}

@@ -240,8 +240,8 @@ namespace graphics
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 			SOIL_free_image_data(image);
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -292,6 +292,9 @@ namespace graphics
 		{
 			lResult = new Sprite();
 			lResult->Init(lTextureId);
+		}
+		else {
+			core::LogFormatString("Can\'t load texture %s\n", aFileName);
 		}
 
 		return lResult;
@@ -619,58 +622,49 @@ namespace graphics
 			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
 		}
 
-		static const float32 lVertexData[] = {
+		const float32 lVertexData[] = {
 			// X      Y     Z     R     G     B     U     V
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 
-			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
 
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
 
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
 
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 
-			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-
-
-
-			-1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-			1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-			1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-			1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-			-1.0f,  1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
 		};
 		
 		return LoadMesh(aFileName, lVertexData, sizeof(lVertexData), 36);
@@ -700,10 +694,10 @@ namespace graphics
 			glGenBuffers(1, &lVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, lVBO);
 			glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, aVertexData, GL_STATIC_DRAW);
-			glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, aVertexData, GL_STATIC_DRAW);
+			//glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, lVertexData, GL_STATIC_DRAW);
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
-			lResult->Init(aMeshName, lVBO, 0, aVertexData, 0, lTextureCoords, aNumVertex);
+			lResult->Init(aMeshName, lVBO, 0, aVertexData, aVertexDataLength, 0, lTextureCoords, aNumVertex);
 
 			uint32 lIndex = 0;
 			uint32 lCapacity = mLoadedMeshes.capacity();
@@ -771,6 +765,8 @@ namespace graphics
 		Matrix4x4::scale(&lModelMatrix, aScale);
 
 		mMaterial->PrepareToRender(&lModelMatrix);
+		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 5, 0, aMesh->mVBO);
+		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 5, 3, aMesh->mVBO);
 		//@TODO: if is the same material only need to asign these attrib. one time
 		mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
 		mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
