@@ -17,6 +17,8 @@
 
 #include "Script\ScriptManager.h"
 
+#include "Physics\PhysicsManager.h"
+
 #include "Logic\World.h"
 
 #include "Defs.h"
@@ -30,6 +32,8 @@ namespace core
 	BOOL Game::Init(const int8* title, const GameDescription& aGameDescription)
 	{
 		io::FileSystem::Instance()->Init(aGameDescription.mRootDir);
+
+		physics::PhysicsManager::Instance()->Init();
 
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
 												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);
@@ -57,6 +61,7 @@ namespace core
 			input::InputManager::Instance()->GetLastActionId();
 			ui::MenuManager::Instance()->Update();
 			audio::AudioManager::Instance()->Update();
+			physics::PhysicsManager::Instance()->Update(); //@TODO fixedUpdate
 			Update();
 			Render();
 		}
@@ -93,6 +98,8 @@ namespace core
 		input::InputManager::Instance()->Release();
 
 		graphics::RenderManager::Instance()->Release();
+
+		physics::PhysicsManager::Instance()->Release();
 		
 		io::FileSystem::Instance()->Release();
 

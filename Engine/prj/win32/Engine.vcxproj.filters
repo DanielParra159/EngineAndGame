@@ -85,6 +85,12 @@
     <Filter Include="Source Files\Script">
       <UniqueIdentifier>{d2c0905a-26fa-429a-8ad1-97941b4cffbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{581bc294-19d1-4eb9-905a-4148434d0ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{13b4808b-d816-414d-a47d-33351cbae5db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -192,6 +198,12 @@
     <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h">
       <Filter>Header Files\Script</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsManager.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -269,16 +281,11 @@
     <ClCompile Include="..\..\src\Source\Common\Script\ScriptManager.cpp">
       <Filter>Source Files\Script</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
-    <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
-    <Library Include="..\..\extern\FMOD\lib\fmod_vc.lib" />
-    <Library Include="..\..\extern\FMOD\lib\fmodL_vc.lib" />
-    <Library Include="..\..\extern\SOIL\lib\SOIL.lib" />
-    <Library Include="..\..\extern\GLEW\lib\freeglut.lib" />
-    <Library Include="..\..\extern\GLEW\lib\glew32.lib" />
-    <Library Include="..\..\extern\LUA\lib\lua52.lib" />
-    <Library Include="..\..\extern\LUABIND\lib\luabind.lib" />
+    <ClCompile Include="..\..\src\Source\Common\Physics\PhysicsManager.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Physics\ErrorManager.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

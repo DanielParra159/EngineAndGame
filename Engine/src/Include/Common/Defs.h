@@ -8,6 +8,7 @@
 #define GET_MENU_MANAGER	ui::MenuManager *lMenuManager = ui::MenuManager::Instance();
 #define GET_AUDIO_MANAGER	audio::AudioManager *lAudioManager = audio::AudioManager::Instance();
 #define GET_SCRIPT_MANAGER	script::ScriptManager *lScriptManager = script::ScriptManager::Instance();
+#define GET_PHYSICS_MANAGER physics::PhysicsManager *lPhysicsManager = physics::PhysicsManager::Instance();
 
 #define SINGLETON_BODY(className) \
 	className* className::sInstance = NULL; \
