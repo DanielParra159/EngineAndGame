@@ -1,5 +1,5 @@
-#ifndef _INPUT_INPUTMANAGER_H_
-#define _INPUT_INPUTMANAGER_H_
+#ifndef _ENGINE_INPUT_INPUTMANAGER_H_
+#define _ENGINE_INPUT_INPUTMANAGER_H_
 
 #include "Defs.h"
 #include "Types.h"
@@ -65,4 +65,4 @@ namespace input
 
 	}; // InputManager
 } // namespace input
-#endif // _INPUT_INPUTMANAGER_H_
+#endif // _ENGINE_INPUT_INPUTMANAGER_H_

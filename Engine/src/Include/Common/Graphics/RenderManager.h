@@ -1,5 +1,5 @@
-#ifndef _ENGINE_GRAPHICS_RENDERER_H_
-#define _ENGINE_GRAPHICS_RENDERER_H_
+#ifndef _ENGINE_GRAPHICS_RENDERERMANAGER_H_
+#define _ENGINE_GRAPHICS_RENDERERMANAGER_H_
 
 #include "Defs.h"
 #include "Types.h"
@@ -170,6 +170,6 @@ namespace graphics
 		@param aNumVertex, number of vertex
 		*/
 		Mesh*											LoadMesh(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
-	}; // Renderer
+	}; // RendererManager
 } // namespace graphics
-#endif // _ENGINE_GRAPHICS_RENDERER_H_
+#endif // _ENGINE_GRAPHICS_RENDERERMANAGER_H_

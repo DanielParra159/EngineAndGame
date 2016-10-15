@@ -15,6 +15,8 @@
 
 #include "IO\FileSystem.h"
 
+#include "Script\ScriptManager.h"
+
 #include "Logic\World.h"
 
 #include "Defs.h"
@@ -35,6 +37,8 @@ namespace core
 		input::InputManager::Instance()->Init();
 
 		ui::MenuManager::Instance()->Init();
+
+		script::ScriptManager::Instance()->Init();
 
 		audio::AudioManager::Instance()->Init(1.0f);
 
@@ -81,6 +85,8 @@ namespace core
 			mCurrentGameState->Release();
 
 		audio::AudioManager::Instance()->Release();
+
+		script::ScriptManager::Instance()->Release();
 
 		ui::MenuManager::Instance()->Release();
 

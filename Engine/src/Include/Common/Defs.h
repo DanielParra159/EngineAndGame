@@ -7,6 +7,7 @@
 #define GET_WORLD			logic::World *lWorld = logic::World::Instance();
 #define GET_MENU_MANAGER	ui::MenuManager *lMenuManager = ui::MenuManager::Instance();
 #define GET_AUDIO_MANAGER	audio::AudioManager *lAudioManager = audio::AudioManager::Instance();
+#define GET_SCRIPT_MANAGER	script::ScriptManager *lScriptManager = script::ScriptManager::Instance();
 
 #define SINGLETON_BODY(className) \
 	className* className::sInstance = 0; \

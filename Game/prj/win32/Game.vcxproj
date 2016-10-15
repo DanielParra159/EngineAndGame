@@ -60,13 +60,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include;..\..\..\Engine\extern\BOOST\include;..\..\..\Engine\extern\LUABIND\include;..\..\..\Engine\extern\LUA\include\lua</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;E:\Datos\Proyectos\EngineAndGame\Engine\extern\GLEW\lib;E:\Datos\Proyectos\EngineAndGame\Engine\extern\SDL2\lib;E:\Datos\Proyectos\EngineAndGame\Engine\extern\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabind.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;..\..\..\Engine\extern\GLEW\lib;..\..\..\Engine\extern\SDL2\lib;..\..\..\Engine\extern\SOIL\lib;..\..\..\Engine\extern\BOOST\lib;..\..\..\Engine\extern\LUABIND\lib;..\..\..\Engine\extern\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,15 +78,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include;..\..\..\Engine\extern\BOOST\include;..\..\..\Engine\extern\LUABIND\include;..\..\..\Engine\extern\LUA\include\lua</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;..\..\..\Engine\extern\GLEW\lib;..\..\..\Engine\extern\SDL2\lib;..\..\..\Engine\extern\SOIL\lib;..\..\..\Engine\extern\BOOST\lib;..\..\..\Engine\extern\LUABIND\lib;..\..\..\Engine\extern\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabind.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

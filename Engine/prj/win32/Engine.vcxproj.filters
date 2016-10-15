@@ -79,6 +79,12 @@
     <Filter Include="Source Files\Support">
       <UniqueIdentifier>{81822a9f-fdf9-4e99-97d6-ac0d6dd332d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Script">
+      <UniqueIdentifier>{0ed1b77f-559a-4bb7-8391-a7f7b91fd8f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script">
+      <UniqueIdentifier>{d2c0905a-26fa-429a-8ad1-97941b4cffbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -183,6 +189,9 @@
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h">
       <Filter>Header Files\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h">
+      <Filter>Header Files\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -256,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Support\Vector3D.cpp">
       <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Script\ScriptManager.cpp">
+      <Filter>Source Files\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

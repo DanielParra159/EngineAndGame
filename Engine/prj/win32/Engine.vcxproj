@@ -81,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,7 +89,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\extern\SDL2\lib;..\..\extern\FMOD\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -118,6 +119,7 @@
     <ClInclude Include="..\..\src\Include\Common\IO\FileSystem.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
+    <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\IdReferences.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Matrix4.h" />
@@ -149,6 +151,7 @@
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Script\ScriptManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Support\Vector3D.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />
     <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp" />

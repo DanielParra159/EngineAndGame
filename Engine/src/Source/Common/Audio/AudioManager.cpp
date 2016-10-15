@@ -8,6 +8,17 @@
 
 #include <algorithm>
 
+
+#include "Script/ScriptManager.h"
+#include "luabind/luabind.hpp"
+#include "luabind/adopt_policy.hpp"
+
+#include <iostream>
+#include <cmath>
+#include <cerrno>
+#include <cfenv>
+
+
 namespace audio {
 
 	BOOL ERRCHECK(FMOD_RESULT result){

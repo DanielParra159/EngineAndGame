@@ -41,3 +41,5 @@ Engine/tmp/*
 *.pdb
 *.sdf
 notes.txt
+*.iobj
+*.ipdb
