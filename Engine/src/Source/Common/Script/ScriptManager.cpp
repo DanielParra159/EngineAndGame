@@ -15,7 +15,7 @@ namespace script
 
 	BOOL ScriptManager::Init()
 	{
-		mLuaState = lua_open();
+		mLuaState = luaL_newstate();
 
 		if (!mLuaState)
 			return FALSE;

@@ -167,7 +167,7 @@
     <Library Include="..\..\extern\GLEW\lib\freeglut.lib" />
     <Library Include="..\..\extern\GLEW\lib\glew32.lib" />
     <Library Include="..\..\extern\LUABIND\lib\luabind.lib" />
-    <Library Include="..\..\extern\LUA\lib\lua51.lib" />
+    <Library Include="..\..\extern\LUA\lib\lua52.lib" />
     <Library Include="..\..\extern\SDL2\lib\SDL2.lib" />
     <Library Include="..\..\extern\SDL2\lib\SDL2_image.lib" />
     <Library Include="..\..\extern\SOIL\lib\SOIL.lib" />

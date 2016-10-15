@@ -20,25 +20,6 @@
 
 #include "Defs.h"
 
-#include "Script/ScriptManager.h"
-#include "luabind/luabind.hpp"
-
-namespace
-{
-	//-------------------------AUDIO-------------------
-
-	int addSoundPath(lua_State *lua)
-	{
-		printf("SI");
-		return 0;
-	}
-
-	void test4()
-	{
-		printf("NO");
-	}
-}
-
 namespace game
 {
 	BOOL MenuState::Init()

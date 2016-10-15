@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabind.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabind.lib;lua52.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;..\..\..\Engine\extern\GLEW\lib;..\..\..\Engine\extern\SDL2\lib;..\..\..\Engine\extern\SOIL\lib;..\..\..\Engine\extern\BOOST\lib;..\..\..\Engine\extern\LUABIND\lib;..\..\..\Engine\extern\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
