@@ -10,10 +10,10 @@
 #define GET_SCRIPT_MANAGER	script::ScriptManager *lScriptManager = script::ScriptManager::Instance();
 
 #define SINGLETON_BODY(className) \
-	className* className::sInstance = 0; \
+	className* className::sInstance = NULL; \
 	className* className::Instance() \
 	{ \
-		if (className::sInstance == 0) \
+		if (className::sInstance == NULL) \
 		{ \
 			className::sInstance = new className(); \
 			return className::sInstance; \

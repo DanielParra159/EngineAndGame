@@ -10,7 +10,7 @@ namespace io
 	{
 		//@TODO add more modes
 		mFileData = fopen((FileSystem::Instance()->GetCurrentDir()+"\\"+aName).c_str(), aOpenMode == eRead ? "rb" : "wb");
-		mOpen = mFileData != 0;
+		mOpen = mFileData != NULL;
 
 		return mOpen;
 	}

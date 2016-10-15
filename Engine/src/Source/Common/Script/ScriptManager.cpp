@@ -35,12 +35,12 @@ namespace script
 
 	BOOL ScriptManager::LoadScript(const int8* aScriptName)
 	{
-		if (luaL_loadfile(mLuaState, aScriptName) != 0) {
+		if (luaL_loadfile(mLuaState, aScriptName) != NULL) {
 			core::LogFormatString("Can\'t find script %s or syntax error\n", aScriptName);
 			return FALSE;
 		}
 
-		if (lua_pcall(mLuaState, 0, 0, 0) != 0) {
+		if (lua_pcall(mLuaState, 0, 0, 0) != NULL) {
 			core::LogFormatString("Error executting script %s: %s\n", aScriptName, lua_tostring(mLuaState, -1));
 			lua_pop(mLuaState, 1);
 			return FALSE;
@@ -53,7 +53,7 @@ namespace script
 	BOOL ScriptManager::ExecuteScript(const int8* aScriptName)
 	{
 		int32 lError = luaL_loadstring(mLuaState, aScriptName);
-		if (lError != 0)
+		if (lError != NULL)
 		{
 			core::LogFormatString("Error executting script %s: %s\n", aScriptName, lError);
 			return FALSE;

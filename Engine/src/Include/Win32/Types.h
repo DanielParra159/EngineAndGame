@@ -14,5 +14,6 @@ typedef double float64;
 
 #define TRUE 1
 #define FALSE 0
+#define NULL 0
 
 #endif // _ENGINE_CORE_TYPES_H_

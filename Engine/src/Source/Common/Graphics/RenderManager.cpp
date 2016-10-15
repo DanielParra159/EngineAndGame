@@ -40,7 +40,7 @@ namespace graphics
 								   SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 								   //aFullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN); @TODO
 
-		if (mWindow == 0)
+		if (mWindow == NULL)
 			return FALSE;
 
 		int oglIdx = -1;
@@ -71,7 +71,7 @@ namespace graphics
 
 		mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
-		if (mRenderer == 0)
+		if (mRenderer == NULL)
 			return FALSE;
 
 		SDL_SetRenderDrawColor(mRenderer,
@@ -95,7 +95,7 @@ namespace graphics
 		int32 size = mLoadedMeshes.size();
 		for (int i=0; i < size; ++i)
 		{
-			if (mLoadedMeshes[i] == 0)
+			if (mLoadedMeshes[i] == NULL)
 				continue;
 			Mesh* lMesh = mLoadedMeshes[i];
 			lMesh->Release();
@@ -229,16 +229,16 @@ namespace graphics
 		uint32 lTextureId;
 		glGenTextures(1, &lTextureId);
 
-		int width, height;
-		unsigned char* image;
+		int32 lWidth, lHeight;
+		uint8* lImage;
 
 		glBindTexture(GL_TEXTURE_2D, lTextureId);
-		image = SOIL_load_image((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+		lImage = SOIL_load_image((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), &lWidth, &lHeight, 0, SOIL_LOAD_RGB);
 
-		if (image != 0)
+		if (lImage != NULL)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-			SOIL_free_image_data(image);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, lWidth, lHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, lImage);
+			SOIL_free_image_data(lImage);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -247,7 +247,7 @@ namespace graphics
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			uint32 lCapacity = mLoadedTextures.capacity();
-			lResult = 0;
+			lResult = NULL;
 			if (mNumLoadedTextures == lCapacity)
 			{
 				mLoadedTextures.push_back(lTextureId);
@@ -257,7 +257,7 @@ namespace graphics
 			{
 				int32 lSize = mLoadedTextures.size();
 				
-				while (lResult < lSize && mLoadedTextures[lResult] != 0)
+				while (lResult < lSize && mLoadedTextures[lResult] != NULL)
 				{
 					++lResult;
 				}
@@ -285,7 +285,7 @@ namespace graphics
 
 	Sprite* RenderManager::CreateSprite(const std::string& aFileName)
 	{
-		Sprite *lResult = 0;
+		Sprite *lResult = NULL;
 
 		int32 lTextureId = LoadTexture(aFileName);
 		if (lTextureId > -1)
@@ -304,7 +304,7 @@ namespace graphics
 	{
 		aSprite->Release();
 		delete aSprite;
-		aSprite = 0;
+		aSprite = NULL;
 	}
 
 
@@ -397,7 +397,7 @@ namespace graphics
 			{
 				int32 lSize = mLoadedVertexShaders.size();
 
-				while (aVertexShaderId < lSize && mLoadedVertexShaders[aVertexShaderId] != 0)
+				while (aVertexShaderId < lSize && mLoadedVertexShaders[aVertexShaderId] != NULL)
 				{
 					++aVertexShaderId;
 				}
@@ -473,7 +473,7 @@ namespace graphics
 			{
 				int32 lSize = mLoadedFragmentShaders.size();
 
-				while (aFragmentShaderId < lSize && mLoadedFragmentShaders[aFragmentShaderId] != 0)
+				while (aFragmentShaderId < lSize && mLoadedFragmentShaders[aFragmentShaderId] != NULL)
 				{
 					++aFragmentShaderId;
 				}
@@ -517,7 +517,7 @@ namespace graphics
 		{
 			int32 lSize = mLoadedMaterials.size();
 
-			while (lMaterialId < lSize && mLoadedMaterials[lMaterialId] != 0)
+			while (lMaterialId < lSize && mLoadedMaterials[lMaterialId] != NULL)
 			{
 				++lMaterialId;
 			}
@@ -544,18 +544,18 @@ namespace graphics
 	{
 		std::string lMaterialName, lTextureName, lVertexShaderName, lFragmentShaderName;
 		if (!ParseMaterial(aFileName, lMaterialName, lTextureName, lVertexShaderName, lFragmentShaderName))
-			return 0;
+			return NULL;
 
 		int32 lVertexShader = -1;
 		int32 lVertexShaderId = 0;
 		if (!LoadVertexShader(aFileName, lVertexShaderName, lVertexShader, lVertexShaderId))
-			return 0;
+			return NULL;
 
 		
 		int32 lFragmentShader = -1;
 		int32 lFragmentShaderId = 0;
 		if (!LoadFragmentShader(aFileName, lFragmentShaderName, lFragmentShader, lFragmentShaderId))
-			return 0;
+			return NULL;
 
 		return CreateMaterial(lMaterialName, lTextureName, lVertexShader, lVertexShaderId, lFragmentShader, lFragmentShaderId);
 	}
@@ -573,7 +573,7 @@ namespace graphics
 		}
 		if (--lIterator->second->mReferences == 0)
 		{
-			mLoadedVertexShaders[aMaterial->mVertexShaderId] = 0;
+			mLoadedVertexShaders[aMaterial->mVertexShaderId] = NULL;
 			mVertexShaderIds.erase(lIterator);
 			--mNumLoadedVertexShaders;
 			glDeleteShader(lVertexShader);
@@ -589,7 +589,7 @@ namespace graphics
 		}
 		if (--lIterator->second->mReferences == 0)
 		{
-			mLoadedFragmentShaders[aMaterial->mFragmentShaderId] = 0;
+			mLoadedFragmentShaders[aMaterial->mFragmentShaderId] = NULL;
 			mFragmentShaderIds.erase(lIterator);
 			--mNumLoadedFragmentShaders;
 			glDeleteShader(lFragmentShader);
@@ -684,9 +684,9 @@ namespace graphics
 	Mesh* RenderManager::LoadMesh(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
 	{
 		Mesh* lResult;
-		float32* lTextureCoords = 0;
+		float32* lTextureCoords = NULL;
 
-		if (aVertexData != 0 /*&& lTextureCoords != 0*/)
+		if (aVertexData != NULL /*&& lTextureCoords != NULL*/)
 		{
 			lResult = new Mesh();
 
@@ -710,7 +710,7 @@ namespace graphics
 			{
 				uint32 lSize = mLoadedMeshes.size();
 
-				while (lIndex < lSize && mLoadedMeshes[lIndex] != 0)
+				while (lIndex < lSize && mLoadedMeshes[lIndex] != NULL)
 				{
 					++lIndex;
 				}
@@ -748,7 +748,7 @@ namespace graphics
 		}
 		if (--lIterator->second->mReferences == 0)
 		{
-			mLoadedMeshes[aMesh->mId] = 0;
+			mLoadedMeshes[aMesh->mId] = NULL;
 			glDeleteBuffers(1, &aMesh->mVBO);
 
 			mMeshesIds.erase(lIterator);

@@ -99,31 +99,31 @@ namespace audio {
 
 	Sound2D* AudioManager::CreateSound2D(const std::string &aFileName)
 	{
-		Sound2D *result = 0;
+		Sound2D *lResult = NULL;
 
 		int32 lSoundId = LoadSound2D(aFileName);
 		if (lSoundId > -1)
 		{
-			result = new Sound2D();
-			result->Init(lSoundId);
+			lResult = new Sound2D();
+			lResult->Init(lSoundId);
 		}
 
-		return result;
+		return lResult;
 	}
 
 	Sound3D* AudioManager::CreateSound3D(const std::string &aFileName, float32 aMinDistance, float32 aMaxDistance)
 	{
-		Sound3D *result = 0;
+		Sound3D *lResult = NULL;
 
 		int32 lSoundId = LoadSound3D(aFileName, aMinDistance, aMaxDistance);
 
 		if (lSoundId > -1)
 		{
-			result = new Sound3D();
-			result->Init(lSoundId);
+			lResult = new Sound3D();
+			lResult->Init(lSoundId);
 		}
 
-		return result;
+		return lResult;
 	}
 
 

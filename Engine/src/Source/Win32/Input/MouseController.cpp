@@ -18,7 +18,7 @@ namespace input
 	int32 MouseController::Update(SDL_Event& aEvent)
 	{
 		int32 lResult = -1;
-		InputAction *lInputAction = 0;
+		InputAction *lInputAction = NULL;
 
 		switch (aEvent.type)
 		{

@@ -52,7 +52,7 @@ namespace input
 				if (!lResult->Init())
 				{
 					delete lResult;
-					lResult = 0;
+					lResult = NULL;
 				}
 				else 
 				{
@@ -64,7 +64,7 @@ namespace input
 				if (!lResult->Init())
 				{
 					delete lResult;
-					lResult = 0;
+					lResult = NULL;
 				}
 				else
 				{
@@ -79,7 +79,7 @@ namespace input
 
 	IController* InputManager::GetController(ETypeControls aType)
 	{
-		IController* lResult = 0;
+		IController* lResult = NULL;
 
 		TControllers::const_iterator lIterator = mControllers.begin();
 		TControllers::const_iterator lIteratorEnd = mControllers.end();
