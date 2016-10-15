@@ -19,10 +19,9 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		mGround = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
+		mGround->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Grass.jpg"));
 		mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
-		mWall->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));
-		//mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png"));
-
+		mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
 	}
 
 	void Map::Update()

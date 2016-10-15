@@ -141,7 +141,7 @@ namespace audio {
 
 		TSound lSound;
 
-		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDirectory() + "\\" + aFileName).c_str(), FMOD_2D, 0, &lSound)))
+		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), FMOD_2D, 0, &lSound)))
 		{
 			lResult = AddSoundToList(aFileName, lSound); 
 		}
@@ -163,7 +163,7 @@ namespace audio {
 
 		TSound lSound;
 
-		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDirectory() + "\\" + aFileName).c_str(), FMOD_3D, 0, &lSound)))
+		if (ERRCHECK(mAudioSystem->createSound((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), FMOD_3D, 0, &lSound)))
 		{
 			if (ERRCHECK(lSound->set3DMinMaxDistance(aMinDistance * mDistanceFactor, aMaxDistance * mDistanceFactor)))
 			{

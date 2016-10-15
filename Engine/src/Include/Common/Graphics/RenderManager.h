@@ -170,6 +170,42 @@ namespace graphics
 		@param aNumVertex, number of vertex
 		*/
 		Mesh*											LoadMesh(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
+		/**
+		Auxiliar function to parse material from file
+		@param aFileName, file name
+		@param aMaterialName, materia name (output param)
+		@param aTextureName, texture name (output param)
+		@param aVertexShaderName, vertex shader name (output param)
+		@param aFragmentShaderName, fragment shader name (output param)
+		@return TRUE if all is well
+		*/
+		BOOL											ParseMaterial(const std::string& aFileName, std::string& aMaterialName, std::string& aTextureName, std::string& aVertexShaderName, std::string& aFragmentShaderName);
+		/**
+		Auxiliar function to load vertex shader from file
+		@param aMaterialFileName, material file name
+		@param aVertexShaderName, vertex sahder name
+		@param aVertexShader, vertex shader (output param)
+		@param aVertexShaderId, vertex shader id (output param)
+		*/
+		BOOL											LoadVertexShader(const std::string& aMaterialFileName, const std::string& aVertexShaderName, int32& aVertexShader, int32& aVertexShaderId);
+		/**
+		Auxiliar function to load fragment shader from file
+		@param aMaterialFileName, material file name
+		@param aFragmentShaderName, fragment sahder name
+		@param aFragmentShader, fragment shader (output param)
+		@param aFragmentShaderId, fragment shader id (output param)
+		*/
+		BOOL											LoadFragmentShader(const std::string& aMaterialFileName, const std::string& aFragmentShaderName, int32& aFragmentShader, int32& aFragmentShaderId);
+		/**
+		Auxiliar function to create material
+		@param aMaterialName, materia name
+		@param aTextureName, texture name
+		@param aVertexShader, vertex shader to be used
+		@param aVertexShaderId, vertex shader id
+		@param aFragmentShader, fragment shader to be used
+		@param aFragmentShaderId, fragment shader id
+		*/
+		Material*										CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, int32 aVertexShader, int32 aVertexShaderId, int32 aFragmentShader, int32 aFragmentShaderId);
 	}; // RendererManager
 } // namespace graphics
 #endif // _ENGINE_GRAPHICS_RENDERERMANAGER_H_

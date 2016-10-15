@@ -1,5 +1,6 @@
 material Test01
 {
+	texture sample.png;
 	vertexShader Default;
 	fragmentProgram Default;
 }

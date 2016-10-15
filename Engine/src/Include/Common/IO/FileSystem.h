@@ -32,7 +32,7 @@ namespace io
 		Gets the current directory
 		@return Current directory
 		*/
-		const std::string&								GetCurrentDirectory() { return mCurrentDir;	}
+		const std::string&								GetCurrentDir() { return mCurrentDir;	}
 
 	private:
 		FileSystem() {}

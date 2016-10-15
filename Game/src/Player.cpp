@@ -11,6 +11,7 @@
 
 #include "Graphics\RenderManager.h"
 #include "Graphics\Mesh.h"
+#include "Graphics\Material.h"
 
 #include "Support\Vector3D.h"
 namespace game
@@ -20,7 +21,9 @@ namespace game
 		IGameObject::Init(aActive);
 
 		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
+		mHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
 		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
+		mTail->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png"));
 
 		mDirection = EDirections::eRight;
 
@@ -83,19 +86,19 @@ namespace game
 		switch (mDirection)
 		{
 			case game::Player::eUp:
-				mRotation.mY = 0;
+				mRotation.mY = 90;
 				ChangePos(mPosition.mX, mPosition.mZ - 1);
 				break;
 			case game::Player::eDown:
-				mRotation.mY = 180;
+				mRotation.mY = 270;
 				ChangePos(mPosition.mX, mPosition.mZ + 1);
 				break;
 			case game::Player::eLeft:
-				mRotation.mY = 270;
+				mRotation.mY = 180;
 				ChangePos(mPosition.mX - 1, mPosition.mZ);
 				break;
 			case game::Player::eRight:
-				mRotation.mY = 90;
+				mRotation.mY = 0;
 				ChangePos(mPosition.mX + 1, mPosition.mZ);
 				break;
 		}
