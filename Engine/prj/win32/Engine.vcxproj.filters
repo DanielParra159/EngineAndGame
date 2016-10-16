@@ -198,10 +198,13 @@
     <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h">
       <Filter>Header Files\Script</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsManager.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h">
+    <ClInclude Include="..\..\src\Include\Common\Physics\CollisionManager.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -285,6 +288,9 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Physics\ErrorManager.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Physics\CollisionManager.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>

@@ -33,7 +33,7 @@ namespace core
 	{
 		io::FileSystem::Instance()->Init(aGameDescription.mRootDir);
 
-		physics::PhysicsManager::Instance()->Init();
+		physics::PhysicsManager::Instance()->Init(aGameDescription.mPhysicsGravity);
 
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
 												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);

@@ -121,6 +121,7 @@
     <ClInclude Include="..\..\src\Include\Common\IO\FileSystem.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
+    <ClInclude Include="..\..\src\Include\Common\Physics\CollisionManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Physics\CollisionManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\ErrorManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Script\ScriptManager.cpp" />

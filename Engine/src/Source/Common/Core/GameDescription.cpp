@@ -38,4 +38,9 @@ namespace core
 		mRootDir = aDirectory;
 	}
 
+	void GameDescription::SetPhysicsGravity(float32 aPhysicsGravity)
+	{
+		mPhysicsGravity = aPhysicsGravity;
+	}
+
 } // namespace core

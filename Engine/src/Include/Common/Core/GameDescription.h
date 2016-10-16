@@ -19,9 +19,10 @@ namespace core
 		Vector2D<uint32>								mScreenPosition;
 		Color											mRenderDrawColor;
 		BOOL											mFullScreen;
+		float32											mPhysicsGravity;
 		std::string										mRootDir;
 	public:
-		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mRenderDrawColor(), mFullScreen(FALSE) {}
+		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mRenderDrawColor(), mFullScreen(FALSE), mPhysicsGravity(-9.81f) {}
 		~GameDescription() {}
 		/** Assigns screen size
 		@param aX width
@@ -49,6 +50,7 @@ namespace core
 		*/
 		void											SetFullScreen(BOOL aFullScreen);
 		void											SetRootDir(const std::string& aDirectory);
+		void											SetPhysicsGravity(float32 aPhysicsGravity);
 			
 	}; // GameDescription
 } // namespace core

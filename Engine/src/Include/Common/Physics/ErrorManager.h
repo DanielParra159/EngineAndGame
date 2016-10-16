@@ -8,6 +8,9 @@
 
 namespace physics
 {
+	/**
+	PhysX error callback, PhysX invoke reportError if an error ocurrs.
+	*/
 	class ErrorManager : public physx::PxErrorCallback
 	{
 	public:
@@ -15,8 +18,11 @@ namespace physics
 		virtual ~ErrorManager() {}
 
 		/**
-		* Método invocado por PhysX cada vez que se produce un error. El mensaje de error se
-		* imprime por pantalla.
+		* Method invoked by PhysX each time an error ocurrs. Print the error message on screen.
+		@param aErrorCode,
+		@param aMessage,
+		@param aFile,
+		@param aLine,
 		*/
 		void reportError(physx::PxErrorCode::Enum aErrorCode, const int8* aMessage, const int8* aFile, int32 aLine);
 	}; // ErrorManager
