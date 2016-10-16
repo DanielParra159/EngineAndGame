@@ -4,6 +4,10 @@
 #include "Defs.h"
 #include "Types.h"
 
+#include "Support/Vector3D.h"
+
+#include "Physics/Collider.h"
+
 namespace physx
 {
 	class PxErrorCallback;
@@ -58,6 +62,9 @@ namespace physics
 		Create an PhysicsMaterial, the user must release it later
 		*/
 		PhysicsMaterial*								CreateMaterial(float32 aStaticFriction, float32 aDynamicFriction, float32 aRestitution);
+
+		Collider*										CreateBoxCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aPositionOffset, const Vector3D<float32> &aDimensions,
+																		  BOOL aTrigger, int32 aGroup, Collider::eColliderType aColliderType, float32 aMass = 0.0f);
 	private:
 		PhysicsManager() {}
 		~PhysicsManager() {}

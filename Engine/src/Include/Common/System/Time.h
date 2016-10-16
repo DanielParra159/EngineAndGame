@@ -4,12 +4,18 @@
 #include "Defs.h"
 #include "Types.h"
 
+namespace core
+{
+	class Game;
+}
+
 namespace sys 
 {
 	/**
 	System time access functions
 	*/
 	class Time {
+		friend class core::Game;
 		SINGLETON_HEAD(Time);
 	private:
 		static float32									mDeltaSec;
@@ -31,11 +37,11 @@ namespace sys
 		*/
 		static float32									GetDeltaSec();
 
+	private:
 		/**
 		Update the deltaSec passed since the last update
 		*/
 		void Update();
-	private:
 		Time() {}
 		~Time() {}
 	};
