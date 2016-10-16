@@ -61,11 +61,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include;..\..\..\Engine\extern\BOOST\include;..\..\..\Engine\extern\LUABIND\include;..\..\..\Engine\extern\LUA\include\lua;..\..\..\Engine\extern\PHYSX\include\PhysX</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabindd.lib;lua52d.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysXProfileSDKCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PxTaskCHECKED.lib;PhysXVisualDebuggerSDKCHECKED.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine_d.lib;SDL2.lib;SDL2main.lib;glew32.lib;freeglut.lib;SOIL.lib;luabindd.lib;lua52d.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PxTaskDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\Engine\out\win32;..\..\..\Engine\extern\GLEW\lib;..\..\..\Engine\extern\SDL2\lib;..\..\..\Engine\extern\SOIL\lib;..\..\..\Engine\extern\BOOST\lib;..\..\..\Engine\extern\LUABIND\lib;..\..\..\Engine\extern\LUA\lib;..\..\..\Engine\extern\PHYSX\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -79,6 +80,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\src;..\..\..\Engine\src\Include\Common;..\..\..\Engine\src\Include\Win32;..\..\..\Engine\extern\SDL2\include;..\..\..\Engine\extern\FMOD\include;..\..\..\Engine\extern\GLEW\include;..\..\..\Engine\extern\SOIL\include;..\..\..\Engine\extern\GLM\include;..\..\..\Engine\extern\BOOST\include;..\..\..\Engine\extern\LUABIND\include;..\..\..\Engine\extern\LUA\include\lua;..\..\..\Engine\extern\PHYSX\include\PhysX</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

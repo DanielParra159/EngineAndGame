@@ -1,31 +1,14 @@
-// This code contains NVIDIA Confidential Information and is disclosed to you
-// under a form of NVIDIA software license agreement provided separately to you.
-//
-// Notice
-// NVIDIA Corporation and its licensors retain all intellectual property and
-// proprietary rights in and to this software and related documentation and
-// any modifications thereto. Any use, reproduction, disclosure, or
-// distribution of this software and related documentation without an express
-// license agreement from NVIDIA Corporation is strictly prohibited.
-//
-// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
-// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
-// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
-// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
-//
-// Information and code furnished is believed to be accurate and reliable.
-// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
-// information or for any infringement of patents or other rights of third parties that may
-// result from its use. No license is granted by implication or otherwise under any patent
-// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
-// This code supersedes and replaces all information previously supplied.
-// NVIDIA Corporation products are not authorized for use as critical
-// components in life support devices or systems without express written approval of
-// NVIDIA Corporation.
-//
-// Copyright (c) 2008-2013 NVIDIA Corporation. All rights reserved.
+/*
+ * Copyright (c) 2008-2015, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * NVIDIA CORPORATION and its licensors retain all intellectual property
+ * and proprietary rights in and to this software, related documentation
+ * and any modifications thereto.  Any use, reproduction, disclosure or
+ * distribution of this software and related documentation without an express
+ * license agreement from NVIDIA CORPORATION is strictly prohibited.
+ */
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
-// Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
+// Copyright (c) 2001-2004 NovodeX AG. All rights reserved.
 
 
 #ifndef PX_PHYSICS_GEOMUTILS_NX_HEIGHTFIELD
@@ -33,9 +16,9 @@
 /** \addtogroup geomutils
   @{
 */
-#include "geometry/PxPhysXGeomUtils.h"
+
 #include "geometry/PxHeightFieldFlag.h"
-#include "common/PxSerialFramework.h"
+#include "common/PxBase.h"
 
 #ifndef PX_DOXYGEN
 namespace physx
@@ -45,21 +28,23 @@ namespace physx
 class PxHeightFieldDesc;
 
 /**
-\brief A height field class.  
+\brief A height field class.
 
-Height fields work in a similar way as triangle meshes specified to act as 
+Height fields work in a similar way as triangle meshes specified to act as
 height fields, with some important differences:
 
-Triangle meshes can be made of nonuniform geometry, while height fields are 
-regular, rectangular grids.  This means that with PxHeightField, you sacrifice 
+Triangle meshes can be made of nonuniform geometry, while height fields are
+regular, rectangular grids.  This means that with PxHeightField, you sacrifice
 flexibility in return for improved performance and decreased memory consumption.
 
-Like Convexes and TriangleMeshes, HeightFields are referenced by shape instances 
+In local space rows extend in X direction, columns in Z direction and height in Y direction.
+
+Like Convexes and TriangleMeshes, HeightFields are referenced by shape instances
 (see #PxHeightFieldGeometry, #PxShape).
 
-To avoid duplicating data when you have several instances of a particular 
-height field differently, you do not use this class to represent a 
-height field object directly. Instead, you create an instance of this height field 
+To avoid duplicating data when you have several instances of a particular
+height field differently, you do not use this class to represent a
+height field object directly. Instead, you create an instance of this height field
 via the PxHeightFieldGeometry and PxShape classes.
 
 <h3>Creation</h3>
@@ -78,15 +63,12 @@ once you have released all of its PxHeightFiedShape instances.
 @see PxHeightFieldDesc PxHeightFieldGeometry PxShape PxPhysics.createHeightField()
 */
 
-class PxHeightField	: public PxSerializable
+class PxHeightField	: public PxBase
 {
 	public:
 	/**
-	\brief Releases the height field.
-	
-	\note This will decrease the reference count by one.
+	\brief Decrements the reference count of a height field and releases it if the new reference count is zero.
 
-	Releases the application's reference to the height field.
 	The height field is destroyed when the application's reference is released and all shapes referencing the height field are destroyed.
 
 	@see PxPhysics.createHeightField() PxHeightFieldDesc PxHeightFieldGeometry PxShape
@@ -95,7 +77,7 @@ class PxHeightField	: public PxSerializable
 
 	/**
     \brief Writes out the sample data array.
-	
+
 	The user provides destBufferSize bytes storage at destBuffer.
 	The data is formatted and arranged as PxHeightFieldDesc.samples.
 
@@ -109,14 +91,15 @@ class PxHeightField	: public PxSerializable
 
 	/**
     \brief Replaces a rectangular subfield in the sample data array.
-	
+
 	The user provides the description of a rectangular subfield in subfieldDesc.
 	The data is formatted and arranged as PxHeightFieldDesc.samples.
 
 	\param[in] startCol First cell in the destination heightfield to be modified. Can be negative.
 	\param[in] startRow First row in the destination heightfield to be modified. Can be negative.
 	\param[in] subfieldDesc Description of the source subfield to read the samples from.
-	\return True on success, false on failure. Failure can be due to format mismatch.
+	\param[in] shrinkBounds If left as false, the bounds will never shrink but only grow. If set to true the bounds will be recomputed from all HF samples at O(nbColums*nbRows) perf cost.
+	\return True on success, false on failure. Failure can occur due to format mismatch.
 
 	\note Modified samples are constrained to the same height quantization range as the original heightfield.
 	Source samples that are out of range of target heightfield will be clipped with no error.
@@ -126,7 +109,7 @@ class PxHeightField	: public PxSerializable
 
 	@see PxHeightFieldDesc.samples PxShape.setGeometry
 	*/
-	PX_PHYSX_COMMON_API virtual		bool						modifySamples(PxI32 startCol, PxI32 startRow, const PxHeightFieldDesc& subfieldDesc) = 0;
+	PX_PHYSX_COMMON_API virtual		bool						modifySamples(PxI32 startCol, PxI32 startRow, const PxHeightFieldDesc& subfieldDesc, bool shrinkBounds = false) = 0;
 
 	/**
 	\brief Retrieves the number of sample rows in the samples array.
@@ -148,7 +131,7 @@ class PxHeightField	: public PxSerializable
 
 	/**
 	\brief Retrieves the format of the sample data.
-	
+
 	\return The format of the sample data.
 
 	@see PxHeightFieldDesc.format PxHeightFieldFormat
@@ -228,13 +211,13 @@ class PxHeightField	: public PxSerializable
 	*/
 	PX_PHYSX_COMMON_API virtual	PxVec3					getTriangleNormal(PxTriangleID triangleIndex) const = 0;
 
-	PX_INLINE virtual	const char*				getConcreteTypeName() const { return "PxHeightField"; }
+	PX_PHYSX_COMMON_API virtual	const char*				getConcreteTypeName() const { return "PxHeightField"; }
 
-protected:	
-	PxHeightField()										{}
-	PxHeightField(PxRefResolver& v)	: PxSerializable(v)	{}	
-	virtual ~PxHeightField(){}
-	virtual	bool					isKindOf(const char* name)	const		{	return !strcmp("PxHeightField", name) || PxSerializable::isKindOf(name); }
+protected:
+						PX_INLINE						PxHeightField(PxType concreteType, PxBaseFlags baseFlags) : PxBase(concreteType, baseFlags) {}
+						PX_INLINE						PxHeightField(PxBaseFlags baseFlags) : PxBase(baseFlags) {}
+	PX_PHYSX_COMMON_API virtual							~PxHeightField() {}
+	PX_PHYSX_COMMON_API virtual	bool					isKindOf(const char* name) const { return !strcmp("PxHeightField", name) || PxBase::isKindOf(name); }
 };
 
 #ifndef PX_DOXYGEN

@@ -1,29 +1,12 @@
-// This code contains NVIDIA Confidential Information and is disclosed to you
-// under a form of NVIDIA software license agreement provided separately to you.
-//
-// Notice
-// NVIDIA Corporation and its licensors retain all intellectual property and
-// proprietary rights in and to this software and related documentation and
-// any modifications thereto. Any use, reproduction, disclosure, or
-// distribution of this software and related documentation without an express
-// license agreement from NVIDIA Corporation is strictly prohibited.
-//
-// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
-// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
-// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
-// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
-//
-// Information and code furnished is believed to be accurate and reliable.
-// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
-// information or for any infringement of patents or other rights of third parties that may
-// result from its use. No license is granted by implication or otherwise under any patent
-// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
-// This code supersedes and replaces all information previously supplied.
-// NVIDIA Corporation products are not authorized for use as critical
-// components in life support devices or systems without express written approval of
-// NVIDIA Corporation.
-//
-// Copyright (c) 2008-2013 NVIDIA Corporation. All rights reserved.
+/*
+ * Copyright (c) 2008-2015, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * NVIDIA CORPORATION and its licensors retain all intellectual property
+ * and proprietary rights in and to this software, related documentation
+ * and any modifications thereto.  Any use, reproduction, disclosure or
+ * distribution of this software and related documentation without an express
+ * license agreement from NVIDIA CORPORATION is strictly prohibited.
+ */
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
@@ -33,20 +16,22 @@
 /** \addtogroup extensions
   @{
 */
-
+#include "pvd/PxVisualDebugger.h"
 #include "foundation/Px.h"
-#include "PxPhysX.h"
+#include "PxPhysXConfig.h"
 #include "foundation/PxFlags.h"
+#include "physxvisualdebuggersdk/PvdConnectionManager.h"
+#include "physxvisualdebuggersdk/PvdConnection.h"
 
+
+#ifndef PX_DOXYGEN
 namespace physx { namespace debugger { namespace comm {
+#endif
 	class PvdConnectionManager;
 	class PvdConnection;
+#ifndef PX_DOXYGEN
 }}}
-
-namespace PVD {
-	using namespace physx::debugger;
-	using namespace physx::debugger::comm;
-}
+#endif
 
 #ifndef PX_DOXYGEN
 namespace physx
@@ -62,7 +47,6 @@ struct PxVisualDebuggerConnectionFlag
 {
 	enum Enum
 	{
-		Unknown = 0,
 		/**
 			\brief Send debugging information to PVD.  
 			
@@ -71,7 +55,7 @@ struct PxVisualDebuggerConnectionFlag
 			a noticeable impact on performance and thus this flag should not be set
 			if you want an accurate performance profile.
 		*/
-		Debug = 1, 
+		eDEBUG = 1 << 0, 
 		/**
 			\brief Send profile information to PVD.
 
@@ -83,7 +67,7 @@ struct PxVisualDebuggerConnectionFlag
 			profileZoneManager.  Using both of them together allows SDK to send profile
 			events to PVD.  
 		*/
-		Profile = 1 << 1,
+		ePROFILE = 1 << 1,
 		/**
 			\brief Send memory information to PVD.
 
@@ -94,7 +78,7 @@ struct PxVisualDebuggerConnectionFlag
 			impact and thus is also highly recommended.
 
 			This flag works together with a PxCreatePhysics parameter,
-			trackOustandingAllocations.  Using both of them together allows users to have
+			trackOutstandingAllocations.  Using both of them together allows users to have
 			an accurate view of the overall memory usage of the simulation at the cost of
 			a hashtable lookup per allocation/deallocation.  Again, PhysX makes a best effort
 			attempt not to allocate or deallocate during simulation so this hashtable lookup
@@ -104,12 +88,12 @@ struct PxVisualDebuggerConnectionFlag
 			PVD will accurate information about the state of the memory system before the 
 			actual connection happened.
 		*/
-		Memory = 1 << 2,
+		eMEMORY = 1 << 2
 	};
 };
 
 typedef physx::PxFlags<PxVisualDebuggerConnectionFlag::Enum, PxU32> PxVisualDebuggerConnectionFlags;
-PX_FLAGS_OPERATORS( PxVisualDebuggerConnectionFlag::Enum, PxU32 );
+PX_FLAGS_OPERATORS( PxVisualDebuggerConnectionFlag::Enum, PxU32 )
 
 /**
 class that contains all the data relevant for updating and visualizing extensions like joints in PVD
@@ -132,7 +116,7 @@ public:
 		\param inTimeoutInMilliseconds How long to block waiting for a new connection
 		\param inConnectionType The type information you want sent over the connection.
 	*/
-	static PVD::PvdConnection* createConnection( physx::debugger::comm::PvdConnectionManager* inMgr
+	static PxVisualDebuggerConnection* createConnection( PxVisualDebuggerConnectionManager* inMgr
 													, const char* inHost
 													, int inPort //defaults to 5425
 													, unsigned int inTimeoutInMilliseconds
@@ -150,22 +134,23 @@ public:
 		\param filename The filename to write connection data.
 		\param inConnectionType The type information you want sent over the connection.
 	*/
-	static PVD::PvdConnection* createConnection( physx::debugger::comm::PvdConnectionManager* inMgr
+	static PxVisualDebuggerConnection* createConnection( PxVisualDebuggerConnectionManager* inMgr
 													, const char* filename
 													, PxVisualDebuggerConnectionFlags inConnectionType = getDefaultConnectionFlags() );
+
 
 	/**	get the default connection flags
 
 	\return the default connection flags: debug data and profiling
 	*/
 
-	static PX_FORCE_INLINE PxVisualDebuggerConnectionFlags getDefaultConnectionFlags() { return PxVisualDebuggerConnectionFlags( PxVisualDebuggerConnectionFlag::Debug | PxVisualDebuggerConnectionFlag::Profile); }
+	static PX_FORCE_INLINE PxVisualDebuggerConnectionFlags getDefaultConnectionFlags() { return PxVisualDebuggerConnectionFlags( PxVisualDebuggerConnectionFlag::eDEBUG | PxVisualDebuggerConnectionFlag::ePROFILE); }
 	
 	/**	get all connection flags
 
 	\return all visual debugger connection flags: debug data, profiling and memory
 	*/
-	static PX_FORCE_INLINE PxVisualDebuggerConnectionFlags getAllConnectionFlags() { return PxVisualDebuggerConnectionFlags( PxVisualDebuggerConnectionFlag::Debug | PxVisualDebuggerConnectionFlag::Profile| PxVisualDebuggerConnectionFlag::Memory ); }
+	static PX_FORCE_INLINE PxVisualDebuggerConnectionFlags getAllConnectionFlags() { return PxVisualDebuggerConnectionFlags( PxVisualDebuggerConnectionFlag::eDEBUG | PxVisualDebuggerConnectionFlag::ePROFILE| PxVisualDebuggerConnectionFlag::eMEMORY ); }
 
 };
 

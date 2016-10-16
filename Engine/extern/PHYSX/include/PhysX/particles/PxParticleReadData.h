@@ -1,29 +1,12 @@
-// This code contains NVIDIA Confidential Information and is disclosed to you
-// under a form of NVIDIA software license agreement provided separately to you.
-//
-// Notice
-// NVIDIA Corporation and its licensors retain all intellectual property and
-// proprietary rights in and to this software and related documentation and
-// any modifications thereto. Any use, reproduction, disclosure, or
-// distribution of this software and related documentation without an express
-// license agreement from NVIDIA Corporation is strictly prohibited.
-//
-// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
-// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
-// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
-// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
-//
-// Information and code furnished is believed to be accurate and reliable.
-// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
-// information or for any infringement of patents or other rights of third parties that may
-// result from its use. No license is granted by implication or otherwise under any patent
-// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
-// This code supersedes and replaces all information previously supplied.
-// NVIDIA Corporation products are not authorized for use as critical
-// components in life support devices or systems without express written approval of
-// NVIDIA Corporation.
-//
-// Copyright (c) 2008-2013 NVIDIA Corporation. All rights reserved.
+/*
+ * Copyright (c) 2008-2015, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * NVIDIA CORPORATION and its licensors retain all intellectual property
+ * and proprietary rights in and to this software, related documentation
+ * and any modifications thereto.  Any use, reproduction, disclosure or
+ * distribution of this software and related documentation without an express
+ * license agreement from NVIDIA CORPORATION is strictly prohibited.
+ */
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
@@ -67,6 +50,8 @@ struct PxParticleReadDataFlag
 			/**
 			Enables reading per particle rest offsets from the SDK.
 			Per particle rest offsets are never changed by the simulation.
+			This option may only be used on particle systems that have 
+			PxParticleBaseFlag.ePER_PARTICLE_REST_OFFSET enabled.
 			@see PxParticleBaseFlag.ePER_PARTICLE_REST_OFFSET
 			*/
 			eREST_OFFSET_BUFFER			= (1<<2),
@@ -84,10 +69,16 @@ struct PxParticleReadDataFlag
 			eCOLLISION_NORMAL_BUFFER	= (1<<4),
 
 			/**
+			Enables reading particle collision velocities from the SDK.
+			@see PxParticleReadData.collisionVelocity
+			*/
+			eCOLLISION_VELOCITY_BUFFER	= (1<<5),
+
+			/**
 			Enables reading particle densities from the SDK. (PxParticleFluid only)
 			@see PxParticleFluidReadData.densityBuffer
 			*/
-			eDENSITY_BUFFER				= (1<<5),
+			eDENSITY_BUFFER				= (1<<6)
 		};
 	};
 
@@ -97,7 +88,7 @@ struct PxParticleReadDataFlag
 @see PxParticleReadDataFlag
 */
 typedef PxFlags<PxParticleReadDataFlag::Enum,PxU16> PxParticleReadDataFlags;
-PX_FLAGS_OPERATORS(PxParticleReadDataFlag::Enum,PxU16);
+PX_FLAGS_OPERATORS(PxParticleReadDataFlag::Enum,PxU16)
 
 /**
 \brief collection of set bits defined in PxParticleFlag.
@@ -105,7 +96,7 @@ PX_FLAGS_OPERATORS(PxParticleReadDataFlag::Enum,PxU16);
 @see PxParticleFlag
 */
 typedef PxFlags<PxParticleFlag::Enum,PxU16> PxParticleFlags;
-PX_FLAGS_OPERATORS(PxParticleFlag::Enum,PxU16);
+PX_FLAGS_OPERATORS(PxParticleFlag::Enum,PxU16)
 
 /**
 \brief Data layout descriptor for reading particle data from the SDK.
@@ -131,7 +122,7 @@ class PxParticleReadData : public PxLockedData
 	/**
 	\brief Number of particles (only including particles with PxParticleFlag.eVALID set). 
 	*/
-	PxU32										numValidParticles;
+	PxU32										nbValidParticles;
 
 	/**
 	\brief Index after the last valid particle (PxParticleFlag.eVALID set). Its 0 if there are no valid particles. 
@@ -173,6 +164,15 @@ class PxParticleReadData : public PxLockedData
 	PxStrideIterator<const PxVec3>				collisionNormalBuffer;
 	
 	/**
+	\brief Velocities of particles relative to shapes they collide with.
+	The collision velocity buffer is only guaranteed to be valid after the particle 
+	system has been simulated. Otherwise collisionVelocityBuffer.ptr() is NULL. This also 
+	applies to particle systems that are not assigned to a scene.
+	The collision velocity is identical to the particle velocity if the particle is not colliding.
+	*/
+	PxStrideIterator<const PxVec3>				collisionVelocityBuffer;
+
+	/**
 	\brief Returns PxDataAccessFlag::eREADABLE, since PxParticleReadData is read only data
 	@see PxLockedData
 	*/
@@ -187,7 +187,7 @@ class PxParticleReadData : public PxLockedData
 	/**
 	\brief virtual destructor
 	*/
-	virtual ~PxParticleReadData() {};
+	virtual ~PxParticleReadData() {}
 
 	};
 

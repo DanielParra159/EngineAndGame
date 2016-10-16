@@ -60,8 +60,10 @@ namespace physics
 
 	void PhysicsManager::Release()
 	{
-		mPvdConnection->release();
-		mPvdConnection = NULL;
+		if (mPvdConnection) {
+			mPvdConnection->release();
+			mPvdConnection = NULL;
+		}
 		
 		mDefaultMaterial->release();
 		mDefaultMaterial = NULL;

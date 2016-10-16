@@ -1,29 +1,12 @@
-// This code contains NVIDIA Confidential Information and is disclosed to you
-// under a form of NVIDIA software license agreement provided separately to you.
-//
-// Notice
-// NVIDIA Corporation and its licensors retain all intellectual property and
-// proprietary rights in and to this software and related documentation and
-// any modifications thereto. Any use, reproduction, disclosure, or
-// distribution of this software and related documentation without an express
-// license agreement from NVIDIA Corporation is strictly prohibited.
-//
-// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
-// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
-// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
-// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
-//
-// Information and code furnished is believed to be accurate and reliable.
-// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
-// information or for any infringement of patents or other rights of third parties that may
-// result from its use. No license is granted by implication or otherwise under any patent
-// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
-// This code supersedes and replaces all information previously supplied.
-// NVIDIA Corporation products are not authorized for use as critical
-// components in life support devices or systems without express written approval of
-// NVIDIA Corporation.
-//
-// Copyright (c) 2008-2013 NVIDIA Corporation. All rights reserved.
+/*
+ * Copyright (c) 2008-2015, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * NVIDIA CORPORATION and its licensors retain all intellectual property
+ * and proprietary rights in and to this software, related documentation
+ * and any modifications thereto.  Any use, reproduction, disclosure or
+ * distribution of this software and related documentation without an express
+ * license agreement from NVIDIA CORPORATION is strictly prohibited.
+ */
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
@@ -55,6 +38,9 @@
 #include "extensions/PxShapeExt.h"
 #include "extensions/PxParticleExt.h"
 #include "extensions/PxTriangleMeshExt.h"
+#include "extensions/PxSerialization.h"
+#include "extensions/PxVisualDebuggerExt.h"
+#include "extensions/PxStringTableExt.h"
 
 #include "extensions/PxDefaultCpuDispatcher.h"
 
@@ -63,11 +49,23 @@
 #include "extensions/PxSimpleFactory.h"
 
 #include "extensions/PxVisualDebuggerExt.h"
+
 #include "extensions/PxStringTableExt.h"
+
+#include "extensions/PxClothFabricCooker.h"
+
+#include "extensions/PxBroadPhaseExt.h"
+
+#include "extensions/PxClothMeshQuadifier.h"
 
 #ifdef PX_PS3
 #include "extensions/ps3/PxPS3Extension.h"
 #include "extensions/ps3/PxDefaultSpuDispatcher.h"
+#endif
+
+#ifdef PX_WIIU
+#include "extensions/wiiu/PxWiiUExtension.h"
+#include "extensions/wiiu/PxWiiUFileHandle.h"
 #endif
 
 /** \brief Initialize the PhysXExtensions library. 
@@ -92,48 +90,6 @@ This function should be called to cleanly shut down the PhysXExtensions library 
 */
 
 PX_C_EXPORT void PX_CALL_CONV PxCloseExtensions();
-
-/** \brief Dumps the SDK's meta-data to a stream.
-
-A meta-data file contains information about the SDK's internal classes. Such a file is needed to convert
-binary-serialized SDK files from one platform to another. The converter needs meta-data files for the
-source and target platforms to perform conversions.
-*/
-
-PX_C_EXPORT void PX_CALL_CONV PxDumpMetaData(physx::PxOutputStream& stream, const physx::PxPhysics& sdk);
-
-/**
-\brief Collects all PxPhysics-level objects for export.
-
-This function adds all objects managed by the PxPhysics object to the input collection, which can
-then be serialized. Collected objects include materials, convex meshes, triangle meshes, and heightfields.
-
-This is a helper function to easily enumerate all objects managed by PxPhysics, but using it is not
-mandatory. Users can also manually add a subset of those objects to the collection.
-
-\param[in] sdk Physics SDK to retrieve the objects from. See #PxPhysics
-\param[out] collection Collection to which objects will be added. See #PxCollection
-
-@see PxCollection
-*/
-PX_C_EXPORT void PxCollectForExportSDK(const physx::PxPhysics& sdk, physx::PxCollection& collection);
-
-/**
-\brief Collects all PxScene-level objects for export.
-
-This function adds all objects managed by the PxScene object to the input collection, which can
-then be serialized. Collected objects include actors, constraints, articulations
-and aggregates.
-
-This is a helper function to easily enumerate all objects managed by PxScene, but using it is not
-mandatory. Users can also manually add a subset of those objects to the collection.
-
-\param[in] scene Scene to retrieve the objects from. See #PxScene
-\param[out] collection Collection to which objects will be added. See #PxCollection
-
-@see PxCollection
-*/
-PX_C_EXPORT void PxCollectForExportScene(const physx::PxScene& scene, physx::PxCollection& collection);
 
 /** @} */
 #endif // PX_EXTENSIONS_API_H

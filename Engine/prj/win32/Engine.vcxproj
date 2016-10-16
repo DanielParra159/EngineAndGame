@@ -59,13 +59,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>..\..\extern\FMOD\lib;..\..\extern\GLEW\lib;..\..\extern\LUA\lib;..\..\extern\LUABIND\lib;..\..\extern\SDL2\lib;..\..\extern\SOIL\lib;..\..\extern\PHYSX\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SOIL.lib;lua52d.lib;luabindd.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysXProfileSDKCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PxTaskCHECKED.lib;PhysXVisualDebuggerSDKCHECKED.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SOILd.lib;lua52d.lib;luabindd.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PxTaskDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -82,6 +83,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

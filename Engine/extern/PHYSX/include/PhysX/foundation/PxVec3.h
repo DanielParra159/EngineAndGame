@@ -1,29 +1,12 @@
-// This code contains NVIDIA Confidential Information and is disclosed to you
-// under a form of NVIDIA software license agreement provided separately to you.
-//
-// Notice
-// NVIDIA Corporation and its licensors retain all intellectual property and
-// proprietary rights in and to this software and related documentation and
-// any modifications thereto. Any use, reproduction, disclosure, or
-// distribution of this software and related documentation without an express
-// license agreement from NVIDIA Corporation is strictly prohibited.
-//
-// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
-// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
-// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
-// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
-//
-// Information and code furnished is believed to be accurate and reliable.
-// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
-// information or for any infringement of patents or other rights of third parties that may
-// result from its use. No license is granted by implication or otherwise under any patent
-// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
-// This code supersedes and replaces all information previously supplied.
-// NVIDIA Corporation products are not authorized for use as critical
-// components in life support devices or systems without express written approval of
-// NVIDIA Corporation.
-//
-// Copyright (c) 2008-2013 NVIDIA Corporation. All rights reserved.
+/*
+ * Copyright (c) 2008-2015, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * NVIDIA CORPORATION and its licensors retain all intellectual property
+ * and proprietary rights in and to this software, related documentation
+ * and any modifications thereto.  Any use, reproduction, disclosure or
+ * distribution of this software and related documentation without an express
+ * license agreement from NVIDIA CORPORATION is strictly prohibited.
+ */
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
@@ -58,6 +41,15 @@ public:
 	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3() {}
 
 	/**
+	\brief zero constructor.
+	*/
+	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3(PxZERO r): x(0.0f), y(0.0f), z(0.0f) 
+	{
+		PX_UNUSED(r);
+	}
+
+
+	/**
 	\brief Assigns scalar parameter to all elements.
 
 	Useful to initialize to zero or one.
@@ -90,13 +82,42 @@ public:
 	/**
 	\brief element access
 	*/
-	PX_CUDA_CALLABLE PX_FORCE_INLINE PxReal& operator[](int index)					{ PX_ASSERT(index>=0 && index<=2); return (&x)[index]; }
+	PX_DEPRECATED PX_CUDA_CALLABLE PX_FORCE_INLINE PxReal& operator[](int index)
+	{
+		PX_ASSERT(index>=0 && index<=2);
+
+		return reinterpret_cast<PxReal*>(this)[index];
+	}
+	
+	/**
+	\brief element access
+	*/
+	PX_CUDA_CALLABLE PX_FORCE_INLINE PxReal& operator[](unsigned int index)
+	{
+		PX_ASSERT(index<=2);
+
+		return reinterpret_cast<PxReal*>(this)[index];
+	}
 
 	/**
 	\brief element access
 	*/
-	PX_CUDA_CALLABLE PX_FORCE_INLINE const PxReal& operator[](int index) const		{ PX_ASSERT(index>=0 && index<=2); return (&x)[index]; }
+	PX_DEPRECATED PX_CUDA_CALLABLE PX_FORCE_INLINE const PxReal& operator[](int index) const
+	{
+		PX_ASSERT(index>=0 && index<=2);
 
+		return reinterpret_cast<const PxReal*>(this)[index];
+	}
+	
+	/**
+	\brief element access
+	*/
+	PX_CUDA_CALLABLE PX_FORCE_INLINE const PxReal& operator[](unsigned int index) const
+	{
+		PX_ASSERT(index<=2);
+
+		return reinterpret_cast<const PxReal*>(this)[index];
+	}
 	/**
 	\brief returns true if the two vectors are exactly equal.
 	*/
@@ -125,7 +146,7 @@ public:
 	*/
 	PX_CUDA_CALLABLE PX_FORCE_INLINE bool isNormalized() const
 	{
-		const float unitTolerance = PxReal(1e-4);
+		const float unitTolerance = 1e-4f;
 		return isFinite() && PxAbs(magnitude()-1)<unitTolerance;
 	}
 
@@ -169,7 +190,7 @@ public:
 	*/
 	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3 operator /(PxReal f) const
 	{
-		f = PxReal(1) / f;	// PT: inconsistent notation with operator /=
+		f = 1.0f / f;
 		return PxVec3(x * f, y * f, z * f);
 	}
 
@@ -210,7 +231,7 @@ public:
 	*/
 	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3& operator /=(PxReal f)
 	{
-		f = 1.0f/f;	// PT: inconsistent notation with operator /
+		f = 1.0f/f;
 		x *= f;
 		y *= f;
 		z *= f;
@@ -240,7 +261,7 @@ public:
 	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3 getNormalized() const
 	{
 		const PxReal m = magnitudeSquared();
-		return m>0 ? *this * PxRecipSqrt(m) : PxVec3(0,0,0);
+		return m>0.0f ? *this * PxRecipSqrt(m) : PxVec3(0,0,0);
 	}
 
 	/**
@@ -249,7 +270,7 @@ public:
 	PX_CUDA_CALLABLE PX_FORCE_INLINE PxReal normalize()
 	{
 		const PxReal m = magnitude();
-		if (m>0) 
+		if (m>0.0f) 
 			*this /= m;
 		return m;
 	}
@@ -263,7 +284,7 @@ public:
 		const PxReal mag = magnitude();
 		if (mag < PX_NORMALIZATION_EPSILON)
 			return 0.0f;
-		*this *= PxReal(1) / mag;
+		*this *= 1.0f / mag;
 		return mag;
 	}
 
@@ -275,7 +296,7 @@ public:
 	{
 		const PxReal mag = magnitude();
 		PX_ASSERT(mag >= PX_NORMALIZATION_EPSILON);
-		*this *= PxReal(1) / mag;
+		*this *= 1.0f / mag;
 		return mag;
 	}
 
@@ -318,6 +339,15 @@ public:
 	{
 		return PxMax(x, PxMax(y, z));
 	}
+
+	/**
+	\brief returns absolute values of components;
+	*/
+	PX_CUDA_CALLABLE PX_FORCE_INLINE PxVec3 abs()	const
+	{
+		return PxVec3(PxAbs(x), PxAbs(y), PxAbs(z));
+	}
+
 
 	PxReal x,y,z;
 };
