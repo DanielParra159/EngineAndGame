@@ -17,12 +17,12 @@ namespace core
 	protected:
 		Vector2D<uint32>								mScreenSize;
 		Vector2D<uint32>								mScreenPosition;
-		Color											mRenderDrawColor;
+		Color											mClearColor;
 		BOOL											mFullScreen;
 		float32											mPhysicsGravity;
 		std::string										mRootDir;
 	public:
-		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mRenderDrawColor(), mFullScreen(FALSE), mPhysicsGravity(-9.81f) {}
+		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mClearColor(), mFullScreen(FALSE), mPhysicsGravity(-9.81f) {}
 		~GameDescription() {}
 		/** Assigns screen size
 		@param aX width
@@ -37,14 +37,21 @@ namespace core
 		/** Assigns draw color
 		@param aColor Color to assign
 		*/
-		void											SetRenderDrawColor(const Color &aColor);
+		void											SetClearColor(const Color &aColor);
 		/** Assigns draw color
 		@param aR Red component to assign
 		@param aG Green component to assign
 		@param aB Blue component to assign
 		@param aA Alpha component to assign
 		*/
-		void											SetRenderDrawColor(uint8 aR, uint8 aG, uint8 aB, uint8 aA);
+		void											SetClearColor(float32 aR, float32 aG, float32 aB, float32 aA);
+		/** Assigns draw color
+		@param aR Red component to assign
+		@param aG Green component to assign
+		@param aB Blue component to assign
+		@param aA Alpha component to assign
+		*/
+		void											SetClearColor(uint8 aR, uint8 aG, uint8 aB, uint8 aA);
 		/** Start windows in full screen
 		@param aFullScreen
 		*/

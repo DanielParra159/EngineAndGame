@@ -4,7 +4,6 @@
 #include "Graphics\Mesh.h"
 #include "Graphics\Camera.h"
 
-#include "Support\Color.h"
 #include "Support\Matrix4.h"
 
 #include "IO\FileSystem.h"
@@ -23,7 +22,7 @@ namespace graphics
 	SINGLETON_BODY(RenderManager);
 
 
-	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor, BOOL aFullscreen)
+	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor, BOOL aFullscreen)
 	{
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -74,11 +73,12 @@ namespace graphics
 		if (mRenderer == NULL)
 			return FALSE;
 
-		SDL_SetRenderDrawColor(mRenderer,
-							   (uint32)(aRenderDrawColor.mR * 255),
-							   (uint32)(aRenderDrawColor.mG * 255),
-							   (uint32)(aRenderDrawColor.mB * 255),
-							   (uint32)(aRenderDrawColor.mA * 255));
+		mClearColor = aClearColor;
+		/*SDL_SetRenderDrawColor(mRenderer,
+							   (uint32)(aClearColor.mR * 255),
+							   (uint32)(aClearColor.mG * 255),
+							   (uint32)(aClearColor.mB * 255),
+							   (uint32)(aClearColor.mA * 255));*/
 
 
 		mNumLoadedMeshes = 0;
@@ -158,7 +158,7 @@ namespace graphics
 	void RenderManager::BeginRender()
 	{
 		// Clear the screen to black
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(EXPOSE_COLOR_RGBA(mClearColor));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//SDL_RenderClear(mRenderer);
 

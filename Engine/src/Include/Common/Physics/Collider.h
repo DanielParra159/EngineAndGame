@@ -8,6 +8,11 @@ namespace logic{
 	class IGameObject;
 }
 
+namespace physx
+{
+	class PxRigidActor;
+}
+
 namespace physics
 {
 	/**
@@ -18,6 +23,7 @@ namespace physics
 		friend class CollisionManager;
 		friend class PhysicsManager;
 		typedef void(logic::IGameObject::*OnCollision)(const Collider*) const;
+		typedef physx::PxRigidActor PhysicActor;
 
 		enum eColliderType
 		{
@@ -29,10 +35,12 @@ namespace physics
 	protected:
 		struct TColliderCallback
 		{
-			Collider::OnCollision							mOnTriggerCallback;
+			Collider::OnCollision						mOnTriggerCallback;
 			const logic::IGameObject*					mGameObject;
 		};
 		BOOL											mTrigger;
+		eColliderType									mColliderType;
+		PhysicActor*									mPhysicActor;
 		TColliderCallback*								mOnTriggerEnterCallback;
 		TColliderCallback*								mOnTriggerExitCallback;
 		TColliderCallback*								mOnTriggerStayCallback;
@@ -45,11 +53,11 @@ namespace physics
 		{}
 		virtual ~Collider() {}
 		virtual void									Init(BOOL aActive);
-		virtual void									Init(BOOL aActive, BOOL aTrigger);
+		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									Release();
 		//@TODO should be public
 		virtual void									SetTrigger(BOOL aTrigger) { mTrigger = aTrigger; }
-
+		virtual void									SetPhysicActor(PhysicActor* aPhysicActor) { mPhysicActor = aPhysicActor; }
 		/**
 		Method called when collider enter on this collider configured as trigger
 		*/
@@ -89,6 +97,6 @@ namespace physics
 		void											SetOnCollisionExitCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject);
 		void											SetOnCollisionStayCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject);
 
-	}; // IComponent
+	}; // Collider
 } // namespace physics
 #endif // _ENGINE_PHYSICS_COLLIDER_H_

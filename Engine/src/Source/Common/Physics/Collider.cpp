@@ -9,9 +9,11 @@ namespace physics
 	{
 		IComponent::Init(mActive);
 	}
-	void Collider::Init(BOOL aActive, BOOL aTrigger)
+	void Collider::Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger)
 	{
 		Init(aActive);
+		mPhysicActor = aPhysicsActor;
+		mColliderType = aColliderType;
 		mTrigger = aTrigger;
 	}
 

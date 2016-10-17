@@ -122,6 +122,7 @@
     <ClInclude Include="..\..\src\Include\Common\Logic\IComponent.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
+    <ClInclude Include="..\..\src\Include\Common\Physics\CapsuleController.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\Collider.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\CollisionManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="..\..\src\Source\Common\Logic\IComponent.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Physics\CapsuleController.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\Collider.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\CollisionManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\ErrorManager.cpp" />

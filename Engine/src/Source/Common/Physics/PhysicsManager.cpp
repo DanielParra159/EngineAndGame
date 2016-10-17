@@ -1,7 +1,6 @@
 #include "Physics/PhysicsManager.h"
 #include "Physics/ErrorManager.h"
 #include "Physics/CollisionManager.h"
-#include "Physics/Collider.h"
 #include "Physics/PhysicsConversions.h"
 
 #include "System/Time.h"
@@ -217,7 +216,7 @@ namespace physics
 		delete [] shapes;
 
 		Collider* lCollider = new Collider();
-		lCollider->Init(TRUE, aTrigger);
+		lCollider->Init(TRUE, lActor, aColliderType, aTrigger);
 		lActor->userData = (void *)lCollider;
 
 		//physx::PxSetGroup(*lActor, aGroup);
@@ -237,8 +236,7 @@ namespace physics
 		physx::PxRigidStatic *lActor = physx::PxCreatePlane(*mPhysics, lPlane, *lMaterial);
 
 		Collider* lCollider = new Collider();
-		lCollider->Init(TRUE, FALSE);
-		lCollider->SetTrigger(FALSE);
+		lCollider->Init(TRUE, lActor, Collider::eStatic, FALSE);
 		lActor->userData = (void *)lCollider;
 
 		//physx::PxSetGroup(*lActor, aGroup);
@@ -258,6 +256,46 @@ namespace physics
 		mActiveScene->addActor(*lActor);
 
 		return lCollider;
+	}
+
+	CapsuleController* PhysicsManager::CreateCapsuleController(const Vector3D<float32> &aCenter, float32 aRadius, float32 aHeight, float32 aSlopeLimit, CapsuleController::eClimbingMode aClimbingMode, uint32 aLayerMask, uint32 aCollisionMask)
+	{
+		float32 lOffsetY = aHeight / 2.0f + aRadius;
+
+		physx::PxCapsuleControllerDesc desc;
+		desc.position = physx::PxExtendedVec3(EXPOSE_VECTOR3D(aCenter));
+		desc.height = aHeight;
+		desc.radius = aRadius;
+		desc.material = mDefaultMaterial;
+		desc.climbingMode = (physx::PxCapsuleClimbingMode::Enum)aClimbingMode;
+		desc.slopeLimit = aSlopeLimit;
+		desc.reportCallback = mCollisionManager;
+
+		CapsuleController* lCapsuleController = new CapsuleController();
+		lCapsuleController->Init(TRUE, NULL, Collider::eKinematic, FALSE);
+
+		desc.userData = (void *)lCapsuleController;
+
+		physx::PxCapsuleController *controller = (physx::PxCapsuleController *)mControllerManager->createController(desc);
+
+		physx::PxRigidDynamic* lActor = controller->getActor();
+		const physx::PxU32 numShapes = lActor->getNbShapes();
+		physx::PxShape** shapes = new physx::PxShape*[numShapes];
+		lActor->getShapes(shapes, numShapes);
+		for (physx::PxU32 i = 0; i < numShapes; i++)
+		{
+			physx::PxShape* shape = shapes[i];
+			physx::PxFilterData filterData;
+			filterData.word0 = aLayerMask; // word0 = own ID
+			filterData.word1 = aCollisionMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+		delete[] shapes;
+
+		lActor->userData = (void *)lCapsuleController;
+		lCapsuleController->SetPhysicCampsuleController(controller);
+
+		return lCapsuleController;
 	}
 
 } // namespace physics

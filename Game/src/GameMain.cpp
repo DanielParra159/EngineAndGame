@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
 	GameDescription *lGameDescription = new GameDescription();
 
-	lGameDescription->SetRenderDrawColor(102, 150, 23, 255);
+	lGameDescription->SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	lGameDescription->SetScreenSize(800, 600);
 	lGameDescription->SetFullScreen(FALSE);
 	lGameDescription->SetRootDir(".\\assets");

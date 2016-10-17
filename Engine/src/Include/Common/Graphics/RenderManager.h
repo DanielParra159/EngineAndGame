@@ -4,6 +4,7 @@
 #include "Defs.h"
 #include "Types.h"
 #include "Support\Rect.h"
+#include "Support\Color.h"
 #include "Support\Vector2D.h"
 #include "Support\Vector3D.h"
 #include "Support\IdReferences.h"
@@ -41,6 +42,7 @@ namespace graphics
 	{
 		SINGLETON_HEAD(RenderManager);
 	private:
+		Color											mClearColor;
 		TTexturesIds									mTexturesIds;
 		TLoadedTextures									mLoadedTextures;
 		uint32											mNumLoadedTextures;
@@ -61,7 +63,7 @@ namespace graphics
 		const Camera*									mRenderCamera;
 	public:
 		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, 
-															 const Vector2D<uint32> &aWindowsPosition, const Color& aRenderDrawColor,  
+															 const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor,
 															 BOOL aFullscreen);
 		void											Release();
 

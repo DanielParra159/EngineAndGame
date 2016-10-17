@@ -7,6 +7,7 @@
 #include "Support/Vector3D.h"
 
 #include "Physics/Collider.h"
+#include "Physics/CapsuleController.h"
 
 #include "PxFiltering.h"
 
@@ -69,6 +70,8 @@ namespace physics
 		Collider*										CreateBoxCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aPositionOffset, const Vector3D<float32> &aDimensions,
 																		  BOOL aTrigger, uint32 aLayerMask, uint32 aCollisionMask, Collider::eColliderType aColliderType, float32 aMass = 0.0f);
 		Collider*										CreatePlaneCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aNormal, uint32 aLayerMask, uint32 aCollisionMask);
+		CapsuleController*								CreateCapsuleController(const Vector3D<float32> &aCenter, float32 aRadius, float32 aHeight, float32 aSlopeLimit, CapsuleController::eClimbingMode aClimbingMode, uint32 aLayerMask, uint32 aCollisionMask);
+
 	private:
 		PhysicsManager() {}
 		~PhysicsManager() {}

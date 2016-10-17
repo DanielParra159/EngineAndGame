@@ -36,7 +36,7 @@ namespace core
 		physics::PhysicsManager::Instance()->Init(aGameDescription.mPhysicsGravity);
 
 		graphics::RenderManager::Instance()->Init(title, aGameDescription.mScreenSize, aGameDescription.mScreenPosition,
-												  aGameDescription.mRenderDrawColor, aGameDescription.mFullScreen);
+												  aGameDescription.mClearColor, aGameDescription.mFullScreen);
 		
 		input::InputManager::Instance()->Init();
 
