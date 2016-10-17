@@ -125,6 +125,7 @@
     <ClInclude Include="..\..\src\Include\Common\Physics\Collider.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\CollisionManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\ErrorManager.h" />
+    <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsConversions.h" />
     <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />

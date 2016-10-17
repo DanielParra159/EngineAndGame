@@ -8,6 +8,8 @@
 
 #include "Physics/Collider.h"
 
+#include "PxFiltering.h"
+
 namespace physx
 {
 	class PxErrorCallback;
@@ -20,6 +22,7 @@ namespace physx
 	class PxScene;
 	class PxDefaultCpuDispatcher;
 	class PxControllerManager;
+	struct PxFilterData;
 
 	namespace debugger
 	{
@@ -64,10 +67,15 @@ namespace physics
 		PhysicsMaterial*								CreateMaterial(float32 aStaticFriction, float32 aDynamicFriction, float32 aRestitution);
 
 		Collider*										CreateBoxCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aPositionOffset, const Vector3D<float32> &aDimensions,
-																		  BOOL aTrigger, int32 aGroup, Collider::eColliderType aColliderType, float32 aMass = 0.0f);
+																		  BOOL aTrigger, uint32 aLayerMask, uint32 aCollisionMask, Collider::eColliderType aColliderType, float32 aMass = 0.0f);
+		Collider*										CreatePlaneCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aNormal, uint32 aLayerMask, uint32 aCollisionMask);
 	private:
 		PhysicsManager() {}
 		~PhysicsManager() {}
+		static physx::PxFilterFlags FilterShader(
+			uint32 aAttributes0, physx::PxFilterData aFilterData0,
+			uint32 aAttributes1, physx::PxFilterData aFilterData1,
+			physx::PxPairFlags& aPairFlags, const void* aConstantBlock, uint32 aConstantBlockSize);
 
 		void											CreateScene(float32 aGravity);
 	}; // PhysicsManager

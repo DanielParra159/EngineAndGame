@@ -2,14 +2,19 @@
 #include "Physics/ErrorManager.h"
 #include "Physics/CollisionManager.h"
 #include "Physics/Collider.h"
+#include "Physics/PhysicsConversions.h"
 
 #include "System/Time.h"
+
+#include "Core/Log.h"
 
 #include <PxPhysicsAPI.h>
 #include <extensions\PxExtensionsAPI.h>
 #include <extensions\PxVisualDebuggerExt.h> 
 
 #include <assert.h>
+
+#define VECTOR_TOPXVEC3(vector) return physx::PxVec3(vector.mX, vector.mY, vector.mZ);
 
 namespace physics
 {
@@ -100,9 +105,35 @@ namespace physics
 
 	void PhysicsManager::Update()
 	{
+		core::LogFormatString("Time: %f", sys::Time::Instance()->GetDeltaSec());
 		mActiveScene->simulate(sys::Time::Instance()->GetDeltaSec());
 
 		mActiveScene->fetchResults(TRUE);
+	}
+
+	physx::PxFilterFlags PhysicsManager::FilterShader(
+		uint32 aAttributes0, physx::PxFilterData aFilterData0,
+		uint32 aAttributes1, physx::PxFilterData aFilterData1,
+		physx::PxPairFlags& aPairFlags, const void* aConstantBlock, uint32 aConstantBlockSize)
+	{
+		// let triggers through
+		if (physx::PxFilterObjectIsTrigger(aAttributes0) || physx::PxFilterObjectIsTrigger(aAttributes1))
+		{
+			aPairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
+			return physx::PxFilterFlag::eDEFAULT;
+		}
+		// generate contacts for all that were not filtered above
+		//pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+
+		// trigger the contact callback for pairs (A,B) where 
+		// the filtermask of A contains the ID of B and vice versa.
+		if ((aFilterData0.word0 & aFilterData1.word1) && (aFilterData1.word0 & aFilterData0.word1))
+		{
+			aPairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+			aPairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
+		}
+
+		return physx::PxFilterFlag::eDEFAULT;
 	}
 
 	void PhysicsManager::CreateScene(float32 aGravity)
@@ -122,7 +153,8 @@ namespace physics
 		}
 
 		if (!sceneDesc.filterShader)
-			sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+			sceneDesc.filterShader = FilterShader;
+			//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 
 		mActiveScene = mPhysics->createScene(sceneDesc);
 		assert(mActiveScene && "PxPhysics::createScene failed");
@@ -137,15 +169,17 @@ namespace physics
 		return mPhysics->createMaterial(aStaticFriction, aDynamicFriction, aRestitution);
 	}
 
+	
+
 	Collider* PhysicsManager::CreateBoxCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aPositionOffset, const Vector3D<float32> &aDimensions,
-																	  BOOL aTrigger, int32 aGroup, Collider::eColliderType aColliderType, float32 aMass)
+																	  BOOL aTrigger, uint32 aLayerMask, uint32 aCollisionMask, Collider::eColliderType aColliderType, float32 aMass)
 	{
 		assert(mActiveScene && "mActiveScene NULL");
 
-		physx::PxTransform lPosition(aPosition.mX, aPosition.mY, aPosition.mZ);
-		physx::PxBoxGeometry lGeometry(aDimensions.mX, aDimensions.mY, aDimensions.mZ);
+		physx::PxTransform lPosition(EXPOSE_VECTOR3D(aPosition));
+		physx::PxBoxGeometry lGeometry(EXPOSE_VECTOR3D(aDimensions));
 		physx::PxMaterial *lMaterial = mDefaultMaterial;
-		physx::PxTransform lOffset(aPositionOffset.mX, aPositionOffset.mY, aPositionOffset.mZ);
+		physx::PxTransform lOffset(EXPOSE_VECTOR3D(aPositionOffset));
 
 		physx::PxRigidActor* lActor = NULL;
 
@@ -168,13 +202,58 @@ namespace physics
 			lShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 			lShape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 		}
+	
+		const physx::PxU32 numShapes = lActor->getNbShapes();
+		physx::PxShape** shapes = new physx::PxShape*[numShapes];
+		lActor->getShapes(shapes, numShapes);
+		for (physx::PxU32 i = 0; i < numShapes; i++)
+		{
+			physx::PxShape* shape = shapes[i];
+			physx::PxFilterData filterData;
+			filterData.word0 = aLayerMask; // word0 = own ID
+			filterData.word1 = aCollisionMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+		delete [] shapes;
 
 		Collider* lCollider = new Collider();
-		lCollider->Init(TRUE);
-		lCollider->SetTrigger(aTrigger);
+		lCollider->Init(TRUE, aTrigger);
 		lActor->userData = (void *)lCollider;
 
-		physx::PxSetGroup(*lActor, aGroup);
+		//physx::PxSetGroup(*lActor, aGroup);
+
+		mActiveScene->addActor(*lActor);
+
+		return lCollider;
+	}
+
+	Collider* PhysicsManager::CreatePlaneCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aNormal, uint32 aLayerMask, uint32 aCollisionMask)
+	{
+		assert(mActiveScene);
+
+		// Crear un plano estático
+		physx::PxPlane lPlane(Vector3DToPxVec3(aPosition), Vector3DToPxVec3(aNormal));
+		physx::PxMaterial *lMaterial = mDefaultMaterial;
+		physx::PxRigidStatic *lActor = physx::PxCreatePlane(*mPhysics, lPlane, *lMaterial);
+
+		Collider* lCollider = new Collider();
+		lCollider->Init(TRUE, FALSE);
+		lCollider->SetTrigger(FALSE);
+		lActor->userData = (void *)lCollider;
+
+		//physx::PxSetGroup(*lActor, aGroup);
+		const physx::PxU32 numShapes = lActor->getNbShapes();
+		physx::PxShape** shapes = new physx::PxShape*[numShapes];
+		lActor->getShapes(shapes, numShapes);
+		for (physx::PxU32 i = 0; i < numShapes; i++)
+		{
+			physx::PxShape* shape = shapes[i];
+			physx::PxFilterData filterData;
+			filterData.word0 = aLayerMask; // word0 = own ID
+			filterData.word1 = aCollisionMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+		delete[] shapes;
 
 		mActiveScene->addActor(*lActor);
 

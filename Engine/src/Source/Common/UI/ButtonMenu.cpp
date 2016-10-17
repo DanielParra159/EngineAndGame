@@ -38,7 +38,7 @@ namespace ui
 	void ButtonMenu::Render()
 	{
 		if (mImage)
-			mImage->Render(mPositionRect.mX, mPositionRect.mY, mPositionRect.mW, mPositionRect.mH);
+			mImage->Render(EXPOSE_RECT(mPositionRect));
 	}
 
 	void ButtonMenu::Release()

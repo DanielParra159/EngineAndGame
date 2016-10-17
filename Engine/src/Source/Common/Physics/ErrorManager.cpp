@@ -23,7 +23,7 @@ namespace physics
 			case physx::PxErrorCode::ePERF_WARNING: aCodeStr = "PERF_WARNING"; break;
 		}
 
-		core::LogFormatString("PhysX error: File: %s, Line: %d, Code: %s, Message: %s\n", aFile, aLine, aCodeStr, aMessage);
+		core::LogFormatString("PhysX error: File: %s, Line: %d, Code: %s, Message: %s\n", aFile, aLine, aCodeStr.c_str(), aMessage);
 	}
 
 }

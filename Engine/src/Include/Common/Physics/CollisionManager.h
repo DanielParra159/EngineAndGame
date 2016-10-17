@@ -16,7 +16,7 @@ namespace physics
 	{
 		friend class PhysicsManager;
 	protected:
-		CollisionManager() {}
+		CollisionManager();
 		virtual ~CollisionManager() {}
 
 		//PxSimulationEventCallback

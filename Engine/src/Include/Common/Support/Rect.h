@@ -2,6 +2,9 @@
 #define _ENGINE_RECT_H_
 
 #include<math.h>
+
+#define EXPOSE_RECT(rect) rect.mX, rect.mY, rect.mW, rect.mH
+
 template <typename T = int32>
 class Rect
 {

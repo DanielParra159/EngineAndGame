@@ -35,8 +35,8 @@ namespace graphics
 			return FALSE;
 
 		mWindow = SDL_CreateWindow(aWindowsTitle,
-								   aWindowsPosition.mX, aWindowsPosition.mY,
-								   aWindowsSize.mX, aWindowsSize.mY,
+								   EXPOSE_VECTOR2D(aWindowsPosition),
+								   EXPOSE_VECTOR2D(aWindowsSize),
 								   SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 								   //aFullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN); @TODO
 
@@ -173,7 +173,7 @@ namespace graphics
 
 	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
 	{
-		RenderTexture(aId, aSrcRect, aPosition.mX, aPosition.mY, aSize.mX, aSize.mY, aAngle);
+		RenderTexture(aId, aSrcRect, EXPOSE_VECTOR2D(aPosition), EXPOSE_VECTOR2D(aSize), aAngle);
 	}
 	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle)
 	{

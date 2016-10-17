@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+#define EXPOSE_VECTOR3D(vector) vector.mX, vector.mY, vector.mZ
+
 template <typename T = float32>
 class Vector3D
 {

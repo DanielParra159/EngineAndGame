@@ -2,6 +2,9 @@
 #define _ENGINE_VECTOR2D_H_
 
 #include<math.h>
+
+#define EXPOSE_VECTOR2D(vector) vector.mX, vector.mY
+
 template <typename T = int32>
 class Vector2D
 {

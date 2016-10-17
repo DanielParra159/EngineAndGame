@@ -86,10 +86,10 @@ namespace audio {
 	void AudioManager::SetListenerAttributes(const Vector3D<float32>& aPosition, const Vector3D<float32>& aVelocity,
 											 const Vector3D<float32>& aForward, const Vector3D<float32>& aUp)
 	{
-		FMOD_VECTOR listener_pos = { aPosition.mX, aPosition.mY, aPosition.mZ };
-		FMOD_VECTOR listener_vel = { aVelocity.mX, aVelocity.mY, aVelocity.mZ };
-		FMOD_VECTOR listener_forward = { aForward.mX, aForward.mY, aForward.mZ };
-		FMOD_VECTOR listener_up = { aUp.mX, aUp.mY, aUp.mZ };
+		FMOD_VECTOR listener_pos = { EXPOSE_VECTOR3D(aPosition) };
+		FMOD_VECTOR listener_vel = { EXPOSE_VECTOR3D(aVelocity) };
+		FMOD_VECTOR listener_forward = { EXPOSE_VECTOR3D(aForward) };
+		FMOD_VECTOR listener_up = { EXPOSE_VECTOR3D(aUp) };
 		mAudioSystem->set3DListenerAttributes(0, &listener_pos, &listener_vel, &listener_forward, &listener_up);
 	}
 
@@ -295,8 +295,8 @@ namespace audio {
 
 	void AudioManager::SetSound3DAttributes(Sound3D *aSound)
 	{
-		FMOD_VECTOR lPosition = { aSound->mPosition.mX, aSound->mPosition.mY, aSound->mPosition.mZ };
-		FMOD_VECTOR lVelocity = { aSound->mVelocity.mX, aSound->mVelocity.mY, aSound->mVelocity.mZ };
+		FMOD_VECTOR lPosition = { EXPOSE_VECTOR3D(aSound->mPosition) };
+		FMOD_VECTOR lVelocity = { EXPOSE_VECTOR3D(aSound->mVelocity) };
 		
 		mSoundChannels[aSound->mChannelId]->set3DAttributes(&lPosition, &lVelocity);
 	}

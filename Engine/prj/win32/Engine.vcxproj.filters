@@ -213,6 +213,9 @@
     <ClInclude Include="..\..\src\Include\Common\Physics\Collider.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsConversions.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
