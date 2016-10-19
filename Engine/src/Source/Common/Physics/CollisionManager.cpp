@@ -45,18 +45,24 @@ namespace physics
 
 			if (lContactPair.events & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
-				lCollider->OnCollisionEnter(lOtherCollider);
-				lOtherCollider->OnCollisionEnter(lCollider);
+				if (lCollider->mRegisteredCollisionCallback & Collider::eCollisionEnter)
+					lCollider->OnCollisionEnter(lOtherCollider);
+				if (lOtherCollider->mRegisteredCollisionCallback & Collider::eCollisionEnter)
+					lOtherCollider->OnCollisionEnter(lCollider);
 			} 
 			else if (lContactPair.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
-				lCollider->OnCollisionExit(lOtherCollider);
-				lOtherCollider->OnCollisionExit(lCollider);
+				if (lCollider->mRegisteredCollisionCallback & Collider::eCollisionExit)
+					lCollider->OnCollisionExit(lOtherCollider);
+				if (lOtherCollider->mRegisteredCollisionCallback & Collider::eCollisionExit)
+					lOtherCollider->OnCollisionExit(lCollider);
 			}
 			else if (lContactPair.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
-				lCollider->OnCollisionStay(lOtherCollider);
-				lOtherCollider->OnCollisionStay(lCollider);
+				if (lCollider->mRegisteredCollisionCallback & Collider::eCollisionStay)
+					lCollider->OnCollisionStay(lOtherCollider);
+				if (lOtherCollider->mRegisteredCollisionCallback & Collider::eCollisionStay)
+					lOtherCollider->OnCollisionStay(lCollider);
 			}
 		}
 	}
@@ -64,7 +70,6 @@ namespace physics
 	void CollisionManager::onTrigger(physx::PxTriggerPair* aPairs, physx::PxU32 aCount)
 	{
 		for (uint32 i = 0; i < aCount; ++i) {
-			core::LogString("onTrigger");
 			const physx::PxTriggerPair& lTriggerPair = aPairs[i];
 			if (lTriggerPair.flags & (physx::PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | physx::PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
 				continue;
@@ -78,20 +83,20 @@ namespace physics
 			Collider* lOtherCollider = (Collider*)lTriggerPair.otherShape->getActor()->userData;
 			assert(lOtherCollider && "onTrigger, otherShape->userData NULL");
 
-			if (enter)
+			if (enter && (lTriggerCollider->mRegisteredCollisionCallback & Collider::eTriggerEnter))
 				lTriggerCollider->OnTriggerEnter(lOtherCollider);
-			else if (exit)
+			else if (exit && (lTriggerCollider->mRegisteredCollisionCallback & Collider::eTriggerExit))
 				lTriggerCollider->OnTriggerExit(lOtherCollider);
-			else
+			else if (lTriggerCollider->mRegisteredCollisionCallback & Collider::eTriggerStay)
 				lTriggerCollider->OnTriggerStay(lOtherCollider);
 
 			if (lTriggerPair.otherShape->getFlags().isSet(physx::PxShapeFlag::eTRIGGER_SHAPE))
 			{
-				if (enter)
+				if (enter && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerEnter))
 					lOtherCollider->OnTriggerEnter(lTriggerCollider);
-				else if (exit)
+				else if (exit && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerExit))
 					lOtherCollider->OnTriggerExit(lTriggerCollider);
-				else
+				else if (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerStay)
 					lOtherCollider->OnTriggerStay(lTriggerCollider);
 			}
 		}

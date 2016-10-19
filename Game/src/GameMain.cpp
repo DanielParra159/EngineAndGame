@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	lGameDescription->SetRootDir(".\\assets");
 	lGameDescription->SetPhysicsGravity(Vector3D<float32>(0.0f, -9.8f, 0.0f));
 
-	if (!game->Init("Titulo", *lGameDescription))
+	if (!game->Init("Game Screen", *lGameDescription))
 	{
 		LogString("!game->Init(gameDescription)");
 		return -1;

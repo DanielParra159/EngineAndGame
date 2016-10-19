@@ -26,14 +26,17 @@ namespace logic
 		TGameObjectsSet									mDisabledGameObjects;
 		TGameObjectsList								mGameObjectsToBeDisabled;
 	public:
-		virtual void									Init();
-		virtual void									Release();
+		void											Init();
+		void											Release();
 
-		virtual void									Update();
-		virtual void									FixedUpdate();
-		virtual void									Render();
+		void											Update();
+		void											FixedUpdate();
+		void											Render();
 
-		virtual void									AddGameObject(IGameObject* aGameObject, BOOL aActivated);
+		void											AddGameObject(IGameObject* aGameObject, BOOL aActivated);
+		void											DisableGameObject(IGameObject* aGameObject);
+		void											ActiveGameObject(IGameObject* aGameObject);
+
 	private:
 		World() : mActivatedGameObjects(), mGameObjectsToBeActivated(), mDisabledGameObjects(), mGameObjectsToBeDisabled() {}
 		~World() {}

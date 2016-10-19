@@ -45,8 +45,11 @@ namespace game
 		virtual void									Render();
 		virtual void									Release();
 
+		void											AddCoin();
+
 	private:
 		void											ChangePos(float32 aNextX, float32 aNextZ);
+		void											OnCollisionEnter(physics::Collider* other);
 
 
 	

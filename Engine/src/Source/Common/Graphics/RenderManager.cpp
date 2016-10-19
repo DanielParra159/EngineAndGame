@@ -511,7 +511,7 @@ namespace graphics
 		if (mNumLoadedMaterials == lCapacity)
 		{
 			mLoadedMaterials.push_back(lResult);
-			lMaterialId = mNumLoadedFragmentShaders;
+			lMaterialId = lCapacity;
 		}
 		else
 		{

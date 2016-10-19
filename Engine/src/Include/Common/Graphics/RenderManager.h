@@ -70,6 +70,8 @@ namespace graphics
 	public:
 		void											BeginRender();
 		void											EndRender();
+		
+		void											SetClearColor(const Color& aColor) { mClearColor = aColor; }
 
 		/**
 		Allow to render a texture on screen

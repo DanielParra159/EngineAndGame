@@ -1,5 +1,8 @@
 #include "Physics/Collider.h"
+#include "Physics/PhysicsManager.h"
+
 #include "Logic/IGameObject.h"
+
 #include "Core/Log.h"
 
 #include "Support/Math.h"
@@ -17,6 +20,7 @@ namespace physics
 		mPhysicActor = aPhysicsActor;
 		mColliderType = aColliderType;
 		mTrigger = aTrigger;
+		mRegisteredCollisionCallback = eNone;
 	}
 
 	void Collider::FixedUpdate()
@@ -31,29 +35,7 @@ namespace physics
 
 	void Collider::Release()
 	{
-		if (mOnTriggerEnterCallback)
-			delete mOnTriggerEnterCallback;
-		mOnTriggerEnterCallback = NULL;
-
-		if (mOnTriggerExitCallback)
-			delete mOnTriggerExitCallback;
-		mOnTriggerExitCallback = NULL;
-
-		if (mOnTriggerStayCallback)
-			delete mOnTriggerStayCallback;
-		mOnTriggerStayCallback = NULL;
-
-		if (mOnTriggerEnterCallback)
-			delete mOnTriggerEnterCallback;
-		mOnTriggerEnterCallback = NULL;
-
-		if (mOnTriggerExitCallback)
-			delete mOnTriggerExitCallback;
-		mOnTriggerExitCallback = NULL;
-
-		if (mOnCollisionStayCallback)
-			delete mOnCollisionStayCallback;
-		mOnCollisionStayCallback = NULL;
+		PhysicsManager::Instance()->RemoveCollider(this);
 	}
 
 	void Collider::SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
@@ -84,123 +66,39 @@ namespace physics
 		}
 	}
 
-	void Collider::OnTriggerEnter(const Collider* other)
+	void Collider::SetOnTriggerEnterCallback(uint32 aCollisionFlags)
 	{
-		if (mOnTriggerEnterCallback)
-		{
-			assert(mOnTriggerEnterCallback->mGameObject && "OnTriggerEnter, mOnTriggerEnterCallback->mGameObject NULL");
-			(mOnTriggerEnterCallback->mGameObject->*mOnTriggerEnterCallback->mOnTriggerCallback)(other);
-		}
+		mRegisteredCollisionCallback = aCollisionFlags;
 	}
 
-	void Collider::OnTriggerExit(const Collider* other)
+	void Collider::OnTriggerEnter(Collider* other)
 	{
-		if (mOnTriggerEnterCallback)
-		{
-			assert(mOnTriggerExitCallback->mGameObject && "OnTriggerExit, mOnTriggerExitCallback->mGameObject NULL");
-			(mOnTriggerExitCallback->mGameObject->*mOnTriggerExitCallback->mOnTriggerCallback)(other);
-		}
+		mParent->OnTriggerEnter(other);
 	}
 
-	void Collider::OnTriggerStay(const Collider* other)
+	void Collider::OnTriggerExit(Collider* other)
 	{
-		if (mOnTriggerStayCallback)
-		{
-			assert(mOnTriggerStayCallback->mGameObject && "OnTriggerStay, mOnTriggerStayCallback->mGameObject NULL");
-			(mOnTriggerStayCallback->mGameObject->*mOnTriggerStayCallback->mOnTriggerCallback)(other);
-		}
+		mParent->OnTriggerExit(other);
 	}
 
-	void Collider::SetOnTriggerEnterCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
+	void Collider::OnTriggerStay(Collider* other)
 	{
-		assert(aGameObject && "SetOnTriggerEnterCallback, aGameObject NULL");
-		if (mOnTriggerEnterCallback)
-			delete mOnTriggerEnterCallback;
-
-		mOnTriggerEnterCallback = new TColliderCallback();
-		mOnTriggerEnterCallback->mOnTriggerCallback = aCallback;
-		mOnTriggerEnterCallback->mGameObject = aGameObject;
+		mParent->OnTriggerStay(other);
 	}
 
-	void Collider::SetOnTriggerExitCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
+	void Collider::OnCollisionEnter(Collider* other)
 	{
-		assert(aGameObject && "SetOnTriggerExitCallback, aGameObject NULL");
-		if (mOnTriggerExitCallback)
-			delete mOnTriggerExitCallback;
-
-		mOnTriggerExitCallback = new TColliderCallback();
-		mOnTriggerExitCallback->mOnTriggerCallback = aCallback;
-		mOnTriggerExitCallback->mGameObject = aGameObject;
+		mParent->OnCollisionEnter(other);
 	}
 
-	void Collider::SetOnTriggerStayCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
+	void Collider::OnCollisionExit(Collider* other)
 	{
-		assert(aGameObject && "SetOnTriggerStayCallback, aGameObject NULL");
-		if (mOnTriggerStayCallback)
-			delete mOnTriggerStayCallback;
-
-		mOnTriggerStayCallback = new TColliderCallback();
-		mOnTriggerStayCallback->mOnTriggerCallback = aCallback;
-		mOnTriggerStayCallback->mGameObject = aGameObject;
+		mParent->OnCollisionExit(other);
 	}
 
-	void Collider::OnCollisionEnter(const Collider* other)
+	void Collider::OnCollisionStay(Collider* other)
 	{
-		if (mOnTriggerEnterCallback)
-		{
-			assert(mOnTriggerEnterCallback->mGameObject && "OnCollisionEnter, mOnTriggerEnterCallback->mGameObject NULL");
-			(mOnTriggerEnterCallback->mGameObject->*mOnTriggerEnterCallback->mOnTriggerCallback)(other);
-		}
+		mParent->OnCollisionStay(other);
 	}
-
-	void Collider::OnCollisionExit(const Collider* other)
-	{
-		if (mOnTriggerExitCallback)
-		{
-			assert(mOnTriggerExitCallback->mGameObject && "OnCollisionExit, mOnTriggerExitCallback->mGameObject NULL");
-			(mOnTriggerExitCallback->mGameObject->*mOnTriggerExitCallback->mOnTriggerCallback)(other);
-		}
-	}
-
-	void Collider::OnCollisionStay(const Collider* other)
-	{
-		if (mOnCollisionStayCallback)
-		{
-			assert(mOnCollisionStayCallback->mGameObject && "OnCollisionEnter, mOnCollisionStayCallback->mGameObject NULL");
-			(mOnCollisionStayCallback->mGameObject->*mOnCollisionStayCallback->mOnTriggerCallback)(other);
-		}
-	}
-
-	void Collider::SetOnCollisionEnterCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
-	{
-		assert(aGameObject && "SetOnCollisionEnterCallback, aGameObject NULL");
-		if (mOnTriggerEnterCallback)
-			delete mOnTriggerEnterCallback;
-
-		mOnTriggerEnterCallback = new TColliderCallback();
-		mOnTriggerEnterCallback->mOnTriggerCallback = aCallback;
-		mOnTriggerEnterCallback->mGameObject = aGameObject;
-	}
-
-	void Collider::SetOnCollisionExitCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
-	{
-		assert(aGameObject && "SetOnCollisionExitCallback, aGameObject NULL");
-		if (mOnTriggerExitCallback)
-			delete mOnTriggerExitCallback;
-
-		mOnTriggerExitCallback = new TColliderCallback();
-		mOnTriggerExitCallback->mOnTriggerCallback = aCallback;
-		mOnTriggerExitCallback->mGameObject = aGameObject;
-	}
-
-	void Collider::SetOnCollisionStayCallback(Collider::OnCollision aCallback, const logic::IGameObject* aGameObject)
-	{
-		assert(aGameObject && "SetOnCollisionStayCallback, aGameObject NULL");
-		if (mOnCollisionStayCallback)
-			delete mOnCollisionStayCallback;
-
-		mOnCollisionStayCallback = new TColliderCallback();
-		mOnCollisionStayCallback->mOnTriggerCallback = aCallback;
-		mOnCollisionStayCallback->mGameObject = aGameObject;
-	}
+	
 } // namespace physics

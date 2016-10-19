@@ -3,24 +3,27 @@
 #include "Player.h"
 #include "Box.h"
 
-#include "Input\InputManager.h"
-#include "Input\IController.h"
-#include "Input\KeyboardController.h"
-#include "Input\MouseController.h"
-#include "Input\InputAction.h"
+#include "Input/InputManager.h"
+#include "Input/IController.h"
+#include "Input/KeyboardController.h"
+#include "Input/MouseController.h"
+#include "Input/InputAction.h"
 
-#include "Graphics\RenderManager.h"
-#include "Graphics\Camera.h"
+#include "Graphics/RenderManager.h"
+#include "Graphics/Camera.h"
 
-#include "UI\MenuManager.h"
-#include "UI\Menu.h"
+#include "UI/MenuManager.h"
+#include "UI/Menu.h"
 
-#include "Core\Log.h"
-#include "Core\Game.h"
+#include "Core/Log.h"
+#include "Core/Game.h"
 
-#include "Logic\World.h"
+#include "Logic/World.h"
 
+#include "Audio/AudioManager.h"
+#include "Audio/Sound2D.h"
 
+#include "IO/FileSystem.h"
 
 #include "Defs.h"
 
@@ -55,7 +58,7 @@ namespace game
 		lWorld->Init();
 
 		graphics::RenderManager::Instance()->SetRenderCamera(
-		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 11.2f, 4.0f),
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 21.2f, 4.0f),
 																	 &Vector3D<float32>(0.0f, 0.0f, 1.5f), 
 																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
 																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
@@ -66,21 +69,80 @@ namespace game
 		Player* lPlayer = new Player();
 		lWorld->AddGameObject(lPlayer, TRUE);
 
+		const float32 lWallVertexData[] = {
+			// X      Y     Z     U     V
+			-9.0f, -0.5f, -0.5f, 0.0f, 0.0f,
+			9.0f, -0.5f, -0.5f, 9.0f, 0.0f,
+			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
+			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
+			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f,
+			-9.0f, -0.5f, -0.5f, 0.0f, 0.0f,
+
+			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
+			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
+			9.0f,  0.5f,  0.5f, 9.0f, 1.0f,
+			9.0f,  0.5f,  0.5f, 9.0f, 1.0f,
+			-9.0f,  0.5f,  0.5f, 0.0f, 1.0f,
+			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
+
+			-9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+			-9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
+			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
+			-9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+
+			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
+			9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+			9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+			9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
+			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+
+			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+			9.0f, -0.5f, -0.5f, 9.0f, 1.0f,
+			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
+			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
+			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
+			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
+
+			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f,
+			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
+			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
+			-9.0f,  0.5f,  0.5f, 0.0f, 0.0f,
+			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f
+		};
 		Box* lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(TRUE, Vector3D<float32>(-4.5, 2, 0));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0, -9.0f), Vector3D<float32>(9.0f, 0.5, 0.5f), Vector3D<float32>(0.0f, 0.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(TRUE, Vector3D<float32>(-4, 4, 0));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0, 9.0f), Vector3D<float32>(9.0f, 0.4, 0.4f), Vector3D<float32>(0.0f, 180.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(TRUE, Vector3D<float32>(-3.5, 6, 0));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(9.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 9.0f), Vector3D<float32>(0.0f, 90.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox = new Box();
+		lWorld->AddGameObject(lBox, TRUE);
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(-9.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 9.0f), Vector3D<float32>(0.0f, 270.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 
+		lBox = new Box();
+		lWorld->AddGameObject(lBox, TRUE);
+		lBox->Init(Box::eCoin, TRUE, Vector3D<float32>(5.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), lWallVertexData, 0);
+
+		graphics::RenderManager::Instance()->SetClearColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
+
+		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
+		mMusic = audio::AudioManager::Instance()->CreateSound2D("Game.wav");
+		mMusic->Play(audio::eAudioGroups::eMusic, TRUE);
+		
 		return TRUE;
 	}
 
 	void GameState::Release()
 	{
+		mMusic->Stop();
+
 		ui::MenuManager::Instance()->RemoveMenu(mMenu);
 		mMenu = 0;
 

@@ -56,6 +56,7 @@ namespace logic
 		virtual uint32									GetComponentId() = 0;
 		virtual void									SetEnabled(BOOL aActive);
 		virtual BOOL									GetEnabled() { return mActive; }
+		IGameObject*									GetParent() { return mParent; }
 
 		
 	}; // IComponent

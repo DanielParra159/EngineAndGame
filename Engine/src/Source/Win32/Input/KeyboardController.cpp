@@ -68,6 +68,10 @@ namespace input
 				return EKeyCode::eUp;
 			case SDL_SCANCODE_ESCAPE:
 				return EKeyCode::eEscape;
+			case SDL_SCANCODE_1:
+				return EKeyCode::e1;
+			case SDL_SCANCODE_2:
+				return EKeyCode::e2;
 		}
 		return EKeyCode::eUnknown;
 	}

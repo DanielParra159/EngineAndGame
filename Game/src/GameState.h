@@ -5,6 +5,11 @@
 
 #include "Core\IGameState.h"
 
+namespace audio
+{
+	class Sound2D;
+}
+
 namespace ui
 {
 	class Menu;
@@ -20,7 +25,9 @@ namespace game
 	enum EInputActions
 	{
 		eExit,
-		eUp, eDown, eLeft, eRight
+		eUp, eDown, eLeft, eRight,
+		eLeftButton, 
+		eNum1, eNum2
 	};
 
 	class Map;
@@ -29,6 +36,7 @@ namespace game
 	{
 	private:
 		ui::Menu*										mMenu;
+		audio::Sound2D*									mMusic;
 	public:
 		GameState() {}
 		~GameState() {}

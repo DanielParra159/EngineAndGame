@@ -67,56 +67,13 @@ namespace game
 			-9.0f,  0.5f, -9.0f, 0.0f, 1.0f
 		};
 
-		const float32 lWallVertexData[] = {
-			// X      Y     Z     U     V
-			-9.0f, -0.5f, -0.5f, 0.0f, 0.0f,
-			9.0f, -0.5f, -0.5f, 9.0f, 0.0f,
-			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
-			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
-			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f,
-			-9.0f, -0.5f, -0.5f, 0.0f, 0.0f,
-
-			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
-			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
-			9.0f,  0.5f,  0.5f, 9.0f, 1.0f,
-			9.0f,  0.5f,  0.5f, 9.0f, 1.0f,
-			-9.0f,  0.5f,  0.5f, 0.0f, 1.0f,
-			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
-
-			-9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-			-9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
-			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
-			-9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-
-			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
-			9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-			9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-			9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
-			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-
-			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-			9.0f, -0.5f, -0.5f, 9.0f, 1.0f,
-			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
-			9.0f, -0.5f,  0.5f, 9.0f, 0.0f,
-			-9.0f, -0.5f,  0.5f, 0.0f, 0.0f,
-			-9.0f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f,
-			9.0f,  0.5f, -0.5f, 9.0f, 1.0f,
-			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-			9.0f,  0.5f,  0.5f, 9.0f, 0.0f,
-			-9.0f,  0.5f,  0.5f, 0.0f, 0.0f,
-			-9.0f,  0.5f, -0.5f, 0.0f, 1.0f
-		};
+		
 		mGround = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Ground", lGroundVertexData, sizeof(lGroundVertexData), 36);
 		//mGround = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mGround->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Grass.jpg"));
 		//mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
-		mWall = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Wall", lWallVertexData, sizeof(lWallVertexData), 36);
-		mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
+		//mWall = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Wall", lWallVertexData, sizeof(lWallVertexData), 36);
+		//mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
 
 		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0)); 
 		AddComponent(c);
@@ -132,17 +89,18 @@ namespace game
 		mGround->Render(&Vector3D<float32>(0, -1, 0));
 
 		
-		mWall->Render(&Vector3D<float32>(0.0f, 0, -9.0f));
+		/*mWall->Render(&Vector3D<float32>(0.0f, 0, -9.0f));
 		mWall->Render(&Vector3D<float32>(9.0f, 0, 0.0f), &Vector3D<float32>::one, &Vector3D<float32>(0.0f, 90.0f, 0.0f));
 		mWall->Render(&Vector3D<float32>(-9.0f, 0, 0.0f), &Vector3D<float32>::one, &Vector3D<float32>(0.0f, -90.0f, 0.0f));
-		mWall->Render(&Vector3D<float32>(0.0f, 0, 9.0f));
+		mWall->Render(&Vector3D<float32>(0.0f, 0, 9.0f));*/
 		
 	}
 
 	void Map::Release()
 	{
+		IGameObject::Release();
 		graphics::RenderManager::Instance()->UnloadMesh(mGround);
-		graphics::RenderManager::Instance()->UnloadMesh(mWall);
+		//graphics::RenderManager::Instance()->UnloadMesh(mWall);
 	}
 } // namespace game
 

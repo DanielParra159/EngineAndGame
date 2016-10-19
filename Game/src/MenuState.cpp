@@ -30,13 +30,25 @@ namespace game
 			return FALSE;
 
 		input::InputAction* lInputAction = new input::InputAction();
-		lInputAction->Init(5, input::MouseController::eLeftButton);
+		lInputAction->Init(eLeftButton, input::MouseController::eLeftButton);
+		lController->RegisterInputAction(lInputAction);
+
+		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
+			return FALSE;
+		lInputAction = new input::InputAction();
+		lInputAction->Init(eExit, input::KeyboardController::eEscape);
+		lController->RegisterInputAction(lInputAction);
+		lInputAction = new input::InputAction();
+		lInputAction->Init(eNum1, input::KeyboardController::e1);
 		lController->RegisterInputAction(lInputAction);
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		mMenu->AddButton(Rect<>(0, 0, 800, 600), Rect<>(0, 0, 200, 100), &StartGame);
 
+		graphics::RenderManager::Instance()->SetClearColor(Color(0.25f, 0.5f, 0.6, 1.0f));
+
+		core::LogString("Press 1 on the Game Screen to play Snake Game");
 		return TRUE;
 	}
 
@@ -48,6 +60,21 @@ namespace game
 
 	BOOL MenuState::Update()
 	{
+		int32 lAction = input::InputManager::Instance()->GetLastActionId();
+
+		switch (lAction)
+		{
+			case eExit:
+				return FALSE;
+			case eNum1:
+				audio::AudioManager::Instance()->CreateSound2D("audio/Button.wav")->Play(audio::eAudioGroups::eEffects);
+
+				game::GameState *lGameState = new game::GameState();
+
+				core::Game::Instance()->ChangeGameState(lGameState);
+				break;
+		}
+
 		return TRUE;
 	}
 
@@ -60,13 +87,13 @@ namespace game
 
 	void MenuState::StartGame()
 	{
-		core::LogString("START GAME");
+		/*core::LogString("START GAME");
 
 		audio::AudioManager::Instance()->CreateSound2D("audio/button.mp3")->Play(audio::eAudioGroups::eEffects);
 		
 		game::GameState *lGameState = new game::GameState();
 
-		core::Game::Instance()->ChangeGameState(lGameState);
+		core::Game::Instance()->ChangeGameState(lGameState);*/
 	}
 
 } // namespace game

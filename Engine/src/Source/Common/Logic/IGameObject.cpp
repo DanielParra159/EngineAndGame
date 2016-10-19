@@ -2,6 +2,7 @@
 #include "Logic/IComponent.h"
 
 #include "Logic/ComponentFactory.h"
+#include "Logic/World.h"
 
 namespace logic
 {
@@ -64,7 +65,10 @@ namespace logic
 	void IGameObject::SetEnabled(BOOL aActive)
 	{
 		mActive = aActive;
-		//@TODO: Notify to world
+		if (mActive)
+			World::Instance()->ActiveGameObject(this);
+		else
+			World::Instance()->DisableGameObject(this);
 	}
 
 	//POSITION FUNCTIONS

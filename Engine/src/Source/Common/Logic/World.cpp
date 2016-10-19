@@ -9,6 +9,8 @@
 #include "System\Time.h"
 #include "Core\Log.h"
 
+#include <assert.h>
+
 namespace logic
 {
 
@@ -101,6 +103,16 @@ namespace logic
 			mActivatedGameObjects.insert(aGameObject);
 		else
 			mDisabledGameObjects.insert(aGameObject);
+	}
+	void World::DisableGameObject(IGameObject* aGameObject)
+	{
+		assert(mActivatedGameObjects.find(aGameObject) != mActivatedGameObjects.end());
+		mGameObjectsToBeDisabled.push_back(aGameObject);
+	}
+	void World::ActiveGameObject(IGameObject* aGameObject)
+	{
+		assert(mDisabledGameObjects.find(aGameObject) != mDisabledGameObjects.end());
+		mGameObjectsToBeActivated.push_back(aGameObject);
 	}
 
 } // namespace logic

@@ -77,7 +77,9 @@ namespace physics
 																		  BOOL aTrigger, uint32 aLayerMask, uint32 aCollisionMask, Collider::eColliderType aColliderType, float32 aMass = 0.0f);
 		Collider*										CreatePlaneCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aNormal, uint32 aLayerMask, uint32 aCollisionMask);
 		CapsuleController*								CreateCapsuleController(const Vector3D<float32> &aCenter, float32 aRadius, float32 aHeight, float32 aSlopeLimit, CapsuleController::eClimbingMode aClimbingMode, uint32 aLayerMask, uint32 aCollisionMask);
+		Collider*										RaycastSingle(const Vector3D<float32>& aPosition, const Vector3D<float32>& aDirection, float32 aMaxDistance);
 
+		void											RemoveCollider(Collider* aCollider);
 	private:
 		PhysicsManager() {}
 		~PhysicsManager() {}

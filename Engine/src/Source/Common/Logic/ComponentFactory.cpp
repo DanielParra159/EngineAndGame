@@ -38,6 +38,7 @@ namespace logic
 	void ComponentFactory::RecycleComponent(IComponent* aComponent)
 	{
 		//@TODO: Components pool
+		aComponent->Release();
 		delete aComponent;
 	}
 

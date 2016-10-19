@@ -3,17 +3,18 @@
 #include "GameState.h"
 #include "GameOverState.h"
 
-#include "Input\InputManager.h"
+#include "Input/InputManager.h"
 
-#include "System\Time.h"
+#include "System/Time.h"
 
-#include "Core\Game.h"
+#include "Core/Game.h"
+#include "Core/Log.h"
 
-#include "Graphics\RenderManager.h"
-#include "Graphics\Mesh.h"
-#include "Graphics\Material.h"
+#include "Graphics/RenderManager.h"
+#include "Graphics/Mesh.h"
+#include "Graphics/Material.h"
 
-#include "Support\Vector3D.h"
+#include "Support/Vector3D.h"
 
 #include "Physics/PhysicsManager.h"
 #include "Physics/Collider.h"
@@ -30,11 +31,12 @@ namespace game
 		physics::Collider* a = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 20, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 10.0f);
 		physics::Collider* b = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0.5, 1, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 0.1f);
 		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0));*/
-		capsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
+		capsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(capsule);
 
 		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
+		mHead->GetMaterial()->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
 		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mTail->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png"));
 
@@ -100,22 +102,27 @@ namespace game
 		switch (mDirection)
 		{
 			case game::Player::eUp:
+				//capsule->Move(Vector3D<float32>(0, 0, -1));
 				ChangePos(mPosition.mX, mPosition.mZ - 1);
 				mRotation.mY = 90;
 				break;
 			case game::Player::eDown:
+				//capsule->Move(Vector3D<float32>(0, 0, 1));
 				ChangePos(mPosition.mX, mPosition.mZ + 1);
 				mRotation.mY = 270;
 				break;
 			case game::Player::eLeft:
+				//capsule->Move(Vector3D<float32>(-1, 0, 0));
 				ChangePos(mPosition.mX - 1, mPosition.mZ);
 				mRotation.mY = 180;
 				break;
 			case game::Player::eRight:
+				//capsule->Move(Vector3D<float32>(1,0,0));
 				ChangePos(mPosition.mX + 1, mPosition.mZ);
 				mRotation.mY = 0;
 				break;
 		}
+
 	}
 
 	void Player::Render()
@@ -146,23 +153,13 @@ namespace game
 
 	void Player::ChangePos(float32 aNextX, float32 aNextZ)
 	{
-		if (aNextX >= Map::sMapSize.mX*0.5f - 1.0f || aNextX <= -(Map::sMapSize.mX*0.5f - 1.0f)
-			|| aNextZ >= Map::sMapSize.mY*0.5f - 1.0f || aNextZ <= -(Map::sMapSize.mY*0.5f - 1.0f))
-		{
-			//HACK
-			game::GameOverState *lGameState = new game::GameOverState();
-
-			core::Game::Instance()->ChangeGameState(lGameState);
-			return;
-		}
-
 		int32 i = 0;
 		while (mTailStates[i]->mLife > 0)
 		{
 			++i;
 		}
 
-		mTailStates[i]->mLife = mSnakeLenght+1;
+		mTailStates[i]->mLife = mSnakeLenght + 1;
 		mTailStates[i]->mPosition = mPosition;
 		mTailStates[i]->mRotation = mRotation;
 
@@ -170,10 +167,36 @@ namespace game
 		mPosition.mZ = aNextZ;
 		capsule->SetPosition(mPosition);
 
-		for (i = 0; i < mMaxTailLength && mTailStates[i]->mLife > 0; ++i)
+		for (i = 0; i < mMaxTailLength; ++i)
 		{
-			--mTailStates[i]->mLife;
+			if (mTailStates[i]->mLife > 0)
+				--mTailStates[i]->mLife;
 		}
+	}
+
+	void Player::OnCollisionEnter(physics::Collider* other)
+	{
+		core::LogString("ONCOL");
+		//HACK
+		game::GameOverState *lGameState = new game::GameOverState();
+
+		core::Game::Instance()->ChangeGameState(lGameState);
+		return;
+	}
+
+	void Player::AddCoin()
+	{
+		++mSnakeLenght;
+
+		int32 i = 0;
+		while (mTailStates[i]->mLife > 0)
+		{
+			++i;
+		}
+
+		mTailStates[i]->mLife = mSnakeLenght + 1;
+		mTailStates[i]->mPosition = mPosition;
+		mTailStates[i]->mRotation = mRotation;
 	}
 } // namespace game
 

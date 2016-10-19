@@ -307,4 +307,23 @@ namespace physics
 		return lCapsuleController;
 	}
 
+	Collider* PhysicsManager::RaycastSingle(const Vector3D<float32> &aPosition, const Vector3D<float32> &aDirection, float32 aMaxDistance)
+	{
+		Collider* lResult = NULL;
+
+		physx::PxRaycastHit aRaycastHit;
+
+		const physx::PxSceneQueryFlags outputFlags;
+		BOOL intersection = mActiveScene->raycastSingle(physx::PxVec3(EXPOSE_VECTOR3D(aPosition)), 
+														physx::PxVec3(EXPOSE_VECTOR3D(aDirection)),
+														aMaxDistance, outputFlags, aRaycastHit);
+
+		return lResult;
+	}
+
+	void PhysicsManager::RemoveCollider(Collider* aCollider)
+	{
+		mActiveScene->removeActor(*aCollider->mPhysicActor);
+	}
+
 } // namespace physics

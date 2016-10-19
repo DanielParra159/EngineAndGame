@@ -243,7 +243,7 @@ namespace audio {
 	{
 		TSoundChannel lChannel = mSoundChannels[aSound->mChannelId];
 		lChannel->stop();
-		delete lChannel;
+		//delete lChannel;
 		mSoundChannels.erase(aSound->mChannelId);
 	}
 
