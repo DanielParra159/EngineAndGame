@@ -41,7 +41,7 @@ namespace core
 		mRootDir = aDirectory;
 	}
 
-	void GameDescription::SetPhysicsGravity(float32 aPhysicsGravity)
+	void GameDescription::SetPhysicsGravity(const Vector3D<float32>& aPhysicsGravity)
 	{
 		mPhysicsGravity = aPhysicsGravity;
 	}

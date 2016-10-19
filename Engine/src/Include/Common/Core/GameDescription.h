@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "Support\Color.h"
 #include "Support\Vector2D.h"
+#include "Support\Vector3D.h"
 
 #include <string>
 
@@ -19,10 +20,10 @@ namespace core
 		Vector2D<uint32>								mScreenPosition;
 		Color											mClearColor;
 		BOOL											mFullScreen;
-		float32											mPhysicsGravity;
+		Vector3D<float32>								mPhysicsGravity;
 		std::string										mRootDir;
 	public:
-		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mClearColor(), mFullScreen(FALSE), mPhysicsGravity(-9.81f) {}
+		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mClearColor(), mFullScreen(FALSE), mPhysicsGravity(0.0f, -9.81f, 0.0f) {}
 		~GameDescription() {}
 		/** Assigns screen size
 		@param aX width
@@ -57,7 +58,7 @@ namespace core
 		*/
 		void											SetFullScreen(BOOL aFullScreen);
 		void											SetRootDir(const std::string& aDirectory);
-		void											SetPhysicsGravity(float32 aPhysicsGravity);
+		void											SetPhysicsGravity(const Vector3D<float32>& aPhysicsGravity);
 			
 	}; // GameDescription
 } // namespace core

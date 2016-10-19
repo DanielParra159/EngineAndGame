@@ -19,7 +19,7 @@ namespace physics
 {
 	SINGLETON_BODY(PhysicsManager);
 
-	BOOL PhysicsManager::Init(float32 aGravity)
+	BOOL PhysicsManager::Init(const Vector3D<float32>& aGravity)
 	{
 		mErrorManager = new ErrorManager();
 
@@ -63,7 +63,8 @@ namespace physics
 		mPvdConnection = physx::PxVisualDebuggerExt::createConnection(mPvdConnectionManager, lIp, lPort, lTimeout, connectionFlags);
 #endif
 
-		CreateScene(aGravity);
+		mGravity = aGravity;
+		CreateScene();
 
 		return TRUE;
 	}
@@ -135,11 +136,11 @@ namespace physics
 		return physx::PxFilterFlag::eDEFAULT;
 	}
 
-	void PhysicsManager::CreateScene(float32 aGravity)
+	void PhysicsManager::CreateScene()
 	{
 		physx::PxSceneDesc sceneDesc(mPhysics->getTolerancesScale());
 
-		sceneDesc.gravity = physx::PxVec3(0.0f, aGravity, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(EXPOSE_VECTOR3D(mGravity));
 
 		sceneDesc.simulationEventCallback = mCollisionManager;
 
@@ -168,7 +169,13 @@ namespace physics
 		return mPhysics->createMaterial(aStaticFriction, aDynamicFriction, aRestitution);
 	}
 
-	
+	void PhysicsManager::SetGravity(const Vector3D<float32>& aGravity)
+	{
+		assert(mActiveScene && "mActiveScene NULL");
+
+		mGravity = aGravity;
+		mActiveScene->setGravity(physx::PxVec3(EXPOSE_VECTOR3D(mGravity)));
+	}
 
 	Collider* PhysicsManager::CreateBoxCollider(const Vector3D<float32> &aPosition, const Vector3D<float32> &aPositionOffset, const Vector3D<float32> &aDimensions,
 																	  BOOL aTrigger, uint32 aLayerMask, uint32 aCollisionMask, Collider::eColliderType aColliderType, float32 aMass)

@@ -1,8 +1,10 @@
 #include "Types.h"
+#include "Support/Vector3D.h"
 
 #include "Core\Game.h"
 #include "Core\GameDescription.h"
 #include "Core\Log.h"
+
 
 #include "IO\File.h"
 
@@ -21,6 +23,7 @@ int main(int argc, char* argv[])
 	lGameDescription->SetScreenSize(800, 600);
 	lGameDescription->SetFullScreen(FALSE);
 	lGameDescription->SetRootDir(".\\assets");
+	lGameDescription->SetPhysicsGravity(Vector3D<float32>(0.0f, -9.8f, 0.0f));
 
 	if (!game->Init("Titulo", *lGameDescription))
 	{

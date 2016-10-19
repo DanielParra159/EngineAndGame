@@ -20,6 +20,7 @@
 #include "Physics/CapsuleController.h"
 namespace game
 {
+	physics::CapsuleController* capsule;
 	void Player::Init(BOOL aActive)
 	{
 		IGameObject::Init(aActive);
@@ -29,7 +30,7 @@ namespace game
 		physics::Collider* a = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 20, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 10.0f);
 		physics::Collider* b = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0.5, 1, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 0.1f);
 		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0));
-		physics::PhysicsManager::Instance()->CreateCapsuleController(Vector3D<float32>(2.1f, 0, 0), 2, 2, 0.7f, physics::CapsuleController::eEASY, (1 << 1), (1 << 1) | (1 << 0));
+		capsule = physics::PhysicsManager::Instance()->CreateCapsuleController(Vector3D<float32>(7.1f, 30, 0), 2, 2, 0.7f, physics::CapsuleController::eEASY, (1 << 1), (1 << 1) | (1 << 0));
 
 		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));

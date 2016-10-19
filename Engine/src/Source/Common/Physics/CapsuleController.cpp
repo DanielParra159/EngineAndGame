@@ -1,4 +1,5 @@
 #include "Physics/CapsuleController.h"
+#include "Physics/PhysicsManager.h"
 
 #include "System/Time.h"
 
@@ -16,6 +17,26 @@ namespace physics
 	{
 		Collider::Init(aActive, aPhysicsActor, aColliderType, aTrigger);
 		mGround = FALSE;
+		mDisplacement = Vector3D<float32>::zero;
+	}
+
+	void CapsuleController::Update()
+	{
+		float32 lDeltaTime = sys::Time::Instance()->GetDeltaSec();
+
+		if (!mGround) {
+			mDisplacement += PhysicsManager::Instance()->GetGravity() * lDeltaTime;
+		}
+
+		uint32 lFlags = mPhysicCampsuleController->move(physx::PxVec3(EXPOSE_VECTOR3D(mDisplacement)), mMinDistance, lDeltaTime , physx::PxControllerFilters());
+		mGround = (lFlags & physx::PxControllerFlag::eCOLLISION_DOWN);
+
+		mDisplacement = Vector3D<float32>::zero;
+	}
+
+	void CapsuleController::SetPosition(const Vector3D<float32> aPosition)
+	{
+		mPhysicCampsuleController->setPosition(physx::PxExtendedVec3(EXPOSE_VECTOR3D(aPosition)));
 	}
 
 	void CapsuleController::SetPhysicCampsuleController(PhysicCampsuleController* aPhysicCampsuleController)
@@ -24,9 +45,9 @@ namespace physics
 		SetPhysicActor((physx::PxRigidActor*)mPhysicCampsuleController->getActor());
 	}
 
-	void CapsuleController::Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance, float32 aElapsedTime)
+	void CapsuleController::Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance)
 	{
-		uint32 lFlags = mPhysicCampsuleController->move(physx::PxVec3(EXPOSE_VECTOR3D(aDisplacement)), aMinDistance, aElapsedTime, physx::PxControllerFilters());
-		mGround = (lFlags & physx::PxControllerFlag::eCOLLISION_DOWN);
+		mDisplacement = aDisplacement;
+		mMinDistance = aMinDistance;
 	}
 } // namespace physics

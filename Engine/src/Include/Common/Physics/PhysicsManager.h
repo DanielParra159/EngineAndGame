@@ -57,10 +57,13 @@ namespace physics
 		physx::PxScene*									mActiveScene;
 		physx::PxDefaultCpuDispatcher*					mCpuDispatcher;
 		physx::PxControllerManager*						mControllerManager;
+		Vector3D<float32>								mGravity;
 	public:
-		BOOL											Init(float32 aGravity);
+		BOOL											Init(const Vector3D<float32>& aGravity);
 		void											Release();
 		void											Update();
+		const Vector3D<float32>							GetGravity() { return mGravity; }
+		void											SetGravity(const Vector3D<float32>& aGravity);
 
 		/**
 		Create an PhysicsMaterial, the user must release it later
@@ -80,7 +83,7 @@ namespace physics
 			uint32 aAttributes1, physx::PxFilterData aFilterData1,
 			physx::PxPairFlags& aPairFlags, const void* aConstantBlock, uint32 aConstantBlockSize);
 
-		void											CreateScene(float32 aGravity);
+		void											CreateScene();
 	}; // PhysicsManager
 } // namespace physics
 #endif // _ENGINE_PHYSICS_PHYSICSMANAGER_H_

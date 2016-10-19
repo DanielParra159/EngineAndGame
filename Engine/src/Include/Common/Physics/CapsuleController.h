@@ -7,8 +7,6 @@
 
 #include "Physics/Collider.h"
 
-#include "System/Time.h"
-
 #include "characterkinematic/PxCapsuleController.h"
 
 namespace physics
@@ -30,9 +28,10 @@ namespace physics
 	protected:
 		PhysicCampsuleController*						mPhysicCampsuleController;
 		BOOL											mGround;
+		Vector3D<float32>								mDisplacement;
+		float32											mMinDistance;
 	public:
-		virtual void									Init(BOOL aActive);
-		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
+		virtual void									SetPosition(const Vector3D<float32> aPosition);
 		BOOL											GetGround()	{ return mGround; }
 		void											SetHeight(float32 aHeight) { mPhysicCampsuleController->setHeight(aHeight); }
 		float32											GetHeight() { return mPhysicCampsuleController->getHeight(); }
@@ -48,16 +47,15 @@ namespace physics
 		@param aDisplacement, Displacement vector
 		@param aMinDistance The minimum travelled distance to consider. If travelled distance is smaller, the character doesn't move.
 		This is used to stop the recursive motion algorithm when remaining distance to travel is small.
-		@param aElapsedTime, Time elapsed since last call
 		*/
-		//@TODO: Encapsulate move and call only on update?
-		void											Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance, float32 aElapsedTime = sys::Time::Instance()->GetDeltaSec());
+		void											Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance);
 	protected:
 		CapsuleController() : Collider() {}
 		virtual ~CapsuleController() {}
 		virtual void									SetPhysicCampsuleController(PhysicCampsuleController* aPhysicCampsuleController);
-		//virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
-		//virtual void									Release();
+		virtual void									Init(BOOL aActive);
+		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
+		virtual void									Update();
 
 	}; // CapsuleController
 } // namespace physics
