@@ -40,7 +40,6 @@ namespace logic
 		virtual void									Update() {}
 		virtual void									FixedUpdate() {}
 		virtual void									Render() {}
-		virtual void									SetPosition(const Vector3D<float32> aPosition) {};
 		static void RenderCallbackFunction(IComponent* aComponent)
 		{
 			aComponent->Render();

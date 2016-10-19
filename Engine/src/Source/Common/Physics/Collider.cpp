@@ -4,7 +4,7 @@
 
 #include "Support/Math.h"
 
-#include <PxRigidActor.h>
+#include <PxRigidDynamic.h>
 #include <assert.h>
 
 namespace physics
@@ -25,7 +25,6 @@ namespace physics
 		physx::PxVec3 lAxis;
 		mPhysicActor->getGlobalPose().q.toRadiansAndUnitAxis(lAngle, lAxis);
 		physx::PxVec3 lPosition = mPhysicActor->getGlobalPose().p;
-		core::LogFormatString("rot %f %f %f", lAxis.x, lAxis.y, lAxis.z);
 		mParent->SetRotation(Vector3D<float>(lAxis.x, lAxis.y, lAxis.z)*Math::Degrees(lAngle));
 		mParent->SetPosition(lPosition.x, lPosition.y, lPosition.z);
 	}
@@ -63,6 +62,26 @@ namespace physics
 		aUpdateFunction = NULL;
 		aFixedUpdateFunction = IComponent::FixedUpdateCallbackFunction;
 		aRenderFunction = NULL;
+	}
+
+	void Collider::SetPosition(const Vector3D<float32> aPosition)
+	{
+		if (mColliderType == eColliderType::eKinematic)
+		{
+			physx::PxTransform lTransform = mPhysicActor->getGlobalPose();
+			lTransform.p = physx::PxVec3(EXPOSE_VECTOR3D(aPosition));
+			((physx::PxRigidDynamic*)mPhysicActor)->setKinematicTarget(lTransform);
+		}
+	}
+
+	void Collider::Move(const Vector3D<float32>& aDisplacement)
+	{
+		if (mColliderType == eColliderType::eKinematic)
+		{
+			physx::PxTransform lTransform = mPhysicActor->getGlobalPose();
+			lTransform.p += physx::PxVec3(EXPOSE_VECTOR3D(aDisplacement));
+			((physx::PxRigidDynamic*)mPhysicActor)->setKinematicTarget(lTransform);
+		}
 	}
 
 	void Collider::OnTriggerEnter(const Collider* other)

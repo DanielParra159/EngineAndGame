@@ -50,6 +50,7 @@ namespace physics
 		This is used to stop the recursive motion algorithm when remaining distance to travel is small.
 		*/
 		void											Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance);
+		virtual void									Move(const Vector3D<float32>& aDisplacement);
 	protected:
 		CapsuleController() : Collider() {}
 		virtual ~CapsuleController() {}

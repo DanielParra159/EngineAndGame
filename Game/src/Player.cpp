@@ -20,7 +20,7 @@
 #include "Physics/CapsuleController.h"
 namespace game
 {
-	physics::CapsuleController* capsule;
+	physics::Collider* capsule;
 	void Player::Init(BOOL aActive)
 	{
 		IGameObject::Init(aActive);
@@ -30,7 +30,7 @@ namespace game
 		physics::Collider* a = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 20, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 10.0f);
 		physics::Collider* b = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0.5, 1, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 0.1f);
 		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0));*/
-		capsule = physics::PhysicsManager::Instance()->CreateCapsuleController(Vector3D<float32>(0.0f, 30, 0), 1, 1, 0.7f, physics::CapsuleController::eEASY, (1 << 1), (1 << 1) | (1 << 0));
+		capsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(capsule);
 
 		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
@@ -43,8 +43,6 @@ namespace game
 		mDelayBetweenMovements = 1.0f;
 		mTimeNextMovement = sys::Time::GetCurrentSec() + mDelayBetweenMovements;
 		mLastAction = -1;
-		mPosition.mX = 0.5f;
-		mPosition.mZ = 0.5f;
 
 		this->GetComponent(physics::CapsuleController::sId);
 
@@ -170,6 +168,7 @@ namespace game
 
 		mPosition.mX = aNextX;
 		mPosition.mZ = aNextZ;
+		capsule->SetPosition(mPosition);
 
 		for (i = 0; i < mMaxTailLength && mTailStates[i]->mLife > 0; ++i)
 		{

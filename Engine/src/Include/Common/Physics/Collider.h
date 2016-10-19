@@ -78,6 +78,8 @@ namespace physics
 		void											OnCollisionExit(const Collider* other);
 		void											OnCollisionStay(const Collider* other);
 	public:
+		virtual void									SetPosition(const Vector3D<float32> aPosition);
+		virtual void									Move(const Vector3D<float32>& aDisplacement);
 		virtual BOOL									GetTrigger() { return mTrigger; }
 
 		/**

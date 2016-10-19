@@ -19,7 +19,8 @@ namespace physics
 	{
 		Collider::Init(aActive, aPhysicsActor, aColliderType, aTrigger);
 		mGround = FALSE;
-		mDisplacement = Vector3D<float32>::zero;		
+		mDisplacement = Vector3D<float32>::zero;	
+		mMinDistance = 0.2f;
 	}
 
 
@@ -50,6 +51,10 @@ namespace physics
 		SetPhysicActor((physx::PxRigidActor*)mPhysicCampsuleController->getActor());
 	}
 
+	void CapsuleController::Move(const Vector3D<float32>& aDisplacement)
+	{
+		mDisplacement = aDisplacement;
+	}
 	void CapsuleController::Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance)
 	{
 		mDisplacement = aDisplacement;
