@@ -219,6 +219,9 @@
     <ClInclude Include="..\..\src\Include\Common\Physics\CapsuleController.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Logic\ComponentFactory.h">
+      <Filter>Header Files\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Physics\CapsuleController.cpp">
       <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Logic\ComponentFactory.cpp">
+      <Filter>Source Files\Logic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,7 +3,13 @@
 
 #include "Defs.h"
 #include "Types.h"
+
 #include <string>
+
+namespace core
+{
+	class Game;
+}
 
 namespace io
 {
@@ -13,15 +19,13 @@ namespace io
 	*/
 	class FileSystem
 	{
+		friend class core::Game;
 		SINGLETON_HEAD(FileSystem);
 	private:
 		std::string										mCurrentDir;
 		std::string										mRootDir;
 
 	public:
-		BOOL											Init(const std::string& aRootDir);
-		void											Release();
-
 		/**
 		Changes the current directory to new absolute or relative directory
 		@param aDirectory, new directory in absolute or relative path
@@ -37,6 +41,10 @@ namespace io
 	private:
 		FileSystem() {}
 		~FileSystem() {}
+
+		BOOL											Init(const std::string& aRootDir);
+		void											Release();
+
 		BOOL											CheckValidDirectory(const std::string& aDirectory);
 	}; // FileSystem
 } // namespace io

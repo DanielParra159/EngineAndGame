@@ -1,6 +1,7 @@
 #ifndef _ENGINE_PHYSICS_COLLIDER_H_
 #define _ENGINE_PHYSICS_COLLIDER_H_
 
+#include "Defs.h"
 #include "Types.h"
 #include "Logic/IComponent.h"
 
@@ -19,6 +20,7 @@ namespace physics
 	
 	*/
 	class Collider : public logic::IComponent {
+		REGISTER_COMPONENT_HEAD(Collider)
 	public:
 		friend class CollisionManager;
 		friend class PhysicsManager;
@@ -52,10 +54,9 @@ namespace physics
 			mOnCollisionEnterCallback(NULL), mOnCollisionExitCallback(NULL), mOnCollisionStayCallback(NULL)
 		{}
 		virtual ~Collider() {}
-		virtual void									Init(BOOL aActive);
 		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									Release();
-		//@TODO should be public
+		//@TODO should be public and modify PhysX
 		virtual void									SetTrigger(BOOL aTrigger) { mTrigger = aTrigger; }
 		virtual void									SetPhysicActor(PhysicActor* aPhysicActor) { mPhysicActor = aPhysicActor; }
 		/**

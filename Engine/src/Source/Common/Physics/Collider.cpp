@@ -4,14 +4,11 @@
 
 namespace physics
 {
+	REGISTER_COMPONENT_BODY(Collider, physics)
 
-	void Collider::Init(BOOL aActive)
-	{
-		IComponent::Init(mActive);
-	}
 	void Collider::Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger)
 	{
-		Init(aActive);
+		IComponent::Init(aActive);
 		mPhysicActor = aPhysicsActor;
 		mColliderType = aColliderType;
 		mTrigger = aTrigger;
@@ -43,7 +40,6 @@ namespace physics
 			delete mOnCollisionStayCallback;
 		mOnCollisionStayCallback = NULL;
 	}
-
 
 	void Collider::OnTriggerEnter(const Collider* other)
 	{

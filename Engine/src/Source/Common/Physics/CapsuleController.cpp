@@ -7,9 +7,11 @@
 
 namespace physics
 {
+	REGISTER_COMPONENT_BODY(CapsuleController, physics)
+
 	void CapsuleController::Init(BOOL aActive)
 	{
-		Collider::Init(mActive);
+		IComponent::Init(mActive);
 		mGround = FALSE;
 	}
 
@@ -17,7 +19,13 @@ namespace physics
 	{
 		Collider::Init(aActive, aPhysicsActor, aColliderType, aTrigger);
 		mGround = FALSE;
-		mDisplacement = Vector3D<float32>::zero;
+		mDisplacement = Vector3D<float32>::zero;		
+	}
+
+	void CapsuleController::SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction)
+	{
+		aUpdateFunction = IComponent::UpdateCallbackFunction;
+		aRenderFunction = NULL;
 	}
 
 	void CapsuleController::Update()

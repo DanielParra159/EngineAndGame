@@ -9,6 +9,11 @@
 struct lua_State;
 typedef int(*lua_CFunction) (lua_State *L);
 
+namespace core
+{
+	class Game;
+}
+
 namespace script
 {
 	/**
@@ -16,13 +21,11 @@ namespace script
 	*/
 	class ScriptManager
 	{
+		friend class core::Game;
 		SINGLETON_HEAD(ScriptManager);
 	private:
 		lua_State*										mLuaState;
 	public:
-		BOOL											Init();
-		void											Release();
-
 		BOOL											LoadScript(const int8* aScriptName);
 		BOOL											ExecuteScript(const int8* aScriptName);
 
@@ -43,6 +46,9 @@ namespace script
 	private:
 		ScriptManager() : mLuaState() {}
 		~ScriptManager(){}
+
+		BOOL											Init();
+		void											Release();
 
 	}; // ScriptManager
 } // namespace script

@@ -7,16 +7,12 @@
 #include "fmod_errors.h"
 
 #include <algorithm>
-
-
-#include "Script/ScriptManager.h"
-#include "luabind/luabind.hpp"
-#include "luabind/adopt_policy.hpp"
-
 #include <iostream>
 #include <cmath>
 #include <cerrno>
 #include <cfenv>
+
+#include <assert.h>
 
 
 namespace audio {
@@ -34,26 +30,26 @@ namespace audio {
 	BOOL AudioManager::Init(float32 aDistanceFactor)
 	{
 		if (!ERRCHECK(FMOD::System_Create(&mAudioSystem)))
-			return FALSE;
+			assert(FALSE);
 
 		int32 driverCount = 0;
 		if (!ERRCHECK(mAudioSystem->getNumDrivers(&driverCount)))
-			return FALSE;
+			assert(FALSE);
 
 		if (driverCount == 0)
-			return FALSE;
+			assert(FALSE);
 
 		if (!ERRCHECK(mAudioSystem->init(mNumChannels, FMOD_INIT_NORMAL, 0)))
-			return FALSE;
+			assert(FALSE);
 
 		if (!ERRCHECK(mAudioSystem->set3DSettings(1.0, aDistanceFactor, 1.0f)))
-			return FALSE;
+			assert(FALSE);
 
 		if (!ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelMusic)))
-			return FALSE;
+			assert(FALSE);
 
-		if (ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelEffects)))
-			return FALSE;
+		if (!ERRCHECK(mAudioSystem->createChannelGroup(NULL, &mChannelEffects)))
+			assert(FALSE);
 
 		mDistanceFactor = aDistanceFactor;
 
@@ -182,7 +178,7 @@ namespace audio {
 		if (mNumLoadedSounds == lCapacity)
 		{
 			mLoadedSounds.push_back(aSound);
-			lResult = ++lCapacity;
+			lResult = lCapacity;
 		}
 		else
 		{
@@ -227,17 +223,19 @@ namespace audio {
 			//sound->m_fmodSound->setLoopCount(-1);
 		}
 
-		ERRCHECK(mAudioSystem->playSound(mLoadedSounds[aSound->mSoundId], 0, true, &lChannel));
-		
-		mSoundChannels[++mNextChannelId] = lChannel;
-		aSound->mChannelId = mNextChannelId;
+		if (ERRCHECK(mAudioSystem->playSound(mLoadedSounds[aSound->mSoundId], 0, true, &lChannel)))
+		{
 
-		if (aGroup == eAudioGroups::eMusic)
-			lChannel->setChannelGroup(mChannelMusic);
-		else
-			lChannel->setChannelGroup(mChannelEffects);
+			mSoundChannels[++mNextChannelId] = lChannel;
+			aSound->mChannelId = mNextChannelId;
 
-		lChannel->setPaused(false);
+			if (aGroup == eAudioGroups::eMusic)
+				lChannel->setChannelGroup(mChannelMusic);
+			else
+				lChannel->setChannelGroup(mChannelEffects);
+
+			lChannel->setPaused(false);
+		}
 
 	}
 

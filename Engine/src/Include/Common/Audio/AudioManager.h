@@ -12,6 +12,11 @@
 #include <vector>
 #include <unordered_map>
 
+namespace core
+{
+	class Game;
+}
+
 namespace audio {
 
 	/**
@@ -28,6 +33,7 @@ namespace audio {
 	*/
 	class AudioManager
 	{
+	friend class core::Game;
 	friend class Sound2D;
 	friend class Sound3D;
 
@@ -72,10 +78,6 @@ namespace audio {
 
 
 	public:
-		BOOL											Init(float32 aDistanceFactor);
-		void											Update();
-		void											Release();
-
 		/**
 		Set the listener attributes for 3D sound
 		@param aPosition, position of listener
@@ -144,6 +146,9 @@ namespace audio {
 	private:
 		AudioManager() : mSoundsIds (), mLoadedSounds(), mSoundChannels(){}
 		~AudioManager() {}
+		BOOL											Init(float32 aDistanceFactor);
+		void											Update();
+		void											Release();
 
 		/**
 		Internal function to load a 2D sound

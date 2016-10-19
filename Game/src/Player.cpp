@@ -31,6 +31,7 @@ namespace game
 		physics::Collider* b = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0.5, 1, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(1, 1, 1), FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eDynamic, 0.1f);
 		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0));
 		capsule = physics::PhysicsManager::Instance()->CreateCapsuleController(Vector3D<float32>(7.1f, 30, 0), 2, 2, 0.7f, physics::CapsuleController::eEASY, (1 << 1), (1 << 1) | (1 << 0));
+		AddComponent(capsule);
 
 		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
@@ -45,6 +46,8 @@ namespace game
 		mPosition.mX = 0.5f;
 		mPosition.mZ = 0.5f;
 
+		this->GetComponent(physics::CapsuleController::sId);
+
 		mSnakeLenght = 1;
 		for (int32 i = 0; i < mMaxTailLength; ++i)
 		{
@@ -56,6 +59,7 @@ namespace game
 
 	void Player::Update()
 	{
+		IGameObject::Update();
 		int32 lAction = input::InputManager::Instance()->GetLastActionId();
 		if (mLastAction < 0 && lAction > -1)
 			mLastAction = lAction;
@@ -118,6 +122,7 @@ namespace game
 
 	void Player::Render()
 	{
+		IGameObject::Render();
 		mHead->Render(&mPosition, &mScale, &mRotation);
 
 		for (int32 i = 0; i < mMaxTailLength; ++i)

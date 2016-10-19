@@ -6,6 +6,11 @@
 
 #include <vector>
 
+namespace core
+{
+	class Game;
+}
+
 namespace ui
 {
 	typedef void(*CallbackFunction)();
@@ -15,6 +20,7 @@ namespace ui
 	*/
 	class MenuManager
 	{
+		friend class core::Game;
 		typedef	std::vector<Menu*>						TMenus;
 
 		SINGLETON_HEAD(MenuManager);

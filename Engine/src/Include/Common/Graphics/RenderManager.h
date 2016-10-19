@@ -19,6 +19,11 @@ struct  SDL_Texture;
 struct  SDL_Surface;
 class Color;
 
+namespace core
+{
+	class Game;
+}
+
 namespace graphics
 {
 	class Texture;
@@ -40,6 +45,7 @@ namespace graphics
 	*/
 	class RenderManager
 	{
+		friend class core::Game;
 		SINGLETON_HEAD(RenderManager);
 	private:
 		Color											mClearColor;
@@ -62,11 +68,6 @@ namespace graphics
 		SDL_Window*										mWindow;
 		const Camera*									mRenderCamera;
 	public:
-		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, 
-															 const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor,
-															 BOOL aFullscreen);
-		void											Release();
-
 		void											BeginRender();
 		void											EndRender();
 
@@ -163,6 +164,10 @@ namespace graphics
 			mMeshesIds(), mLoadedMeshes(), mNumLoadedMeshes(0),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
+		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize,
+															 const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor,
+															 BOOL aFullscreen);
+		void											Release();
 
 		/**
 		Load mesh from vertex data

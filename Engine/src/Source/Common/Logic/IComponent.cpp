@@ -11,7 +11,6 @@ namespace logic
 	void IComponent::SetEnabled(BOOL aActive)
 	{
 		mActive = aActive;
-		//@TODO: Notify to gameobject
 	}
 
 } // namespace logic

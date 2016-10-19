@@ -2,7 +2,7 @@
 #define _GAME_PLAYER_H_
 
 #include "Types.h"
-#include "Logic\IGameObject.h"
+#include "Logic/IGameObject.h"
 
 namespace graphics
 {

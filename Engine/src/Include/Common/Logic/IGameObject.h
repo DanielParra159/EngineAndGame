@@ -3,7 +3,10 @@
 
 #include "Types.h"
 
-#include "Support\Vector3D.h"
+#include "Support/Vector3D.h"
+#include "Logic/IComponent.h"
+
+#include <map>
 
 namespace logic
 {
@@ -12,18 +15,27 @@ namespace logic
 	*/
 	class IGameObject {
 		friend class World;
+		struct TComponent
+		{
+			IComponent*									mComponent;
+			logic::IComponent::UpdateFunction			mUpdateFunction;
+			logic::IComponent::RenderFunction			mRenderFunction;
+			TComponent() : mComponent(NULL), mUpdateFunction(NULL), mRenderFunction(NULL) {}
+		};
+		typedef std::map<uint32, TComponent*>			TComponents;
 	protected:
 		Vector3D<float32>								mPosition;
 		Vector3D<float32>								mScale;
 		Vector3D<float32>								mRotation; //@TODO: Quaternion
 		BOOL											mActive;
+		TComponents										mComponents;
 	protected:
 		virtual void									Init(BOOL aActive);
-		virtual void									Update() = 0;
-		virtual void									Render() = 0;
-		virtual void									Release() = 0;
+		virtual void									Release();
+		virtual void									Update();
+		virtual void									Render();
 	public:
-		IGameObject() : mPosition(), mScale(1,1,1), mRotation(), mActive(FALSE) {}
+		IGameObject() : mPosition(), mScale(1,1,1), mRotation(), mActive(FALSE), mComponents(){}
 		virtual ~IGameObject() {}
 
 		virtual void									SetEnabled(BOOL aActive);
@@ -55,6 +67,10 @@ namespace logic
 		virtual void									Rotate(float32 aX, float32 aY, float32 aZ);
 		virtual void									Rotate(float32 aAngle, const Vector3D<float32>& aAxis);
 
+		IComponent*										GetComponent(uint32 aComponentId);
+		void											AddComponent(IComponent* aComponent);
+		void											DeleteComponent(IComponent* aComponent);
+		void											DeleteComponent(uint32 aComponentId);
 	}; // IGameObject
 } // namespace logic
 #endif // _ENGINE_LOGIC_IGAMEOBJECT_H_

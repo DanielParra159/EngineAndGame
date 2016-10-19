@@ -1,25 +1,26 @@
-#include "Core\Game.h"
-#include "Core\GameDescription.h"
-#include "Core\IGameState.h"
-#include "Core\Log.h"
+#include "Core/Game.h"
+#include "Core/GameDescription.h"
+#include "Core/IGameState.h"
+#include "Core/Log.h"
 
-#include "System\Time.h"
+#include "System/Time.h"
 
-#include "Graphics\RenderManager.h"
+#include "Graphics/RenderManager.h"
 
-#include "Input\InputManager.h"
+#include "Input/InputManager.h"
 
-#include "UI\MenuManager.h"
+#include "UI/MenuManager.h"
 
-#include "Audio\AudioManager.h"
+#include "Audio/AudioManager.h"
 
-#include "IO\FileSystem.h"
+#include "IO/FileSystem.h"
 
-#include "Script\ScriptManager.h"
+#include "Script/ScriptManager.h"
 
-#include "Physics\PhysicsManager.h"
+#include "Physics/PhysicsManager.h"
 
-#include "Logic\World.h"
+#include "Logic/World.h"
+#include "Logic/ComponentFactory.h"
 
 #include "Defs.h"
 
@@ -31,6 +32,8 @@ namespace core
 
 	BOOL Game::Init(const int8* title, const GameDescription& aGameDescription)
 	{
+		logic::ComponentFactory::Instance()->Init();
+
 		io::FileSystem::Instance()->Init(aGameDescription.mRootDir);
 
 		physics::PhysicsManager::Instance()->Init(aGameDescription.mPhysicsGravity);
@@ -102,6 +105,8 @@ namespace core
 		physics::PhysicsManager::Instance()->Release();
 		
 		io::FileSystem::Instance()->Release();
+
+		logic::ComponentFactory::Instance()->Release();
 
 		SDL_Quit();
 

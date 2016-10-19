@@ -5,6 +5,12 @@
 #include "Types.h"
 
 #include <vector>
+
+namespace core
+{
+	class Game;
+}
+
 namespace input
 {
 	/**
@@ -24,6 +30,7 @@ namespace input
 	*/
 	class InputManager
 	{
+		friend class core::Game;
 		typedef std::vector<IController*>				TControllers;
 		SINGLETON_HEAD(InputManager);
 	private:
@@ -37,11 +44,6 @@ namespace input
 		int32											mLastAction;
 
 	public:
-		BOOL											Init();
-		void 											Release();
-
-		void											Update();
-
 		/**
 		Create and initializes a controller
 		@param aType, controller type
@@ -62,6 +64,11 @@ namespace input
 	private:
 		InputManager() : mControllers(0), mLastAction(-1) {}
 		~InputManager() {}
+
+		BOOL											Init();
+		void 											Release();
+
+		void											Update();
 
 	}; // InputManager
 } // namespace input

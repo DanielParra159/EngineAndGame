@@ -58,7 +58,7 @@ namespace audio {
 		virtual BOOL									IsPlaying();
 
 	protected:
-		Sound2D() {}
+		Sound2D() : mVolume(0), mChannelId(-1), mSoundId(-1) {}
 		virtual ~Sound2D() {}
 
 		virtual void									Init(int32 aSoundId);

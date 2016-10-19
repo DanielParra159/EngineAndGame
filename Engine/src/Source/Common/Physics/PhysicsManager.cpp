@@ -7,6 +7,8 @@
 
 #include "Core/Log.h"
 
+#include "Logic/ComponentFactory.h"
+
 #include <PxPhysicsAPI.h>
 #include <extensions\PxExtensionsAPI.h>
 #include <extensions\PxVisualDebuggerExt.h> 
@@ -21,6 +23,7 @@ namespace physics
 
 	BOOL PhysicsManager::Init(const Vector3D<float32>& aGravity)
 	{
+		
 		mErrorManager = new ErrorManager();
 
 		mAllocator = new physx::PxDefaultAllocator();
@@ -222,7 +225,7 @@ namespace physics
 		}
 		delete [] shapes;
 
-		Collider* lCollider = new Collider();
+		Collider* lCollider = (Collider*)logic::ComponentFactory::Instance()->GetComponent(Collider::sId);
 		lCollider->Init(TRUE, lActor, aColliderType, aTrigger);
 		lActor->userData = (void *)lCollider;
 
@@ -242,7 +245,7 @@ namespace physics
 		physx::PxMaterial *lMaterial = mDefaultMaterial;
 		physx::PxRigidStatic *lActor = physx::PxCreatePlane(*mPhysics, lPlane, *lMaterial);
 
-		Collider* lCollider = new Collider();
+		Collider* lCollider = (Collider*)logic::ComponentFactory::Instance()->GetComponent(Collider::sId);
 		lCollider->Init(TRUE, lActor, Collider::eStatic, FALSE);
 		lActor->userData = (void *)lCollider;
 
@@ -278,7 +281,7 @@ namespace physics
 		desc.slopeLimit = aSlopeLimit;
 		desc.reportCallback = mCollisionManager;
 
-		CapsuleController* lCapsuleController = new CapsuleController();
+		CapsuleController* lCapsuleController = (CapsuleController*)logic::ComponentFactory::Instance()->GetComponent(CapsuleController::sId);
 		lCapsuleController->Init(TRUE, NULL, Collider::eKinematic, FALSE);
 
 		desc.userData = (void *)lCapsuleController;

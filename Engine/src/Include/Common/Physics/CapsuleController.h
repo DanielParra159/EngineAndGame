@@ -17,6 +17,7 @@ namespace physics
 	class CapsuleController : public Collider
 	{
 		friend class PhysicsManager;
+		REGISTER_COMPONENT_HEAD(CapsuleController)
 	public:
 		enum eClimbingMode
 		{
@@ -52,11 +53,11 @@ namespace physics
 	protected:
 		CapsuleController() : Collider() {}
 		virtual ~CapsuleController() {}
-		virtual void									SetPhysicCampsuleController(PhysicCampsuleController* aPhysicCampsuleController);
 		virtual void									Init(BOOL aActive);
 		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									Update();
-
+		virtual void									SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction);
+		virtual void									SetPhysicCampsuleController(PhysicCampsuleController* aPhysicCampsuleController);
 	}; // CapsuleController
 } // namespace physics
 #endif // _ENGINE_PHYSICS_CAPSULECONTROLLER_H_

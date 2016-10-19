@@ -119,6 +119,7 @@
     <ClInclude Include="..\..\src\Include\Common\Input\InputManager.h" />
     <ClInclude Include="..\..\src\Include\Common\IO\File.h" />
     <ClInclude Include="..\..\src\Include\Common\IO\FileSystem.h" />
+    <ClInclude Include="..\..\src\Include\Common\Logic\ComponentFactory.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IComponent.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\IGameObject.h" />
     <ClInclude Include="..\..\src\Include\Common\Logic\World.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="..\..\src\Source\Common\Graphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Logic\ComponentFactory.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IComponent.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\IGameObject.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Logic\World.cpp" />

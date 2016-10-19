@@ -10,6 +10,7 @@ namespace audio {
 	{
 		mSoundId = aSoundId;
 		mChannelId = -1;
+		mVolume = 0;
 	}
 
 	void Sound2D::Release()

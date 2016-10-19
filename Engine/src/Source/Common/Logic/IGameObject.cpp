@@ -1,4 +1,7 @@
-#include "Logic\IGameObject.h"
+#include "Logic/IGameObject.h"
+#include "Logic/IComponent.h"
+
+#include "Logic/ComponentFactory.h"
 
 namespace logic
 {
@@ -7,6 +10,44 @@ namespace logic
 	{
 		mActive = aActive;
 	}
+
+	void IGameObject::Release()
+	{
+		TComponents::const_iterator lComponentIterator = mComponents.begin();
+		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
+		for (; lComponentIterator != lComponentIteratorEnd; ++lComponentIterator)
+		{
+			ComponentFactory::Instance()->RecycleComponent((*lComponentIterator).second->mComponent);
+			delete (*lComponentIterator).second;
+		}
+		mComponents.clear();
+	}
+
+	void IGameObject::Update()
+	{
+		TComponents::const_iterator lComponentIterator = mComponents.begin();
+		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
+		for (; lComponentIterator != lComponentIteratorEnd; ++lComponentIterator)
+		{
+			TComponent *lComponent = (*lComponentIterator).second;
+			if (lComponent->mUpdateFunction && lComponent->mComponent->GetEnabled())
+				lComponent->mUpdateFunction(lComponent->mComponent);
+		}
+	}
+
+	void IGameObject::Render()
+	{
+		TComponents::const_iterator lComponentIterator = mComponents.begin();
+		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
+		for (; lComponentIterator != lComponentIteratorEnd; ++lComponentIterator)
+		{
+			TComponent *lComponent = (*lComponentIterator).second;
+			if (lComponent->mRenderFunction && lComponent->mComponent->GetEnabled())
+				lComponent->mRenderFunction(lComponent->mComponent);
+		}
+	}
+
+	
 
 	void IGameObject::SetEnabled(BOOL aActive)
 	{
@@ -113,5 +154,45 @@ namespace logic
 	{
 		mRotation += aAxis*aAngle;
 	}
+	
+	void IGameObject::AddComponent( IComponent* aComponent)
+	{
+		// @TODO check if component already exists
+		TComponent* lComponent = new TComponent();
+		lComponent->mComponent = aComponent;
+		mComponents[aComponent->GetComponentId()] = lComponent;
+		aComponent->SetCallbacks(lComponent->mUpdateFunction, lComponent->mRenderFunction);
+	}
+
+	IComponent* IGameObject::GetComponent(uint32 aComponentId)
+	{
+		if (mComponents.count(aComponentId) > 0)
+			return mComponents[aComponentId]->mComponent;
+		return NULL;
+	}
+
+	void IGameObject::DeleteComponent(IComponent* aComponent)
+	{
+		TComponents::iterator lIterator = mComponents.find(aComponent->GetComponentId());
+		if (lIterator != mComponents.end())
+		{
+			mComponents.erase(aComponent->GetComponentId());
+			ComponentFactory::Instance()->RecycleComponent(aComponent);
+			delete (*lIterator).second;
+		}
+	}
+
+	void IGameObject::DeleteComponent(uint32 aComponentId)
+	{
+		TComponents::iterator lIterator = mComponents.find(aComponentId);
+		if (lIterator != mComponents.end())
+		{
+			mComponents.erase(aComponentId);
+			ComponentFactory::Instance()->RecycleComponent((*lIterator).second->mComponent);
+			delete (*lIterator).second;
+		}
+	}
+
+	
 
 } // namespace logic

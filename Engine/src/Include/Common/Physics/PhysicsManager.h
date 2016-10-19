@@ -30,9 +30,14 @@ namespace physx
 		namespace comm
 		{
 			class PvdConnection;
-		};
-	};
-};
+		}
+	}
+}
+
+namespace core
+{
+	class Game;
+}
 
 namespace physics
 {
@@ -43,6 +48,7 @@ namespace physics
 	*/
 	class PhysicsManager
 	{
+		friend class core::Game;
 		SINGLETON_HEAD(PhysicsManager);
 	private:
 		physx::PxErrorCallback*							mErrorManager;
@@ -59,9 +65,6 @@ namespace physics
 		physx::PxControllerManager*						mControllerManager;
 		Vector3D<float32>								mGravity;
 	public:
-		BOOL											Init(const Vector3D<float32>& aGravity);
-		void											Release();
-		void											Update();
 		const Vector3D<float32>							GetGravity() { return mGravity; }
 		void											SetGravity(const Vector3D<float32>& aGravity);
 
@@ -82,6 +85,10 @@ namespace physics
 			uint32 aAttributes0, physx::PxFilterData aFilterData0,
 			uint32 aAttributes1, physx::PxFilterData aFilterData1,
 			physx::PxPairFlags& aPairFlags, const void* aConstantBlock, uint32 aConstantBlockSize);
+
+		BOOL											Init(const Vector3D<float32>& aGravity);
+		void											Release();
+		void											Update();
 
 		void											CreateScene();
 	}; // PhysicsManager

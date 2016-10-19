@@ -38,12 +38,12 @@ namespace sys
 		static float32									GetDeltaSec();
 
 	private:
+		Time() {}
+		~Time() {}
 		/**
 		Update the deltaSec passed since the last update
 		*/
 		void Update();
-		Time() {}
-		~Time() {}
 	};
 
 } // namespace sys 
