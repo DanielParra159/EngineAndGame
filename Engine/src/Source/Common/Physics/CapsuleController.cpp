@@ -22,12 +22,6 @@ namespace physics
 		mDisplacement = Vector3D<float32>::zero;		
 	}
 
-	void CapsuleController::SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::FixedUpdateFunction& aFixedUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction)
-	{
-		aUpdateFunction = NULL;
-		aFixedUpdateFunction = IComponent::FixedUpdateCallbackFunction;
-		aRenderFunction = NULL;
-	}
 
 	void CapsuleController::FixedUpdate()
 	{
@@ -41,6 +35,8 @@ namespace physics
 		mGround = (lFlags & physx::PxControllerFlag::eCOLLISION_DOWN);
 
 		mDisplacement = Vector3D<float32>::zero;
+
+		Collider::FixedUpdate();
 	}
 
 	void CapsuleController::SetPosition(const Vector3D<float32> aPosition)

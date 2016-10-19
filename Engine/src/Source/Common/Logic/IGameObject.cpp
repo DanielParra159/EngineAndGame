@@ -173,7 +173,7 @@ namespace logic
 		TComponent* lComponent = new TComponent();
 		lComponent->mComponent = aComponent;
 		mComponents[aComponent->GetComponentId()] = lComponent;
-		aComponent->SetCallbacks(lComponent->mUpdateFunction, lComponent->mFixedUpdateFunction, lComponent->mRenderFunction);
+		aComponent->SetCallbacks(this, lComponent->mUpdateFunction, lComponent->mFixedUpdateFunction, lComponent->mRenderFunction);
 	}
 
 	IComponent* IGameObject::GetComponent(uint32 aComponentId)

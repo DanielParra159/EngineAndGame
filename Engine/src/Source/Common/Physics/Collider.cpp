@@ -1,5 +1,10 @@
-#include "Physics\Collider.h"
+#include "Physics/Collider.h"
+#include "Logic/IGameObject.h"
+#include "Core/Log.h"
 
+#include "Support/Math.h"
+
+#include <PxRigidActor.h>
 #include <assert.h>
 
 namespace physics
@@ -12,6 +17,17 @@ namespace physics
 		mPhysicActor = aPhysicsActor;
 		mColliderType = aColliderType;
 		mTrigger = aTrigger;
+	}
+
+	void Collider::FixedUpdate()
+	{
+		float32 lAngle;
+		physx::PxVec3 lAxis;
+		mPhysicActor->getGlobalPose().q.toRadiansAndUnitAxis(lAngle, lAxis);
+		physx::PxVec3 lPosition = mPhysicActor->getGlobalPose().p;
+		core::LogFormatString("rot %f %f %f", lAxis.x, lAxis.y, lAxis.z);
+		mParent->SetRotation(Vector3D<float>(lAxis.x, lAxis.y, lAxis.z)*Math::Degrees(lAngle));
+		mParent->SetPosition(lPosition.x, lPosition.y, lPosition.z);
 	}
 
 	void Collider::Release()
@@ -39,6 +55,14 @@ namespace physics
 		if (mOnCollisionStayCallback)
 			delete mOnCollisionStayCallback;
 		mOnCollisionStayCallback = NULL;
+	}
+
+	void Collider::SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
+	{
+		IComponent::SetCallbacks(aGameObject, aUpdateFunction, aFixedUpdateFunction, aRenderFunction);
+		aUpdateFunction = NULL;
+		aFixedUpdateFunction = IComponent::FixedUpdateCallbackFunction;
+		aRenderFunction = NULL;
 	}
 
 	void Collider::OnTriggerEnter(const Collider* other)

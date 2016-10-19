@@ -56,7 +56,6 @@ namespace physics
 		virtual void									Init(BOOL aActive);
 		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									FixedUpdate();
-		virtual void									SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::FixedUpdateFunction& aFixedUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction);
 		virtual void									SetPhysicCampsuleController(PhysicCampsuleController* aPhysicCampsuleController);
 	}; // CapsuleController
 } // namespace physics

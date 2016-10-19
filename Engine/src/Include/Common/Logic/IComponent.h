@@ -26,16 +26,14 @@ namespace logic
 
 	protected:
 		BOOL											mActive;
+		IGameObject*									mParent;
 	protected:
 		IComponent() : mActive(FALSE) {}
 		virtual ~IComponent() {}
 
-		virtual void									SetCallbacks(UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
-		{
-			aUpdateFunction = NULL;
-			aFixedUpdateFunction = NULL;
-			aRenderFunction = NULL;
-		}
+		virtual void									SetCallbacks(IGameObject* aGameObject, UpdateFunction& aUpdateFunction, 
+																	 FixedUpdateFunction& aFixedUpdateFunction, 
+																	 RenderFunction& aRenderFunction);
 		
 		virtual void									Init(BOOL aActive);
 		virtual void									Release() = 0;

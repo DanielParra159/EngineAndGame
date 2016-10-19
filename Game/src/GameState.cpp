@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "Map.h"
 #include "Player.h"
+#include "Box.h"
 
 #include "Input\InputManager.h"
 #include "Input\IController.h"
@@ -64,6 +65,16 @@ namespace game
 
 		Player* lPlayer = new Player();
 		lWorld->AddGameObject(lPlayer, TRUE);
+
+		Box* lBox = new Box();
+		lWorld->AddGameObject(lBox, TRUE);
+		lBox->Init(TRUE, Vector3D<float32>(-4.5, 2, 0));
+		lBox = new Box();
+		lWorld->AddGameObject(lBox, TRUE);
+		lBox->Init(TRUE, Vector3D<float32>(-4, 4, 0));
+		lBox = new Box();
+		lWorld->AddGameObject(lBox, TRUE);
+		lBox->Init(TRUE, Vector3D<float32>(-3.5, 6, 0));
 
 		return TRUE;
 	}

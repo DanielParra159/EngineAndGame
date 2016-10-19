@@ -222,6 +222,9 @@
     <ClInclude Include="..\..\src\Include\Common\Logic\ComponentFactory.h">
       <Filter>Header Files\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\Math.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">

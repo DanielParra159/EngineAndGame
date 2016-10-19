@@ -56,6 +56,8 @@ namespace physics
 		virtual ~Collider() {}
 		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									Release();
+		virtual void									FixedUpdate();
+		virtual void									SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction);
 		//@TODO should be public and modify PhysX
 		virtual void									SetTrigger(BOOL aTrigger) { mTrigger = aTrigger; }
 		virtual void									SetPhysicActor(PhysicActor* aPhysicActor) { mPhysicActor = aPhysicActor; }

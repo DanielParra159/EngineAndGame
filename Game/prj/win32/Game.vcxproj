@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Box.cpp" />
     <ClCompile Include="..\..\src\GameMain.cpp" />
     <ClCompile Include="..\..\src\GameOverState.cpp" />
     <ClCompile Include="..\..\src\GameState.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="..\..\src\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Box.h" />
     <ClInclude Include="..\..\src\GameOverState.h" />
     <ClInclude Include="..\..\src\GameState.h" />
     <ClInclude Include="..\..\src\Map.h" />

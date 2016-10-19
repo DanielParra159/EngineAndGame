@@ -9,6 +9,9 @@
 
 #include "IO\FileSystem.h"
 
+#include "Physics/PhysicsManager.h"
+#include "Physics/Collider.h"
+
 namespace game
 {
 	const Vector2D<float32> Map::sMapSize = Vector2D<float32>(18.0f, 18.0f);
@@ -114,6 +117,9 @@ namespace game
 		//mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mWall = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Wall", lWallVertexData, sizeof(lWallVertexData), 36);
 		mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
+
+		physics::Collider* c = physics::PhysicsManager::Instance()->CreatePlaneCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 1, 0), (1 << 1), (1 << 0)); 
+		AddComponent(c);
 	}
 
 	void Map::Update()
