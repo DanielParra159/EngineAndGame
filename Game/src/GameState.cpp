@@ -91,6 +91,11 @@ namespace game
 		return TRUE;
 	}
 
+	void GameState::FixedUpdate()
+	{
+		logic::World::Instance()->FixedUpdate();
+	}
+
 	void GameState::Render()
 	{
 		graphics::RenderManager::Instance()->BeginRender();

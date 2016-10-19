@@ -73,6 +73,16 @@ namespace logic
 		
 	}
 
+	void World::FixedUpdate()
+	{
+		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
+		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
+		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
+		{
+			(*lSetIterator)->FixedUpdate();
+		}
+	}
+
 	void World::Render()
 	{
 		//@TODO: sort

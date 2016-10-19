@@ -37,6 +37,7 @@ namespace game
 		virtual void 									Release();
 
 		virtual BOOL									Update();
+		virtual void									FixedUpdate();
 		virtual void									Render();
 
 		virtual const int8*								GetStateName() const { return "Snake"; }

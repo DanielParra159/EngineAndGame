@@ -19,6 +19,7 @@ namespace sys
 		SINGLETON_HEAD(Time);
 	private:
 		static float32									mDeltaSec;
+		static float32									mFixedDeltaSec;
 		uint32											lLastUpdateMili;
 	public:
 		/**
@@ -37,13 +38,16 @@ namespace sys
 		*/
 		static float32									GetDeltaSec();
 
+		static float32									GetFixedDeltaSec();
+
 	private:
 		Time() {}
 		~Time() {}
+		void Init(float32 aFixedDeltaSec);
 		/**
 		Update the deltaSec passed since the last update
 		*/
-		void Update();
+		float32 Update();
 	};
 
 } // namespace sys 

@@ -19,6 +19,7 @@ namespace logic
 		{
 			IComponent*									mComponent;
 			logic::IComponent::UpdateFunction			mUpdateFunction;
+			logic::IComponent::FixedUpdateFunction		mFixedUpdateFunction;
 			logic::IComponent::RenderFunction			mRenderFunction;
 			TComponent() : mComponent(NULL), mUpdateFunction(NULL), mRenderFunction(NULL) {}
 		};
@@ -33,6 +34,7 @@ namespace logic
 		virtual void									Init(BOOL aActive);
 		virtual void									Release();
 		virtual void									Update();
+		virtual void									FixedUpdate();
 		virtual void									Render();
 	public:
 		IGameObject() : mPosition(), mScale(1,1,1), mRotation(), mActive(FALSE), mComponents(){}

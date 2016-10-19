@@ -17,6 +17,7 @@ namespace logic
 	class IComponent {
 	public:
 		typedef void(*UpdateFunction)(IComponent*);
+		typedef void(*FixedUpdateFunction)(IComponent*);
 		typedef void(*RenderFunction)(IComponent*);
 		friend class ComponentFactory;
 		friend class IGameObject;
@@ -29,15 +30,17 @@ namespace logic
 		IComponent() : mActive(FALSE) {}
 		virtual ~IComponent() {}
 
-		virtual void									SetCallbacks(UpdateFunction& aUpdateFunction, RenderFunction& aRenderFunction)
+		virtual void									SetCallbacks(UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
 		{
 			aUpdateFunction = NULL;
+			aFixedUpdateFunction = NULL;
 			aRenderFunction = NULL;
 		}
 		
 		virtual void									Init(BOOL aActive);
 		virtual void									Release() = 0;
 		virtual void									Update() {}
+		virtual void									FixedUpdate() {}
 		virtual void									Render() {}
 		virtual void									SetPosition(const Vector3D<float32> aPosition) {};
 		static void RenderCallbackFunction(IComponent* aComponent)
@@ -47,6 +50,10 @@ namespace logic
 		static void UpdateCallbackFunction(IComponent* aComponent)
 		{
 			aComponent->Update();
+		}
+		static void FixedUpdateCallbackFunction(IComponent* aComponent)
+		{
+			aComponent->FixedUpdate();
 		}
 	public:
 		virtual uint32									GetComponentId() = 0;

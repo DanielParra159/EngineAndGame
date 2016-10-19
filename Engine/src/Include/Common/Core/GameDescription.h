@@ -22,8 +22,10 @@ namespace core
 		BOOL											mFullScreen;
 		Vector3D<float32>								mPhysicsGravity;
 		std::string										mRootDir;
+		float32											mPhysicUpdatedFrequency;
 	public:
-		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mClearColor(), mFullScreen(FALSE), mPhysicsGravity(0.0f, -9.81f, 0.0f) {}
+		GameDescription() : mScreenSize(500,500), mScreenPosition(50,50), mClearColor(), 
+			mFullScreen(FALSE), mPhysicsGravity(0.0f, -9.81f, 0.0f), mPhysicUpdatedFrequency(0.02f){}
 		~GameDescription() {}
 		/** Assigns screen size
 		@param aX width
@@ -59,6 +61,7 @@ namespace core
 		void											SetFullScreen(BOOL aFullScreen);
 		void											SetRootDir(const std::string& aDirectory);
 		void											SetPhysicsGravity(const Vector3D<float32>& aPhysicsGravity);
+		void											SetPhysicUpdatedFrequency(float32 aPhysicUpdatedFrequency);
 			
 	}; // GameDescription
 } // namespace core

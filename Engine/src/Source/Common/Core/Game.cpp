@@ -49,6 +49,11 @@ namespace core
 
 		audio::AudioManager::Instance()->Init(1.0f);
 
+		sys::Time::Instance()->Init(aGameDescription.mPhysicUpdatedFrequency);
+
+		mAccumulatePhysicTime = 0.0f;
+		mNumPhysicUpdateLoops = 0;
+
 		return TRUE;
 	}
 
@@ -59,13 +64,25 @@ namespace core
 
 		while (mRunning)
 		{
-			sys::Time::Instance()->Update();			
+			mAccumulatePhysicTime += sys::Time::Instance()->Update();
+			
+			while (mAccumulatePhysicTime > sys::Time::Instance()->mFixedDeltaSec && mNumPhysicUpdateLoops < mMaxmNumPhysicUpdateLoops)
+			{
+				physics::PhysicsManager::Instance()->Update();
+				FixedUpdate();
+				mAccumulatePhysicTime -= sys::Time::Instance()->mFixedDeltaSec;
+				++mNumPhysicUpdateLoops;
+			}
+			mNumPhysicUpdateLoops = 0;
+
 			input::InputManager::Instance()->Update();
 			input::InputManager::Instance()->GetLastActionId();
+
 			ui::MenuManager::Instance()->Update();
-			audio::AudioManager::Instance()->Update();
-			physics::PhysicsManager::Instance()->Update(); //@TODO fixedUpdate
 			Update();
+			audio::AudioManager::Instance()->Update();
+			
+			
 			Render();
 		}
 
@@ -77,9 +94,17 @@ namespace core
 		{
 			SetGameState(mNextGameState);
 			mNextGameState = 0;
+			mAccumulatePhysicTime = 0.0f;
+			mNumPhysicUpdateLoops = 0;
 		}
 		else if (mCurrentGameState)
 			mRunning = mCurrentGameState->Update();
+	}
+
+	void Game::FixedUpdate()
+	{
+		if (mCurrentGameState)
+			mCurrentGameState->FixedUpdate();
 	}
 
 	void Game::Render() {

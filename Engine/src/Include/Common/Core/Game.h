@@ -19,6 +19,9 @@ namespace core
 	private:	
 		IGameState*									mCurrentGameState;
 		IGameState*									mNextGameState;
+		float32										mAccumulatePhysicTime;
+		uint8										mNumPhysicUpdateLoops;
+		const uint8									mMaxmNumPhysicUpdateLoops = 2;
 
 		/**
 		Indicates if the application should keep running
@@ -42,6 +45,7 @@ namespace core
 		~Game() {}
 
 		void										Update();
+		void										FixedUpdate();
 		void										Render();
 		void										Release();
 

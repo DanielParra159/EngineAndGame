@@ -30,6 +30,7 @@ namespace logic
 		virtual void									Release();
 
 		virtual void									Update();
+		virtual void									FixedUpdate();
 		virtual void									Render();
 
 		virtual void									AddGameObject(IGameObject* aGameObject, BOOL aActivated);

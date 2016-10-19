@@ -46,4 +46,9 @@ namespace core
 		mPhysicsGravity = aPhysicsGravity;
 	}
 
+	void GameDescription::SetPhysicUpdatedFrequency(float32 aPhysicUpdatedFrequency)
+	{
+		mPhysicUpdatedFrequency = aPhysicUpdatedFrequency;
+	}
+
 } // namespace core

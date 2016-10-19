@@ -22,13 +22,14 @@ namespace physics
 		mDisplacement = Vector3D<float32>::zero;		
 	}
 
-	void CapsuleController::SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction)
+	void CapsuleController::SetCallbacks(logic::IComponent::UpdateFunction& aUpdateFunction, logic::IComponent::FixedUpdateFunction& aFixedUpdateFunction, logic::IComponent::RenderFunction& aRenderFunction)
 	{
-		aUpdateFunction = IComponent::UpdateCallbackFunction;
+		aUpdateFunction = NULL;
+		aFixedUpdateFunction = IComponent::FixedUpdateCallbackFunction;
 		aRenderFunction = NULL;
 	}
 
-	void CapsuleController::Update()
+	void CapsuleController::FixedUpdate()
 	{
 		float32 lDeltaTime = sys::Time::Instance()->GetDeltaSec();
 

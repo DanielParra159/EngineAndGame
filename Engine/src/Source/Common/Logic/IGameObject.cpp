@@ -35,6 +35,18 @@ namespace logic
 		}
 	}
 
+	void IGameObject::FixedUpdate()
+	{
+		TComponents::const_iterator lComponentIterator = mComponents.begin();
+		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
+		for (; lComponentIterator != lComponentIteratorEnd; ++lComponentIterator)
+		{
+			TComponent *lComponent = (*lComponentIterator).second;
+			if (lComponent->mFixedUpdateFunction && lComponent->mComponent->GetEnabled())
+				lComponent->mFixedUpdateFunction(lComponent->mComponent);
+		}
+	}
+
 	void IGameObject::Render()
 	{
 		TComponents::const_iterator lComponentIterator = mComponents.begin();
@@ -161,7 +173,7 @@ namespace logic
 		TComponent* lComponent = new TComponent();
 		lComponent->mComponent = aComponent;
 		mComponents[aComponent->GetComponentId()] = lComponent;
-		aComponent->SetCallbacks(lComponent->mUpdateFunction, lComponent->mRenderFunction);
+		aComponent->SetCallbacks(lComponent->mUpdateFunction, lComponent->mFixedUpdateFunction, lComponent->mRenderFunction);
 	}
 
 	IComponent* IGameObject::GetComponent(uint32 aComponentId)

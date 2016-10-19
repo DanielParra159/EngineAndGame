@@ -108,8 +108,7 @@ namespace physics
 
 	void PhysicsManager::Update()
 	{
-		core::LogFormatString("Time: %f", sys::Time::Instance()->GetDeltaSec());
-		mActiveScene->simulate(sys::Time::Instance()->GetDeltaSec());
+		mActiveScene->simulate(sys::Time::Instance()->GetFixedDeltaSec());
 
 		mActiveScene->fetchResults(TRUE);
 	}

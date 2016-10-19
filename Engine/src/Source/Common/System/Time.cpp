@@ -9,6 +9,7 @@ namespace sys
 {
 	SINGLETON_BODY(Time);
 	float32 Time::mDeltaSec = 0.0f;
+	float32 Time::mFixedDeltaSec = 0.0f;
 
 
 	float64 Time::GetCurrentSec()
@@ -21,7 +22,17 @@ namespace sys
 		return Time::mDeltaSec;
 	}
 
-	void Time::Update()
+	float32 Time::GetFixedDeltaSec()
+	{
+		return Time::mFixedDeltaSec;
+	}
+
+	void Time::Init(float32 aFixedDeltaSec)
+	{
+		mFixedDeltaSec = aFixedDeltaSec;
+	}
+
+	float32 Time::Update()
 	{
 		uint32 lNewTime = Time::GetCurrentMili();
 		float32 lElapsedTime = (lNewTime - lLastUpdateMili) / 1000.0f;
@@ -29,6 +40,8 @@ namespace sys
 		Time::mDeltaSec = lElapsedTime;
 
 		lLastUpdateMili = lNewTime;
+
+		return lElapsedTime;
 	}
 
 	uint32 Time::GetCurrentMili()
