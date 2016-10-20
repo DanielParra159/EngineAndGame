@@ -25,10 +25,17 @@
 
 #include "IO/FileSystem.h"
 
+#include "System/Time.h"
+
+#include "Support/Math.h"
+
 #include "Defs.h"
 
 namespace game
 {
+
+	const Vector2D<float32> GameState::sMapSize = Vector2D<float32>(18.0f, 18.0f);
+
 	BOOL GameState::Init()
 	{
 		GET_INPUT_MANAGER;
@@ -58,7 +65,7 @@ namespace game
 		lWorld->Init();
 
 		graphics::RenderManager::Instance()->SetRenderCamera(
-		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 21.2f, 4.0f),
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 16.2f, 4.0f),
 																	 &Vector3D<float32>(0.0f, 0.0f, 1.5f), 
 																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
 																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
@@ -115,21 +122,19 @@ namespace game
 		};
 		Box* lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0, -9.0f), Vector3D<float32>(9.0f, 0.5, 0.5f), Vector3D<float32>(0.0f, 0.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0f, -9.0f), Vector3D<float32>(9.0f, 0.4, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0, 9.0f), Vector3D<float32>(9.0f, 0.4, 0.4f), Vector3D<float32>(0.0f, 180.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0f, 9.0f), Vector3D<float32>(9.0f, 0.4f, 0.4f), Vector3D<float32>(0.0f, 180.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(9.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 9.0f), Vector3D<float32>(0.0f, 90.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(9.0f, 0.0f, 0.0f), Vector3D<float32>(0.4f, 0.4f, 9.0f), Vector3D<float32>(0.0f, 90.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(-9.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 9.0f), Vector3D<float32>(0.0f, 270.0, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(-9.0f, 0.0f, 0.0f), Vector3D<float32>(0.4f, 0.4f, 9.0f), Vector3D<float32>(0.0f, 270.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 
-		lBox = new Box();
-		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eCoin, TRUE, Vector3D<float32>(5.0f, 0.0, 0.0f), Vector3D<float32>(0.4f, 0.4, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), lWallVertexData, 0);
-
+		mNextCoinSpawnTime = sys::Time::GetCurrentSec() + Math::Random(1.0f, 3.0f);
+		
 		graphics::RenderManager::Instance()->SetClearColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
@@ -159,6 +164,17 @@ namespace game
 		{
 			case eExit:
 				return FALSE;
+		}
+
+		if (mNextCoinSpawnTime < sys::Time::GetCurrentSec())
+		{
+			//HACK
+			io::FileSystem::Instance()->ChangeDirectory(".\\materials");
+			mNextCoinSpawnTime = sys::Time::GetCurrentSec() + Math::Random(3.0f, 7.0f);
+			Box* lBox = new Box();
+			logic::World::Instance()->AddGameObject(lBox, TRUE);
+			lBox->Init(Box::eCoin, TRUE, Vector3D<float32>((Math::Random(1, (int)(sMapSize.mX - 1)) - sMapSize.mX *0.5f), 0.0f, (Math::Random(1, (int)(sMapSize.mY - 1)) - sMapSize.mY*0.5f)), Vector3D<float32>(0.4f, 0.4f, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), 0, 0);
+
 		}
 
 		return TRUE;

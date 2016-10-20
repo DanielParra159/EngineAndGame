@@ -3,7 +3,8 @@
 
 #include "Types.h"
 
-#include "Core\IGameState.h"
+#include "Core/IGameState.h"
+#include "Support/Vector2D.h"
 
 namespace audio
 {
@@ -37,6 +38,9 @@ namespace game
 	private:
 		ui::Menu*										mMenu;
 		audio::Sound2D*									mMusic;
+		float64											mNextCoinSpawnTime;
+	public:
+		static const									Vector2D<float32> sMapSize;
 	public:
 		GameState() {}
 		~GameState() {}

@@ -25,6 +25,7 @@ namespace logic
 		TGameObjectsList								mGameObjectsToBeActivated;
 		TGameObjectsSet									mDisabledGameObjects;
 		TGameObjectsList								mGameObjectsToBeDisabled;
+		TGameObjectsList								mGameObjectsToRemove;
 	public:
 		void											Init();
 		void											Release();
@@ -34,12 +35,15 @@ namespace logic
 		void											Render();
 
 		void											AddGameObject(IGameObject* aGameObject, BOOL aActivated);
+		void											RemoveGameObject(IGameObject* aGameObject);
 		void											DisableGameObject(IGameObject* aGameObject);
 		void											ActiveGameObject(IGameObject* aGameObject);
 
 	private:
-		World() : mActivatedGameObjects(), mGameObjectsToBeActivated(), mDisabledGameObjects(), mGameObjectsToBeDisabled() {}
+		World() : mActivatedGameObjects(), mGameObjectsToBeActivated(), mDisabledGameObjects(), 
+			mGameObjectsToBeDisabled(), mGameObjectsToRemove(){}
 		~World() {}
+		void											RemoveGameObjects();
 
 	}; // World
 

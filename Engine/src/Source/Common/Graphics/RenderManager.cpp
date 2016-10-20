@@ -1,15 +1,17 @@
-#include "Graphics\RenderManager.h"
-#include "Graphics\Sprite.h"
-#include "Graphics\Material.h"
-#include "Graphics\Mesh.h"
-#include "Graphics\Camera.h"
+#include "Graphics/RenderManager.h"
+#include "Graphics/Sprite.h"
+#include "Graphics/Material.h"
+#include "Graphics/Mesh.h"
+#include "Graphics/MeshComponent.h"
+#include "Graphics/Camera.h"
 
-#include "Support\Matrix4.h"
+#include "Support/Matrix4.h"
 
-#include "IO\FileSystem.h"
-#include "IO\File.h"
+#include "IO/FileSystem.h"
+#include "IO/File.h"
 
-#include "Core\Log.h"
+#include "Core/Log.h"
+#include "Logic/ComponentFactory.h"
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -612,6 +614,19 @@ namespace graphics
 	//----------------------------------------END MATERIALS---------------------------------------
 
 	//-----------------------------------------MESHES-----------------------------------------
+	MeshComponent* RenderManager::LoadMeshComponentFromFile(const std::string& aFileName)
+	{
+		MeshComponent* lResult = NULL;
+		Mesh* lMesh = LoadMeshFromFile(aFileName);
+		if (lMesh != NULL)
+		{
+			lResult = (MeshComponent*)logic::ComponentFactory::Instance()->GetComponent(MeshComponent::sId);
+			lResult->Init(TRUE);
+			lResult->SetMesh(lMesh);
+		}
+		return lResult;
+	}
+
 	Mesh* RenderManager::LoadMeshFromFile(const std::string& aFileName)
 	{
 		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aFileName);
@@ -669,6 +684,20 @@ namespace graphics
 		
 		return LoadMesh(aFileName, lVertexData, sizeof(lVertexData), 36);
 	}
+
+	MeshComponent* RenderManager::LoadMeshComponentFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
+	{
+		MeshComponent* lResult = NULL;
+		Mesh* lMesh = LoadMeshFromVertexArray(aMeshName, aVertexData, aVertexDataLength, aNumVertex);
+		if (lMesh != NULL)
+		{
+			lResult = (MeshComponent*)logic::ComponentFactory::Instance()->GetComponent(MeshComponent::sId);
+			lResult->Init(TRUE);
+			lResult->SetMesh(lMesh);
+		}
+		return lResult;
+	}
+
 	Mesh* RenderManager::LoadMeshFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
 	{
 		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aMeshName);

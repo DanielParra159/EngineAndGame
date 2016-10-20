@@ -48,6 +48,9 @@ namespace logic
 
 	void World::Update()
 	{
+		if (mGameObjectsToRemove.size() > 0)
+			RemoveGameObjects();
+
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
 		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
 		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
@@ -77,6 +80,9 @@ namespace logic
 
 	void World::FixedUpdate()
 	{
+		if (mGameObjectsToRemove.size() > 0)
+			RemoveGameObjects();
+
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
 		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
 		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
@@ -87,6 +93,8 @@ namespace logic
 
 	void World::Render()
 	{
+		if (mGameObjectsToRemove.size() > 0)
+			RemoveGameObjects();
 		//@TODO: sort
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
 		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
@@ -103,6 +111,60 @@ namespace logic
 			mActivatedGameObjects.insert(aGameObject);
 		else
 			mDisabledGameObjects.insert(aGameObject);
+	}
+
+	void World::RemoveGameObject(IGameObject* aGameObject){
+		mGameObjectsToRemove.push_back(aGameObject);
+	}
+
+	void World::RemoveGameObjects()
+	{
+		TGameObjectsList::const_iterator lListRemoveIterator = mGameObjectsToRemove.begin();
+		TGameObjectsList::const_iterator lListRemoveIteratorEnd = mGameObjectsToRemove.end();
+		for (; lListRemoveIterator != lListRemoveIteratorEnd; ++lListRemoveIterator) {
+			IGameObject* lGameObject = *lListRemoveIterator;
+			if (lGameObject->mActive)
+			{
+				TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.find(lGameObject);
+				if (lSetIterator != mActivatedGameObjects.end())
+				{
+					mActivatedGameObjects.erase(lSetIterator);
+					lGameObject->Release();
+				}
+				else {
+					TGameObjectsList::const_iterator lListIterator = mGameObjectsToBeDisabled.begin();
+					TGameObjectsList::const_iterator lListIteratorEnd = mGameObjectsToBeDisabled.end();
+					for (; lListIterator != lListIteratorEnd; ++lListIterator)
+					{
+						if (*lListIterator == lGameObject)
+						{
+							mGameObjectsToBeDisabled.erase(lListIterator);
+							lGameObject->Release();
+						}
+					}
+				}
+			}
+			else {
+				TGameObjectsSet::const_iterator lSetIterator = mDisabledGameObjects.find(lGameObject);
+				if (lSetIterator != mDisabledGameObjects.end())
+				{
+					mDisabledGameObjects.erase(lSetIterator);
+					lGameObject->Release();
+				}
+				else {
+					TGameObjectsList::const_iterator lListIterator = mGameObjectsToBeActivated.begin();
+					TGameObjectsList::const_iterator lListIteratorEnd = mGameObjectsToBeActivated.end();
+					for (; lListIterator != lListIteratorEnd; ++lListIterator)
+					{
+						if (*lListIterator == lGameObject)
+						{
+							mGameObjectsToBeActivated.erase(lListIterator);
+							lGameObject->Release();
+						}
+					}
+				}
+			}
+		}
 	}
 	void World::DisableGameObject(IGameObject* aGameObject)
 	{

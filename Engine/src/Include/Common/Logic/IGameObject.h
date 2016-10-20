@@ -61,7 +61,7 @@ namespace logic
 		//POSITION FUNCTIONS
 		virtual void									SetPosition(const Vector3D<float32>& aPosition);
 		virtual void									SetPosition(float32 aX, float32 aY, float32 aZ);
-		//virtual const Vector3D<float32>&				GetPosition() const;
+		virtual const Vector3D<float32>*				GetPosition() const;
 		virtual void									GetPosition(Vector3D<float32>& aPosition) const;
 		virtual void									Translate(const Vector3D<float32>& aPosition);
 		virtual void									Translate(float32 aX, float32 aY, float32 aZ);
@@ -70,7 +70,7 @@ namespace logic
 		virtual void									SetScale(const Vector3D<float32>& aScale);
 		virtual void									SetScale(float32 aX, float32 aY, float32 aZ);
 		virtual void									SetScale(float32 aScale);
-		//virtual const Vector3D<float32>&				GetScale() const;
+		virtual const Vector3D<float32>*				GetScale() const;
 		virtual void									GetScale(Vector3D<float32>& aScale) const;
 		virtual void									Scale(const Vector3D<float32>& aScale);
 		virtual void									Scale(float32 aX, float32 aY, float32 aZ);
@@ -78,7 +78,7 @@ namespace logic
 		//ROTATION FUNCTIONS
 		virtual void									SetRotation(const Vector3D<float32>& aRotation);
 		virtual void									SetRotation(float32 aX, float32 aY, float32 aZ);
-		//virtual const Vector3D<float32>&				GetRotation() const;
+		virtual const Vector3D<float32>*				GetRotation() const;
 		virtual void									GetRotation(Vector3D<float32>& aRotation) const;
 		virtual void									Rotate(const Vector3D<float32>& aRotation);
 		virtual void									Rotate(float32 aX, float32 aY, float32 aZ);

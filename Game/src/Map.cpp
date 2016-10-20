@@ -14,8 +14,6 @@
 
 namespace game
 {
-	const Vector2D<float32> Map::sMapSize = Vector2D<float32>(18.0f, 18.0f);
-
 	void Map::Init(BOOL aActive)
 	{
 		IGameObject::Init(aActive);

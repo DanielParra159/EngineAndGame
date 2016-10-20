@@ -15,7 +15,7 @@ namespace logic
 
 	void IComponent::SetCallbacks(IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
 	{
-		mParent = aGameObject;
+		SetParent(aGameObject);
 		aUpdateFunction = NULL;
 		aFixedUpdateFunction = NULL;
 		aRenderFunction = NULL;

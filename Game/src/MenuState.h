@@ -5,6 +5,11 @@
 
 #include "Core\IGameState.h"
 
+namespace audio
+{
+	class Sound2D;
+}
+
 namespace ui
 {
 	class Menu;
@@ -16,6 +21,7 @@ namespace game
 	{
 	private:
 		ui::Menu*										mMenu;
+		audio::Sound2D*									mMusic;
 	public:
 		MenuState() {}
 		~MenuState() {}

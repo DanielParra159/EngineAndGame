@@ -30,6 +30,7 @@ namespace graphics
 	class Sprite;
 	class Material;
 	class Mesh;
+	class MeshComponent;
 	class Camera;
 
 
@@ -137,6 +138,7 @@ namespace graphics
 		@param aFileName, file name
 		*/
 		Mesh*											LoadMeshFromFile(const std::string& aFileName);
+		MeshComponent*									LoadMeshComponentFromFile(const std::string& aFileName);
 		/**
 		Load mesh from vertex data
 		@param aMeshName, mesh name
@@ -145,6 +147,7 @@ namespace graphics
 		@param aNumVertex, number of vertex
 		*/
 		Mesh*											LoadMeshFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
+		MeshComponent*									LoadMeshComponentFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex);
 		/**
 		Unload mesh
 		@param aMesh, mesh to Unload

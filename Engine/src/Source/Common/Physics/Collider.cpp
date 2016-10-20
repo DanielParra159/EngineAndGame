@@ -46,6 +46,17 @@ namespace physics
 		aRenderFunction = NULL;
 	}
 
+	void Collider::SetParent(logic::IGameObject* aParent)
+	{
+		Collider::IComponent::SetParent(aParent);
+		float32 lAngle;
+		physx::PxVec3 lAxis;
+		mPhysicActor->getGlobalPose().q.toRadiansAndUnitAxis(lAngle, lAxis);
+		physx::PxVec3 lPosition = mPhysicActor->getGlobalPose().p;
+		mParent->SetRotation(Vector3D<float>(lAxis.x, lAxis.y, lAxis.z)*Math::Degrees(lAngle));
+		mParent->SetPosition(lPosition.x, lPosition.y, lPosition.z);
+	}
+
 	void Collider::SetPosition(const Vector3D<float32> aPosition)
 	{
 		if (mColliderType == eColliderType::eKinematic)

@@ -57,6 +57,7 @@ namespace physics
 		virtual void									Release();
 		virtual void									FixedUpdate();
 		virtual void									SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction);
+		virtual void									SetParent(logic::IGameObject* aParent);
 		//@TODO should be public and modify PhysX
 		virtual void									SetTrigger(BOOL aTrigger) { mTrigger = aTrigger; }
 		virtual void									SetPhysicActor(PhysicActor* aPhysicActor) { mPhysicActor = aPhysicActor; }

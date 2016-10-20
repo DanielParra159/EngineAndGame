@@ -9,11 +9,13 @@
 #include "Core/Game.h"
 #include "Core/Log.h"
 
+#include "Logic/World.h"
+
 #include "Physics/PhysicsManager.h"
 #include "Physics/Collider.h"
 
 #include "Graphics/RenderManager.h"
-#include "Graphics/Mesh.h"
+#include "Graphics/MeshComponent.h"
 #include "Graphics/Material.h"
 
 #include "Audio/AudioManager.h"
@@ -28,20 +30,22 @@ namespace game
 		IGameObject::Init(aActive);
 		mBoxType = aBoxType;
 		physics::Collider* b;
-		mRotationOffset = aRotationOffset;
+		graphics::MeshComponent* lMesh;
 
 		if (aBoxType == eCoin)
 		{
 			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
-			mMesh = graphics::RenderManager::Instance()->LoadMeshFromFile("Coin");
+			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Coin");
 		}
 		else {
 			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
-			mMesh = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Box", aWallVertexData, aSize, 36);
-			mMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
+			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Box", aWallVertexData, aSize, 36);
+			lMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
 		}
 		b->SetOnTriggerEnterCallback(physics::Collider::eTriggerEnter);
 		AddComponent(b);
+		lMesh->SetRotationOffset(aRotationOffset);
+		AddComponent(lMesh);
 	}
 
 	void Box::Update()
@@ -52,15 +56,11 @@ namespace game
 	void Box::Render()
 	{
 		IGameObject::Render();
-
-		mMesh->Render(&mPosition, &Vector3D<float32>(1,1,1), &(mRotation + mRotationOffset));
 	}
 
 	void Box::Release()
 	{
 		IGameObject::Release();
-
-		graphics::RenderManager::Instance()->UnloadMesh(mMesh);
 	}
 
 	void Box::OnTriggerEnter(physics::Collider* other)
@@ -68,9 +68,9 @@ namespace game
 		if (mBoxType == eCoin)
 		{
 			((Player*)other->GetParent())->AddCoin();
-			this->SetEnabled(FALSE);
 			io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 			audio::AudioManager::Instance()->CreateSound2D("Coin.wav")->Play(audio::eAudioGroups::eEffects);
+			logic::World::Instance()->RemoveGameObject(this);
 		}
 		else {
 			//HACK

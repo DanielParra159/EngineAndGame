@@ -225,6 +225,9 @@
     <ClInclude Include="..\..\src\Include\Common\Support\Math.h">
       <Filter>Header Files\Support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Graphics\MeshComponent.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Logic\ComponentFactory.cpp">
       <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\Graphics\MeshComponent.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

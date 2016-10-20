@@ -11,6 +11,7 @@
 #include "Core/Log.h"
 
 #include "Graphics/RenderManager.h"
+#include "Graphics/MeshComponent.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 
@@ -34,19 +35,19 @@ namespace game
 		capsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(capsule);
 
-		mHead = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
-		mHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
-		mHead->GetMaterial()->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
+		graphics::MeshComponent* lHead = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Prueba");
+		lHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
+		lHead->GetMaterial()->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
+		AddComponent(lHead);
 		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mTail->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png"));
 
 		mDirection = EDirections::eRight;
 
-		mDelayBetweenMovements = 1.0f;
+		mDelayBetweenMovements = 0.6f;
 		mTimeNextMovement = sys::Time::GetCurrentSec() + mDelayBetweenMovements;
 		mLastAction = -1;
 
-		this->GetComponent(physics::CapsuleController::sId);
 
 		mSnakeLenght = 1;
 		for (int32 i = 0; i < mMaxTailLength; ++i)
@@ -128,7 +129,6 @@ namespace game
 	void Player::Render()
 	{
 		IGameObject::Render();
-		mHead->Render(&mPosition, &mScale, &mRotation);
 
 		for (int32 i = 0; i < mMaxTailLength; ++i)
 		{
@@ -147,7 +147,6 @@ namespace game
 			delete mTailStates[i];
 			mTailStates[i] = 0;
 		}
-		graphics::RenderManager::Instance()->UnloadMesh(mHead);
 		graphics::RenderManager::Instance()->UnloadMesh(mTail);
 	}
 
@@ -186,6 +185,8 @@ namespace game
 
 	void Player::AddCoin()
 	{
+		if ((mSnakeLenght+1) == mMaxTailLength)
+			return;
 		++mSnakeLenght;
 
 		int32 i = 0;
@@ -197,6 +198,11 @@ namespace game
 		mTailStates[i]->mLife = mSnakeLenght + 1;
 		mTailStates[i]->mPosition = mPosition;
 		mTailStates[i]->mRotation = mRotation;
+
+		++mCoins;
+
+		if (mDelayBetweenMovements > 0.15f)
+			mDelayBetweenMovements -= 0.1f;
 	}
 } // namespace game
 

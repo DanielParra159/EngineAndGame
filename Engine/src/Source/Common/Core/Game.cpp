@@ -51,6 +51,8 @@ namespace core
 
 		sys::Time::Instance()->Init(aGameDescription.mPhysicUpdatedFrequency);
 
+		srand(sys::Time::Instance()->GetCurrentMili());
+
 		mAccumulatePhysicTime = 0.0f;
 		mNumPhysicUpdateLoops = 0;
 

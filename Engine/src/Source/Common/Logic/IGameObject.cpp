@@ -69,6 +69,13 @@ namespace logic
 			World::Instance()->ActiveGameObject(this);
 		else
 			World::Instance()->DisableGameObject(this);
+
+		TComponents::const_iterator lComponentIterator = mComponents.begin();
+		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
+		for (; lComponentIterator != lComponentIteratorEnd; ++lComponentIterator)
+		{
+			(*lComponentIterator).second->mComponent->SetEnabled(aActive);
+		}
 	}
 
 	//POSITION FUNCTIONS
@@ -84,7 +91,9 @@ namespace logic
 		mPosition.mY = aY;
 		mPosition.mZ = aZ;
 	}
-	//const Vector3D<float32>&					GetPosition() const { return mPosition; }
+	const Vector3D<float32>* IGameObject::GetPosition() const {
+		return &mPosition;
+	}
 	void IGameObject::GetPosition(Vector3D<float32>& aPosition) const {
 		aPosition.mX = mPosition.mX;
 		aPosition.mY = mPosition.mY;
@@ -119,7 +128,10 @@ namespace logic
 		mScale.mY = aScale;
 		mScale.mZ = aScale;
 	}
-	//const Vector3D<float32>&					GetScale() const { return mScale; }
+	const Vector3D<float32>* IGameObject::GetScale() const 
+	{ 
+		return &mScale;
+	}
 	void IGameObject::GetScale(Vector3D<float32>& aScale) const
 	{
 		aScale.mX = mScale.mX;
@@ -149,7 +161,10 @@ namespace logic
 		mRotation.mY = aY;
 		mRotation.mZ = aZ;
 	}
-	//const Vector3D<float32>&					GetRotation() const { return mRotation; }
+	const Vector3D<float32>* IGameObject::GetRotation() const 
+	{ 
+		return &mRotation;
+	}
 	void IGameObject::GetRotation(Vector3D<float32>& aRotation) const
 	{
 		aRotation.mX = mRotation.mX;

@@ -21,8 +21,6 @@ namespace game
 		};
 
 	private:
-		graphics::Mesh*									mMesh;
-		Vector3D<float>									mRotationOffset;
 		eBoxType										mBoxType;
 	public:
 		Box() : IGameObject(){}

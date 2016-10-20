@@ -40,6 +40,7 @@ namespace logic
 		virtual void									Update() {}
 		virtual void									FixedUpdate() {}
 		virtual void									Render() {}
+		virtual void									SetParent(IGameObject* aParent) { mParent = aParent; }
 		static void RenderCallbackFunction(IComponent* aComponent)
 		{
 			aComponent->Render();
