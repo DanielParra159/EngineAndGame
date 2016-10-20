@@ -6,8 +6,8 @@
 
 #include <string>
 
-struct lua_State;
-typedef int(*lua_CFunction) (lua_State *L);
+#include "luabind/luabind.hpp"
+#include "luabind/adopt_policy.hpp"
 
 namespace core
 {

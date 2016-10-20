@@ -292,12 +292,17 @@ namespace physics
 		physx::PxShape** shapes = new physx::PxShape*[numShapes];
 		lActor->getShapes(shapes, numShapes);
 		for (physx::PxU32 i = 0; i < numShapes; i++)
-		{
-			physx::PxShape* shape = shapes[i];
+		{			
+			physx::PxShape* lShape = shapes[i];
+
+			lShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+			lShape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
+
+
 			physx::PxFilterData filterData;
 			filterData.word0 = aLayerMask; // word0 = own ID
 			filterData.word1 = aCollisionMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
-			shape->setSimulationFilterData(filterData);
+			lShape->setSimulationFilterData(filterData);
 		}
 		delete[] shapes;
 

@@ -25,7 +25,7 @@
 
 namespace game
 {
-	void Box::Init(eBoxType aBoxType, BOOL aActive, const Vector3D<float> aPosition, const Vector3D<float> aBoxSize, const Vector3D<float> aRotationOffset, const float32 aWallVertexData[], uint32 aSize)
+	void Box::Init(eBoxType aBoxType, BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aBoxSize, const Vector3D<float32> aRotationOffset, const float32 aWallVertexData[], uint32 aSize)
 	{
 		IGameObject::Init(aActive);
 		mBoxType = aBoxType;

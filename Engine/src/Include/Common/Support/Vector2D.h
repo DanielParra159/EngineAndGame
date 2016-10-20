@@ -102,7 +102,7 @@ public:
 		return *this;
 	}
 
-	Vector2D operator*(T aScalar)
+	Vector2D operator*(T aScalar) const
 	{
 		return Vector2D(mX * aScalar, mY * aScalar);
 	}
@@ -113,7 +113,7 @@ public:
 		return *this;
 	}
 
-	Vector2D operator/(T aScalar)
+	Vector2D operator/(T aScalar) const
 	{
 		return Vector2D(mX / aScalar, mY / aScalar);
 	}

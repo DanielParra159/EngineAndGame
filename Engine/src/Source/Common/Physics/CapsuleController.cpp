@@ -20,13 +20,13 @@ namespace physics
 		Collider::Init(aActive, aPhysicsActor, aColliderType, aTrigger);
 		mGround = FALSE;
 		mDisplacement = Vector3D<float32>::zero;	
-		mMinDistance = 0.2f;
+		mMinDistance = 0.01f;
 	}
 
 
 	void CapsuleController::FixedUpdate()
 	{
-		float32 lDeltaTime = sys::Time::Instance()->GetDeltaSec();
+		float32 lDeltaTime = sys::Time::Instance()->GetFixedDeltaSec();
 
 		if (!mGround) {
 			mDisplacement += PhysicsManager::Instance()->GetGravity() * lDeltaTime;
@@ -53,11 +53,15 @@ namespace physics
 
 	void CapsuleController::Move(const Vector3D<float32>& aDisplacement)
 	{
-		mDisplacement = aDisplacement;
+		mDisplacement += aDisplacement;
 	}
 	void CapsuleController::Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance)
 	{
 		mDisplacement = aDisplacement;
 		mMinDistance = aMinDistance;
+	}
+	void CapsuleController::AddForce(const Vector3D<float32>& aForce)
+	{
+		mDisplacement += aForce;
 	}
 } // namespace physics

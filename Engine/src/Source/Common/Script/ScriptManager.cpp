@@ -2,12 +2,13 @@
 
 #include "Core/Log.h"
 
+#include "IO/FileSystem.h"
+
 extern "C" {
 	#include <lua.h>
 	#include <lauxlib.h>
 	#include <lualib.h>
 }
-#include "luabind/luabind.hpp"
 
 namespace script
 {
@@ -35,7 +36,7 @@ namespace script
 
 	BOOL ScriptManager::LoadScript(const int8* aScriptName)
 	{
-		if (luaL_loadfile(mLuaState, aScriptName) != NULL) {
+		if (luaL_loadfile(mLuaState, (io::FileSystem::Instance()->GetCurrentDir() + "/" + aScriptName).c_str()) != NULL) {
 			core::LogFormatString("Can\'t find script %s or syntax error\n", aScriptName);
 			return FALSE;
 		}
@@ -55,7 +56,7 @@ namespace script
 		int32 lError = luaL_loadstring(mLuaState, aScriptName);
 		if (lError != NULL)
 		{
-			core::LogFormatString("Error executting script %s: %s\n", aScriptName, lError);
+			core::LogFormatString("Error executting script %s: %d\n", aScriptName, lError);
 			return FALSE;
 		}
 

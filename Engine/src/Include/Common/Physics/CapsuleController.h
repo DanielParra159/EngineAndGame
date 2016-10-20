@@ -51,6 +51,7 @@ namespace physics
 		*/
 		void											Move(const Vector3D<float32>& aDisplacement, float32 aMinDistance);
 		virtual void									Move(const Vector3D<float32>& aDisplacement);
+		void											AddForce(const Vector3D<float32>& aForce);
 	protected:
 		CapsuleController() : Collider() {}
 		virtual ~CapsuleController() {}

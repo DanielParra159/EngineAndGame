@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "GameState.h"
+#include "PlatformGameState.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -43,6 +44,8 @@ namespace game
 		lInputAction = new input::InputAction();
 		lInputAction->Init(eNum1, input::KeyboardController::e1);
 		lController->RegisterInputAction(lInputAction);
+		lInputAction->Init(eNum2, input::KeyboardController::e2);
+		lController->RegisterInputAction(lInputAction);
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
@@ -76,6 +79,7 @@ namespace game
 			case eExit:
 				return FALSE;
 			case eNum1:
+			{
 				io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 				audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
 
@@ -83,6 +87,17 @@ namespace game
 
 				core::Game::Instance()->ChangeGameState(lGameState);
 				break;
+			}
+			case eNum2:
+			{
+				io::FileSystem::Instance()->ChangeDirectory(".\\audio");
+				audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
+
+				game::PlatformGameState *lGameState = new game::PlatformGameState();
+
+				core::Game::Instance()->ChangeGameState(lGameState);
+				break;
+			}
 		}
 
 		return TRUE;

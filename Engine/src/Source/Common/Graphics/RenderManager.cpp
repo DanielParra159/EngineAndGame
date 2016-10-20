@@ -811,20 +811,25 @@ namespace graphics
 
 	//-----------------------------------------END MESHES-----------------------------------------
 
-	Camera* RenderManager::CreatePerspectiveCamera(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp,
+	Camera* RenderManager::CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
 																			float32 aFov, float32 aAspect, float32 aNear, float32 aFar)
 	{
-		Camera* lResult = new Camera();
-		lResult->Init(ePerspective);
+		Camera* lResult = (Camera*)logic::ComponentFactory::Instance()->GetComponent(Camera::sId);
+		lResult->Init(TRUE, ePerspective);
 		lResult->Perspective(aFov, aAspect, aNear, aFar);
 		lResult->LookAt(aEye, aPosition, aUp);
 
 		return lResult;
 	}
 
-	void RenderManager::SetRenderCamera(const Camera* aCamera)
+	void RenderManager::SetRenderCamera(Camera* aCamera)
 	{
 		mRenderCamera = aCamera;
+	}
+
+	Camera* RenderManager::GetRenderCamera()
+	{
+		return mRenderCamera;
 	}
 
 } // namespace graphics

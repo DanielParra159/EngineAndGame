@@ -14,6 +14,7 @@
 #include "Graphics/MeshComponent.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
+#include "Graphics/Camera.h"
 
 #include "Support/Vector3D.h"
 

@@ -67,7 +67,7 @@ namespace graphics
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
-		const Camera*									mRenderCamera;
+		Camera*											mRenderCamera;
 	public:
 		void											BeginRender();
 		void											EndRender();
@@ -157,9 +157,10 @@ namespace graphics
 		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial);
 		//-----------------------------------------END MESHES-----------------------------------------
 
-		Camera*											CreatePerspectiveCamera(const Vector3D<float32>* aEye, const Vector3D<float32>* aPosition, const Vector3D<float32>* aUp,
+		Camera*											CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
 																				float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
-		void											SetRenderCamera(const Camera* aCamera);
+		void											SetRenderCamera(Camera* aCamera);
+		Camera*											GetRenderCamera();
 
 	private:
 		RenderManager() : mTexturesIds(), mLoadedTextures(), mNumLoadedTextures(0),

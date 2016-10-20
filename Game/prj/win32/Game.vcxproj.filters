@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Platformmer">
+      <UniqueIdentifier>{ccfb1a31-220e-4194-9eac-74746810e23b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GameMain.cpp">
@@ -39,6 +42,15 @@
     <ClCompile Include="..\..\src\Box.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\PlatformGameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformmerWall.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformmerPlayer.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -61,6 +73,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Box.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\PlatformGameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformmerWall.h">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformmerPlayer.h">
+      <Filter>Source Files\Platformmer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

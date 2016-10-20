@@ -65,9 +65,9 @@ namespace game
 		lWorld->Init();
 
 		graphics::RenderManager::Instance()->SetRenderCamera(
-		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 16.2f, 4.0f),
-																	 &Vector3D<float32>(0.0f, 0.0f, 1.5f), 
-																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 16.2f, 4.0f),
+																	 Vector3D<float32>(0.0f, 0.0f, 1.5f), 
+																	 Vector3D<float32>(0.0f, 0.0f, -1.0f),
 																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
 
 		Map* lMap = new Map();
@@ -122,7 +122,7 @@ namespace game
 		};
 		Box* lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
-		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0f, -9.0f), Vector3D<float32>(9.0f, 0.4, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
+		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0f, -9.0f), Vector3D<float32>(9.0f, 0.4f, 0.4f), Vector3D<float32>(0.0f, 0.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));
 		lBox = new Box();
 		lWorld->AddGameObject(lBox, TRUE);
 		lBox->Init(Box::eWall, TRUE, Vector3D<float32>(0.0f, 0.0f, 9.0f), Vector3D<float32>(9.0f, 0.4f, 0.4f), Vector3D<float32>(0.0f, 180.0f, 0.0f), lWallVertexData, sizeof(lWallVertexData));

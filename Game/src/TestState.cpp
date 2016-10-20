@@ -31,9 +31,9 @@ namespace game
 	BOOL TestState::Init()
 	{
 		graphics::RenderManager::Instance()->SetRenderCamera(
-		graphics::RenderManager::Instance()->CreatePerspectiveCamera(&Vector3D<float32>(0.0f, 4.2f, 2.0f),
-																	 &Vector3D<float32>(0.0f, 0.0f, -2.0f), 
-																	 &Vector3D<float32>(0.0f, 0.0f, -1.0f),
+		graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 4.2f, 2.0f),
+																	 Vector3D<float32>(0.0f, 0.0f, -2.0f), 
+																	 Vector3D<float32>(0.0f, 0.0f, -1.0f),
 																	 75.0f, 800.0f / 600.0f, 1.0f, 1000.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory("materials");

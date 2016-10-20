@@ -26,7 +26,7 @@ namespace game
 		Box() : IGameObject(){}
 		virtual ~Box() {}
 	
-		virtual void									Init(eBoxType aBoxType, BOOL aActive, const Vector3D<float> aPosition, const Vector3D<float> aBoxSize, const Vector3D<float> aRotationOffset, const float32 lWallVertexData[], uint32 aSize);
+		virtual void									Init(eBoxType aBoxType, BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aBoxSize, const Vector3D<float32> aRotationOffset, const float32 lWallVertexData[], uint32 aSize);
 		virtual void									Update();
 		virtual void									Render();
 		virtual void									Release();
