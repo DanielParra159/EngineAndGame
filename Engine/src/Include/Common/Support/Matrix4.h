@@ -56,5 +56,9 @@ public:
 	{
 		return glm::perspective(glm::radians(aFov), aAspect, aZNear, aZFar);
 	}
+	static Matrix4 Orthographic(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar)
+	{
+		return glm::ortho(aLeft, aRight, aBottom, aUp, aZNear, aZFar);
+	}
 };
 #endif // _ENGINE_MATRIX4_H_

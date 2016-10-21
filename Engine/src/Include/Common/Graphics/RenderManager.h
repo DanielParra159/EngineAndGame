@@ -159,6 +159,7 @@ namespace graphics
 
 		Camera*											CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
 																				float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
+		Camera*											CreateOrthographicCamera(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar);
 		void											SetRenderCamera(Camera* aCamera);
 		Camera*											GetRenderCamera();
 

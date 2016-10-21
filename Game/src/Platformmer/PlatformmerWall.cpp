@@ -26,7 +26,7 @@ namespace game
 	void PlatformmerWall::Init(BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aSize)
 	{
 		IGameObject::Init(aActive);
-		
+
 		physics::Collider* b;
 		graphics::MeshComponent* lMesh;
 
@@ -51,20 +51,20 @@ namespace game
 			-lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, 0.0f,
 
 			//Left
-			-lSize.mX,  lSize.mY,  lSize.mZ, lSize.mX, 0.0f,
-			-lSize.mX,  lSize.mY, -lSize.mZ, lSize.mX, lSize.mY,
-			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, lSize.mY,
-			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, lSize.mY,
+			-lSize.mX,  lSize.mY,  lSize.mZ, 1.0f, 0.0f,
+			-lSize.mX,  lSize.mY, -lSize.mZ, 1.0f, aSize.mY / 2.5f,
+			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, aSize.mY / 2.5f,
+			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, aSize.mY / 2.5f,
 			-lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, 0.0f,
-			-lSize.mX,  lSize.mY,  lSize.mZ, lSize.mX, 0.0f,
+			-lSize.mX,  lSize.mY,  lSize.mZ, 1.0f, 0.0f,
 
 			// Right
-			lSize.mX,  lSize.mY,  lSize.mZ, lSize.mX, 0.0f,
-			lSize.mX,  lSize.mY, -lSize.mZ, lSize.mX, lSize.mY,
-			lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, lSize.mY,
-			lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, lSize.mY,
+			lSize.mX,  lSize.mY,  lSize.mZ, 1.0f, 0.0f,
+			lSize.mX,  lSize.mY, -lSize.mZ, 1.0f, aSize.mY / 2.5f,
+			lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, aSize.mY / 2.5f,
+			lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, aSize.mY / 2.5f,
 			lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, 0.0f,
-			lSize.mX,  lSize.mY,  lSize.mZ, lSize.mX, 0.0f,
+			lSize.mX,  lSize.mY,  lSize.mZ, 1.0f, 0.0f,
 
 			//Bottom
 			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, lSize.mZ,
@@ -88,9 +88,9 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), lSize, FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
-		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Wall_"+ lIndex, lWallVertexData, sizeof(lWallVertexData), 36);
+		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Wall_" + lIndex, lWallVertexData, sizeof(lWallVertexData), 36);
 		lMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
-		
+
 		AddComponent(b);
 		AddComponent(lMesh);
 	}
@@ -109,5 +109,5 @@ namespace game
 	{
 		IGameObject::Release();
 	}
-	
+
 } // namespace game

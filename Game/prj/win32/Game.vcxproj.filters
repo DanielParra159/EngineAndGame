@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Platformmer">
       <UniqueIdentifier>{ccfb1a31-220e-4194-9eac-74746810e23b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{e434dbc4-30dc-4559-b5c7-4f4013325f85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GameMain.cpp">
@@ -51,6 +54,9 @@
     <ClCompile Include="..\..\src\Platformmer\PlatformmerPlayer.cpp">
       <Filter>Source Files\Platformmer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\UI\BoxButton.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -82,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Platformmer\PlatformmerPlayer.h">
       <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UI\BoxButton.h">
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

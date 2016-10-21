@@ -14,7 +14,8 @@ namespace graphics
 	*/
 	enum eTypeCameras
 	{
-		ePerspective
+		ePerspective,
+		eOrthographic
 	};
 
 	class Camera : public logic::IComponent
@@ -48,6 +49,7 @@ namespace graphics
 		virtual void									Update();
 		virtual void									SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction);
 		virtual void									Perspective(float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
+		virtual void									Orthographic(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar);
 
 	}; // Camera
 } // namespace graphics

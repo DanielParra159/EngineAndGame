@@ -826,6 +826,15 @@ namespace graphics
 		return lResult;
 	}
 
+	Camera* RenderManager::CreateOrthographicCamera(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar)
+	{
+		Camera* lResult = (Camera*)logic::ComponentFactory::Instance()->GetComponent(Camera::sId);
+		lResult->Init(TRUE, eOrthographic);
+		lResult->Orthographic(aLeft, aRight, aBottom, aUp, aZNear, aZFar);
+
+		return lResult;
+	}
+
 	void RenderManager::SetRenderCamera(Camera* aCamera)
 	{
 		mRenderCamera = aCamera;

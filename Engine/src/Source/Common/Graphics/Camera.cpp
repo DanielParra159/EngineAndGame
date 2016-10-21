@@ -49,6 +49,11 @@ namespace graphics
 		mProjMatrix = Matrix4x4::Perspective(aFov, aAspect, aNear, aFar);
 	}
 
+	void Camera::Orthographic(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar)
+	{
+		mProjMatrix = Matrix4x4::Orthographic(aLeft, aRight, aBottom, aUp, aZNear, aZFar);
+	}
+
 	void Camera::SetPosition(const Vector3D<float32>& aCameraPosition)
 	{
 		mCameraPosition = aCameraPosition;

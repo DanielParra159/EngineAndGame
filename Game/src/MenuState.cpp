@@ -1,6 +1,7 @@
 #include "MenuState.h"
 #include "GameState.h"
 #include "PlatformGameState.h"
+#include "UI/BoxButton.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -9,6 +10,10 @@
 #include "Input/InputAction.h"
 
 #include "Graphics/RenderManager.h"
+#include "Graphics/Camera.h"
+
+#include "Logic/World.h"
+#include "Logic/IGameObject.h"
 
 #include "UI/MenuManager.h"
 #include "UI/Menu.h"
@@ -37,6 +42,34 @@ namespace game
 		lController->RegisterInputAction(eNum1, input::KeyboardController::e1);
 		lController->RegisterInputAction(eNum2, input::KeyboardController::e2);
 
+		GET_WORLD;
+
+		lWorld->Init();
+
+		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 0.0f, 4.0f),
+		Vector3D<float32>(0.0f, 0.0f, 0.0f),
+		Vector3D<float32>(0.0f, 1.0f, 0.0f),
+		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
+		//graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(1.0f, 1.0f, -1.0f, -1.0f, -100.0f, 100.0f);
+		
+		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
+		logic::IGameObject* lGameObject = new logic::IGameObject();
+		lGameObject->AddComponent(lCamera);
+		lWorld->AddGameObject(lGameObject, TRUE);
+
+		BoxButton* lBoxButton = new BoxButton();
+		lWorld->AddGameObject(lBoxButton, TRUE);
+		lBoxButton->Init(Vector3D<float32>(0, -1.5f, 0), -1);
+
+		lBoxButton = new BoxButton();
+		lWorld->AddGameObject(lBoxButton, TRUE);
+		lBoxButton->Init(Vector3D<float32>(-2, 1.5f, 0), 0);
+
+		lBoxButton = new BoxButton();
+		lWorld->AddGameObject(lBoxButton, TRUE);
+		lBoxButton->Init(Vector3D<float32>(2, 1.5f, 0), 1);
+
+
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		mMenu->AddButton(Rect<>(0, 0, 800, 600), Rect<>(0, 0, 200, 100), &StartGame);
@@ -57,6 +90,7 @@ namespace game
 	{
 		mMusic->Stop();
 		ui::MenuManager::Instance()->RemoveMenu(mMenu);
+		logic::World::Instance()->Release();
 		mMenu = 0;
 	}
 
@@ -91,6 +125,8 @@ namespace game
 	{
 		graphics::RenderManager::Instance()->BeginRender();
 		ui::MenuManager::Instance()->Render();
+
+		logic::World::Instance()->Render();
 		graphics::RenderManager::Instance()->EndRender();
 	}
 

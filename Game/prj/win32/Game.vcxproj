@@ -103,6 +103,7 @@
     <ClCompile Include="..\..\src\Platformmer\PlatformmerWall.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
     <ClCompile Include="..\..\src\TestState.cpp" />
+    <ClCompile Include="..\..\src\UI\BoxButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Box.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="..\..\src\Platformmer\PlatformmerWall.h" />
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\TestState.h" />
+    <ClInclude Include="..\..\src\UI\BoxButton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

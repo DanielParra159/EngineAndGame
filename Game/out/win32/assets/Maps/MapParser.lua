@@ -1,20 +1,5 @@
-function Test()
-	print("test")
-end
-
-function Test2(mapFile)
-	print("test2")
-	print(mapFile)
-end
-
-function Test3(mapFile, mapName)
-	print("test3")
-	print(mapFile)
-	print(mapName)
-end
-
 function ParseMap(mapFile, mapName)
-	print(mapFile)
+	--print(mapFile)
 	--print("hola")
 	map = dofile(mapFile)
 	--print("ok")
@@ -68,6 +53,6 @@ function ParseObjects()
 			AddPlayer(platformmerPlayer)
 			platformmerPlayer:Init(x,y)
 		end
-		print(type.." "..x.." "..y.." "..width.." "..height)
+		--print(type.." "..x.." "..y.." "..width.." "..height)
 	end
 end
