@@ -32,20 +32,13 @@ namespace game
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;
 
-		input::InputAction* lInputAction = new input::InputAction();
-		lInputAction->Init(eLeftButton, input::MouseController::eLeftButton);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(eLeftButton, input::MouseController::eLeftButton);
 
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
-		lInputAction = new input::InputAction();
-		lInputAction->Init(eExit, input::KeyboardController::eEscape);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction = new input::InputAction();
-		lInputAction->Init(eNum1, input::KeyboardController::e1);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(eNum2, input::KeyboardController::e2);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(eExit, input::KeyboardController::eEscape);
+		lController->RegisterInputAction(eNum1, input::KeyboardController::e1);
+		lController->RegisterInputAction(eNum2, input::KeyboardController::e2);
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
@@ -72,32 +65,26 @@ namespace game
 
 	BOOL MenuState::Update()
 	{
-		int32 lAction = input::InputManager::Instance()->GetLastActionId();
 
-		switch (lAction)
+		if (input::InputManager::Instance()->IsActionDown(eExit))
+			return FALSE;
+		else if (input::InputManager::Instance()->IsActionDown(eNum1))
 		{
-			case eExit:
-				return FALSE;
-			case eNum1:
-			{
-				io::FileSystem::Instance()->ChangeDirectory(".\\audio");
-				audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
+			io::FileSystem::Instance()->ChangeDirectory(".\\audio");
+			audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
 
-				game::GameState *lGameState = new game::GameState();
+			game::GameState *lGameState = new game::GameState();
 
-				core::Game::Instance()->ChangeGameState(lGameState);
-				break;
-			}
-			case eNum2:
-			{
-				io::FileSystem::Instance()->ChangeDirectory(".\\audio");
-				audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
+			core::Game::Instance()->ChangeGameState(lGameState);
+		}
+		else if (input::InputManager::Instance()->IsActionDown(eNum2))
+		{
+			io::FileSystem::Instance()->ChangeDirectory(".\\audio");
+			audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
 
-				game::PlatformGameState *lGameState = new game::PlatformGameState();
+			game::PlatformGameState *lGameState = new game::PlatformGameState();
 
-				core::Game::Instance()->ChangeGameState(lGameState);
-				break;
-			}
+			core::Game::Instance()->ChangeGameState(lGameState);
 		}
 
 		return TRUE;
@@ -115,7 +102,7 @@ namespace game
 		/*core::LogString("START GAME");
 
 		audio::AudioManager::Instance()->CreateSound2D("audio/button.mp3")->Play(audio::eAudioGroups::eEffects);
-		
+
 		game::GameState *lGameState = new game::GameState();
 
 		core::Game::Instance()->ChangeGameState(lGameState);*/

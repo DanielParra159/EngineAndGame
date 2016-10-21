@@ -43,22 +43,15 @@ namespace game
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
 
-		input::InputAction* lInputAction = new input::InputAction();
-		lInputAction->Init(eExit, input::KeyboardController::eEscape);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(eUp, input::KeyboardController::eUp);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(eDown, input::KeyboardController::eDown);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(eLeft, input::KeyboardController::eLeft);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(eRight, input::KeyboardController::eRight);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(eExit, input::KeyboardController::eEscape);
+		lController->RegisterInputAction(eUp, input::KeyboardController::eUp);
+		lController->RegisterInputAction(eDown, input::KeyboardController::eDown);
+		lController->RegisterInputAction(eLeft, input::KeyboardController::eLeft);
+		lController->RegisterInputAction(eRight, input::KeyboardController::eRight);
 
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;
-		lInputAction->Init(eRight, input::MouseController::eLeftButton);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(eRight, input::MouseController::eLeftButton);
 
 		GET_WORLD;
 
@@ -158,12 +151,9 @@ namespace game
 	{
 		logic::World::Instance()->Update();
 
-		int32 lAction = input::InputManager::Instance()->GetLastActionId();
-
-		switch (lAction)
+		if (input::InputManager::Instance()->IsActionDown(eExit))
 		{
-			case eExit:
-				return FALSE;
+			return FALSE;
 		}
 
 		if (mNextCoinSpawnTime < sys::Time::GetCurrentSec())

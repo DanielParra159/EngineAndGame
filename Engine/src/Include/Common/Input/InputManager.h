@@ -38,10 +38,6 @@ namespace input
 		All the controllers
 		*/
 		TControllers									mControllers;
-		/**
-		Last action pressed, this is reset each
-		*/
-		int32											mLastAction;
 
 	public:
 		/**
@@ -56,13 +52,11 @@ namespace input
 		@return the controller
 		*/
 		IController*									GetController(ETypeControls aType);
-		/**
-		Gets the last action id pressed, this is reset each
-		@return the last action id or -1
-		*/
-		int32											GetLastActionId() { return mLastAction; }
+
+		BOOL											IsActionDown(uint32 aActionId);
+		BOOL											IsActionUp(uint32 aActionId);
 	private:
-		InputManager() : mControllers(0), mLastAction(-1) {}
+		InputManager() : mControllers(0) {}
 		~InputManager() {}
 
 		BOOL											Init();

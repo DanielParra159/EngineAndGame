@@ -3,6 +3,8 @@
 
 #include "SDL.h"
 
+#include <assert.h>
+
 namespace input
 {
 
@@ -15,32 +17,32 @@ namespace input
 
 	}
 
-	int32 KeyboardController::Update(SDL_Event& aEvent)
+	void KeyboardController::Update(SDL_Event& aEvent)
 	{
-		int32 lResult = -1;
 		InputAction *lInputAction = NULL;
 
 		switch (aEvent.type)
 		{
 			case SDL_KEYDOWN:
+				lInputAction = mActionsByKey[TranslateKeyCode(aEvent.key.keysym.scancode)];
+				if (lInputAction)
+					lInputAction->SetPressed(TRUE);
+				break;
 			case SDL_KEYUP:
 				lInputAction = mActionsByKey[TranslateKeyCode(aEvent.key.keysym.scancode)];
+				if (lInputAction)
+					lInputAction->SetPressed(FALSE);
 				break;
 		}
 
-		if (lInputAction)
-		{
-			lResult = lInputAction->GetId();
-		}
-		return lResult;
 	}
 
-	void KeyboardController::RegisterInputAction(const InputAction *aInputAction)
+	void KeyboardController::RegisterInputAction(uint32 aId, uint32 aKey)
 	{
-		InputAction *linputAction = new InputAction(*aInputAction);
-		uint32 lKey = aInputAction->GetKey();
-		mActionsByKey[lKey] = linputAction;
-		mKeysByActions[aInputAction->GetId()] = lKey;
+		InputAction *lInputAction = new InputAction();
+		lInputAction->Init(aId, aKey);
+		mActionsByKey[aKey] = lInputAction;
+		mKeysByActions[aId] = aKey;
 	}
 
 	BOOL KeyboardController::IsActionPressed(uint32 aActionId)
@@ -78,4 +80,21 @@ namespace input
 		return EKeyCode::eUnknown;
 	}
 
+	BOOL KeyboardController::IsActionDown(uint32 aActionId)
+	{
+		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
+		if (lInputAction != NULL)
+			return lInputAction->GetPressed();
+		else
+			return FALSE;
+	}
+
+	BOOL KeyboardController::IsActionUp(uint32 aActionId)
+	{
+		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
+		if (lInputAction != NULL)
+			return !lInputAction->GetPressed();
+		else
+			return FALSE;
+	}
 } // namespace input

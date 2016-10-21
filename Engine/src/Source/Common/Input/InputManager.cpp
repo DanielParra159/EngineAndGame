@@ -22,7 +22,6 @@ namespace input
 
 	void InputManager::Update()
 	{
-		mLastAction = -1;
 		SDL_Event lEvent;
 		if (SDL_PollEvent(&lEvent))
 		{
@@ -32,9 +31,7 @@ namespace input
 
 			for (; lIterator != lIteratorEnd; ++lIterator)
 			{
-				//@TODO: this only allows an action for frame, the fist controller detects an action
-				if ((mLastAction = (*lIterator)->Update(lEvent)) > -1)
-					break;
+				(*lIterator)->Update(lEvent);
 			}
 		}
 
@@ -92,6 +89,30 @@ namespace input
 			}
 		}
 
+		return lResult;
+	}
+
+	BOOL InputManager::IsActionDown(uint32 aActionId)
+	{
+		BOOL lResult = FALSE;
+		TControllers::const_iterator lIterator = mControllers.begin();
+		TControllers::const_iterator lIteratorEnd = mControllers.end();
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			lResult |= (*lIterator)->IsActionDown(aActionId);
+		}
+		return lResult;
+	}
+
+	BOOL InputManager::IsActionUp(uint32 aActionId)
+	{
+		BOOL lResult = FALSE;
+		TControllers::const_iterator lIterator = mControllers.begin();
+		TControllers::const_iterator lIteratorEnd = mControllers.end();
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			lResult |= (*lIterator)->IsActionUp(aActionId);
+		}
 		return lResult;
 	}
 

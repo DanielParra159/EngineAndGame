@@ -44,18 +44,21 @@ namespace input
 		virtual BOOL									Init();
 		virtual void									Release();
 
-		virtual int32									Update(SDL_Event& aEvent);
+		virtual void									Update(SDL_Event& aEvent);
 
 		/**
 		Translate SDL key to interneal button
 		*/
 		EButtonCode										TranslateButtonCode(uint32 aKey);
+
+		virtual BOOL									IsActionDown(uint32 aActionId);
+		virtual BOOL									IsActionUp(uint32 aActionId);
 	public:
 		/**
 		Register an input action associating key and action id
 		@param aInputActio, an the action
 		*/
-		virtual void									RegisterInputAction(const InputAction *aInputAction);
+		virtual void									RegisterInputAction(uint32 aId, uint32 aKey);
 		/**
 		Check if is pressed the button associated with an action
 		@param aActionId, action id to check

@@ -49,18 +49,17 @@ namespace game
 	{
 		IGameObject::Update();
 
-		int32 lAction = input::InputManager::Instance()->GetLastActionId();
-		
 		Vector3D<float32> lDir;
-		if (lAction == EPltatformmerInputActions::ePltatformmerLeft)
+		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerLeft))
 		{
 			lDir.mX = -1;
 		} 
-		else if (lAction == EPltatformmerInputActions::ePltatformmerRight)
+		else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerRight))
 		{
 			lDir.mX = 1;
 		}
-		else if (lAction == EPltatformmerInputActions::ePltatformmerJump)
+		
+		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerJump))
 		{
 			if (mCapsuleController->GetGround())
 			{
@@ -75,7 +74,7 @@ namespace game
 			else
 				mJumping = FALSE;
 		}
-		mCapsuleController->Move(lDir * 200 * sys::Time::GetDeltaSec());
+		mCapsuleController->Move(lDir * 20 * sys::Time::GetDeltaSec());
 	}
 
 	void PlatformmerPlayer::Render()

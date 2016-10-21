@@ -47,7 +47,6 @@ namespace game
 
 		mDelayBetweenMovements = 0.6f;
 		mTimeNextMovement = sys::Time::GetCurrentSec() + mDelayBetweenMovements;
-		mLastAction = -1;
 
 
 		mSnakeLenght = 1;
@@ -62,9 +61,6 @@ namespace game
 	void Player::Update()
 	{
 		IGameObject::Update();
-		int32 lAction = input::InputManager::Instance()->GetLastActionId();
-		if (mLastAction < 0 && lAction > -1)
-			mLastAction = lAction;
 
 		if (sys::Time::GetCurrentSec() < mTimeNextMovement)
 			return;
@@ -75,30 +71,17 @@ namespace game
 		{
 			case Player::eUp:
 			case Player::eDown:
-				switch (mLastAction)
-				{
-					case EInputActions::eLeft:
-						mDirection = game::Player::eLeft;
-						break;
-					case EInputActions::eRight:
-						mDirection = game::Player::eRight;
-						break;
-				};
-				break;
+				if (input::InputManager::Instance()->IsActionDown(EInputActions::eLeft))
+					mDirection = game::Player::eLeft;
+				if (input::InputManager::Instance()->IsActionDown(EInputActions::eRight))
+					mDirection = game::Player::eRight;
 			case Player::eLeft:
 			case Player::eRight:
-				switch (mLastAction)
-				{
-					case EInputActions::eUp:
-						mDirection = game::Player::eUp;
-						break;
-					case EInputActions::eDown:
-						mDirection = game::Player::eDown;
-						break;
-				};
-				break;
+				if (input::InputManager::Instance()->IsActionDown(EInputActions::eUp))
+					mDirection = game::Player::eUp;
+				if (input::InputManager::Instance()->IsActionDown(EInputActions::eDown))
+					mDirection = game::Player::eDown;
 		}
-		mLastAction = -1;
 
 
 		switch (mDirection)
@@ -137,7 +120,7 @@ namespace game
 			if (mTailStates[i]->mLife > 0)
 				mTail->Render(&mTailStates[i]->mPosition, &Vector3D<float32>::one, &mTailStates[i]->mRotation);
 		}
-		
+
 	}
 
 	void Player::Release()
@@ -186,7 +169,7 @@ namespace game
 
 	void Player::AddCoin()
 	{
-		if ((mSnakeLenght+1) == mMaxTailLength)
+		if ((mSnakeLenght + 1) == mMaxTailLength)
 			return;
 		++mSnakeLenght;
 

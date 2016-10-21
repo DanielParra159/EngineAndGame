@@ -10,15 +10,18 @@ namespace input
 	*/
 	class InputAction
 	{
+		friend class KeyboadController;
+		friend class MouseController;
 	private:
 		uint32											mId;
-		uint32											mKey; //@TODO: positive/negative
+		uint32											mKey;
+		BOOL											mPressed;
+		
 	public:
-		InputAction() {}
-		InputAction(const InputAction& aInputAction) : mId(aInputAction.mId), mKey(aInputAction.mKey) {}
+		InputAction() : mPressed(FALSE) {}
 		~InputAction() {}
 
-		void											Init(uint32 aId, uint32 aKey) { mId = aId; mKey = aKey; }
+		void											Init(uint32 aId, uint32 aKey) { mId = aId; mKey = aKey; mPressed = FALSE; }
 
 		/**
 		Gets the action id
@@ -39,7 +42,9 @@ namespace input
 		Sets the key
 		@param aKey, key
 		*/
-		void											SetKey(uint32 aKey) { mKey = aKey;}
+		void											SetKey(uint32 aKey) { mKey = aKey; }
+		BOOL											GetPressed() { return mPressed; }
+		void											SetPressed(BOOL aPressed) { mPressed = aPressed; }
 
 	}; // InputAction
 } // namespace input

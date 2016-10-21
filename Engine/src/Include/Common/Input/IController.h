@@ -19,14 +19,16 @@ namespace input
 		virtual BOOL									Init() = 0;
 		virtual void									Release() = 0;
 
-		virtual int32									Update(SDL_Event& aEvent) = 0;
+		virtual void									Update(SDL_Event& aEvent) = 0;
 
+		virtual BOOL									IsActionDown(uint32 aActionId) = 0;
+		virtual BOOL									IsActionUp(uint32 aActionId) = 0;
 	public:
 		/**
 		Register an input action associating key and action id
 		@param aInputActio, an the action
 		*/
-		virtual void									RegisterInputAction(const InputAction *aInputAction) = 0;
+		virtual void									RegisterInputAction(uint32 aId, uint32 aKey) = 0;
 		/**
 		Check if is pressed the button associated with an action
 		@param aActionId, action id to check

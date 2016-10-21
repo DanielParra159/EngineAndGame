@@ -29,15 +29,13 @@ namespace game
 		EDirections										mDirection;
 		float64											mTimeNextMovement;
 		float32											mDelayBetweenMovements;
-		int32											mLastAction;
 		graphics::Mesh*									mTail;
 		static const int32								mMaxTailLength = 255;
 		TTailState*										mTailStates[mMaxTailLength];
 		uint32											mSnakeLenght;
 		uint32											mCoins;
 	public:
-		Player() : IGameObject(), mSnakeLenght(), mDirection(), mTimeNextMovement(),
-			mLastAction(), mDelayBetweenMovements(){}
+		Player() : IGameObject(), mSnakeLenght(), mDirection(), mTimeNextMovement(), mDelayBetweenMovements(){}
 		virtual ~Player() {}
 	
 		virtual void									Init(BOOL aActive);

@@ -3,6 +3,8 @@
 
 #include "SDL.h"
 
+#include <assert.h>
+
 namespace input
 {
 
@@ -15,33 +17,32 @@ namespace input
 
 	}
 
-	int32 MouseController::Update(SDL_Event& aEvent)
+	void MouseController::Update(SDL_Event& aEvent)
 	{
-		int32 lResult = -1;
 		InputAction *lInputAction = NULL;
 
 		switch (aEvent.type)
 		{
-			//case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONDOWN:
+				lInputAction = mActionsByKey[TranslateButtonCode(aEvent.button.button)];
+				if (lInputAction)
+					lInputAction->SetPressed(TRUE);
+				break;
 			case SDL_MOUSEBUTTONUP:
 				lInputAction = mActionsByKey[TranslateButtonCode(aEvent.button.button)];
+				if (lInputAction)
+					lInputAction->SetPressed(FALSE);
 				break;
 		}
-
-		if (lInputAction)
-		{
-			lResult = lInputAction->GetId();
-		}
-		return lResult;
 	}
 
-	void MouseController::RegisterInputAction(const InputAction *aInputAction)
+	void MouseController::RegisterInputAction(uint32 aId, uint32 aKey)
 	{
-		InputAction *linputAction = new InputAction(*aInputAction);
-		uint32 lButton = aInputAction->GetKey();
-		mActionsByKey[lButton] = linputAction;
-		mKeysByActions[aInputAction->GetId()] = lButton;
+		InputAction *lInputAction = new InputAction();
+		mActionsByKey[aKey] = lInputAction;
+		mKeysByActions[aId] = aKey;
 	}
+
 
 	BOOL MouseController::IsActionPressed(uint32 aActionId)
 	{
@@ -80,6 +81,24 @@ namespace input
 				return EButtonCode::eRightButton;
 		}
 		return EButtonCode::eUnknown;
+	}
+
+	BOOL MouseController::IsActionDown(uint32 aActionId)
+	{
+		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
+		if (lInputAction != NULL)
+			return lInputAction->GetPressed();
+		else
+			return FALSE;
+	}
+
+	BOOL MouseController::IsActionUp(uint32 aActionId)
+	{
+		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
+		if (lInputAction != NULL)
+			return !lInputAction->GetPressed();
+		else
+			return FALSE;
 	}
 
 } // namespace input

@@ -26,9 +26,7 @@ namespace game
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;
 
-		input::InputAction* lInputAction = new input::InputAction();
-		lInputAction->Init(5, input::MouseController::eLeftButton);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(5, input::MouseController::eLeftButton);
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 

@@ -78,7 +78,6 @@ namespace core
 			mNumPhysicUpdateLoops = 0;
 
 			input::InputManager::Instance()->Update();
-			input::InputManager::Instance()->GetLastActionId();
 
 			ui::MenuManager::Instance()->Update();
 			Update();

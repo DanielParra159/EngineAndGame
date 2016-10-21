@@ -54,19 +54,12 @@ namespace game
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
 
-		input::InputAction* lInputAction = new input::InputAction();
-		lInputAction->Init(ePltatformmerExit, input::KeyboardController::eEscape);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(ePltatformmerUp, input::KeyboardController::eUp);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(ePltatformmerDown, input::KeyboardController::eDown);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(ePltatformmerLeft, input::KeyboardController::eLeft);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(ePltatformmerRight, input::KeyboardController::eRight);
-		lController->RegisterInputAction(lInputAction);
-		lInputAction->Init(ePltatformmerJump, input::KeyboardController::eSpace);
-		lController->RegisterInputAction(lInputAction);
+		lController->RegisterInputAction(ePltatformmerExit, input::KeyboardController::eEscape);
+		lController->RegisterInputAction(ePltatformmerUp, input::KeyboardController::eUp);
+		lController->RegisterInputAction(ePltatformmerDown, input::KeyboardController::eDown);
+		lController->RegisterInputAction(ePltatformmerLeft, input::KeyboardController::eLeft);
+		lController->RegisterInputAction(ePltatformmerRight, input::KeyboardController::eRight);
+		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eSpace);
 
 
 		GET_WORLD;
@@ -138,12 +131,9 @@ namespace game
 	{
 		logic::World::Instance()->Update();
 
-		int32 lAction = input::InputManager::Instance()->GetLastActionId();
-
-		switch (lAction)
+		if (input::InputManager::Instance()->IsActionDown(ePltatformmerExit))
 		{
-			case ePltatformmerExit:
-				return FALSE;
+			return FALSE;
 		}
 
 		return TRUE;
