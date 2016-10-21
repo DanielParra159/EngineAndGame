@@ -782,9 +782,13 @@ namespace graphics
 
 			mMeshesIds.erase(lIterator);
 			--mNumLoadedMeshes;
+
+			aMesh->Release();
+			delete aMesh;
 		}
-		aMesh->Release();
-		delete aMesh;
+		else {
+			aMesh->Release();
+		}
 	}
 	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial)
 	{
