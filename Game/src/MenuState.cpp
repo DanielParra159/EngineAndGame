@@ -29,10 +29,7 @@ namespace game
 	{
 		GET_INPUT_MANAGER;
 		input::IController* lController;
-		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
-			return FALSE;
-
-		lController->RegisterInputAction(eLeftButton, input::MouseController::eLeftButton);
+		lInputManager->ClearAllActionInput();
 
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;

@@ -116,4 +116,14 @@ namespace input
 		return lResult;
 	}
 
+	void InputManager::ClearAllActionInput()
+	{
+		TControllers::const_iterator lIterator = mControllers.begin();
+		TControllers::const_iterator lIteratorEnd = mControllers.end();
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			(*lIterator)->ClearAllActionInput();
+		}
+	}
+
 } // namespace input

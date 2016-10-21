@@ -1,4 +1,5 @@
 #include "PlatformGameState.h"
+#include "MenuState.h"
 #include "Platformmer/PlatformmerWall.h"
 #include "Platformmer/PlatformmerPlayer.h"
 
@@ -50,6 +51,7 @@ namespace game
 	BOOL PlatformGameState::Init()
 	{
 		GET_INPUT_MANAGER;
+		lInputManager->ClearAllActionInput();
 		input::IController* lController;
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
@@ -61,6 +63,8 @@ namespace game
 		lController->RegisterInputAction(ePltatformmerRight, input::KeyboardController::eRight);
 		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eSpace);
 
+		/*if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
+			return FALSE;*/
 
 		GET_WORLD;
 
@@ -133,7 +137,9 @@ namespace game
 
 		if (input::InputManager::Instance()->IsActionDown(ePltatformmerExit))
 		{
-			return FALSE;
+			game::MenuState *lGameState = new game::MenuState();
+
+			core::Game::Instance()->ChangeGameState(lGameState);
 		}
 
 		return TRUE;

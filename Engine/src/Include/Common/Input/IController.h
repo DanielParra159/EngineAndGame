@@ -23,6 +23,7 @@ namespace input
 
 		virtual BOOL									IsActionDown(uint32 aActionId) = 0;
 		virtual BOOL									IsActionUp(uint32 aActionId) = 0;
+		virtual void									ClearAllActionInput() = 0;
 	public:
 		/**
 		Register an input action associating key and action id

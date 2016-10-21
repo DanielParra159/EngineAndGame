@@ -14,7 +14,15 @@ namespace input
 	}
 	void MouseController::Release()
 	{
+		TActionsByKey::const_iterator lIterator = mActionsByKey.begin();
+		TActionsByKey::const_iterator lIteratorEnd = mActionsByKey.end();
 
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			delete (*lIterator).second;
+		}
+		mActionsByKey.clear();
+		mKeysByActions.clear();
 	}
 
 	void MouseController::Update(SDL_Event& aEvent)
@@ -99,6 +107,19 @@ namespace input
 			return !lInputAction->GetPressed();
 		else
 			return FALSE;
+	}
+
+	void MouseController::ClearAllActionInput()
+	{
+		TActionsByKey::const_iterator lIterator = mActionsByKey.begin();
+		TActionsByKey::const_iterator lIteratorEnd = mActionsByKey.end();
+
+		for (; lIterator != lIteratorEnd; ++lIterator)
+		{
+			delete (*lIterator).second;
+		}
+		mActionsByKey.clear();
+		mKeysByActions.clear();
 	}
 
 } // namespace input

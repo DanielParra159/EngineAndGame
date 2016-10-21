@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "MenuState.h"
 #include "Map.h"
 #include "Player.h"
 #include "Box.h"
@@ -39,6 +40,7 @@ namespace game
 	BOOL GameState::Init()
 	{
 		GET_INPUT_MANAGER;
+		lInputManager->ClearAllActionInput();
 		input::IController* lController;
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
@@ -48,10 +50,6 @@ namespace game
 		lController->RegisterInputAction(eDown, input::KeyboardController::eDown);
 		lController->RegisterInputAction(eLeft, input::KeyboardController::eLeft);
 		lController->RegisterInputAction(eRight, input::KeyboardController::eRight);
-
-		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
-			return FALSE;
-		lController->RegisterInputAction(eRight, input::MouseController::eLeftButton);
 
 		GET_WORLD;
 
@@ -153,7 +151,9 @@ namespace game
 
 		if (input::InputManager::Instance()->IsActionDown(eExit))
 		{
-			return FALSE;
+			game::MenuState *lGameState = new game::MenuState();
+
+			core::Game::Instance()->ChangeGameState(lGameState);
 		}
 
 		if (mNextCoinSpawnTime < sys::Time::GetCurrentSec())

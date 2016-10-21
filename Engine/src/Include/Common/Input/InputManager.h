@@ -55,6 +55,7 @@ namespace input
 
 		BOOL											IsActionDown(uint32 aActionId);
 		BOOL											IsActionUp(uint32 aActionId);
+		void											ClearAllActionInput();
 	private:
 		InputManager() : mControllers(0) {}
 		~InputManager() {}
