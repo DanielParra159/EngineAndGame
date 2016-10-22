@@ -99,9 +99,9 @@
     <ClCompile Include="..\..\src\Map.cpp" />
     <ClCompile Include="..\..\src\MenuState.cpp" />
     <ClCompile Include="..\..\src\PlatformGameState.cpp" />
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerPlayer.cpp" />
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerProjectile.cpp" />
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerWall.cpp" />
+    <ClCompile Include="..\..\src\Platformmer\PlatformerPlayer.cpp" />
+    <ClCompile Include="..\..\src\Platformmer\PlatformerProjectile.cpp" />
+    <ClCompile Include="..\..\src\Platformmer\PlatformerWall.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
     <ClCompile Include="..\..\src\TestState.cpp" />
     <ClCompile Include="..\..\src\UI\BoxButton.cpp" />
@@ -113,9 +113,9 @@
     <ClInclude Include="..\..\src\Map.h" />
     <ClInclude Include="..\..\src\MenuState.h" />
     <ClInclude Include="..\..\src\PlatformGameState.h" />
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerPlayer.h" />
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerProjectile.h" />
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerWall.h" />
+    <ClInclude Include="..\..\src\Platformmer\PlatformerPlayer.h" />
+    <ClInclude Include="..\..\src\Platformmer\PlatformerProjectile.h" />
+    <ClInclude Include="..\..\src\Platformmer\PlatformerWall.h" />
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\TestState.h" />
     <ClInclude Include="..\..\src\UI\BoxButton.h" />

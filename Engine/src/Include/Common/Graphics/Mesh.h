@@ -35,6 +35,7 @@ namespace graphics
 		const std::string&								GetName() const { return mName; }
 		int32											GetId() const { return mId; }
 		Material*										GetMaterial() { return mMaterial; }
+		void											SetMaterial(Material *aMaterial);
 
 	protected:
 		Mesh() : mMaterial(0), mVertexData(0) {}

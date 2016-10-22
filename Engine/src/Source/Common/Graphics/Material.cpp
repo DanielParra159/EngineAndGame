@@ -20,6 +20,8 @@ namespace graphics
 
 		mColorParam = glGetUniformLocation(aProgramShader, "color");
 		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
+		mLightColorParam = glGetUniformLocation(mProgramShader, "lightColor");
+		mLightPosParam = glGetUniformLocation(mProgramShader, "lightPos");
 
 		mColor.mR = 1.0f;
 		mColor.mG = 1.0f;
@@ -118,10 +120,16 @@ namespace graphics
 		//glBindVertexArray(0);
 	}
 
-	void Material::PrepareToRender(const Matrix4* aModelMatrix)
+	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
 	{
 		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
+		
+		if (mLightColorParam > 0)
+		{
+			glUniform3f(mLightColorParam, EXPOSE_VECTOR3D(aLightColor));
+			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D(aLightPosition));
+		}
 	}
 } // namespace graphics

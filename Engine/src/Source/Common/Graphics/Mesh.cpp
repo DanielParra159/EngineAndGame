@@ -4,6 +4,8 @@
 
 #include <GL/glew.h>
 
+#include <assert.h>
+
 namespace graphics
 {
 	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
@@ -27,6 +29,14 @@ namespace graphics
 	{
 		RenderManager::Instance()->UnloadMaterial(mMaterial);
 		delete[] mVertexData;
+	}
+
+	void Mesh::SetMaterial(Material *aMaterial)
+	{
+		assert(aMaterial && "Mesh::SetMaterial, aMaterial == NULL");
+		if (mMaterial != NULL)
+			RenderManager::Instance()->UnloadMaterial(mMaterial);
+		mMaterial = aMaterial;
 	}
 
 	void Mesh::SetId(int32 aId) {

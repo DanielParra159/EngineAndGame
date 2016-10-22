@@ -640,48 +640,48 @@ namespace graphics
 		}
 
 		const float32 lVertexData[] = {
-			// X      Y     Z     U     V
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+			// X      Y     Z     Nx      Ny     Nz   U     V
+			-0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
 
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,0.0f,  0.0f,  1.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
 
-			-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
 
-			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
 
-			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
+			0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+			0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
 
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
+			-0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 		};
 		
 		return LoadMesh(aFileName, lVertexData, sizeof(lVertexData), 36);
@@ -799,9 +799,11 @@ namespace graphics
 		Matrix4x4::rotate(&lModelMatrix, aRotation);
 		Matrix4x4::scale(&lModelMatrix, aScale);
 
-		mMaterial->PrepareToRender(&lModelMatrix);
-		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 5, 0, aMesh->mVBO);
-		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 5, 3, aMesh->mVBO);
+
+		mMaterial->PrepareToRender(&lModelMatrix, Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(4.0f, 7.0f, 4.0f));
+		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aMesh->mVBO);
+		mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aMesh->mVBO);
+		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aMesh->mVBO);
 		//@TODO: if is the same material only need to asign these attrib. one time
 		mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
 		mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);

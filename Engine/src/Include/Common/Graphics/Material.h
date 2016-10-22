@@ -30,6 +30,8 @@ namespace graphics
 		int32											mColorParam;
 		Color											mColor;
 		int32											mTextureParam;
+		int32											mLightColorParam;
+		int32											mLightPosParam;
 		int32											mTextureId;
 		std::string										mName;
 		int32											mId;
@@ -54,7 +56,7 @@ namespace graphics
 		virtual ~Material() {}
 		virtual void									Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader);
 		virtual void									Release();
-		virtual void									PrepareToRender(const Matrix4* aModelMatrix);
+		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
 		//virtual Material*								CreateInstance();
 
 	}; // Material

@@ -48,16 +48,16 @@
     <ClCompile Include="..\..\src\PlatformGameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerWall.cpp">
-      <Filter>Source Files\Platformmer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerPlayer.cpp">
-      <Filter>Source Files\Platformmer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\UI\BoxButton.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Platformmer\PlatformmerProjectile.cpp">
+    <ClCompile Include="..\..\src\Platformmer\PlatformerWall.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformerProjectile.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformerPlayer.cpp">
       <Filter>Source Files\Platformmer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,16 +86,16 @@
     <ClInclude Include="..\..\src\PlatformGameState.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerWall.h">
-      <Filter>Source Files\Platformmer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerPlayer.h">
-      <Filter>Source Files\Platformmer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\UI\BoxButton.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Platformmer\PlatformmerProjectile.h">
+    <ClInclude Include="..\..\src\Platformmer\PlatformerWall.h">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformerProjectile.h">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformerPlayer.h">
       <Filter>Source Files\Platformmer</Filter>
     </ClInclude>
   </ItemGroup>

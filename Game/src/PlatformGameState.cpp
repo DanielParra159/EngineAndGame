@@ -1,7 +1,7 @@
 #include "PlatformGameState.h"
 #include "MenuState.h"
-#include "Platformmer/PlatformmerWall.h"
-#include "Platformmer/PlatformmerPlayer.h"
+#include "Platformmer/PlatformerWall.h"
+#include "Platformmer/PlatformerPlayer.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -36,11 +36,11 @@
 
 namespace
 {
-	void AddWall(game::PlatformmerWall* aGameObject)
+	void AddWall(game::PlatformerWall* aGameObject)
 	{
 		logic::World::Instance()->AddGameObject(aGameObject, TRUE);
 	}
-	void AddPlayer(game::PlatformmerPlayer* aGameObject)
+	void AddPlayer(game::PlatformerPlayer* aGameObject)
 	{
 		logic::World::Instance()->AddGameObject(aGameObject, TRUE);
 	}
@@ -104,15 +104,15 @@ namespace game
 
 			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
 				[
-					luabind::class_<game::PlatformmerWall>("PlatformmerWall")
+					luabind::class_<game::PlatformerWall>("PlatformmerWall")
 					.def(luabind::constructor<>())
-					.def("Init", (void(game::PlatformmerWall::*)(float32, float32, float32, float32))&game::PlatformmerWall::LuaInit)
+					.def("Init", (void(game::PlatformerWall::*)(float32, float32, float32, float32))&game::PlatformerWall::LuaInit)
 				];
 			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
 				[
-					luabind::class_<game::PlatformmerPlayer>("PlatformmerPlayer")
+					luabind::class_<game::PlatformerPlayer>("PlatformmerPlayer")
 					.def(luabind::constructor<>())
-					.def("Init", (void(game::PlatformmerPlayer::*)(float32, float32))&game::PlatformmerPlayer::LuaInit)
+					.def("Init", (void(game::PlatformerPlayer::*)(float32, float32))&game::PlatformerPlayer::LuaInit)
 				];
 		}
 
