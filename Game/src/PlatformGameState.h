@@ -18,7 +18,7 @@ namespace game
 		ePltatformmerExit,
 		ePltatformmerUp, ePltatformmerDown, ePltatformmerLeft, ePltatformmerRight,
 		ePltatformmerJump,
-		ePltatformmerLeftButton,
+		ePltatformmerShoot,
 		ePltatformmerNum1, ePltatformmerNum2
 	};
 

@@ -1,7 +1,10 @@
 #include "PlatformmerPlayer.h"
 #include "PlatformGameState.h"
+#include "PlatformmerProjectile.h"
 
 #include "Input/InputManager.h"
+
+#include "Logic/World.h"
 
 #include "System/Time.h"
 
@@ -43,6 +46,9 @@ namespace game
 		mJumping = FALSE;
 
 		graphics::RenderManager::Instance()->GetRenderCamera()->FollowTarget(this, Vector3D<float32>(0.0f, 3.0f, 12.0f), Vector3D<float32>(0.0f, 0.0f, 0.0f));
+
+		mNextShoot = 0.0f;
+		mRightOrientation = TRUE;
 	}
 
 	void PlatformmerPlayer::Update()
@@ -53,10 +59,12 @@ namespace game
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerLeft))
 		{
 			lDir.mX = -1;
+			mRightOrientation = FALSE;
 		} 
 		else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerRight))
 		{
 			lDir.mX = 1;
+			mRightOrientation = TRUE;
 		}
 		
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerJump))
@@ -75,6 +83,30 @@ namespace game
 				mJumping = FALSE;
 		}
 		mCapsuleController->Move(lDir * 20 * sys::Time::GetDeltaSec());
+
+
+		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerShoot) 
+			&& mNextShoot < sys::Time::GetCurrentSec())
+		{
+			if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerUp))
+			{
+				lDir.mY = 1.0f;
+			}
+			else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerDown))
+			{
+				lDir.mY = -1.0f;
+			}
+			if (lDir.Normalize().LengthSqrt() == 0.0f)
+				lDir.mX = mRightOrientation ? 1.0f : -1.0f;
+
+			//@TODO: Pool
+			PlatformmerProjectile* lProjectile = new PlatformmerProjectile();
+			logic::World::Instance()->AddGameObject(lProjectile, TRUE);
+			lProjectile->Init(mPosition + lDir * 3.0f, lDir, TRUE);
+			mNextShoot = sys::Time::GetCurrentSec() + 0.1f;
+		}
+
+
 	}
 
 	void PlatformmerPlayer::Render()

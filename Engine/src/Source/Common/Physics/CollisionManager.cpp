@@ -31,17 +31,14 @@ namespace physics
 	void CollisionManager::onContact(const physx::PxContactPairHeader& aPairHeader, const physx::PxContactPair* aPairs, physx::PxU32 aNumPairs)
 	{
 		for (uint32 i = 0; i < aNumPairs; ++i) {
-
-			//if (aPairs[i].flags & (physx::PxContactPairFlag::eREMOVED_SHAPE_0 | physx::PxContactPairFlag::eREMOVED_SHAPE_1))
-			//	continue;
-			
+		
 			const physx::PxContactPair& lContactPair = aPairs[i];
 			
 			Collider *lCollider = (Collider*)aPairHeader.actors[0]->userData;
-			assert(lCollider && "onTrigger, triggerShape->userData NULL");
+			assert(lCollider && "onContact, triggerShape->userData NULL");
 
 			Collider* lOtherCollider = (Collider*)aPairHeader.actors[1]->userData;
-			assert(lOtherCollider && "onTrigger, otherShape->userData NULL");
+			assert(lOtherCollider && "onContact, otherShape->userData NULL");
 
 			if (lContactPair.events & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
@@ -74,8 +71,8 @@ namespace physics
 			if (lTriggerPair.flags & (physx::PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | physx::PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
 				continue;
 
-			bool enter = lTriggerPair.status & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
-			bool exit = lTriggerPair.status & physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
+			uint32 enter = lTriggerPair.status & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
+			uint32 exit = lTriggerPair.status & physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
 
 			Collider *lTriggerCollider = (Collider*)lTriggerPair.triggerShape->getActor()->userData;
 			assert(lTriggerCollider && "onTrigger, triggerShape->userData NULL");
@@ -90,15 +87,12 @@ namespace physics
 			else if (lTriggerCollider->mRegisteredCollisionCallback & Collider::eTriggerStay)
 				lTriggerCollider->OnTriggerStay(lOtherCollider);
 
-			if (lTriggerPair.otherShape->getFlags().isSet(physx::PxShapeFlag::eTRIGGER_SHAPE))
-			{
-				if (enter && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerEnter))
-					lOtherCollider->OnTriggerEnter(lTriggerCollider);
-				else if (exit && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerExit))
-					lOtherCollider->OnTriggerExit(lTriggerCollider);
-				else if (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerStay)
-					lOtherCollider->OnTriggerStay(lTriggerCollider);
-			}
+			if (enter && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerEnter))
+				lOtherCollider->OnTriggerEnter(lTriggerCollider);
+			else if (exit && (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerExit))
+				lOtherCollider->OnTriggerExit(lTriggerCollider);
+			else if (lOtherCollider->mRegisteredCollisionCallback & Collider::eTriggerStay)
+				lOtherCollider->OnTriggerStay(lTriggerCollider);
 		}
 	}
 

@@ -111,5 +111,13 @@ namespace physics
 	{
 		mParent->OnCollisionStay(other);
 	}
+
+	void Collider::AddForce(const Vector3D<float32>& aForce)
+	{
+		if (mColliderType != eColliderType::eStatic)
+		{
+			((physx::PxRigidDynamic*)mPhysicActor)->addForce(physx::PxVec3(EXPOSE_VECTOR3D(aForce)));
+		}
+	}
 	
 } // namespace physics

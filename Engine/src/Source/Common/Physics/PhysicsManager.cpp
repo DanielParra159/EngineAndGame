@@ -125,7 +125,7 @@ namespace physics
 			return physx::PxFilterFlag::eDEFAULT;
 		}
 		// generate contacts for all that were not filtered above
-		//pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+		aPairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 
 		// trigger the contact callback for pairs (A,B) where 
 		// the filtermask of A contains the ID of B and vice versa.

@@ -88,7 +88,8 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), lSize, FALSE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
-		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Wall_" + lIndex, lWallVertexData, sizeof(lWallVertexData), 36);
+		std::string lName = "Wall_" + std::to_string(lIndex);
+		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray(lName, lWallVertexData, sizeof(lWallVertexData), 36);
 		lMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
 
 		AddComponent(b);

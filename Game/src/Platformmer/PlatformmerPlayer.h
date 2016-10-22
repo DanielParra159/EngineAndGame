@@ -18,6 +18,8 @@ namespace game
 		physics::CapsuleController*						mCapsuleController;
 		BOOL											mJumping;
 		float64											mTimeEndJump;
+		float64											mNextShoot;
+		BOOL											mRightOrientation;
 	public:
 		PlatformmerPlayer() : IGameObject(){}
 		virtual ~PlatformmerPlayer() {}

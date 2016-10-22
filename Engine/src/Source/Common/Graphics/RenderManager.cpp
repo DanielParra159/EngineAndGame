@@ -112,6 +112,8 @@ namespace graphics
 		size = mLoadedMaterials.size();
 		for (int i = 0; i < size; ++i)
 		{
+			if (mLoadedMaterials[i] == NULL)
+				continue;
 			Material* lMaterial = mLoadedMaterials[i];
 			lMaterial->Release();
 			
@@ -602,11 +604,11 @@ namespace graphics
 
 		TLoadedMaterials::const_iterator lMaterialIterator = mLoadedMaterials.begin();
 		TLoadedMaterials::const_iterator lMaterialIteratorEnd = mLoadedMaterials.end();
-		while (lMaterialIterator != lMaterialIteratorEnd && (*lMaterialIterator)->mId != aMaterial->mId)
+		while (*lMaterialIterator == NULL || (lMaterialIterator != lMaterialIteratorEnd) && (*lMaterialIterator)->mId != aMaterial->mId)
 		{
 			++lMaterialIterator;
 		}
-		mLoadedMaterials.erase(lMaterialIterator);
+		mLoadedMaterials[aMaterial->mId] = NULL;// .erase(lMaterialIterator);
 		--mNumLoadedMaterials;
 		aMaterial->Release();
 		delete aMaterial;
@@ -638,7 +640,7 @@ namespace graphics
 		}
 
 		const float32 lVertexData[] = {
-			// X      Y     Z     R     G     B     U     V
+			// X      Y     Z     U     V
 			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 			0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
 			0.5f,  0.5f, -0.5f, 1.0f, 1.0f,

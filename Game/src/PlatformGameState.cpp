@@ -46,6 +46,9 @@ namespace
 	}
 }
 
+//HACK to register lua functions once
+static BOOL firstTime = TRUE;
+
 namespace game
 {
 	BOOL PlatformGameState::Init()
@@ -61,10 +64,12 @@ namespace game
 		lController->RegisterInputAction(ePltatformmerDown, input::KeyboardController::eDown);
 		lController->RegisterInputAction(ePltatformmerLeft, input::KeyboardController::eLeft);
 		lController->RegisterInputAction(ePltatformmerRight, input::KeyboardController::eRight);
-		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eSpace);
+		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eLeftControl);
+		lController->RegisterInputAction(ePltatformmerShoot, input::KeyboardController::eSpace);
 
 		/*if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;*/
+
 
 		GET_WORLD;
 
@@ -87,25 +92,29 @@ namespace game
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("PlatformGame.wav");
 		mMusic->Play(audio::eAudioGroups::eMusic, TRUE);
 
+		if (firstTime)
+		{
+			firstTime = FALSE;
 
-		luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
-			[
-				luabind::def("AddWall", AddWall, luabind::adopt(_1)),
-				luabind::def("AddPlayer", AddPlayer, luabind::adopt(_1))
-			];
+			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
+				[
+					luabind::def("AddWall", AddWall, luabind::adopt(_1)),
+					luabind::def("AddPlayer", AddPlayer, luabind::adopt(_1))
+				];
 
-		luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
-			[
-				luabind::class_<game::PlatformmerWall>("PlatformmerWall")
-				.def(luabind::constructor<>())
-				.def("Init", (void(game::PlatformmerWall::*)(float32, float32, float32, float32))&game::PlatformmerWall::LuaInit)
-			];
-		luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
-			[
-				luabind::class_<game::PlatformmerPlayer>("PlatformmerPlayer")
-				.def(luabind::constructor<>())
-			.def("Init", (void(game::PlatformmerPlayer::*)(float32, float32))&game::PlatformmerPlayer::LuaInit)
-			];
+			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
+				[
+					luabind::class_<game::PlatformmerWall>("PlatformmerWall")
+					.def(luabind::constructor<>())
+					.def("Init", (void(game::PlatformmerWall::*)(float32, float32, float32, float32))&game::PlatformmerWall::LuaInit)
+				];
+			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
+				[
+					luabind::class_<game::PlatformmerPlayer>("PlatformmerPlayer")
+					.def(luabind::constructor<>())
+					.def("Init", (void(game::PlatformmerPlayer::*)(float32, float32))&game::PlatformmerPlayer::LuaInit)
+				];
+		}
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\Maps");
 		script::ScriptManager::Instance()->LoadScript("MapParser.lua");

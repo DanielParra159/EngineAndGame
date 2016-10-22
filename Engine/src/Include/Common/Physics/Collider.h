@@ -86,6 +86,7 @@ namespace physics
 		Set the callback function to collisions
 		*/
 		void											SetOnTriggerEnterCallback(uint32 aCollisionFlags);
+		virtual void									AddForce(const Vector3D<float32>& aForce);
 	}; // Collider
 } // namespace physics
 #endif // _ENGINE_PHYSICS_COLLIDER_H_

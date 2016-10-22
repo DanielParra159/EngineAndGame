@@ -31,7 +31,7 @@ namespace input
 
 			eUp, eDown, eLeft, eRight,
 
-			eEscape, eSpace,
+			eEscape, eSpace, eLeftControl, eLeftShift,
 
 			e1, e2
 		};

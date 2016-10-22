@@ -84,6 +84,10 @@ namespace input
 				return EKeyCode::e2;
 			case SDL_SCANCODE_SPACE:
 				return EKeyCode::eSpace;
+			case SDL_SCANCODE_LCTRL:
+				return EKeyCode::eLeftControl;
+			case SDL_SCANCODE_LSHIFT:
+				return EKeyCode::eLeftShift;
 		}
 		return EKeyCode::eUnknown;
 	}

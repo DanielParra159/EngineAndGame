@@ -46,11 +46,11 @@ namespace game
 
 		lWorld->Init();
 
-		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 0.0f, 4.0f),
+		/*graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 0.0f, 4.0f),
 		Vector3D<float32>(0.0f, 0.0f, 0.0f),
 		Vector3D<float32>(0.0f, 1.0f, 0.0f),
-		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
-		//graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(1.0f, 1.0f, -1.0f, -1.0f, -100.0f, 100.0f);
+		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);*/
+		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(-5.0f, 5.0f, -5.0f, 5.0f, -100.0f, 100.0f);
 		
 		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
 		logic::IGameObject* lGameObject = new logic::IGameObject();

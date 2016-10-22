@@ -22,7 +22,7 @@ public:
 
 	T Length() const
 	{
-		return sqrt(mX*mX + mY*mY + mYZ*mYZ);
+		return sqrt(mX*mX + mY*mY + mZ*mZ);
 	}
 	T LengthSqrt(void) const
 	{
