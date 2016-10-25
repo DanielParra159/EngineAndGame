@@ -559,7 +559,6 @@ namespace graphics
 		if (!LoadVertexShader(aFileName, lVertexShaderName, lVertexShader, lVertexShaderId))
 			return NULL;
 
-		
 		int32 lFragmentShader = -1;
 		int32 lFragmentShaderId = 0;
 		if (!LoadFragmentShader(aFileName, lFragmentShaderName, lFragmentShader, lFragmentShaderId))
@@ -763,7 +762,7 @@ namespace graphics
 			core::LogFormatString("Can't load mesh %s", aMeshName.c_str());
 		}
 
-		return lResult;
+		return lResult == NULL ? NULL : lResult->CreateInstance();
 	}
 
 	void RenderManager::UnloadMesh(Mesh* aMesh, BOOL aPermanent)
