@@ -19,6 +19,10 @@
 #include <SDL_opengl.h>
 #include <SOIL.h>
 
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace graphics
 {
 	SINGLETON_BODY(RenderManager);
@@ -639,52 +643,45 @@ namespace graphics
 			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
 		}
 
-		const float32 lVertexData[] = {
-			// X      Y     Z     Nx      Ny     Nz   U     V
-			-0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+		const struct aiScene* scene = aiImportFile((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+		if (scene == NULL)
+		{
+			core::LogFormatString("Can't load %s mesh", (io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str());
+			return NULL;
+		}
 
-			-0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,0.0f,  0.0f,  1.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
+		float32* lVertexData;
+		uint32 lNumVertices = 0;
+		uint32 lNumFaces = 0;
+		for (uint32 n = 0; n < scene->mRootNode->mNumChildren; ++n) {
+			for (uint32 m = 0; m < scene->mRootNode->mChildren[n]->mNumMeshes; ++m) {
+				const struct aiMesh* mesh = scene->mMeshes[scene->mRootNode->mChildren[n]->mMeshes[m]];
+				lNumFaces = mesh->mNumFaces;
+				int32 lDataIndex = 0;
+				lVertexData = new float32[lNumFaces *3 * 8];
+				for (uint32 i = 0; i < lNumFaces; ++i)
+				{
+					const struct aiFace* face = &mesh->mFaces[i];
+					for (uint32 j = 0; j < face->mNumIndices; j++) {
+						lNumVertices += 1;
+						uint32 lVertexIndex = face->mIndices[j];
+						lVertexData[lDataIndex] = mesh->mVertices[lVertexIndex].x;
+						lVertexData[lDataIndex + 1] = mesh->mVertices[lVertexIndex].y;
+						lVertexData[lDataIndex + 2] = mesh->mVertices[lVertexIndex].z;
+						lVertexData[lDataIndex + 3] = mesh->mNormals[lVertexIndex].x;
+						lVertexData[lDataIndex + 4] = mesh->mNormals[lVertexIndex].y;
+						lVertexData[lDataIndex + 5] = mesh->mNormals[lVertexIndex].z;
+						lVertexData[lDataIndex + 6] = mesh->mTextureCoords[0][lVertexIndex].x;
+						lVertexData[lDataIndex + 7] = mesh->mTextureCoords[0][lVertexIndex].y;
+						lDataIndex += 8;
+					}
+				}
+			}
+		}
 
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-
-			0.5f,  0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-
-			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
-			0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-
-			-0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-		};
+		aiReleaseImport(scene);
 		
-		return LoadMesh(aFileName, lVertexData, sizeof(lVertexData), 36);
+		return LoadMesh(aFileName, lVertexData, sizeof(float32)*lNumFaces*3*8, lNumVertices);
 	}
 
 	MeshComponent* RenderManager::LoadMeshComponentFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
@@ -769,7 +766,7 @@ namespace graphics
 		return lResult;
 	}
 
-	void RenderManager::UnloadMesh(Mesh* aMesh)
+	void RenderManager::UnloadMesh(Mesh* aMesh, BOOL aPermanent)
 	{
 		TMeshesIds::const_iterator lIterator = mMeshesIds.begin();
 		TMeshesIds::const_iterator lIteratorEnd = mMeshesIds.end();
@@ -777,7 +774,7 @@ namespace graphics
 		{
 			++lIterator;
 		}
-		if (--lIterator->second->mReferences == 0)
+		if (--lIterator->second->mReferences == 0 && aPermanent)
 		{
 			mLoadedMeshes[aMesh->mId] = NULL;
 			glDeleteBuffers(1, &aMesh->mVBO);

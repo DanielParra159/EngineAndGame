@@ -43,3 +43,4 @@ Engine/tmp/*
 notes.txt
 *.iobj
 *.ipdb
+!Game/out/win32/assets/materials/*.obj

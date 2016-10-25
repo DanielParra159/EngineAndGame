@@ -152,7 +152,7 @@ namespace graphics
 		Unload mesh
 		@param aMesh, mesh to Unload
 		*/
-		void											UnloadMesh(Mesh* aMesh);
+		void											UnloadMesh(Mesh* aMesh, BOOL aPermanent);
 
 		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial);
 		//-----------------------------------------END MESHES-----------------------------------------

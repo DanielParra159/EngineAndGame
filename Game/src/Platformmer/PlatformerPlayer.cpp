@@ -37,7 +37,7 @@ namespace game
 		//physics::Collider* lCapsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(aX, aY, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(mCapsuleController);
 
-		graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Player");
+		graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Box.obj");
 		lPlayerMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
 		lMaterial->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));

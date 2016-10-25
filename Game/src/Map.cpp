@@ -97,7 +97,7 @@ namespace game
 	void Map::Release()
 	{
 		IGameObject::Release();
-		graphics::RenderManager::Instance()->UnloadMesh(mGround);
+		graphics::RenderManager::Instance()->UnloadMesh(mGround, FALSE);
 		//graphics::RenderManager::Instance()->UnloadMesh(mWall);
 	}
 } // namespace game

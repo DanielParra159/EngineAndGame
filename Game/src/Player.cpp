@@ -36,11 +36,11 @@ namespace game
 		capsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(0, 0, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(capsule);
 
-		graphics::MeshComponent* lHead = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("SnakeHead");
+		graphics::MeshComponent* lHead = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Box.obj");
 		lHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
 		lHead->GetMaterial()->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
 		AddComponent(lHead);
-		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("SnakeTail");
+		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Box.obj");
 		mTail->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png"));
 
 		mDirection = EDirections::eRight;
@@ -131,7 +131,7 @@ namespace game
 			delete mTailStates[i];
 			mTailStates[i] = 0;
 		}
-		graphics::RenderManager::Instance()->UnloadMesh(mTail);
+		graphics::RenderManager::Instance()->UnloadMesh(mTail, FALSE);
 	}
 
 	void Player::ChangePos(float32 aNextX, float32 aNextZ)

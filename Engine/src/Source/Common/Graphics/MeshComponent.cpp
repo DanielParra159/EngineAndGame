@@ -9,7 +9,7 @@ namespace graphics {
 		
 	void MeshComponent::Release()
 	{
-		graphics::RenderManager::Instance()->UnloadMesh(mMesh);
+		graphics::RenderManager::Instance()->UnloadMesh(mMesh, FALSE);
 		mMesh = NULL;
 	}
 		

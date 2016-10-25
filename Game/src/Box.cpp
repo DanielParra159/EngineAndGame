@@ -35,7 +35,7 @@ namespace game
 		if (aBoxType == eCoin)
 		{
 			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
-			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Coin");
+			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Box.obj");
 		}
 		else {
 			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
