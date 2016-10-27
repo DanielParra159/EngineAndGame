@@ -6,7 +6,7 @@ It is a small game engine for creating games in C ++ with academic intentions. I
 
 # Render:
 - Developed with SDL and OpenGL 3.
-- Ability to render models by passing the vertices (not yet charger models).
+- Ability to render models by passing the vertices or file name.
 - Changes in texture and color of the material.
 
 # Audio:
