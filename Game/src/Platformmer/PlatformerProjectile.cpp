@@ -35,7 +35,7 @@ namespace game
 		uint32 lCollisionLayerMask = aPlayerProjectile ? (1 << 0) : (1 << 1) | (1 << 0);
 		lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 0), lCollisionLayerMask, physics::Collider::eDynamic, 0.1f);
 		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Sphere.obj");
-		lMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
+		lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
 		lCollider->SetOnTriggerEnterCallback(physics::Collider::eCollisionEnter);
 
 		AddComponent(lCollider);

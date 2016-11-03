@@ -40,7 +40,7 @@ namespace game
 		else {
 			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
 			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Box", aWallVertexData, aSize, 36);
-			lMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
+			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));
 		}
 		b->SetOnTriggerEnterCallback(physics::Collider::eTriggerEnter);
 		AddComponent(b);

@@ -1,6 +1,7 @@
 #include "MenuState.h"
 #include "GameState.h"
 #include "PlatformGameState.h"
+#include "NormalMap/NormalMapState.h"
 #include "UI/BoxButton.h"
 
 #include "Input/InputManager.h"
@@ -41,6 +42,7 @@ namespace game
 		lController->RegisterInputAction(eExit, input::KeyboardController::eEscape);
 		lController->RegisterInputAction(eNum1, input::KeyboardController::e1);
 		lController->RegisterInputAction(eNum2, input::KeyboardController::e2);
+		lController->RegisterInputAction(eNum3, input::KeyboardController::e3);
 
 		GET_WORLD;
 
@@ -114,6 +116,15 @@ namespace game
 			audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
 
 			game::PlatformGameState *lGameState = new game::PlatformGameState();
+
+			core::Game::Instance()->ChangeGameState(lGameState);
+		}
+		else if (input::InputManager::Instance()->IsActionDown(eNum3))
+		{
+			io::FileSystem::Instance()->ChangeDirectory(".\\audio");
+			audio::AudioManager::Instance()->CreateSound2D("Button.wav")->Play(audio::eAudioGroups::eEffects);
+
+			game::NormalMapState *lGameState = new game::NormalMapState();
 
 			core::Game::Instance()->ChangeGameState(lGameState);
 		}

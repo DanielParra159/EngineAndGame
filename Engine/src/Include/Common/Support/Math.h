@@ -30,5 +30,14 @@ public:
 	{
 		return aMin + rand() / (RAND_MAX / (aMax - aMin));
 	}
+
+	static float32 Abs(float32 aValue)
+	{
+		return abs(aValue);
+	}
+	static int32 Abs(int32 aValue)
+	{
+		return abs(aValue);
+	}
 };
 #endif // _ENGINE_MATH_H_

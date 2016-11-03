@@ -38,7 +38,7 @@ namespace game
 		AddComponent(mCapsuleController);
 
 		graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Human.obj");
-		lPlayerMesh->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
+		lPlayerMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
 		lMaterial->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
 		lPlayerMesh->SetMaterial(lMaterial);

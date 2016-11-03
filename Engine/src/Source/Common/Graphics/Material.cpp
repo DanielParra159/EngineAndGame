@@ -16,12 +16,14 @@ namespace graphics
 		mFragmentShaderId = aFragmentShaderId;
 		mProgramShader = aProgramShader;
 
-		mTextureId = -1;
+		mDiffuseTextureId = -1;
+		mNormalTextureId = -1;
 
 		mColorParam = glGetUniformLocation(aProgramShader, "color");
 		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
 		mLightColorParam = glGetUniformLocation(mProgramShader, "lightColor");
 		mLightPosParam = glGetUniformLocation(mProgramShader, "lightPos");
+		mUseNormalMapping = glGetUniformLocation(mProgramShader, "useNormalMapping");
 
 		mColor.mR = 1.0f;
 		mColor.mG = 1.0f;
@@ -32,7 +34,7 @@ namespace graphics
 	void Material::Release()
 	{
 		mParameters.clear();
-		RenderManager::Instance()->UnloadTexture(mTextureId);
+		RenderManager::Instance()->UnloadTexture(mDiffuseTextureId);
 	}
 
 	/*Material* Material::CreateInstance() {
@@ -125,8 +127,10 @@ namespace graphics
 		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
+
+		glUniform1i(mUseNormalMapping, mNormalTextureId > -1);
 		
-		if (mLightColorParam > 0)
+		if (mLightPosParam > 0)
 		{
 			glUniform3f(mLightColorParam, EXPOSE_VECTOR3D(aLightColor));
 			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D(aLightPosition));

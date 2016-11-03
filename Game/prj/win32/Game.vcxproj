@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\src\GameState.cpp" />
     <ClCompile Include="..\..\src\Map.cpp" />
     <ClCompile Include="..\..\src\MenuState.cpp" />
+    <ClCompile Include="..\..\src\NormalMap\NormalMapState.cpp" />
     <ClCompile Include="..\..\src\PlatformGameState.cpp" />
     <ClCompile Include="..\..\src\Platformmer\PlatformerPlayer.cpp" />
     <ClCompile Include="..\..\src\Platformmer\PlatformerProjectile.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="..\..\src\GameState.h" />
     <ClInclude Include="..\..\src\Map.h" />
     <ClInclude Include="..\..\src\MenuState.h" />
+    <ClInclude Include="..\..\src\NormalMap\NormalMapState.h" />
     <ClInclude Include="..\..\src\PlatformGameState.h" />
     <ClInclude Include="..\..\src\Platformmer\PlatformerPlayer.h" />
     <ClInclude Include="..\..\src\Platformmer\PlatformerProjectile.h" />

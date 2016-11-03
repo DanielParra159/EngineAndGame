@@ -91,7 +91,7 @@ namespace game
 		std::string lName = "Wall_" + std::to_string(lIndex);
 		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray(lName, lWallVertexData, sizeof(lWallVertexData), 36);
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
-		lMaterial->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
+		lMaterial->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
 		lMesh->SetMaterial(lMaterial);
 
 		AddComponent(b);

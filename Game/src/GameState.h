@@ -28,7 +28,7 @@ namespace game
 		eExit,
 		eUp, eDown, eLeft, eRight,
 		eLeftButton, 
-		eNum1, eNum2
+		eNum1, eNum2, eNum3
 	};
 
 	class Map;

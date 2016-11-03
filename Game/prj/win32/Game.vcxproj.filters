@@ -19,6 +19,9 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{e434dbc4-30dc-4559-b5c7-4f4013325f85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\NormalMapState">
+      <UniqueIdentifier>{14a71c6e-c134-4bb8-800a-e96b772178fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GameMain.cpp">
@@ -60,6 +63,9 @@
     <ClCompile Include="..\..\src\Platformmer\PlatformerPlayer.cpp">
       <Filter>Source Files\Platformmer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\NormalMap\NormalMapState.cpp">
+      <Filter>Source Files\NormalMapState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -97,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Platformmer\PlatformerPlayer.h">
       <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NormalMap\NormalMapState.h">
+      <Filter>Source Files\NormalMapState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
