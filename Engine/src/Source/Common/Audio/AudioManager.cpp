@@ -64,9 +64,7 @@ namespace audio {
 
 	void AudioManager::Release()
 	{
-		TLoadedSounds::const_iterator lIterator;
-		TLoadedSounds::const_iterator lEndElement = mLoadedSounds.end();
-		for (lIterator = mLoadedSounds.begin(); lIterator != lEndElement; ++lIterator)
+		LOOP_ITERATOR(TLoadedSounds::const_iterator, mLoadedSounds, lIterator, lEndElement)
 		{
 			(*lIterator)->release();
 		}

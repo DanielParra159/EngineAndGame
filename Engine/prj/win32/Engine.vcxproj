@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\src\Include\Common\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Script\ScriptManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Color.h" />
+    <ClInclude Include="..\..\src\Include\Common\Support\Color32.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\IdReferences.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Math.h" />
     <ClInclude Include="..\..\src\Include\Common\Support\Matrix4.h" />

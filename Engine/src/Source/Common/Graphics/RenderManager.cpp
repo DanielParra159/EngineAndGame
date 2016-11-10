@@ -150,11 +150,9 @@ namespace graphics
 		mFragmentShaderIds.clear();
 		mNumLoadedFragmentShaders = 0;
 
-		TLoadedTextures::const_iterator lTexturesIterator;
-		TLoadedTextures::const_iterator lTexturesEndElement = mLoadedTextures.end();
-		for (lTexturesIterator = mLoadedTextures.begin(); lTexturesIterator != lTexturesEndElement; ++lTexturesIterator)
+		LOOP_ITERATOR(TLoadedTextures::const_iterator, mLoadedTextures, lIt, lItEnd)
 		{
-			uint32 lTexture = *lTexturesIterator;
+			uint32 lTexture = *lIt;
 			glDeleteTextures(1, &lTexture);
 		}
 		mLoadedTextures.clear();
@@ -205,24 +203,26 @@ namespace graphics
 
 	void RenderManager::UnloadTexture(int32 aId)
 	{
-		if (aId < 0) return;
-		TTexturesIds::const_iterator lIterator = mTexturesIds.begin();
-		TTexturesIds::const_iterator lIteratorEnd = mTexturesIds.end();
-		while (lIterator != lIteratorEnd && lIterator->second->mId != aId)
+		assert(aId >= 0);
+
+		LOOP_ITERATOR(TTexturesIds::const_iterator, mTexturesIds, lIterator, lEndElement)
 		{
-			++lIterator;
-		}
-		if (--lIterator->second->mReferences == 0)
-		{
-			uint32 lAux = mLoadedTextures[aId];
-			glDeleteTextures(1, &lAux);
-			mLoadedTextures[aId] = 0;
+			if (lIterator->second->mId == aId)
+			{
+				if (--lIterator->second->mReferences == 0)
+				{
+					uint32 lAux = mLoadedTextures[aId];
+					glDeleteTextures(1, &lAux);
+					mLoadedTextures[aId] = 0;
 
-			delete lIterator->second;
+					delete lIterator->second;
 
-			mTexturesIds.erase(lIterator);
-			--mNumLoadedTextures;
+					mTexturesIds.erase(lIterator);
+					--mNumLoadedTextures;
 
+				}
+				break;
+			}
 		}
 	}
 
@@ -574,47 +574,41 @@ namespace graphics
 		int32 lVertexShader = mLoadedVertexShaders[aMaterial->mVertexShaderId];
 		glDetachShader(aMaterial->mProgramShader, lVertexShader);
 		
-
-		TShaderIds::const_iterator lIterator = mVertexShaderIds.begin();
-		TShaderIds::const_iterator lIteratorEnd = mVertexShaderIds.end();
-		while (lIterator != lIteratorEnd && lIterator->second->mId != aMaterial->mVertexShaderId)
+		LOOP_ITERATOR(TShaderIds::const_iterator, mVertexShaderIds, lIterator, lEndElement)
 		{
-			++lIterator;
-		}
-		if (--lIterator->second->mReferences == 0)
-		{
-			mLoadedVertexShaders[aMaterial->mVertexShaderId] = NULL;
-			mVertexShaderIds.erase(lIterator);
-			--mNumLoadedVertexShaders;
-			glDeleteShader(lVertexShader);
+			if (lIterator->second->mId == aMaterial->mVertexShaderId)
+			{
+				if (--lIterator->second->mReferences == 0)
+				{
+					mLoadedVertexShaders[aMaterial->mVertexShaderId] = NULL;
+					mVertexShaderIds.erase(lIterator);
+					--mNumLoadedVertexShaders;
+					glDeleteShader(lVertexShader);
+				}
+				break;
+			}
 		}
 
 		int32 lFragmentShader = mLoadedFragmentShaders[aMaterial->mFragmentShaderId];
 		glDetachShader(aMaterial->mProgramShader, lFragmentShader);
-		lIterator = mFragmentShaderIds.begin();
-		lIteratorEnd = mFragmentShaderIds.end();
-		while (lIterator != lIteratorEnd && lIterator->second->mId != aMaterial->mFragmentShaderId)
+		LOOP_ITERATOR(TShaderIds::const_iterator, mFragmentShaderIds, lIterator, lEndElement)
 		{
-			++lIterator;
-		}
-		if (--lIterator->second->mReferences == 0)
-		{
-			mLoadedFragmentShaders[aMaterial->mFragmentShaderId] = NULL;
-			mFragmentShaderIds.erase(lIterator);
-			--mNumLoadedFragmentShaders;
-			glDeleteShader(lFragmentShader);
+			if (lIterator->second->mId == aMaterial->mFragmentShaderId)
+			{
+				if (--lIterator->second->mReferences == 0)
+				{
+					mLoadedFragmentShaders[aMaterial->mFragmentShaderId] = NULL;
+					mFragmentShaderIds.erase(lIterator);
+					--mNumLoadedFragmentShaders;
+					glDeleteShader(lFragmentShader);
+				}
+				break;
+			}
 		}
 
 		glDeleteProgram(aMaterial->mProgramShader);
 
-
-		TLoadedMaterials::const_iterator lMaterialIterator = mLoadedMaterials.begin();
-		TLoadedMaterials::const_iterator lMaterialIteratorEnd = mLoadedMaterials.end();
-		while (*lMaterialIterator == NULL || (lMaterialIterator != lMaterialIteratorEnd) && (*lMaterialIterator)->mId != aMaterial->mId)
-		{
-			++lMaterialIterator;
-		}
-		mLoadedMaterials[aMaterial->mId] = NULL;// .erase(lMaterialIterator);
+		mLoadedMaterials[aMaterial->mId] = NULL;
 		--mNumLoadedMaterials;
 		aMaterial->Release();
 		delete aMaterial;
@@ -770,25 +764,26 @@ namespace graphics
 
 	void RenderManager::UnloadMesh(Mesh* aMesh, BOOL aPermanent)
 	{
-		TMeshesIds::const_iterator lIterator = mMeshesIds.begin();
-		TMeshesIds::const_iterator lIteratorEnd = mMeshesIds.end();
-		while (lIterator != lIteratorEnd && lIterator->second->mId != aMesh->mId)
+		LOOP_ITERATOR(TMeshesIds::const_iterator, mMeshesIds, lIterator, lIteratorEnd)
 		{
-			++lIterator;
-		}
-		if (--lIterator->second->mReferences == 0 && aPermanent)
-		{
-			mLoadedMeshes[aMesh->mId] = NULL;
-			glDeleteBuffers(1, &aMesh->mVBO);
+			if (lIterator->second->mId == aMesh->mId)
+			{
+				if (--lIterator->second->mReferences == 0 && aPermanent)
+				{
+					mLoadedMeshes[aMesh->mId] = NULL;
+					glDeleteBuffers(1, &aMesh->mVBO);
 
-			mMeshesIds.erase(lIterator);
-			--mNumLoadedMeshes;
+					mMeshesIds.erase(lIterator);
+					--mNumLoadedMeshes;
 
-			aMesh->Release();
-			delete aMesh;
-		}
-		else {
-			aMesh->Release();
+					aMesh->Release();
+					delete aMesh;
+				}
+				else {
+					aMesh->Release();
+				}
+				break;
+			}
 		}
 	}
 	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial)

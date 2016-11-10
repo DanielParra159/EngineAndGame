@@ -11,6 +11,9 @@
 #define GET_SCRIPT_MANAGER	script::ScriptManager *lScriptManager = script::ScriptManager::Instance();
 #define GET_PHYSICS_MANAGER physics::PhysicsManager *lPhysicsManager = physics::PhysicsManager::Instance();
 
+#define LOOP_ITERATOR(iteratorType, iterable, it, itEnd) \
+	for (iteratorType it = iterable.begin(), itEnd = iterable.end(); it != itEnd; ++it)
+
 #define SINGLETON_BODY(className) \
 	className* className::sInstance = NULL; \
 	className* className::Instance() \

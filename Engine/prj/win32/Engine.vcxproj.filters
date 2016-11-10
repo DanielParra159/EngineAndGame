@@ -228,6 +228,9 @@
     <ClInclude Include="..\..\src\Include\Common\Graphics\MeshComponent.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\Support\Color32.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
