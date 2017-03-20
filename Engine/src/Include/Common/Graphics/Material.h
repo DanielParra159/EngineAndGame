@@ -12,6 +12,7 @@
 namespace graphics
 {
 	class Texture;
+	class Shader;
 
 	typedef std::unordered_map<std::string, int32>		TParameters;
 	//typedef std::unordered_map<int32, float32>			TParameterValues;
@@ -26,8 +27,8 @@ namespace graphics
 	protected:
 		TParameters										mParameters;
 		int32											mProgramShader;
-		int32											mVertexShaderId;
-		int32											mFragmentShaderId;
+		const Shader*									mVertexShader;
+		const Shader*									mFragmentShader;
 		int32											mColorParam;
 		int32											mUseNormalMapping;
 		Color											mColor;
@@ -37,7 +38,6 @@ namespace graphics
 		const Texture*									mDiffuseTexture;
 		const Texture*									mNormalTexture;
 		std::string										mName;
-		int32											mId;
 	public:
 		void											SetMatrix4(const std::string& aParamName, const Matrix4* aParamValue);
 		void											SetMatrix4(int32 aParamId, const Matrix4* aParamValue);
@@ -55,11 +55,10 @@ namespace graphics
 		void											SetVertexFloatAttribPointer(int32 aAttribId, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
 
 		const std::string&								GetName() const { return mName; }
-		int32											GetId() const { return mId; }
 	protected:
 		Material() : mParameters(0) {}
 		virtual ~Material() {}
-		virtual void									Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader);
+		virtual void									Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader);
 		virtual void									Release();
 		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
 		//virtual Material*								CreateInstance();

@@ -114,6 +114,7 @@
     <ClInclude Include="..\..\src\Include\Common\Graphics\IRenderable.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\MeshComponent.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\RenderManager.h" />
+    <ClInclude Include="..\..\src\Include\Common\Graphics\Shader.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Sprite.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Texture.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\IController.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="..\..\src\Source\Common\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\MeshComponent.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\RenderManager.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />

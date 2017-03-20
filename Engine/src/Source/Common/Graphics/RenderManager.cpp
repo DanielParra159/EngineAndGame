@@ -2,6 +2,7 @@
 #include "Graphics/Sprite.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Material.h"
+#include "Graphics/Shader.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/MeshComponent.h"
 #include "Graphics/Camera.h"
@@ -92,9 +93,6 @@ namespace graphics
 
 
 		mNumLoadedMeshes = 0;
-		mNumLoadedFragmentShaders = 0;
-		mNumLoadedVertexShaders = 0;
-		mNumLoadedMaterials = 0;
 		mNumLoadedMeshes = 0;
 
 		return TRUE;
@@ -117,47 +115,40 @@ namespace graphics
 		mNumLoadedMeshes = 0;
 
 
-		size = mLoadedMaterials.size();
-		for (int i = 0; i < size; ++i)
+		LOOP_ITERATOR(TLoadedMaterials::iterator, mLoadedMaterials, lIterator, lEndElement)
 		{
-			if (mLoadedMaterials[i] == NULL)
-				continue;
-			Material* lMaterial = mLoadedMaterials[i];
-			lMaterial->Release();
-			
-			glDetachShader(lMaterial->mProgramShader, mLoadedVertexShaders[lMaterial->mVertexShaderId]);
-			glDetachShader(lMaterial->mProgramShader, mLoadedFragmentShaders[lMaterial->mFragmentShaderId]);
-			glDeleteProgram(lMaterial->mProgramShader);
-			delete lMaterial;
+			(*lIterator)->Release();
+			glDetachShader((*lIterator)->mProgramShader, (*lIterator)->mVertexShader->mId);
+			glDetachShader((*lIterator)->mProgramShader, (*lIterator)->mFragmentShader->mId);
+			glDeleteProgram((*lIterator)->mProgramShader);
+			delete (*lIterator);
 		}
+
 		mLoadedMaterials.clear();
-		mNumLoadedMaterials = 0;
 
-		size = mLoadedVertexShaders.size();
-		for (int i = 0; i < size; ++i)
+		LOOP_ITERATOR(TShaderIds::const_iterator, mLoadedVertexShaders, lIterator, lEndElement)
 		{
-			glDeleteShader(mLoadedVertexShaders[i]);
+			lIterator->second->Release();
+			delete lIterator->second;
 		}
-		mLoadedVertexShaders.clear();
-		mVertexShaderIds.clear();
-		mNumLoadedVertexShaders = 0;
 
-		size = mLoadedFragmentShaders.size();
+		mLoadedVertexShaders.clear();
+
+		LOOP_ITERATOR(TShaderIds::const_iterator, mLoadedFragmentShaders, lIterator, lEndElement)
 		for (int i = 0; i < size; ++i)
 		{
-			glDeleteShader(mLoadedFragmentShaders[i]);
+			lIterator->second->Release();
+			delete lIterator->second;
 		}
 		mLoadedFragmentShaders.clear();
-		mFragmentShaderIds.clear();
-		mNumLoadedFragmentShaders = 0;
 
-		LOOP_ITERATOR(TTexturesIds::const_iterator, mTexturesIds, lIterator, lEndElement)
+		LOOP_ITERATOR(TTexturesIds::const_iterator, mLoadedTextures, lIterator, lEndElement)
 		{
 			lIterator->second->Release();
 			delete lIterator->second;
 		}
 		//mLoadedTexturesOLD.clear();
-		mTexturesIds.clear();
+		mLoadedTextures.clear();
 		mNumLoadedTextures = 0;
 
 		SDL_GL_DeleteContext(mContext);
@@ -206,7 +197,7 @@ namespace graphics
 	{
 		assert(aTexture != NULL && aTexture->mId >= 0);
 
-		LOOP_ITERATOR(TTexturesIds::const_iterator, mTexturesIds, lIterator, lEndElement)
+		LOOP_ITERATOR(TTexturesIds::const_iterator, mLoadedTextures, lIterator, lEndElement)
 		{
 			if (lIterator->second->mId == aTexture->mId)
 			{
@@ -217,7 +208,7 @@ namespace graphics
 					delete lIterator->second;
 
 
-					mTexturesIds.erase(lIterator);
+					mLoadedTextures.erase(lIterator);
 					--mNumLoadedTextures;
 
 				}
@@ -229,9 +220,9 @@ namespace graphics
 	const Texture* RenderManager::LoadTexture(const std::string& aFileName)
 	{
 		Texture* lTexture = NULL;
-		TTexturesIds::const_iterator lTextureIterator = mTexturesIds.find(aFileName);
+		TTexturesIds::const_iterator lTextureIterator = mLoadedTextures.find(aFileName);
 
-		if (lTextureIterator != mTexturesIds.end())
+		if (lTextureIterator != mLoadedTextures.end())
 		{
 			lTextureIterator->second->AddReference();
 			return lTextureIterator->second;
@@ -245,7 +236,7 @@ namespace graphics
 		if (lTexture->Init(lTexturePath))
 		{
 			//mLoadedTexturesOLD.insert(lTexture);
-			mTexturesIds[aFileName] = lTexture;
+			mLoadedTextures[aFileName] = lTexture;
 			++mNumLoadedTextures;
 		}
 		else
@@ -319,22 +310,22 @@ namespace graphics
 		return TRUE;
 	}
 
-	BOOL RenderManager::LoadVertexShader(const std::string& aMaterialFileName, const std::string& aVertexShaderName, int32& aVertexShader, int32& aVertexShaderId)
+	const Shader* RenderManager::LoadVertexShader(const std::string& aMaterialFileName, const std::string& aVertexShaderName)
 	{
-		TShaderIds::const_iterator lShaderIterator = mVertexShaderIds.find(aVertexShaderName);
+		TShaderIds::const_iterator lShaderIterator = mLoadedVertexShaders.find(aVertexShaderName);
+		Shader* lShader = NULL;
 
-		if (lShaderIterator != mVertexShaderIds.end())
+		if (lShaderIterator != mLoadedVertexShaders.end())
 		{
-			aVertexShaderId = lShaderIterator->second->mId;
-			aVertexShader = mLoadedVertexShaders[lShaderIterator->second->mId];
-			++lShaderIterator->second->mReferences;
+			lShaderIterator->second->AddReference();
+			return lShaderIterator->second;
 		}
 		else {
 			io::File lFileAux = io::File();
 			if (!lFileAux.Open(aVertexShaderName + ".glvs"))
 			{
 				core::LogFormatString("Can't open vertex shader %s", (aVertexShaderName + ".glvs").c_str());
-				return FALSE;
+				return NULL;
 			}
 			uint32 lFileSize = lFileAux.GetSize();
 
@@ -343,64 +334,34 @@ namespace graphics
 			if (!lFileAux.Read(&lBuffer[0], sizeof(int8), lFileSize))
 			{
 				core::LogFormatString("Can't read vertex shader %s", (aVertexShaderName + ".glvs").c_str());
-				return -1;
+				return NULL;
 			}
 			lFileAux.Close();
-			const int8* aVertexSource = lBuffer.c_str();
-			aVertexShader = glCreateShader(GL_VERTEX_SHADER);
-			glShaderSource(aVertexShader, 1, &aVertexSource, NULL);
-			glCompileShader(aVertexShader);
 
-			int32 lStatus;
-			glGetShaderiv(aVertexShader, GL_COMPILE_STATUS, &lStatus);
-			if (lStatus == FALSE)
-			{
+			lShader = new Shader();
+			if (lShader->Init(aVertexShaderName, EShaderTypes::eVertex, lBuffer.c_str())) {
+				mLoadedVertexShaders[aVertexShaderName] = lShader;
+			}
+			else {
 				int8 lBuffer[512];
-				glGetShaderInfoLog(aVertexShader, 512, NULL, lBuffer);
+				glGetShaderInfoLog(lShader->mId, 512, NULL, lBuffer);
 				core::LogFormatString("%s", lBuffer);
-				core::LogFormatString("Can't compile vertex shader %s", aMaterialFileName.c_str());
-				return FALSE;
+				core::LogFormatString("Can't compile vertex shader %s", aVertexShaderName.c_str());
+				delete lShader;
+				lShader = NULL;
 			}
-
-			uint32 lCapacity = mLoadedVertexShaders.capacity();
-			if (mNumLoadedVertexShaders == lCapacity)
-			{
-				mLoadedVertexShaders.push_back(aVertexShader);
-				aVertexShaderId = mNumLoadedVertexShaders;
-			}
-			else
-			{
-				int32 lSize = mLoadedVertexShaders.size();
-
-				while (aVertexShaderId < lSize && mLoadedVertexShaders[aVertexShaderId] != NULL)
-				{
-					++aVertexShaderId;
-				}
-
-				if (aVertexShaderId < lSize)
-				{
-					mLoadedVertexShaders[aVertexShaderId] = aVertexShader;
-				}
-				else
-				{
-					mLoadedVertexShaders.push_back(aVertexShader);
-				}
-			}
-			mVertexShaderIds[aVertexShaderName] = new IdReferences(aVertexShaderId, 1);
-			++mNumLoadedVertexShaders;
 		}
-		return TRUE;
+		return lShader;
 	}
 
-	BOOL RenderManager::LoadFragmentShader(const std::string& aMaterialFileName, const std::string& aFragmentShaderName, int32& aFragmentShader, int32& aFragmentShaderId)
+	const Shader* RenderManager::LoadFragmentShader(const std::string& aMaterialFileName, const std::string& aFragmentShaderName)
 	{
-
-		TShaderIds::const_iterator lShaderIterator = mFragmentShaderIds.find(aFragmentShaderName);
-		if (lShaderIterator != mFragmentShaderIds.end())
+		Shader* lShader = NULL;
+		TShaderIds::const_iterator lShaderIterator = mLoadedFragmentShaders.find(aFragmentShaderName);
+		if (lShaderIterator != mLoadedFragmentShaders.end())
 		{
-			aFragmentShaderId = lShaderIterator->second->mId;
-			aFragmentShader = mLoadedFragmentShaders[lShaderIterator->second->mId];
-			++lShaderIterator->second->mReferences;
+			lShaderIterator->second->AddReference();
+			return lShaderIterator->second;
 		}
 		else
 		{
@@ -408,7 +369,7 @@ namespace graphics
 			if (!lFileAux.Open(aFragmentShaderName + ".glfs"))
 			{
 				core::LogFormatString("Can't open fragment shader %s", (aFragmentShaderName + ".glfs").c_str());
-				return FALSE;
+				return NULL;
 			}
 			uint32 lFileSize = lFileAux.GetSize();
 
@@ -417,98 +378,40 @@ namespace graphics
 			if (!lFileAux.Read(&lBuffer[0], sizeof(int8), lFileSize))
 			{
 				core::LogFormatString("Can't read fragment shader %s", (aFragmentShaderName + ".glfs").c_str());
-				return FALSE;
+				return NULL;
 			}
 			lFileAux.Close();
 
-			const int8* aFragmentSource = lBuffer.c_str();
-			aFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-			glShaderSource(aFragmentShader, 1, &aFragmentSource, NULL);
-			glCompileShader(aFragmentShader);
-
-			int32 lStatus;
-			glGetShaderiv(aFragmentShader, GL_COMPILE_STATUS, &lStatus);
-
-			if (lStatus == FALSE)
-			{
+			lShader = new Shader();
+			if (lShader->Init(aFragmentShaderName, EShaderTypes::eFragment, lBuffer.c_str())) {
+				mLoadedFragmentShaders[aFragmentShaderName] = lShader;
+			}
+			else {
 				int8 lBuffer[512];
-				glGetShaderInfoLog(aFragmentShader, 512, NULL, lBuffer);
+				glGetShaderInfoLog(lShader->mId, 512, NULL, lBuffer);
 				core::LogFormatString("%s", lBuffer);
 				core::LogFormatString("Can't compile fragment shader %s", aFragmentShaderName.c_str());
-				return FALSE;
+				delete lShader;
+				lShader = NULL;
 			}
-
-			uint32 lCapacity = mLoadedFragmentShaders.capacity();
-			if (mNumLoadedFragmentShaders == lCapacity)
-			{
-				mLoadedFragmentShaders.push_back(aFragmentShader);
-				aFragmentShaderId = mNumLoadedFragmentShaders;
-			}
-			else
-			{
-				int32 lSize = mLoadedFragmentShaders.size();
-
-				while (aFragmentShaderId < lSize && mLoadedFragmentShaders[aFragmentShaderId] != NULL)
-				{
-					++aFragmentShaderId;
-				}
-
-				if (aFragmentShaderId < lSize)
-				{
-					mLoadedFragmentShaders[aFragmentShaderId] = aFragmentShader;
-				}
-				else
-				{
-					mLoadedFragmentShaders.push_back(aFragmentShader);
-				}
-			}
-			mFragmentShaderIds[aFragmentShaderName] = new IdReferences(aFragmentShaderId, 1);
-			++mNumLoadedFragmentShaders;
 		}
 
-		return TRUE;
+		return lShader;
 	}
 
-	Material* RenderManager::CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, int32 aVertexShader, int32 aVertexShaderId, int32 aFragmentShader, int32 aFragmentShaderId)
+	Material* RenderManager::CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, const Shader* aVertexShader, const Shader* aFragmentShader)
 	{
 		int32 lShaderPorgram = glCreateProgram();
-		glAttachShader(lShaderPorgram, aVertexShader);
-		glAttachShader(lShaderPorgram, aFragmentShader);
+		glAttachShader(lShaderPorgram, aVertexShader->mId);
+		glAttachShader(lShaderPorgram, aFragmentShader->mId);
 		glBindFragDataLocation(lShaderPorgram, 0, "outColor");
 		glLinkProgram(lShaderPorgram);
 		glUseProgram(lShaderPorgram);
 
 		Material* lResult = new Material();
-		lResult->Init(aMaterialName, aVertexShaderId, aFragmentShaderId, lShaderPorgram);
+		lResult->Init(aMaterialName, aVertexShader, aFragmentShader, lShaderPorgram);
 
-		uint32 lCapacity = mLoadedMaterials.capacity();
-		int32 lMaterialId = 0;
-		if (mNumLoadedMaterials == lCapacity)
-		{
-			mLoadedMaterials.push_back(lResult);
-			lMaterialId = lCapacity;
-		}
-		else
-		{
-			int32 lSize = mLoadedMaterials.size();
-
-			while (lMaterialId < lSize && mLoadedMaterials[lMaterialId] != NULL)
-			{
-				++lMaterialId;
-			}
-
-			if (lMaterialId < lSize)
-			{
-				mLoadedMaterials[lMaterialId] = lResult;
-			}
-			else
-			{
-				mLoadedMaterials.push_back(lResult);
-			}
-		}
-
-		++mNumLoadedMaterials;
-		lResult->mId = lMaterialId;
+		mLoadedMaterials.insert(lResult);
 
 		lResult->mDiffuseTexture = LoadTexture(aTextureName);
 
@@ -521,50 +424,44 @@ namespace graphics
 		if (!ParseMaterial(aFileName, lMaterialName, lTextureName, lVertexShaderName, lFragmentShaderName))
 			return NULL;
 
-		int32 lVertexShader = -1;
-		int32 lVertexShaderId = 0;
-		if (!LoadVertexShader(aFileName, lVertexShaderName, lVertexShader, lVertexShaderId))
+		const Shader* lVertexShader = NULL;
+		if ((lVertexShader = LoadVertexShader(aFileName, lVertexShaderName)) == NULL)
 			return NULL;
 
-		int32 lFragmentShader = -1;
-		int32 lFragmentShaderId = 0;
-		if (!LoadFragmentShader(aFileName, lFragmentShaderName, lFragmentShader, lFragmentShaderId))
+		const Shader* lFragmentShader = NULL;
+		if ((lFragmentShader = LoadFragmentShader(aFileName, lFragmentShaderName)) == NULL)
 			return NULL;
 
-		return CreateMaterial(lMaterialName, lTextureName, lVertexShader, lVertexShaderId, lFragmentShader, lFragmentShaderId);
+		return CreateMaterial(lMaterialName, lTextureName, lVertexShader, lFragmentShader);
 	}
 	void RenderManager::UnloadMaterial(Material* aMaterial)
 	{
-		int32 lVertexShader = mLoadedVertexShaders[aMaterial->mVertexShaderId];
-		glDetachShader(aMaterial->mProgramShader, lVertexShader);
+		glDetachShader(aMaterial->mProgramShader, aMaterial->mVertexShader->mId);
 		
-		LOOP_ITERATOR(TShaderIds::const_iterator, mVertexShaderIds, lIterator, lEndElement)
+		LOOP_ITERATOR(TShaderIds::const_iterator, mLoadedVertexShaders, lIterator, lEndElement)
 		{
-			if (lIterator->second->mId == aMaterial->mVertexShaderId)
+			if (lIterator->second->mId == aMaterial->mVertexShader->mId)
 			{
-				if (--lIterator->second->mReferences == 0)
+				if (lIterator->second->RemoveReference() == 0)
 				{
-					mLoadedVertexShaders[aMaterial->mVertexShaderId] = NULL;
-					mVertexShaderIds.erase(lIterator);
-					--mNumLoadedVertexShaders;
-					glDeleteShader(lVertexShader);
+					lIterator->second->Release();
+					delete lIterator->second;
+					mLoadedVertexShaders.erase(lIterator);
 				}
 				break;
 			}
 		}
 
-		int32 lFragmentShader = mLoadedFragmentShaders[aMaterial->mFragmentShaderId];
-		glDetachShader(aMaterial->mProgramShader, lFragmentShader);
-		LOOP_ITERATOR(TShaderIds::const_iterator, mFragmentShaderIds, lIterator, lEndElement)
+		glDetachShader(aMaterial->mProgramShader, aMaterial->mFragmentShader->mId);
+		LOOP_ITERATOR(TShaderIds::const_iterator, mLoadedFragmentShaders, lIterator, lEndElement)
 		{
-			if (lIterator->second->mId == aMaterial->mFragmentShaderId)
+			if (lIterator->second->mId == aMaterial->mFragmentShader->mId)
 			{
-				if (--lIterator->second->mReferences == 0)
+				if (lIterator->second->RemoveReference() == 0)
 				{
-					mLoadedFragmentShaders[aMaterial->mFragmentShaderId] = NULL;
-					mFragmentShaderIds.erase(lIterator);
-					--mNumLoadedFragmentShaders;
-					glDeleteShader(lFragmentShader);
+					lIterator->second->Release();
+					delete lIterator->second;
+					mLoadedFragmentShaders.erase(lIterator);
 				}
 				break;
 			}
@@ -572,8 +469,7 @@ namespace graphics
 
 		glDeleteProgram(aMaterial->mProgramShader);
 
-		mLoadedMaterials[aMaterial->mId] = NULL;
-		--mNumLoadedMaterials;
+		mLoadedMaterials.erase(aMaterial);
 		aMaterial->Release();
 		delete aMaterial;
 	}

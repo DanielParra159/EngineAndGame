@@ -1,6 +1,7 @@
 #include "Graphics\Material.h"
 #include "Graphics\RenderManager.h"
 #include "Graphics\Texture.h"
+#include "Graphics\Shader.h"
 
 #include <GL/glew.h>
 #include <SDL_opengl.h>
@@ -9,12 +10,12 @@
 
 namespace graphics
 {
-	void Material::Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader)
+	void Material::Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader)
 	{
 		mName = aName;
 
-		mVertexShaderId = aVertexShaderId;
-		mFragmentShaderId = aFragmentShaderId;
+		mVertexShader = aVertexShader;
+		mFragmentShader = aFragmentShader;
 		mProgramShader = aProgramShader;
 
 		mDiffuseTexture = NULL;
