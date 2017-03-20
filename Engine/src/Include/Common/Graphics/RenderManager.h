@@ -12,6 +12,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+//#include <unordered_set>
 
 struct  SDL_Renderer;
 struct  SDL_Window;
@@ -34,8 +35,8 @@ namespace graphics
 	class Camera;
 
 
-	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
-	typedef std::vector<uint32>									TLoadedTextures;
+	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
+	//typedef std::unordered_set<Texture*>						TLoadedTextures;
 	typedef std::vector<Material*>								TLoadedMaterials;
 	typedef std::unordered_map<std::string, IdReferences*>		TShaderIds;
 	typedef std::vector<int32>									TLoadedShaders;
@@ -51,7 +52,7 @@ namespace graphics
 	private:
 		Color											mClearColor;
 		TTexturesIds									mTexturesIds;
-		TLoadedTextures									mLoadedTextures;
+		//TLoadedTextures									mLoadedTexturesOLD;
 		uint32											mNumLoadedTextures;
 		TLoadedMaterials								mLoadedMaterials;
 		uint32											mNumLoadedMaterials;
@@ -76,22 +77,22 @@ namespace graphics
 
 		/**
 		Allow to render a texture on screen
-		@param aId, texture ID
+		@param aTexture, texture
 		@param aSrcRect, the rect in source texture to render
 		@param aPosition, position on screen
 		@param aSize, size on screen
 		@param aAgnel, rotation on screen
 		*/
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
+		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
 		/**
 		Allow to render a texture on screen
-		@param aId, texture ID
+		@param aTexture, texture
 		@param aSrcRect, the rect in source texture to render
 		@param aX, aY, position on screen
 		@param aW, aH, size on screen
 		@param aAgnel, rotation on screen
 		*/
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
+		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
 		
 		/**
 		Create a sprite from file
@@ -108,13 +109,13 @@ namespace graphics
 		Unload a texture
 		@param aId, id of the texture
 		*/
-		void											UnloadTexture(int32 aId);
+		void											UnloadTexture(const Texture* aTexture);
 		/**
 		Load a texture from file
 		@param aFileName, file name
 		@return aId, id of the texture loaded
 		*/
-		int32											LoadTexture(const std::string& aFileName);
+		const Texture*									LoadTexture(const std::string& aFileName);
 
 
 		//-----------------------------------------MATERIALS-----------------------------------------
@@ -164,7 +165,7 @@ namespace graphics
 		Camera*											GetRenderCamera();
 
 	private:
-		RenderManager() : mTexturesIds(), mLoadedTextures(), mNumLoadedTextures(0),
+		RenderManager() : mTexturesIds(), mNumLoadedTextures(0), //mLoadedTexturesOLD(),
 			mLoadedMaterials(), mNumLoadedMaterials(0),
 			mVertexShaderIds(), mLoadedVertexShaders(), mNumLoadedVertexShaders(0),
 			mFragmentShaderIds(), mLoadedFragmentShaders(), mNumLoadedFragmentShaders(0),

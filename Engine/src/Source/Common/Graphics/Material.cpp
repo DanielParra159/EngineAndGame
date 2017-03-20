@@ -1,5 +1,6 @@
 #include "Graphics\Material.h"
 #include "Graphics\RenderManager.h"
+#include "Graphics\Texture.h"
 
 #include <GL/glew.h>
 #include <SDL_opengl.h>
@@ -16,8 +17,8 @@ namespace graphics
 		mFragmentShaderId = aFragmentShaderId;
 		mProgramShader = aProgramShader;
 
-		mDiffuseTextureId = -1;
-		mNormalTextureId = -1;
+		mDiffuseTexture = NULL;
+		mNormalTexture = NULL;
 
 		mColorParam = glGetUniformLocation(aProgramShader, "color");
 		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
@@ -34,7 +35,7 @@ namespace graphics
 	void Material::Release()
 	{
 		mParameters.clear();
-		RenderManager::Instance()->UnloadTexture(mDiffuseTextureId);
+		RenderManager::Instance()->UnloadTexture(mDiffuseTexture);
 	}
 
 	/*Material* Material::CreateInstance() {
@@ -128,7 +129,7 @@ namespace graphics
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
 
-		glUniform1i(mUseNormalMapping, mNormalTextureId > -1);
+		glUniform1i(mUseNormalMapping, mNormalTexture != NULL);
 		
 		if (mLightPosParam > 0)
 		{

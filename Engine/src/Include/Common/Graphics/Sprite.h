@@ -11,6 +11,7 @@
 
 namespace graphics
 {
+	class Texture;
 	/**
 	This class allow to render a static sprite on screen
 	*/
@@ -20,7 +21,7 @@ namespace graphics
 	protected:
 		Rect<int32>										mTextureSize;
 		float64											mAngle;
-		int32											mTextureId;
+		const Texture*									mTexture;
 	public:
 		/**
 		Render the sprite
@@ -74,10 +75,10 @@ namespace graphics
 		float64											GetAngle() const { return mAngle; }
 
 	protected:
-		Sprite() : mTextureSize(), mTextureId(-1), mAngle(0) {}
+		Sprite() : mTextureSize(), mTexture(NULL), mAngle(0) {}
 		virtual ~Sprite() {}
 
-		virtual void									Init(int32 aTextureId);
+		virtual void									Init(const Texture* aTexture);
 		virtual void									Release();
 
 	}; // Renderer

@@ -1,18 +1,19 @@
 #include "Graphics\Sprite.h"
 #include "Graphics\RenderManager.h"
+#include "Graphics\Texture.h"
 
 #include "SDL.h"
 
 namespace graphics
 {
-	void Sprite::Init(int32 aTextureId)
+	void Sprite::Init(const Texture* aTexture)
 	{
-		mTextureId = aTextureId;
+		mTexture = aTexture;
 	}
 
 	void Sprite::Release()
 	{
-		RenderManager::Instance()->UnloadTexture(mTextureId);
+		RenderManager::Instance()->UnloadTexture(mTexture);
 	}
 
 	void Sprite::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
@@ -26,11 +27,11 @@ namespace graphics
 	
 	void Sprite::Render(float32 aX, float32 aY, float32 aZ)
 	{
-		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, (int32)aX, (int32)aY, mTextureSize.mW, mTextureSize.mH, mAngle);
+		RenderManager::Instance()->RenderTexture(mTexture, mTextureSize, (int32)aX, (int32)aY, mTextureSize.mW, mTextureSize.mH, mAngle);
 	}
 	void Sprite::Render(int32 aX, int32 aY, int32 aW, int32 aH)
 	{
-		RenderManager::Instance()->RenderTexture(mTextureId, mTextureSize, aX, aY, aW, aH, mAngle);
+		RenderManager::Instance()->RenderTexture(mTexture, mTextureSize, aX, aY, aW, aH, mAngle);
 	}
 
 	void Sprite::SetTextureSize(const Rect<int32>& aTextureSize)

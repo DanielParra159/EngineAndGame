@@ -1,5 +1,6 @@
 #include "Graphics/RenderManager.h"
 #include "Graphics/Sprite.h"
+#include "Graphics/Texture.h"
 #include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/MeshComponent.h"
@@ -150,12 +151,12 @@ namespace graphics
 		mFragmentShaderIds.clear();
 		mNumLoadedFragmentShaders = 0;
 
-		LOOP_ITERATOR(TLoadedTextures::const_iterator, mLoadedTextures, lIt, lItEnd)
+		LOOP_ITERATOR(TTexturesIds::const_iterator, mTexturesIds, lIterator, lEndElement)
 		{
-			uint32 lTexture = *lIt;
-			glDeleteTextures(1, &lTexture);
+			lIterator->second->Release();
+			delete lIterator->second;
 		}
-		mLoadedTextures.clear();
+		//mLoadedTexturesOLD.clear();
 		mTexturesIds.clear();
 		mNumLoadedTextures = 0;
 
@@ -180,11 +181,11 @@ namespace graphics
 		//SDL_RenderPresent(mRenderer);
 	}
 
-	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
+	void RenderManager::RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
 	{
-		RenderTexture(aId, aSrcRect, EXPOSE_VECTOR2D(aPosition), EXPOSE_VECTOR2D(aSize), aAngle);
+		RenderTexture(aTexture, aSrcRect, EXPOSE_VECTOR2D(aPosition), EXPOSE_VECTOR2D(aSize), aAngle);
 	}
-	void RenderManager::RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle)
+	void RenderManager::RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle)
 	{
 		SDL_Rect srcRect;
 		SDL_Rect destRect;
@@ -201,21 +202,20 @@ namespace graphics
 		//SDL_RenderCopyEx(mRenderer, mLoadedTextures[aId], &srcRect, &destRect, aAngle, 0, SDL_FLIP_NONE);
 	}
 
-	void RenderManager::UnloadTexture(int32 aId)
+	void RenderManager::UnloadTexture(const Texture* aTexture)
 	{
-		assert(aId >= 0);
+		assert(aTexture != NULL && aTexture->mId >= 0);
 
 		LOOP_ITERATOR(TTexturesIds::const_iterator, mTexturesIds, lIterator, lEndElement)
 		{
-			if (lIterator->second->mId == aId)
+			if (lIterator->second->mId == aTexture->mId)
 			{
-				if (--lIterator->second->mReferences == 0)
+				if (lIterator->second->RemoveReference() == 0)
 				{
-					uint32 lAux = mLoadedTextures[aId];
-					glDeleteTextures(1, &lAux);
-					mLoadedTextures[aId] = 0;
-
+					//mLoadedTexturesOLD.erase(lIterator->second);
+					lIterator->second->Release();
 					delete lIterator->second;
+
 
 					mTexturesIds.erase(lIterator);
 					--mNumLoadedTextures;
@@ -226,83 +226,47 @@ namespace graphics
 		}
 	}
 
-	int32 RenderManager::LoadTexture(const std::string& aFileName)
+	const Texture* RenderManager::LoadTexture(const std::string& aFileName)
 	{
-		int32 lResult = -1;
+		Texture* lTexture = NULL;
 		TTexturesIds::const_iterator lTextureIterator = mTexturesIds.find(aFileName);
 
 		if (lTextureIterator != mTexturesIds.end())
 		{
-			++lTextureIterator->second->mReferences;
-			return lTextureIterator->second->mId;
+			lTextureIterator->second->AddReference();
+			return lTextureIterator->second;
 		}
 
-		uint32 lTextureId;
-		glGenTextures(1, &lTextureId);
 
-		int32 lWidth, lHeight;
-		uint8* lImage;
+		std::string lTexturePath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName;
 
-		glBindTexture(GL_TEXTURE_2D, lTextureId);
-		lImage = SOIL_load_image((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), &lWidth, &lHeight, 0, SOIL_LOAD_RGB);
+		lTexture = new Texture();
 
-		if (lImage != NULL)
+		if (lTexture->Init(lTexturePath))
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, lWidth, lHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, lImage);
-			SOIL_free_image_data(lImage);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			uint32 lCapacity = mLoadedTextures.capacity();
-			lResult = NULL;
-			if (mNumLoadedTextures == lCapacity)
-			{
-				mLoadedTextures.push_back(lTextureId);
-				lResult = mNumLoadedTextures;
-			} 
-			else 
-			{
-				int32 lSize = mLoadedTextures.size();
-				
-				while (lResult < lSize && mLoadedTextures[lResult] != NULL)
-				{
-					++lResult;
-				}
-					
-				if (lResult < lSize)
-				{
-					mLoadedTextures[lResult] = lTextureId;
-				}
-				else
-				{
-					mLoadedTextures.push_back(lTextureId);
-				}
-			}
-
-			mTexturesIds[aFileName] = new IdReferences(lResult, 1);
+			//mLoadedTexturesOLD.insert(lTexture);
+			mTexturesIds[aFileName] = lTexture;
 			++mNumLoadedTextures;
 		}
 		else
 		{
+			delete lTexture;
+			lTexture = NULL;
 			core::LogFormatString("Can't load image %s", aFileName.c_str());
 		}
 
-		return lResult;
+		return lTexture;
 	}
 
 	Sprite* RenderManager::CreateSprite(const std::string& aFileName)
 	{
 		Sprite *lResult = NULL;
 
-		int32 lTextureId = LoadTexture(aFileName);
-		if (lTextureId > -1)
+		const Texture* lTexture = LoadTexture(aFileName);
+		if (lTexture != NULL)
 		{
 			lResult = new Sprite();
-			lResult->Init(lTextureId);
+			lResult->Init(lTexture);
 		}
 		else {
 			core::LogFormatString("Can\'t load texture %s\n", aFileName);
@@ -546,7 +510,7 @@ namespace graphics
 		++mNumLoadedMaterials;
 		lResult->mId = lMaterialId;
 
-		lResult->mDiffuseTextureId = LoadTexture(aTextureName);
+		lResult->mDiffuseTexture = LoadTexture(aTextureName);
 
 		return lResult;
 	}
@@ -807,16 +771,16 @@ namespace graphics
 		//@TODO: if is the same material only need to asign these attrib. one time
 		mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
 		mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
-		if (mMaterial->mDiffuseTextureId > -1)
+		if (mMaterial->mDiffuseTexture != NULL)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, mLoadedTextures[mMaterial->mDiffuseTextureId]);
+			glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->mId);
 			//glUniform1i(mMaterial->mTextureParam, 0);
 		}
-		if (mMaterial->mNormalTextureId > -1)
+		if (mMaterial->mNormalTexture != NULL)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, mLoadedTextures[mMaterial->mNormalTextureId]);
+			glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->mId);
 			//glUniform1i(mMaterial->mTextureParam, 0);
 		}
 
