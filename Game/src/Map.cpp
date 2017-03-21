@@ -68,7 +68,7 @@ namespace game
 		
 		mGround = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Ground", lGroundVertexData, sizeof(lGroundVertexData), 36);
 		//mGround = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
-		mGround->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Grass.jpg"));
+		mGround->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Grass.jpg", graphics::eRGB));
 		//mWall = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		//mWall = graphics::RenderManager::Instance()->LoadMeshFromVertexArray("Wall", lWallVertexData, sizeof(lWallVertexData), 36);
 		//mWall->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png"));

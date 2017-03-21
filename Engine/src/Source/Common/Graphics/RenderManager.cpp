@@ -77,7 +77,10 @@ namespace graphics
 			fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 		}
 
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
@@ -217,7 +220,7 @@ namespace graphics
 		}
 	}
 
-	const Texture* RenderManager::LoadTexture(const std::string& aFileName)
+	const Texture* RenderManager::LoadTexture(const std::string& aFileName, eTextureFormats aFormat)
 	{
 		Texture* lTexture = NULL;
 		TTexturesIds::const_iterator lTextureIterator = mLoadedTextures.find(aFileName);
@@ -233,7 +236,7 @@ namespace graphics
 
 		lTexture = new Texture();
 
-		if (lTexture->Init(lTexturePath))
+		if (lTexture->Init(lTexturePath, aFormat))
 		{
 			//mLoadedTexturesOLD.insert(lTexture);
 			mLoadedTextures[aFileName] = lTexture;
@@ -249,11 +252,11 @@ namespace graphics
 		return lTexture;
 	}
 
-	Sprite* RenderManager::CreateSprite(const std::string& aFileName)
+	Sprite* RenderManager::CreateSprite(const std::string& aFileName, eTextureFormats aFormat)
 	{
 		Sprite *lResult = NULL;
 
-		const Texture* lTexture = LoadTexture(aFileName);
+		const Texture* lTexture = LoadTexture(aFileName, aFormat);
 		if (lTexture != NULL)
 		{
 			lResult = new Sprite();
@@ -399,7 +402,8 @@ namespace graphics
 		return lShader;
 	}
 
-	Material* RenderManager::CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, const Shader* aVertexShader, const Shader* aFragmentShader)
+	Material* RenderManager::CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, 
+		const Shader* aVertexShader, const Shader* aFragmentShader, BOOL aTransparency)
 	{
 		int32 lShaderPorgram = glCreateProgram();
 		glAttachShader(lShaderPorgram, aVertexShader->mId);
@@ -413,7 +417,7 @@ namespace graphics
 
 		mLoadedMaterials.insert(lResult);
 
-		lResult->mDiffuseTexture = LoadTexture(aTextureName);
+		lResult->mDiffuseTexture = LoadTexture(aTextureName, aTransparency ? eTextureFormats::eRGBA : eTextureFormats::eRGB);
 
 		return lResult;
 	}
@@ -432,7 +436,8 @@ namespace graphics
 		if ((lFragmentShader = LoadFragmentShader(aFileName, lFragmentShaderName)) == NULL)
 			return NULL;
 
-		return CreateMaterial(lMaterialName, lTextureName, lVertexShader, lFragmentShader);
+		BOOL lTransparency = FALSE; //@TODO read from material
+		return CreateMaterial(lMaterialName, lTextureName, lVertexShader, lFragmentShader, lTransparency ? eTextureFormats::eRGBA : eTextureFormats::eRGB);
 	}
 	void RenderManager::UnloadMaterial(Material* aMaterial)
 	{

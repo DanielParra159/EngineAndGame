@@ -3,6 +3,7 @@
 
 #include "Defs.h"
 #include "Types.h"
+#include "Graphics\Texture.h"
 #include "Support\Rect.h"
 #include "Support\Color.h"
 #include "Support\Vector2D.h"
@@ -27,7 +28,6 @@ namespace core
 
 namespace graphics
 {
-	class Texture;
 	class Sprite;
 	class Material;
 	class Mesh;
@@ -92,9 +92,10 @@ namespace graphics
 		/**
 		Create a sprite from file
 		@param aFileName, file name
+		@param aFormat, texture format (RGB/RGBA)
 		@return the sprite created or null
 		*/
-		Sprite*											CreateSprite(const std::string& aFileName);
+		Sprite*											CreateSprite(const std::string& aFileName, eTextureFormats aFormat);
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
@@ -108,9 +109,10 @@ namespace graphics
 		/**
 		Load a texture from file
 		@param aFileName, file name
+		@param aFormat, texture format (RGB/RGBA)
 		@return aId, id of the texture loaded
 		*/
-		const Texture*									LoadTexture(const std::string& aFileName);
+		const Texture*									LoadTexture(const std::string& aFileName, eTextureFormats aFormat);
 
 
 		//-----------------------------------------MATERIALS-----------------------------------------
@@ -211,7 +213,7 @@ namespace graphics
 		@param aVertexShader, vertex shader to be used
 		@param aFragmentShader, fragment shader to be used
 		*/
-		Material*										CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, const Shader* aVertexShader, const Shader* aFragmentShader);
+		Material*										CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, const Shader* aVertexShader, const Shader* aFragmentShader, BOOL aTransparency);
 	}; // RendererManager
 } // namespace graphics
 #endif // _ENGINE_GRAPHICS_RENDERERMANAGER_H_

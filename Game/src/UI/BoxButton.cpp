@@ -40,15 +40,15 @@ namespace game
 		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("BoxMenu", lVertexData, sizeof(lVertexData), 6);
 		if (aId == 0)
 		{
-			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu1.png"));
+			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu1.png", graphics::eRGBA));
 		}
 		else if (aId == 1)
 		{
-			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu2.png"));
+			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu2.png", graphics::eRGBA));
 		}
 		else
 		{
-			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu3.png"));
+			lMesh->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("Menu3.png", graphics::eRGBA));
 		}
 		AddComponent(lMesh);
 		mPosition = aPosition;
