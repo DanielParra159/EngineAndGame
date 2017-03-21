@@ -18,7 +18,7 @@ namespace ui
 		mPositionRect.mH = aPositionRect.mH;
 		if (aImage)
 		{
-			mImage = graphics::RenderManager::Instance()->CreateSprite(aImage);
+			mImage = graphics::RenderManager::Instance()->CreateSprite(aImage, graphics::eRGBA);
 			mImage->SetTextureSize(mButtonImageRect);
 		}
 	}

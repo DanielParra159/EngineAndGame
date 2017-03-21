@@ -82,6 +82,10 @@ namespace input
 				return EKeyCode::e1;
 			case SDL_SCANCODE_2:
 				return EKeyCode::e2;
+			case SDL_SCANCODE_3:
+				return EKeyCode::e3;
+			case SDL_SCANCODE_4:
+				return EKeyCode::e4;
 			case SDL_SCANCODE_SPACE:
 				return EKeyCode::eSpace;
 			case SDL_SCANCODE_LCTRL:

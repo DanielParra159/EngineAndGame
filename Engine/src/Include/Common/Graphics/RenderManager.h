@@ -3,6 +3,7 @@
 
 #include "Defs.h"
 #include "Types.h"
+#include "Graphics\Texture.h"
 #include "Support\Rect.h"
 #include "Support\Color.h"
 #include "Support\Vector2D.h"
@@ -12,6 +13,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <unordered_set>
 
 struct  SDL_Renderer;
 struct  SDL_Window;
@@ -26,19 +28,18 @@ namespace core
 
 namespace graphics
 {
-	class Texture;
 	class Sprite;
 	class Material;
 	class Mesh;
 	class MeshComponent;
 	class Camera;
+	class Shader;
 
 
-	typedef std::unordered_map<std::string, IdReferences*>		TTexturesIds;
-	typedef std::vector<uint32>									TLoadedTextures;
-	typedef std::vector<Material*>								TLoadedMaterials;
-	typedef std::unordered_map<std::string, IdReferences*>		TShaderIds;
-	typedef std::vector<int32>									TLoadedShaders;
+	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
+	//typedef std::unordered_set<Texture*>						TLoadedTextures;
+	typedef std::unordered_set<Material*>						TLoadedMaterials;
+	typedef std::unordered_map<std::string, Shader*>			TShaderIds;
 	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
 	typedef std::vector<Mesh*>									TLoadedMeshes;
 	/**
@@ -50,17 +51,12 @@ namespace graphics
 		SINGLETON_HEAD(RenderManager);
 	private:
 		Color											mClearColor;
-		TTexturesIds									mTexturesIds;
-		TLoadedTextures									mLoadedTextures;
+		TTexturesIds									mLoadedTextures;
+		//TLoadedTextures									mLoadedTexturesOLD;
 		uint32											mNumLoadedTextures;
 		TLoadedMaterials								mLoadedMaterials;
-		uint32											mNumLoadedMaterials;
-		TShaderIds										mVertexShaderIds;
-		TLoadedShaders									mLoadedVertexShaders;
-		uint32											mNumLoadedVertexShaders;
-		TShaderIds										mFragmentShaderIds;
-		TLoadedShaders									mLoadedFragmentShaders;
-		uint32											mNumLoadedFragmentShaders;
+		TShaderIds										mLoadedVertexShaders;
+		TShaderIds										mLoadedFragmentShaders;
 		TMeshesIds										mMeshesIds;
 		TLoadedMeshes									mLoadedMeshes;
 		uint32											mNumLoadedMeshes;
@@ -76,29 +72,30 @@ namespace graphics
 
 		/**
 		Allow to render a texture on screen
-		@param aId, texture ID
+		@param aTexture, texture
 		@param aSrcRect, the rect in source texture to render
 		@param aPosition, position on screen
 		@param aSize, size on screen
 		@param aAgnel, rotation on screen
 		*/
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
+		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
 		/**
 		Allow to render a texture on screen
-		@param aId, texture ID
+		@param aTexture, texture
 		@param aSrcRect, the rect in source texture to render
 		@param aX, aY, position on screen
 		@param aW, aH, size on screen
 		@param aAgnel, rotation on screen
 		*/
-		void											RenderTexture(uint32 aId, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
+		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
 		
 		/**
 		Create a sprite from file
 		@param aFileName, file name
+		@param aFormat, texture format (RGB/RGBA)
 		@return the sprite created or null
 		*/
-		Sprite*											CreateSprite(const std::string& aFileName);
+		Sprite*											CreateSprite(const std::string& aFileName, eTextureFormats aFormat);
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
@@ -108,13 +105,14 @@ namespace graphics
 		Unload a texture
 		@param aId, id of the texture
 		*/
-		void											UnloadTexture(int32 aId);
+		void											UnloadTexture(const Texture* aTexture);
 		/**
 		Load a texture from file
 		@param aFileName, file name
+		@param aFormat, texture format (RGB/RGBA)
 		@return aId, id of the texture loaded
 		*/
-		int32											LoadTexture(const std::string& aFileName);
+		const Texture*									LoadTexture(const std::string& aFileName, eTextureFormats aFormat);
 
 
 		//-----------------------------------------MATERIALS-----------------------------------------
@@ -164,10 +162,10 @@ namespace graphics
 		Camera*											GetRenderCamera();
 
 	private:
-		RenderManager() : mTexturesIds(), mLoadedTextures(), mNumLoadedTextures(0),
-			mLoadedMaterials(), mNumLoadedMaterials(0),
-			mVertexShaderIds(), mLoadedVertexShaders(), mNumLoadedVertexShaders(0),
-			mFragmentShaderIds(), mLoadedFragmentShaders(), mNumLoadedFragmentShaders(0),
+		RenderManager() : mLoadedTextures(), mNumLoadedTextures(0), //mLoadedTexturesOLD(),
+			mLoadedMaterials(),
+			mLoadedVertexShaders(),
+			mLoadedFragmentShaders(),
 			mMeshesIds(), mLoadedMeshes(), mNumLoadedMeshes(0),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
@@ -198,28 +196,24 @@ namespace graphics
 		Auxiliar function to load vertex shader from file
 		@param aMaterialFileName, material file name
 		@param aVertexShaderName, vertex sahder name
-		@param aVertexShader, vertex shader (output param)
-		@param aVertexShaderId, vertex shader id (output param)
+		@return 
 		*/
-		BOOL											LoadVertexShader(const std::string& aMaterialFileName, const std::string& aVertexShaderName, int32& aVertexShader, int32& aVertexShaderId);
+		const Shader*									LoadVertexShader(const std::string& aMaterialFileName, const std::string& aVertexShaderName);
 		/**
 		Auxiliar function to load fragment shader from file
 		@param aMaterialFileName, material file name
 		@param aFragmentShaderName, fragment sahder name
-		@param aFragmentShader, fragment shader (output param)
-		@param aFragmentShaderId, fragment shader id (output param)
+		@return 
 		*/
-		BOOL											LoadFragmentShader(const std::string& aMaterialFileName, const std::string& aFragmentShaderName, int32& aFragmentShader, int32& aFragmentShaderId);
+		const Shader*									LoadFragmentShader(const std::string& aMaterialFileName, const std::string& aFragmentShaderName);
 		/**
 		Auxiliar function to create material
 		@param aMaterialName, materia name
 		@param aTextureName, texture name
 		@param aVertexShader, vertex shader to be used
-		@param aVertexShaderId, vertex shader id
 		@param aFragmentShader, fragment shader to be used
-		@param aFragmentShaderId, fragment shader id
 		*/
-		Material*										CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, int32 aVertexShader, int32 aVertexShaderId, int32 aFragmentShader, int32 aFragmentShaderId);
+		Material*										CreateMaterial(const std::string& aMaterialName, const std::string& aTextureName, const Shader* aVertexShader, const Shader* aFragmentShader, BOOL aTransparency);
 	}; // RendererManager
 } // namespace graphics
 #endif // _ENGINE_GRAPHICS_RENDERERMANAGER_H_

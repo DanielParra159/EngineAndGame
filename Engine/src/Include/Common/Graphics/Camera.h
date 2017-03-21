@@ -41,6 +41,7 @@ namespace graphics
 		void											SetLookAt(const Vector3D<float32>& aCameraLookAt);
 		void											SetUp(const Vector3D<float32>& aUp);
 		void											FollowTarget(const logic::IGameObject* aTarget, const Vector3D<float32>& aPositionOffset, const Vector3D<float32>& aLookAtOffset);
+		const Vector3D<float32>&						GetCameraPosition() const { return mCameraPosition; }
 	protected:
 		Camera() {}
 		virtual ~Camera() {}

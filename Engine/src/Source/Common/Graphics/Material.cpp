@@ -1,5 +1,7 @@
 #include "Graphics\Material.h"
 #include "Graphics\RenderManager.h"
+#include "Graphics\Texture.h"
+#include "Graphics\Shader.h"
 
 #include <GL/glew.h>
 #include <SDL_opengl.h>
@@ -8,20 +10,23 @@
 
 namespace graphics
 {
-	void Material::Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader)
+	void Material::Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader)
 	{
 		mName = aName;
 
-		mVertexShaderId = aVertexShaderId;
-		mFragmentShaderId = aFragmentShaderId;
+		mVertexShader = aVertexShader;
+		mFragmentShader = aFragmentShader;
 		mProgramShader = aProgramShader;
 
-		mTextureId = -1;
+		mDiffuseTexture = NULL;
+		mNormalTexture = NULL;
 
-		mColorParam = glGetUniformLocation(aProgramShader, "color");
-		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
+		mColorParam = glGetUniformLocation(mProgramShader, "color");
+		mViewPos = glGetUniformLocation(mProgramShader, "viewPos");
+		mTextureParam = glGetUniformLocation(mProgramShader, "texSample");
 		mLightColorParam = glGetUniformLocation(mProgramShader, "lightColor");
 		mLightPosParam = glGetUniformLocation(mProgramShader, "lightPos");
+		mUseNormalMapping = glGetUniformLocation(mProgramShader, "useNormalMapping");
 
 		mColor.mR = 1.0f;
 		mColor.mG = 1.0f;
@@ -32,7 +37,7 @@ namespace graphics
 	void Material::Release()
 	{
 		mParameters.clear();
-		RenderManager::Instance()->UnloadTexture(mTextureId);
+		RenderManager::Instance()->UnloadTexture(mDiffuseTexture);
 	}
 
 	/*Material* Material::CreateInstance() {
@@ -120,13 +125,20 @@ namespace graphics
 		//glBindVertexArray(0);
 	}
 
-	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
+	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
 	{
 		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
+
+		glUniform1i(mUseNormalMapping, mNormalTexture != NULL);
+
+		if (mViewPos > 0)
+		{
+			glUniform3f(mViewPos, EXPOSE_VECTOR3D(aViewPos));
+		}
 		
-		if (mLightColorParam > 0)
+		if (mLightPosParam > 0)
 		{
 			glUniform3f(mLightColorParam, EXPOSE_VECTOR3D(aLightColor));
 			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D(aLightPosition));

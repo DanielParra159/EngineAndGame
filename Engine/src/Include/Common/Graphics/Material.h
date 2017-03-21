@@ -11,6 +11,8 @@
 
 namespace graphics
 {
+	class Texture;
+	class Shader;
 
 	typedef std::unordered_map<std::string, int32>		TParameters;
 	//typedef std::unordered_map<int32, float32>			TParameterValues;
@@ -25,16 +27,18 @@ namespace graphics
 	protected:
 		TParameters										mParameters;
 		int32											mProgramShader;
-		int32											mVertexShaderId;
-		int32											mFragmentShaderId;
+		const Shader*									mVertexShader;
+		const Shader*									mFragmentShader;
 		int32											mColorParam;
+		int32											mViewPos;
+		int32											mUseNormalMapping;
 		Color											mColor;
 		int32											mTextureParam;
 		int32											mLightColorParam;
 		int32											mLightPosParam;
-		int32											mTextureId;
+		const Texture*									mDiffuseTexture;
+		const Texture*									mNormalTexture;
 		std::string										mName;
-		int32											mId;
 	public:
 		void											SetMatrix4(const std::string& aParamName, const Matrix4* aParamValue);
 		void											SetMatrix4(int32 aParamId, const Matrix4* aParamValue);
@@ -43,20 +47,21 @@ namespace graphics
 		//void											SetVector3(int32 aParamId, const Vector3D<float32>* aParamValue);
 		void											SetColor(const Color* aParamValue);
 		const Color*									GetColor() const { return &mColor; }
-		void											SetTextureId(int32 aTextureId) { mTextureId = aTextureId; }
-		int32											GetTextureId() const { return mTextureId; }
+		void											SetDiffuseTextureId(const Texture* aDiffuseTexture) { mDiffuseTexture = aDiffuseTexture; }
+		const Texture*									GetDiffuseTexture() const { return mDiffuseTexture; }
+		void											SetNormalTextureId(const Texture* aNormalTexture) { mNormalTexture = aNormalTexture; }
+		const Texture*									GetNormalTextureId() const { return mNormalTexture; }
 
 		void											SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
 		void											SetVertexFloatAttribPointer(int32 aAttribId, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
 
 		const std::string&								GetName() const { return mName; }
-		int32											GetId() const { return mId; }
 	protected:
 		Material() : mParameters(0) {}
 		virtual ~Material() {}
-		virtual void									Init(const std::string& aName, int32 aVertexShaderId, int32 aFragmentShaderId, int32 aProgramShader);
+		virtual void									Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader);
 		virtual void									Release();
-		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
+		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
 		//virtual Material*								CreateInstance();
 
 	}; // Material

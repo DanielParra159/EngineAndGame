@@ -53,8 +53,8 @@ namespace audio {
 
 		mDistanceFactor = aDistanceFactor;
 
-		SetEffectsVolume(1.0f);
-		SetMusicVolume(1.0f);
+		SetEffectsVolume(0.0f);
+		SetMusicVolume(0.0f);
 
 		mNextChannelId = 0;
 		mNumLoadedSounds = 0;
@@ -64,9 +64,7 @@ namespace audio {
 
 	void AudioManager::Release()
 	{
-		TLoadedSounds::const_iterator lIterator;
-		TLoadedSounds::const_iterator lEndElement = mLoadedSounds.end();
-		for (lIterator = mLoadedSounds.begin(); lIterator != lEndElement; ++lIterator)
+		LOOP_ITERATOR(TLoadedSounds::const_iterator, mLoadedSounds, lIterator, lEndElement)
 		{
 			(*lIterator)->release();
 		}

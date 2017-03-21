@@ -59,28 +59,28 @@ namespace game
 			-lSize.mX,  lSize.mY,  lSize.mZ, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
 
 			// Right
-			lSize.mX,  lSize.mY,  lSize.mZ, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+			lSize.mX, -lSize.mY, -lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, aSize.mY / 2.5f,
 			lSize.mX,  lSize.mY, -lSize.mZ, 1.0f,  0.0f,  0.0f, 1.0f, aSize.mY / 2.5f,
-			lSize.mX, -lSize.mY, -lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, aSize.mY / 2.5f,
-			lSize.mX, -lSize.mY, -lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, aSize.mY / 2.5f,
-			lSize.mX, -lSize.mY,  lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
 			lSize.mX,  lSize.mY,  lSize.mZ, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+			lSize.mX,  lSize.mY,  lSize.mZ, 1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+			lSize.mX, -lSize.mY,  lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+			lSize.mX, -lSize.mY, -lSize.mZ, 1.0f,  0.0f,  0.0f, 0.0f, aSize.mY / 2.5f,
 
 			//Bottom
-			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, -1.0f,  0.0f, 0.0f, lSize.mZ,
-			lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, -1.0f,  0.0f, lSize.mX, lSize.mZ,
-			lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, -1.0f,  0.0f, lSize.mX, 0.0f,
-			lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, -1.0f,  0.0f, lSize.mX, 0.0f,
-			-lSize.mX, -lSize.mY,  lSize.mZ, 0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-			-lSize.mX, -lSize.mY, -lSize.mZ, 0.0f, -1.0f,  0.0f, 0.0f, lSize.mZ,
+			-lSize.mX,  -lSize.mY, -lSize.mZ, 0.0f,  -1.0f,  0.0f, 0.0f, lSize.mZ,
+			lSize.mX,  -lSize.mY, -lSize.mZ, 0.0f,  -1.0f,  0.0f, lSize.mX, lSize.mZ,
+			lSize.mX,  -lSize.mY,  lSize.mZ, 0.0f,  -1.0f,  0.0f, lSize.mX, 0.0f,
+			lSize.mX,  -lSize.mY,  lSize.mZ, 0.0f,  -1.0f,  0.0f, lSize.mX, 0.0f,
+			-lSize.mX,  -lSize.mY,  lSize.mZ, 0.0f,  -1.0f,  0.0f, 0.0f, 0.0f,
+			-lSize.mX,  -lSize.mY, -lSize.mZ, 0.0f,  -1.0f,  0.0f, 0.0f, lSize.mZ,
 
 			//Up
-			-lSize.mX,  lSize.mY, -lSize.mZ, 0.0f,  1.0f,  0.0f, 0.0f, lSize.mZ,
-			lSize.mX,  lSize.mY, -lSize.mZ, 0.0f,  1.0f,  0.0f, lSize.mX, lSize.mZ,
-			lSize.mX,  lSize.mY,  lSize.mZ, 0.0f,  1.0f,  0.0f, lSize.mX, 0.0f,
-			lSize.mX,  lSize.mY,  lSize.mZ, 0.0f,  1.0f,  0.0f, lSize.mX, 0.0f,
-			-lSize.mX,  lSize.mY,  lSize.mZ, 0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
-			-lSize.mX,  lSize.mY, -lSize.mZ, 0.0f,  1.0f,  0.0f, 0.0f, lSize.mZ
+			lSize.mX, lSize.mY,  lSize.mZ, 0.0f, 1.0f,  0.0f, lSize.mX, 0.0f,
+			lSize.mX, lSize.mY, -lSize.mZ, 0.0f, 1.0f,  0.0f, lSize.mX, lSize.mZ,
+			-lSize.mX, lSize.mY, -lSize.mZ, 0.0f, 1.0f,  0.0f, 0.0f, lSize.mZ,
+			-lSize.mX, lSize.mY, -lSize.mZ, 0.0f, 1.0f,  0.0f, 0.0f, lSize.mZ,
+			-lSize.mX, lSize.mY,  lSize.mZ, 0.0f, 1.0f,  0.0f, 0.0f, 0.0f,
+			lSize.mX, lSize.mY,  lSize.mZ, 0.0f, 1.0f,  0.0f, lSize.mX, 0.0f
 		};
 
 		static int32 lIndex = 0;
@@ -91,7 +91,7 @@ namespace game
 		std::string lName = "Wall_" + std::to_string(lIndex);
 		lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray(lName, lWallVertexData, sizeof(lWallVertexData), 36);
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
-		lMaterial->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png"));
+		lMaterial->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png", graphics::eRGB));
 		lMesh->SetMaterial(lMaterial);
 
 		AddComponent(b);

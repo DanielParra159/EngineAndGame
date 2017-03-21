@@ -8,7 +8,7 @@ return {
   height = 50,
   tilewidth = 1,
   tileheight = 1,
-  nextobjectid = 8,
+  nextobjectid = 9,
   properties = {},
   tilesets = {
     {
@@ -121,6 +121,20 @@ return {
           y = 42,
           width = 9,
           height = 26.9091,
+          rotation = 0,
+          gid = 2075,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 18,
+          y = 40,
+          width = 1,
+          height = 1,
           rotation = 0,
           gid = 2075,
           visible = true,

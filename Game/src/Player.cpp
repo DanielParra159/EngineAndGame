@@ -37,11 +37,11 @@ namespace game
 		AddComponent(capsule);
 
 		graphics::MeshComponent* lHead = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Box.obj");
-		lHead->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png"));
+		lHead->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png", graphics::eRGB));
 		lHead->GetMaterial()->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
 		AddComponent(lHead);
 		mTail = graphics::RenderManager::Instance()->LoadMeshFromFile("Box.obj");
-		mTail->GetMaterial()->SetTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png"));
+		mTail->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("T_Snake.png", graphics::eRGB));
 
 		mDirection = EDirections::eRight;
 
