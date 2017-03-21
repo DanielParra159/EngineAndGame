@@ -6,9 +6,10 @@
 
 namespace graphics
 {
-	void Sprite::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
+	void Sprite::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength,
+		const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance)
 	{
-		Mesh::Init(aName, aVBO, aEBO, aVertexData, aVertexDataLength, aElementData, aTextureCoords, aNumVertex);
+		Mesh::Init(aName, aVBO, aEBO, aVertexData, aVertexDataLength, aElementData, aTextureCoords, aNumVertex, aInstance);
 	}
 
 	void Sprite::Release()
@@ -19,8 +20,7 @@ namespace graphics
 	IRenderable* Sprite::CreateInstance()
 	{
 		Sprite* lSprite = new Sprite();
-		lSprite->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex);
-		lSprite->mId = mId;
+		lSprite->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex, TRUE);
 		return lSprite;
 	}
 

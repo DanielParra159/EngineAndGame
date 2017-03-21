@@ -32,7 +32,6 @@ namespace graphics
 		void											SetMesh(Mesh* aMesh);
 	public:
 		const std::string&								GetName() const { return mMesh->GetName(); }
-		int32											GetId() const { return mMesh->GetId(); }
 		Material*										GetMaterial() { return mMesh->GetMaterial(); }
 		void											SetMaterial(Material *aMaterial) { mMesh->SetMaterial(aMaterial); };
 		void											SetRotationOffset(const Vector3D<float32>& aRotationOffset) { mRotationOffset = aRotationOffset; }

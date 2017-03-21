@@ -8,12 +8,14 @@
 
 namespace graphics
 {
-	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
+	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, 
+		const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance)
 	{
 		mName = aName;
 		mVBO = aVBO;
 		mEBO = aEBO;
 		mElementData = aElementData;
+		mInstance = aInstance;
 
 		mVertexData = new float32[aVertexDataLength];
 		memcpy(mVertexData, aVertexData, aVertexDataLength);
@@ -39,15 +41,11 @@ namespace graphics
 		mMaterial = aMaterial;
 	}
 
-	void Mesh::SetId(int32 aId) {
-		mId = aId; 
-	}
 
 	IRenderable* Mesh::CreateInstance()
 	{
 		Mesh* lMesh = new Mesh();
-		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex);
-		lMesh->mId = mId;
+		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex, TRUE);
 		return lMesh;
 	}
 

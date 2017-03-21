@@ -29,6 +29,7 @@ namespace core
 namespace graphics
 {
 	class Sprite;
+	class SpriteComponent;
 	class Material;
 	class Mesh;
 	class MeshComponent;
@@ -58,7 +59,7 @@ namespace graphics
 		TShaderIds										mLoadedVertexShaders;
 		TShaderIds										mLoadedFragmentShaders;
 		TMeshesIds										mMeshesIds;
-		TLoadedMeshes									mLoadedMeshes;
+		TLoadedMeshes									mMeshInstances;
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
@@ -86,6 +87,7 @@ namespace graphics
 		@return the sprite created or null
 		*/
 		Sprite*											CreateSprite(const std::string& aFileName, eTextureFormats aFormat);
+		SpriteComponent*								CreateSpriteComponent(const std::string& aFileName, eTextureFormats aFormat);
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
@@ -156,7 +158,7 @@ namespace graphics
 			mLoadedMaterials(),
 			mLoadedVertexShaders(),
 			mLoadedFragmentShaders(),
-			mMeshesIds(), mLoadedMeshes(),
+			mMeshesIds(), mMeshInstances(),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
 		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize,

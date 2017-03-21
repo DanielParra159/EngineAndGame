@@ -25,7 +25,7 @@ namespace graphics
 		Sprite() : Mesh() {}
 		virtual ~Sprite() {}
 
-		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex);
+		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance);
 		virtual void									Release();
 
 		virtual IRenderable*							CreateInstance();

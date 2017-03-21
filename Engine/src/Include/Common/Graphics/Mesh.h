@@ -27,12 +27,11 @@ namespace graphics
 		uint32											mVBO;
 		uint32											mEBO;
 		std::string										mName;
-		int32											mId;
+		BOOL											mInstance;
 	public:
 		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
 
 		const std::string&								GetName() const { return mName; }
-		int32											GetId() const { return mId; }
 		Material*										GetMaterial() { return mMaterial; }
 		void											SetMaterial(Material *aMaterial);
 
@@ -40,11 +39,11 @@ namespace graphics
 		Mesh() : mMaterial(0), mVertexData(0) {}
 		virtual ~Mesh() {}
 
-		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex);
+		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, 
+			const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance);
 		virtual void									Release();
 
 		virtual IRenderable*							CreateInstance();
-		void											SetId(int32 aId);
 
 	}; // Mesh
 

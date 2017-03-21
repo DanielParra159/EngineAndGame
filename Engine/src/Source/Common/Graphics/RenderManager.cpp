@@ -1,5 +1,6 @@
 #include "Graphics/RenderManager.h"
 #include "Graphics/Sprite.h"
+#include "Graphics/SpriteComponent.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Material.h"
 #include "Graphics/Shader.h"
@@ -106,11 +107,11 @@ namespace graphics
 			delete lIterator->second;
 		}
 		mMeshesIds.clear();
-		LOOP_ITERATOR(TLoadedMeshes::iterator, mLoadedMeshes, lIterator, lEndElement) {
+		LOOP_ITERATOR(TLoadedMeshes::iterator, mMeshInstances, lIterator, lEndElement) {
 			(*lIterator)->Release();
 			delete (*lIterator);
 		}
-		mLoadedMeshes.clear();
+		mMeshInstances.clear();
 
 
 		LOOP_ITERATOR(TLoadedMaterials::iterator, mLoadedMaterials, lIterator, lEndElement)
@@ -170,7 +171,7 @@ namespace graphics
 
 	void RenderManager::RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite)
 	{
-		
+		RenderMesh(aPosition, aScale, aRotation, aSprite);
 	}
 
 	void RenderManager::UnloadTexture(const Texture* aTexture)
@@ -229,25 +230,67 @@ namespace graphics
 	Sprite* RenderManager::CreateSprite(const std::string& aFileName, eTextureFormats aFormat)
 	{
 		Sprite *lResult = NULL;
+		TMeshesIds::const_iterator iterator = mMeshesIds.find("SpriteBase");
+		std::string lSpritePath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName;
 
-		/*const Texture* lTexture = LoadTexture(aFileName, aFormat);
-		if (lTexture != NULL)
-		{
+		if (iterator == mMeshesIds.end()) {
+			float32* lTextureCoords = NULL;
+
+			const float32 lVertexData[] = {
+				// X      Y     Z     Nx    Ny     Nz    U     V
+				//Front
+				-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f,
+				0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 1.0f,
+				0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
+				0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
+				-0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 0.0f,
+				-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f
+			};
+
+			uint32 lVertexDataLength = sizeof(lVertexData);
+			uint32 lNumVertex = 6;
+
+			uint32 lVBO;
+			glGenBuffers(1, &lVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, lVBO);
+			glBufferData(GL_ARRAY_BUFFER, lVertexDataLength, lVertexData, GL_STATIC_DRAW);
+			//glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, lVertexData, GL_STATIC_DRAW);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 			lResult = new Sprite();
-			lResult->Init(lTexture);
+			// @HACK "SpriteBase"
+			lResult->Init("SpriteBase", lVBO, 0, lVertexData, lVertexDataLength, 0, lTextureCoords, lNumVertex, TRUE);
+			mMeshesIds["SpriteBase"] = new MeshReferences(lResult);
 		}
 		else {
-			core::LogFormatString("Can\'t load texture %s\n", aFileName);
-		}*/
+			lResult = (Sprite*)iterator->second->mMesh;
+		}
 
+		// Return an instance
+		if (lResult != NULL) {
+			Sprite* lSprite = (Sprite*)lResult->CreateInstance();
+			lSprite->mMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture(aFileName, graphics::eRGBA));
+			mMeshesIds["SpriteBase"]->AddReference();
+			mMeshInstances.insert(lSprite);
+			return lSprite;
+		}
+		return NULL;
+	}
+
+	SpriteComponent* RenderManager::CreateSpriteComponent(const std::string& aFileName, eTextureFormats aFormat) {
+		SpriteComponent* lResult = NULL;
+		Sprite* lSprite = CreateSprite(aFileName, aFormat);
+		if (lSprite != NULL)
+		{
+			lResult = (SpriteComponent*)logic::ComponentFactory::Instance()->GetComponent(SpriteComponent::sId);
+			lResult->Init(TRUE);
+			lResult->SetMesh(lSprite);
+		}
 		return lResult;
 	}
 
 	void RenderManager::DeleteSprite(Sprite* aSprite)
 	{
-		/*aSprite->Release();
-		delete aSprite;
-		aSprite = NULL;*/
+		UnloadMesh(aSprite, false);
 	}
 
 
@@ -471,20 +514,21 @@ namespace graphics
 
 	Mesh* RenderManager::LoadMeshFromFile(const std::string& aFileName)
 	{
-		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aFileName);
+		std::string lMeshPath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName;
+		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(lMeshPath);
 
 		if (lMeshIterator != mMeshesIds.end())
 		{
 			Mesh* lMesh = (Mesh*)lMeshIterator->second->mMesh->CreateInstance();
 			lMeshIterator->second->AddReference();
-			mLoadedMeshes.insert(lMesh);
+			mMeshInstances.insert(lMesh);
 			return lMesh;
 		}
 
-		const struct aiScene* scene = aiImportFile((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+		const struct aiScene* scene = aiImportFile(lMeshPath.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 		if (scene == NULL)
 		{
-			core::LogFormatString("Can't load %s mesh", (io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str());
+			core::LogFormatString("Can't load %s mesh", lMeshPath.c_str());
 			return NULL;
 		}
 
@@ -537,13 +581,14 @@ namespace graphics
 
 	Mesh* RenderManager::LoadMeshFromVertexArray(const std::string& aMeshName, const float32* aVertexData, uint32 aVertexDataLength, uint32 aNumVertex)
 	{
-		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(aMeshName);
+		std::string lMeshPath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aMeshName;
+		TMeshesIds::const_iterator lMeshIterator = mMeshesIds.find(lMeshPath);
 
 		if (lMeshIterator != mMeshesIds.end())
 		{
 			Mesh* lMesh = (Mesh*)lMeshIterator->second->mMesh->CreateInstance();
 			lMeshIterator->second->AddReference();
-			mLoadedMeshes.insert(lMesh);
+			mMeshInstances.insert(lMesh);
 			return lMesh;
 		}
 
@@ -553,6 +598,8 @@ namespace graphics
 	{
 		Mesh* lResult;
 		float32* lTextureCoords = NULL;
+
+		std::string lMeshPath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aMeshName;
 
 		if (aVertexData != NULL /*&& lTextureCoords != NULL*/)
 		{
@@ -565,25 +612,30 @@ namespace graphics
 			//glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, lVertexData, GL_STATIC_DRAW);
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
-			std::string lMeshPath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aMeshName;
-			lResult->Init(aMeshName, lVBO, 0, aVertexData, aVertexDataLength, 0, lTextureCoords, aNumVertex);
-			mMeshesIds[aMeshName] = new MeshReferences(lResult);
+			lResult->Init(lMeshPath, lVBO, 0, aVertexData, aVertexDataLength, 0, lTextureCoords, aNumVertex, FALSE);
+			mMeshesIds[lMeshPath] = new MeshReferences(lResult);
 		}
 		else
 		{
-			core::LogFormatString("Can't load mesh %s", aMeshName.c_str());
+			core::LogFormatString("Can't load mesh %s", lMeshPath.c_str());
 		}
 
-		return lResult == NULL ? NULL : (Mesh*)lResult->CreateInstance();
+		// Return an instance
+		if (lResult != NULL) {
+			Mesh* lMesh = (Mesh*)lResult->CreateInstance();
+			mMeshesIds[lMeshPath]->AddReference();
+			mMeshInstances.insert(lMesh);
+			return lMesh;
+		}
+		return NULL;
 	}
 
 	void RenderManager::UnloadMesh(Mesh* aMesh, BOOL aPermanent)
 	{
 		MeshReferences* lMeshReferences = mMeshesIds[aMesh->mName];
-		TLoadedMeshes::const_iterator lMeshIterator = mLoadedMeshes.find(aMesh);
-		if (lMeshIterator != mLoadedMeshes.end()) {
+		if (aMesh->mInstance) {
 			// Is an instance
-			mLoadedMeshes.erase(aMesh);
+			mMeshInstances.erase(aMesh);
 			aMesh->Release();
 			delete aMesh;
 			if (lMeshReferences->RemoveReference() == 0 && aPermanent) {
@@ -620,7 +672,7 @@ namespace graphics
 		static float32 lLihgtPosX = 0.0f;
 		static int32 lSign = 1;
 		lLihgtPosX += sys::Time::GetDeltaSec() * lSign *4;
-		if (Math::Abs(lLihgtPosX) > 30.0f)
+		if (Math::Abs(lLihgtPosX) > 50.0f)
 			lSign *= -1;
 
 		aMesh->mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
