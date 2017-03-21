@@ -19,7 +19,6 @@ namespace ui
 		if (aImage)
 		{
 			mImage = graphics::RenderManager::Instance()->CreateSprite(aImage, graphics::eRGBA);
-			mImage->SetTextureSize(mButtonImageRect);
 		}
 	}
 
@@ -37,8 +36,8 @@ namespace ui
 
 	void ButtonMenu::Render()
 	{
-		if (mImage)
-			mImage->Render(EXPOSE_RECT(mPositionRect));
+		//if (mImage)
+		//	mImage->Render(EXPOSE_RECT(mPositionRect));
 	}
 
 	void ButtonMenu::Release()

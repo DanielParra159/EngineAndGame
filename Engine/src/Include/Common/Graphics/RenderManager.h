@@ -29,19 +29,21 @@ namespace core
 namespace graphics
 {
 	class Sprite;
+	class SpriteComponent;
 	class Material;
 	class Mesh;
 	class MeshComponent;
 	class Camera;
 	class Shader;
+	class MeshReferences;
 
 
 	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
 	//typedef std::unordered_set<Texture*>						TLoadedTextures;
 	typedef std::unordered_set<Material*>						TLoadedMaterials;
 	typedef std::unordered_map<std::string, Shader*>			TShaderIds;
-	typedef std::unordered_map<std::string, IdReferences*>		TMeshesIds;
-	typedef std::vector<Mesh*>									TLoadedMeshes;
+	typedef std::unordered_map<std::string, MeshReferences*>	TMeshesIds;
+	typedef std::unordered_set<Mesh*>							TLoadedMeshes;
 	/**
 	This manager is responsible for painting in screen.
 	*/
@@ -53,13 +55,11 @@ namespace graphics
 		Color											mClearColor;
 		TTexturesIds									mLoadedTextures;
 		//TLoadedTextures									mLoadedTexturesOLD;
-		uint32											mNumLoadedTextures;
 		TLoadedMaterials								mLoadedMaterials;
 		TShaderIds										mLoadedVertexShaders;
 		TShaderIds										mLoadedFragmentShaders;
 		TMeshesIds										mMeshesIds;
-		TLoadedMeshes									mLoadedMeshes;
-		uint32											mNumLoadedMeshes;
+		TLoadedMeshes									mMeshInstances;
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
@@ -78,16 +78,7 @@ namespace graphics
 		@param aSize, size on screen
 		@param aAgnel, rotation on screen
 		*/
-		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle);
-		/**
-		Allow to render a texture on screen
-		@param aTexture, texture
-		@param aSrcRect, the rect in source texture to render
-		@param aX, aY, position on screen
-		@param aW, aH, size on screen
-		@param aAgnel, rotation on screen
-		*/
-		void											RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle);
+		void											RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite);
 		
 		/**
 		Create a sprite from file
@@ -96,6 +87,7 @@ namespace graphics
 		@return the sprite created or null
 		*/
 		Sprite*											CreateSprite(const std::string& aFileName, eTextureFormats aFormat);
+		SpriteComponent*								CreateSpriteComponent(const std::string& aFileName, eTextureFormats aFormat);
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
@@ -152,7 +144,7 @@ namespace graphics
 		*/
 		void											UnloadMesh(Mesh* aMesh, BOOL aPermanent);
 
-		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial);
+		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh);
 		//-----------------------------------------END MESHES-----------------------------------------
 
 		Camera*											CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
@@ -162,11 +154,11 @@ namespace graphics
 		Camera*											GetRenderCamera();
 
 	private:
-		RenderManager() : mLoadedTextures(), mNumLoadedTextures(0), //mLoadedTexturesOLD(),
+		RenderManager() : mLoadedTextures(), //mLoadedTexturesOLD(),
 			mLoadedMaterials(),
 			mLoadedVertexShaders(),
 			mLoadedFragmentShaders(),
-			mMeshesIds(), mLoadedMeshes(), mNumLoadedMeshes(0),
+			mMeshesIds(), mMeshInstances(),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
 		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize,

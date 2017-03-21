@@ -40,7 +40,7 @@ namespace game
 		mMesh = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba");
 		mMesh2 = graphics::RenderManager::Instance()->LoadMeshFromFile("Prueba2");
 		mMesh2->GetMaterial()->SetColor(&Color(1.0f, 0, 0, 1.0f));
-		mMesh2->GetMaterial()->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("sample2.png", graphics::eRGB));
+		mMesh2->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("sample2.png", graphics::eRGB));
 
 		return TRUE;
 	}

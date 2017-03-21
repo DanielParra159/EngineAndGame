@@ -47,10 +47,10 @@ namespace graphics
 		//void											SetVector3(int32 aParamId, const Vector3D<float32>* aParamValue);
 		void											SetColor(const Color* aParamValue);
 		const Color*									GetColor() const { return &mColor; }
-		void											SetDiffuseTextureId(const Texture* aDiffuseTexture) { mDiffuseTexture = aDiffuseTexture; }
+		void											SetDiffuseTexture(const Texture* aDiffuseTexture) { mDiffuseTexture = aDiffuseTexture; }
 		const Texture*									GetDiffuseTexture() const { return mDiffuseTexture; }
-		void											SetNormalTextureId(const Texture* aNormalTexture) { mNormalTexture = aNormalTexture; }
-		const Texture*									GetNormalTextureId() const { return mNormalTexture; }
+		void											SetNormalTexture(const Texture* aNormalTexture) { mNormalTexture = aNormalTexture; }
+		const Texture*									GetNormalTexture() const { return mNormalTexture; }
 
 		void											SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
 		void											SetVertexFloatAttribPointer(int32 aAttribId, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);

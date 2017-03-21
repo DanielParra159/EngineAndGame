@@ -8,12 +8,14 @@
 
 namespace graphics
 {
-	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex)
+	void Mesh::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, 
+		const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance)
 	{
 		mName = aName;
 		mVBO = aVBO;
 		mEBO = aEBO;
 		mElementData = aElementData;
+		mInstance = aInstance;
 
 		mVertexData = new float32[aVertexDataLength];
 		memcpy(mVertexData, aVertexData, aVertexDataLength);
@@ -39,27 +41,18 @@ namespace graphics
 		mMaterial = aMaterial;
 	}
 
-	void Mesh::SetId(int32 aId) {
-		mId = aId; 
-	}
 
-	Mesh* Mesh::CreateInstance()
+	IRenderable* Mesh::CreateInstance()
 	{
 		Mesh* lMesh = new Mesh();
-		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex);
-		lMesh->mId = mId;
+		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex, TRUE);
 		return lMesh;
 	}
 
 	void Mesh::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
 	{
-		RenderManager::Instance()->RenderMesh(aPosition, aScale, aRotation, this, mMaterial);
+		RenderManager::Instance()->RenderMesh(aPosition, aScale, aRotation, this);
 	}
 
-
-	void Mesh::Render(float32 aX, float32 aY, float32 aZ)
-	{
-
-	}
 
 } // namespace graphics

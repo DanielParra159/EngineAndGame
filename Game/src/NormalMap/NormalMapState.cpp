@@ -68,13 +68,13 @@ namespace game
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		mMesh = graphics::RenderManager::Instance()->LoadMeshFromFile("Box.obj");
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
-		lMaterial->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("brickwall.jpg", graphics::eRGB));
+		lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("brickwall.jpg", graphics::eRGB));
 		mMesh->SetMaterial(lMaterial);
 
 		mMeshNormal = graphics::RenderManager::Instance()->LoadMeshFromFile("Box.obj");
 		lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test03");
-		lMaterial->SetDiffuseTextureId(graphics::RenderManager::Instance()->LoadTexture("brickwall.jpg", graphics::eRGB));
-		lMaterial->SetNormalTextureId(graphics::RenderManager::Instance()->LoadTexture("brickwall_normal.jpg", graphics::eRGB));
+		lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("brickwall.jpg", graphics::eRGB));
+		lMaterial->SetNormalTexture(graphics::RenderManager::Instance()->LoadTexture("brickwall_normal.jpg", graphics::eRGB));
 		mMeshNormal->SetMaterial(lMaterial);
 
 		return TRUE;

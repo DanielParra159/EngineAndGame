@@ -3,7 +3,7 @@
 
 #include "Types.h"
 /**
-Auxiliar class to keep the number of references of a id
+Auxiliar class to keep the number of references of an id
 */
 class IdReferences
 {
