@@ -43,7 +43,7 @@ namespace graphics
 		mId = aId; 
 	}
 
-	Mesh* Mesh::CreateInstance()
+	IRenderable* Mesh::CreateInstance()
 	{
 		Mesh* lMesh = new Mesh();
 		lMesh->Init(mName, mVBO, mEBO, mVertexData, mVertexDataLength, mElementData, mTextureCoords, mNumVertex);
@@ -53,13 +53,8 @@ namespace graphics
 
 	void Mesh::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
 	{
-		RenderManager::Instance()->RenderMesh(aPosition, aScale, aRotation, this, mMaterial);
+		RenderManager::Instance()->RenderMesh(aPosition, aScale, aRotation, this);
 	}
 
-
-	void Mesh::Render(float32 aX, float32 aY, float32 aZ)
-	{
-
-	}
 
 } // namespace graphics

@@ -94,28 +94,23 @@ namespace graphics
 							   (uint32)(aClearColor.mB * 255),
 							   (uint32)(aClearColor.mA * 255));*/
 
-
-		mNumLoadedMeshes = 0;
-		mNumLoadedMeshes = 0;
-
 		return TRUE;
 	}
 
 	void RenderManager::Release()
 	{
-		int32 size = mLoadedMeshes.size();
-		for (int i=0; i < size; ++i)
-		{
-			if (mLoadedMeshes[i] == NULL)
-				continue;
-			Mesh* lMesh = mLoadedMeshes[i];
-			lMesh->Release();
-			glDeleteBuffers(1, &lMesh->mVBO);
-			delete lMesh;
+		LOOP_ITERATOR(TMeshesIds::iterator, mMeshesIds, lIterator, lEndElement) {
+			glDeleteBuffers(1, &lIterator->second->mMesh->mVBO);
+			lIterator->second->mMesh->Release();
+			delete lIterator->second->mMesh;
+			delete lIterator->second;
+		}
+		mMeshesIds.clear();
+		LOOP_ITERATOR(TLoadedMeshes::iterator, mLoadedMeshes, lIterator, lEndElement) {
+			(*lIterator)->Release();
+			delete (*lIterator);
 		}
 		mLoadedMeshes.clear();
-		mMeshesIds.clear();
-		mNumLoadedMeshes = 0;
 
 
 		LOOP_ITERATOR(TLoadedMaterials::iterator, mLoadedMaterials, lIterator, lEndElement)
@@ -138,7 +133,6 @@ namespace graphics
 		mLoadedVertexShaders.clear();
 
 		LOOP_ITERATOR(TShaderIds::const_iterator, mLoadedFragmentShaders, lIterator, lEndElement)
-		for (int i = 0; i < size; ++i)
 		{
 			lIterator->second->Release();
 			delete lIterator->second;
@@ -152,7 +146,6 @@ namespace graphics
 		}
 		//mLoadedTexturesOLD.clear();
 		mLoadedTextures.clear();
-		mNumLoadedTextures = 0;
 
 		SDL_GL_DeleteContext(mContext);
 		SDL_DestroyRenderer(mRenderer);
@@ -175,25 +168,9 @@ namespace graphics
 		//SDL_RenderPresent(mRenderer);
 	}
 
-	void RenderManager::RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, const Vector2D<int32> &aPosition, const Vector2D<int32> &aSize, float64 aAngle)
+	void RenderManager::RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite)
 	{
-		RenderTexture(aTexture, aSrcRect, EXPOSE_VECTOR2D(aPosition), EXPOSE_VECTOR2D(aSize), aAngle);
-	}
-	void RenderManager::RenderTexture(const Texture* aTexture, const Rect<int32> &aSrcRect, int32 aX, int32 aY, int32 aW, int32 aH, float64 aAngle)
-	{
-		SDL_Rect srcRect;
-		SDL_Rect destRect;
-		srcRect.x = aSrcRect.mX;
-		srcRect.y = aSrcRect.mY;
-		srcRect.w = aSrcRect.mW;
-
-		srcRect.h = aSrcRect.mH;
-		destRect.x = aX;
-		destRect.y = aY;
-		destRect.w = aW;
-		destRect.h = aH;
 		
-		//SDL_RenderCopyEx(mRenderer, mLoadedTextures[aId], &srcRect, &destRect, aAngle, 0, SDL_FLIP_NONE);
 	}
 
 	void RenderManager::UnloadTexture(const Texture* aTexture)
@@ -212,8 +189,6 @@ namespace graphics
 
 
 					mLoadedTextures.erase(lIterator);
-					--mNumLoadedTextures;
-
 				}
 				break;
 			}
@@ -240,7 +215,6 @@ namespace graphics
 		{
 			//mLoadedTexturesOLD.insert(lTexture);
 			mLoadedTextures[aFileName] = lTexture;
-			++mNumLoadedTextures;
 		}
 		else
 		{
@@ -256,7 +230,7 @@ namespace graphics
 	{
 		Sprite *lResult = NULL;
 
-		const Texture* lTexture = LoadTexture(aFileName, aFormat);
+		/*const Texture* lTexture = LoadTexture(aFileName, aFormat);
 		if (lTexture != NULL)
 		{
 			lResult = new Sprite();
@@ -264,16 +238,16 @@ namespace graphics
 		}
 		else {
 			core::LogFormatString("Can\'t load texture %s\n", aFileName);
-		}
+		}*/
 
 		return lResult;
 	}
 
 	void RenderManager::DeleteSprite(Sprite* aSprite)
 	{
-		aSprite->Release();
+		/*aSprite->Release();
 		delete aSprite;
-		aSprite = NULL;
+		aSprite = NULL;*/
 	}
 
 
@@ -501,8 +475,10 @@ namespace graphics
 
 		if (lMeshIterator != mMeshesIds.end())
 		{
-			++lMeshIterator->second->mReferences;
-			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
+			Mesh* lMesh = (Mesh*)lMeshIterator->second->mMesh->CreateInstance();
+			lMeshIterator->second->AddReference();
+			mLoadedMeshes.insert(lMesh);
+			return lMesh;
 		}
 
 		const struct aiScene* scene = aiImportFile((io::FileSystem::Instance()->GetCurrentDir() + "\\" + aFileName).c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
@@ -565,8 +541,10 @@ namespace graphics
 
 		if (lMeshIterator != mMeshesIds.end())
 		{
-			++lMeshIterator->second->mReferences;
-			return mLoadedMeshes[lMeshIterator->second->mId]->CreateInstance();
+			Mesh* lMesh = (Mesh*)lMeshIterator->second->mMesh->CreateInstance();
+			lMeshIterator->second->AddReference();
+			mLoadedMeshes.insert(lMesh);
+			return lMesh;
 		}
 
 		return LoadMesh(aMeshName, aVertexData, aVertexDataLength, aNumVertex);
@@ -587,72 +565,51 @@ namespace graphics
 			//glBufferData(GL_ARRAY_BUFFER, aVertexDataLength, lVertexData, GL_STATIC_DRAW);
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
+			std::string lMeshPath = io::FileSystem::Instance()->GetCurrentDir() + "\\" + aMeshName;
 			lResult->Init(aMeshName, lVBO, 0, aVertexData, aVertexDataLength, 0, lTextureCoords, aNumVertex);
-
-			uint32 lIndex = 0;
-			uint32 lCapacity = mLoadedMeshes.capacity();
-			if (mNumLoadedMeshes == lCapacity)
-			{
-				mLoadedMeshes.push_back(lResult);
-				lIndex = mNumLoadedMeshes;
-			}
-			else
-			{
-				uint32 lSize = mLoadedMeshes.size();
-
-				while (lIndex < lSize && mLoadedMeshes[lIndex] != NULL)
-				{
-					++lIndex;
-				}
-
-				if (lIndex < lSize)
-				{
-					mLoadedMeshes[lIndex] = lResult;
-				}
-				else
-				{
-					mLoadedMeshes.push_back(lResult);
-				}
-			}
-
-			mMeshesIds[aMeshName] = new IdReferences(lIndex, 1);
-			lResult->SetId(lIndex);
-			++mNumLoadedMeshes;
-
+			mMeshesIds[aMeshName] = new MeshReferences(lResult);
 		}
 		else
 		{
 			core::LogFormatString("Can't load mesh %s", aMeshName.c_str());
 		}
 
-		return lResult == NULL ? NULL : lResult->CreateInstance();
+		return lResult == NULL ? NULL : (Mesh*)lResult->CreateInstance();
 	}
 
 	void RenderManager::UnloadMesh(Mesh* aMesh, BOOL aPermanent)
 	{
-		LOOP_ITERATOR(TMeshesIds::const_iterator, mMeshesIds, lIterator, lIteratorEnd)
-		{
-			if (lIterator->second->mId == aMesh->mId)
-			{
-				if (--lIterator->second->mReferences == 0 && aPermanent)
-				{
-					mLoadedMeshes[aMesh->mId] = NULL;
-					glDeleteBuffers(1, &aMesh->mVBO);
-
-					mMeshesIds.erase(lIterator);
-					--mNumLoadedMeshes;
-
-					aMesh->Release();
-					delete aMesh;
-				}
-				else {
-					aMesh->Release();
-				}
-				break;
+		MeshReferences* lMeshReferences = mMeshesIds[aMesh->mName];
+		TLoadedMeshes::const_iterator lMeshIterator = mLoadedMeshes.find(aMesh);
+		if (lMeshIterator != mLoadedMeshes.end()) {
+			// Is an instance
+			mLoadedMeshes.erase(aMesh);
+			aMesh->Release();
+			delete aMesh;
+			if (lMeshReferences->RemoveReference() == 0 && aPermanent) {
+				glDeleteBuffers(1, &lMeshReferences->mMesh->mVBO);
+				mMeshesIds.erase(lMeshReferences->mMesh->mName);
+				lMeshReferences->mMesh->Release();
+				delete lMeshReferences->mMesh;
+				delete lMeshReferences;
+			}
+		}
+		else {
+			// "Original" mesh
+			if (lMeshReferences->RemoveReference() == 0 && aPermanent) {
+				glDeleteBuffers(1, &aMesh->mVBO);
+				delete lMeshReferences;
+				mMeshesIds.erase(aMesh->mName);
+				aMesh->Release();
+				delete aMesh;
+			}
+			else {
+				aMesh->Release();
+				delete aMesh;
 			}
 		}
 	}
-	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh, Material* mMaterial)
+	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh)
 	{
 		Matrix4 lModelMatrix;
 		Matrix4x4::translate(&lModelMatrix, aPosition);
@@ -666,23 +623,23 @@ namespace graphics
 		if (Math::Abs(lLihgtPosX) > 30.0f)
 			lSign *= -1;
 
-		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
-		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aMesh->mVBO);
-		mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aMesh->mVBO);
-		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aMesh->mVBO);
+		aMesh->mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
+		aMesh->mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aMesh->mVBO);
+		aMesh->mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aMesh->mVBO);
+		aMesh->mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aMesh->mVBO);
 		//@TODO: if is the same material only need to asign these attrib. one time
-		mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
-		mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
-		if (mMaterial->mDiffuseTexture != NULL)
+		aMesh->mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
+		aMesh->mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
+		if (aMesh->mMaterial->mDiffuseTexture != NULL)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->mId);
+			glBindTexture(GL_TEXTURE_2D, aMesh->mMaterial->mDiffuseTexture->mId);
 			//glUniform1i(mMaterial->mTextureParam, 0);
 		}
-		if (mMaterial->mNormalTexture != NULL)
+		if (aMesh->mMaterial->mNormalTexture != NULL)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->mId);
+			glBindTexture(GL_TEXTURE_2D, aMesh->mMaterial->mNormalTexture->mId);
 			//glUniform1i(mMaterial->mTextureParam, 0);
 		}
 
