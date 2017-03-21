@@ -30,6 +30,7 @@ namespace graphics
 		const Shader*									mVertexShader;
 		const Shader*									mFragmentShader;
 		int32											mColorParam;
+		int32											mViewPos;
 		int32											mUseNormalMapping;
 		Color											mColor;
 		int32											mTextureParam;
@@ -60,7 +61,7 @@ namespace graphics
 		virtual ~Material() {}
 		virtual void									Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader);
 		virtual void									Release();
-		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
+		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
 		//virtual Material*								CreateInstance();
 
 	}; // Material

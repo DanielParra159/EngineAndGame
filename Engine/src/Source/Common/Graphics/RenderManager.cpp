@@ -487,7 +487,8 @@ namespace graphics
 			lResult->SetMesh(lMesh);
 		}
 		return lResult;
-	}
+	}
+
 
 	Mesh* RenderManager::LoadMeshFromFile(const std::string& aFileName)
 	{
@@ -660,7 +661,7 @@ namespace graphics
 		if (Math::Abs(lLihgtPosX) > 30.0f)
 			lSign *= -1;
 
-		mMaterial->PrepareToRender(&lModelMatrix, Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 5.0f, 1.0f));
+		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aMesh->mVBO);
 		mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aMesh->mVBO);
 		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aMesh->mVBO);

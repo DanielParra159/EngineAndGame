@@ -21,8 +21,9 @@ namespace graphics
 		mDiffuseTexture = NULL;
 		mNormalTexture = NULL;
 
-		mColorParam = glGetUniformLocation(aProgramShader, "color");
-		mTextureParam = glGetUniformLocation(aProgramShader, "texSample");
+		mColorParam = glGetUniformLocation(mProgramShader, "color");
+		mViewPos = glGetUniformLocation(mProgramShader, "viewPos");
+		mTextureParam = glGetUniformLocation(mProgramShader, "texSample");
 		mLightColorParam = glGetUniformLocation(mProgramShader, "lightColor");
 		mLightPosParam = glGetUniformLocation(mProgramShader, "lightPos");
 		mUseNormalMapping = glGetUniformLocation(mProgramShader, "useNormalMapping");
@@ -124,13 +125,18 @@ namespace graphics
 		//glBindVertexArray(0);
 	}
 
-	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
+	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
 	{
 		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
 		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
 
 		glUniform1i(mUseNormalMapping, mNormalTexture != NULL);
+
+		if (mViewPos > 0)
+		{
+			glUniform3f(mViewPos, EXPOSE_VECTOR3D(aViewPos));
+		}
 		
 		if (mLightPosParam > 0)
 		{
