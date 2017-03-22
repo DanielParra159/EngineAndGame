@@ -31,12 +31,11 @@ namespace ui
 	public:
 		/**
 		Add a button to the menu
-		@param aPositionRect, position and size of the button
-		@param aButtonRect, position and size on the texture
+		@param aButtonRect, position and size of the button
 		@param aCallback, function to callback if the button is clicked
 		@param aImage, image of the button, can be null
 		*/
-		void											AddButton(const Rect<int32>& aPositionRect, const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage = 0);
+		void											AddButton(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage = 0);
 	protected:
 		Menu() : mButtons() {};
 		virtual ~Menu() {}
