@@ -28,18 +28,23 @@ namespace input
 	void MouseController::Update(SDL_Event& aEvent)
 	{
 		InputAction *lInputAction = NULL;
+		TActionsByKey::const_iterator iterator = mActionsByKey.find(TranslateButtonCode(aEvent.button.button));
 
 		switch (aEvent.type)
 		{
 			case SDL_MOUSEBUTTONDOWN:
-				lInputAction = mActionsByKey[TranslateButtonCode(aEvent.button.button)];
-				if (lInputAction)
-					lInputAction->SetPressed(TRUE);
+				if (iterator != mActionsByKey.end()) {
+					lInputAction = iterator->second;
+					if (lInputAction)
+						lInputAction->SetPressed(TRUE);
+				}
 				break;
 			case SDL_MOUSEBUTTONUP:
-				lInputAction = mActionsByKey[TranslateButtonCode(aEvent.button.button)];
-				if (lInputAction)
-					lInputAction->SetPressed(FALSE);
+				if (iterator != mActionsByKey.end()) {
+					lInputAction = iterator->second;
+					if (lInputAction)
+						lInputAction->SetPressed(FALSE);
+				}
 				break;
 		}
 	}
@@ -47,6 +52,7 @@ namespace input
 	void MouseController::RegisterInputAction(uint32 aId, uint32 aKey)
 	{
 		InputAction *lInputAction = new InputAction();
+		lInputAction->Init(aId, aKey);
 		mActionsByKey[aKey] = lInputAction;
 		mKeysByActions[aId] = aKey;
 	}
@@ -55,9 +61,12 @@ namespace input
 	BOOL MouseController::IsActionPressed(uint32 aActionId)
 	{
 		SDL_PumpEvents();
-		uint32 lButton = mKeysByActions[aActionId];
-		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(lButton)) {
-			return TRUE;
+		TKeyByAction::const_iterator iterator = mKeysByActions.find(aActionId);
+		if (iterator != mKeysByActions.end())
+		{
+			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(iterator->second)) {
+				return TRUE;
+			}
 		}
 		return FALSE;
 	}
@@ -93,11 +102,12 @@ namespace input
 
 	BOOL MouseController::IsActionDown(uint32 aActionId)
 	{
-		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
-		if (lInputAction != NULL)
+		TKeyByAction::const_iterator iterator = mKeysByActions.find(aActionId);
+		if (iterator != mKeysByActions.end())
+		{
+			InputAction* lInputAction = mActionsByKey[iterator->second];
 			return lInputAction->GetPressed();
-		else
-			return FALSE;
+		}
 	}
 
 	BOOL MouseController::IsActionUp(uint32 aActionId)

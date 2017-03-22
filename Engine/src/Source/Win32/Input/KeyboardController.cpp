@@ -29,17 +29,22 @@ namespace input
 	{
 		InputAction *lInputAction = NULL;
 
+		TActionsByKey::const_iterator iterator = mActionsByKey.find(TranslateKeyCode(aEvent.key.keysym.scancode));
 		switch (aEvent.type)
 		{
 			case SDL_KEYDOWN:
-				lInputAction = mActionsByKey[TranslateKeyCode(aEvent.key.keysym.scancode)];
-				if (lInputAction)
-					lInputAction->SetPressed(TRUE);
+				if (iterator != mActionsByKey.end()) {
+					lInputAction = iterator->second;
+					if (lInputAction)
+						lInputAction->SetPressed(TRUE);
+				}
 				break;
 			case SDL_KEYUP:
-				lInputAction = mActionsByKey[TranslateKeyCode(aEvent.key.keysym.scancode)];
-				if (lInputAction)
-					lInputAction->SetPressed(FALSE);
+				if (iterator != mActionsByKey.end()) {
+					lInputAction = iterator->second;
+					if (lInputAction)
+						lInputAction->SetPressed(FALSE);
+				}
 				break;
 		}
 
@@ -57,10 +62,16 @@ namespace input
 	{
 		//&& state[SDL_SCANCODE_UP]
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
-		uint32 lKey = mKeysByActions[aActionId];
-		if (state[lKey]) {
-			return TRUE;
+
+		TKeyByAction::const_iterator iterator = mKeysByActions.find(aActionId);
+		if (iterator != mKeysByActions.end())
+		{
+			uint32 lKey = iterator->second;
+			if (state[lKey]) {
+				return TRUE;
+			}
 		}
+
 		return FALSE;
 	}
 
@@ -98,20 +109,22 @@ namespace input
 
 	BOOL KeyboardController::IsActionDown(uint32 aActionId)
 	{
-		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
-		if (lInputAction != NULL)
+		TKeyByAction::const_iterator iterator = mKeysByActions.find(aActionId);
+		if (iterator != mKeysByActions.end())
+		{
+			InputAction* lInputAction = mActionsByKey[iterator->second];
 			return lInputAction->GetPressed();
-		else
-			return FALSE;
+		}
 	}
 
 	BOOL KeyboardController::IsActionUp(uint32 aActionId)
 	{
-		InputAction* lInputAction = mActionsByKey[mKeysByActions[aActionId]];
-		if (lInputAction != NULL)
+		TKeyByAction::const_iterator iterator = mKeysByActions.find(aActionId);
+		if (iterator != mKeysByActions.end())
+		{
+			InputAction* lInputAction = mActionsByKey[iterator->second];
 			return !lInputAction->GetPressed();
-		else
-			return FALSE;
+		}
 	}
 
 	void KeyboardController::ClearAllActionInput()
