@@ -27,21 +27,17 @@ namespace ui
 		/**
 		The size of the button on the texture
 		*/
-		Rect<int32>										mButtonImageRect;
+		Rect<int32>										mButtonRect;
 		/**
 		Pointer to the sprite, can be null
 		*/
-		graphics::Sprite*								mImage;
-		/**
-		The size and position of the buttons on screen
-		*/
-		Rect<int32>										mPositionRect;
+		graphics::Sprite*								mSprite;
 
 	public:
-		void											Init(const Rect<int32>& aPositionRect, const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
+		void											Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
 
 	protected:
-		ButtonMenu() : mButtonImageRect(), mCallback(), mImage(), mPositionRect() {}
+		ButtonMenu() : mButtonRect(), mCallback(), mSprite() {}
 		virtual ~ButtonMenu() {}
 	private:
 		/**

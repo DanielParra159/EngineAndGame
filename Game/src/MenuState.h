@@ -34,7 +34,10 @@ namespace game
 
 		virtual const int8*								GetStateName() const { return "Menu"; }
 	private:
-		static void										StartGame();
+		static void										StartGame1();
+		static void										StartGame2();
+		static void										StartGame3();
+		static void										Exit();
 	}; // MenuState
 } // namespace game
 #endif // _GAME_MENUSTATE_H_

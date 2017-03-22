@@ -5,46 +5,45 @@
 
 namespace ui
 {
-	void ButtonMenu::Init(const Rect<int32>& aPositionRect, const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage)
+	void ButtonMenu::Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage)
 	{
 		mCallback = aCallback;
-		mButtonImageRect.mX = aButtonRect.mX;
-		mButtonImageRect.mY = aButtonRect.mY;
-		mButtonImageRect.mW = aButtonRect.mW;
-		mButtonImageRect.mH = aButtonRect.mH;
-		mPositionRect.mX = aPositionRect.mX;
-		mPositionRect.mY = aPositionRect.mY;
-		mPositionRect.mW = aPositionRect.mW;
-		mPositionRect.mH = aPositionRect.mH;
+		mButtonRect.mX = aButtonRect.mX;
+		mButtonRect.mY = aButtonRect.mY;
+		mButtonRect.mW = aButtonRect.mW;
+		mButtonRect.mH = aButtonRect.mH;
 		if (aImage)
 		{
-			mImage = graphics::RenderManager::Instance()->CreateSprite(aImage, graphics::eRGBA);
+			mSprite = graphics::RenderManager::Instance()->CreateSprite(aImage, graphics::eRGBA);
 		}
 	}
 
 	void ButtonMenu::OnMouseClick(const Vector2D<>& aPos)
 	{
-		if (aPos.mX < (mPositionRect.mX + mPositionRect.mW)
-			&& aPos.mX > mPositionRect.mX
-			&& aPos.mY < (mPositionRect.mY + mPositionRect.mH)
-			&& aPos.mY > mPositionRect.mY)
-			{
-				mCallback();
-			}
-		
+		if (aPos.mX < (mButtonRect.mX + mButtonRect.mW)
+			&& aPos.mX > mButtonRect.mX
+			&& aPos.mY < (mButtonRect.mY + mButtonRect.mH)
+			&& aPos.mY > mButtonRect.mY)
+		{
+			mCallback();
+		}
+
 	}
 
 	void ButtonMenu::Render()
 	{
-		//if (mImage)
-		//	mImage->Render(EXPOSE_RECT(mPositionRect));
+		if (mSprite)
+		{
+			mSprite->Render(&Vector3D<float32>(mButtonRect.mX, mButtonRect.mY, 0.0f),
+				&Vector3D<float32>(mButtonRect.mW, mButtonRect.mH, 1.0f));
+		}
 	}
 
 	void ButtonMenu::Release()
 	{
-		if (mImage)
+		if (mSprite)
 		{
-			graphics::RenderManager::Instance()->DeleteSprite(mImage);
+			graphics::RenderManager::Instance()->DeleteSprite(mSprite);
 		}
 	}
 

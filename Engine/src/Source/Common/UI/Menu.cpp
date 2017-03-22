@@ -5,10 +5,10 @@
 
 namespace ui
 {
-	void Menu::AddButton(const Rect<int32>& aPositionRect, const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
+	void Menu::AddButton(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
 	{
 		ButtonMenu *lButtonMenu = new ButtonMenu();
-		lButtonMenu->Init(aPositionRect, aButtonRect, aCallback, aImage);
+		lButtonMenu->Init(aButtonRect, aCallback, aImage);
 		mButtons.push_back(lButtonMenu);
 	}
 
