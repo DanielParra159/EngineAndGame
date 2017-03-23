@@ -29,7 +29,7 @@ namespace graphics
 		virtual void									Release();
 		virtual void									Render();
 		virtual void									SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction);
-		void											SetMesh(Mesh* aMesh);
+		virtual void									SetMesh(Mesh* aMesh);
 	public:
 		const std::string&								GetName() const { return mMesh->GetName(); }
 		Material*										GetMaterial() { return mMesh->GetMaterial(); }

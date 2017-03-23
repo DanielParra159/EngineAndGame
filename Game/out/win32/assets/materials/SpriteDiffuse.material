@@ -1,0 +1,6 @@
+material SpriteDiffuse
+{
+	texture sample.png;
+	vertexShader SpriteDiffuse;
+	fragmentProgram SpriteDiffuse;
+}

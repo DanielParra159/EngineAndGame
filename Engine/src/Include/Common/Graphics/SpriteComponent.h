@@ -5,6 +5,7 @@
 #include "Types.h"
 
 #include "Graphics/MeshComponent.h"
+#include "Graphics/Sprite.h"
 
 
 namespace graphics
@@ -16,11 +17,18 @@ namespace graphics
 		friend class RenderManager;
 		REGISTER_COMPONENT_HEAD(SpriteComponent)
 	protected:
-		Mesh*											mMesh;
-		Vector3D<float32>								mRotationOffset;
+		Sprite*											mSprite;
+	public:
+		void											SetFlipXY(BOOL aFlipX, BOOL aFlipY) { mSprite->SetFlipX(aFlipX); mSprite->SetFlipY(aFlipY); }
+		void											SetFlipX(BOOL aFlipX) { mSprite->SetFlipX(aFlipX); }
+		BOOL											GetFlipX() const { return mSprite->GetFlipX(); }
+		void											SetFlipY(BOOL aFlipY) { mSprite->SetFlipY(aFlipY); }
+		BOOL											GetFlipY() const { return mSprite->GetFlipY(); }
 	protected:
 		SpriteComponent() : MeshComponent(){}
 		virtual ~SpriteComponent() {}
+		
+		virtual void									SetMesh(Mesh* aMesh);
 		
 	}; // SpriteComponent
 } // namespace graphics

@@ -1,10 +1,5 @@
 function ParseMap(mapFile, mapName)
-	--print(mapFile)
-	--print("hola")
 	map = dofile(mapFile)
-	--print("ok")
-
-	--print(map["width"])
 
 	width = map["width"]
 	heightMap = map["height"]

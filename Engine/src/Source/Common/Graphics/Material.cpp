@@ -124,12 +124,34 @@ namespace graphics
 		glVertexAttribPointer(aAttribId, aNumberValues, GL_FLOAT, aNormalize ? GL_TRUE : GL_FALSE, aStride * sizeof(float32), (void*)(aOffset * sizeof(float32)));
 		//glBindVertexArray(0);
 	}
+	void Material::SetBool(const std::string& aAttribName, BOOL value) {
+		glUseProgram(mProgramShader);
+		int lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
+		glUniform1i(lAttrib, value);
+	}
+	void Material::SetFloat(const std::string& aAttribName, float32 value) {
+		glUseProgram(mProgramShader);
+		int lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
+		glUniform1f(lAttrib, value);
+	}
+	void Material::SetVector3(const std::string& aAttribName, const Vector3D<float32>& value)
+	{
+		glUseProgram(mProgramShader);
+		int lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
+		glUniform3f(lAttrib, EXPOSE_VECTOR3D(value));
+	}
+	void Material::SetColor(const std::string& aAttribName, const Color& value) 
+	{
+		glUseProgram(mProgramShader);
+		int lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
+		glUniform4f(lAttrib, EXPOSE_COLOR_RGBA(value));
+	}
 
 	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
 	{
 		glUseProgram(mProgramShader);
 		SetMatrix4("model", aModelMatrix);
-		glUniform4f(mColorParam, mColor.mR, mColor.mG, mColor.mB, mColor.mA);
+		glUniform4f(mColorParam, EXPOSE_COLOR_RGBA(mColor));
 
 		glUniform1i(mUseNormalMapping, mNormalTexture != NULL);
 

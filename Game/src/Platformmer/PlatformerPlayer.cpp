@@ -13,6 +13,7 @@
 
 #include "Graphics/RenderManager.h"
 #include "Graphics/MeshComponent.h"
+#include "Graphics/SpriteComponent.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 #include "Graphics/Camera.h"
@@ -37,20 +38,27 @@ namespace game
 		//physics::Collider* lCapsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(aX, aY, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(mCapsuleController);
 
-		graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Human.obj");
+		mSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Ninja.png", graphics::eRGBA);
+		mSprite->SetFlipX(FALSE);
+		AddComponent(mSprite);
+
+		/*graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Human.obj");
 		lPlayerMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png", graphics::eRGB));
 		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test02");
 		lMaterial->SetColor(&Color(0.5f, 1.0f, 0.5f, 1.0f));
 		lPlayerMesh->SetMaterial(lMaterial);
 		lPlayerMesh->SetRotationOffset(Vector3D<float32>(0.0f,0.0f,-90.0f));
 		AddComponent(lPlayerMesh);
-		mScale.mY = 2.5f;
+		mScale.mY = 2.5f;*/
 		mJumping = FALSE;
 
 		graphics::RenderManager::Instance()->GetRenderCamera()->FollowTarget(this, Vector3D<float32>(0.0f, 3.0f, 12.0f), Vector3D<float32>(0.0f, 0.0f, 0.0f));
 
 		mNextShoot = 0.0f;
-		mRightOrientation = TRUE;
+		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
+
+		mScale.mX = 1.0f * 2.0f;
+		mScale.mY = 1.77f * 2.0f;
 	}
 
 	void PlatformerPlayer::Update()
@@ -61,12 +69,12 @@ namespace game
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerLeft))
 		{
 			lDir.mX = -1;
-			mRightOrientation = FALSE;
+			mSprite->SetFlipX(TRUE);
 		} 
 		else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerRight))
 		{
 			lDir.mX = 1;
-			mRightOrientation = TRUE;
+			mSprite->SetFlipX(FALSE);
 		}
 		
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerJump))
@@ -99,7 +107,7 @@ namespace game
 				lDir.mY = -1.0f;
 			}
 			if (lDir.Normalize().LengthSqrt() == 0.0f)
-				lDir.mX = mRightOrientation ? 1.0f : -1.0f;
+				lDir.mX = mSprite->GetFlipX() ? -1.0f : 1.0f;
 
 			//@TODO: Pool
 			PlatformerProjectile* lProjectile = new PlatformerProjectile();

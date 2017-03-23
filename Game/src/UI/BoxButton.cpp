@@ -10,6 +10,7 @@
 
 #include "Graphics/RenderManager.h"
 #include "Graphics/MeshComponent.h"
+#include "Graphics/SpriteComponent.h"
 #include "Graphics/Material.h"
 
 #include "Audio/AudioManager.h"
@@ -23,7 +24,7 @@ namespace game
 	{
 		IGameObject::Init(TRUE);
 
-		graphics::SpriteComponent* lMesh;
+		graphics::SpriteComponent* lSprite;
 
 		/*const float32 lVertexData[] = {
 			// X      Y     Z     Nx    Ny     Nz    U     V
@@ -37,24 +38,26 @@ namespace game
 		};*/
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
+		graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("Test01");
 		//lMesh = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu1.png", graphics::eRGBA);
 		//lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("BoxMenu", lVertexData, sizeof(lVertexData), 6);
 		if (aId == 0)
 		{
-			lMesh = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu1.png", graphics::eRGBA);
-			//lMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu1.png", graphics::eRGBA));
+			lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu1.png", graphics::eRGBA);
+			lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu1.png", graphics::eRGBA));
 		}
 		else if (aId == 1)
 		{
-			lMesh = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu2.png", graphics::eRGBA);
-			//lMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu2.png", graphics::eRGBA));
+			lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu2.png", graphics::eRGBA);
+			lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu2.png", graphics::eRGBA));
 		}
 		else
 		{
-			lMesh = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu3.png", graphics::eRGBA);
-			//lMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu3.png", graphics::eRGBA));
+			lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Menu3.png", graphics::eRGBA);
+			lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Menu3.png", graphics::eRGBA));
 		}
-		AddComponent((logic::IComponent*)lMesh);
+		lSprite->SetMaterial(lMaterial);
+		AddComponent((logic::IComponent*)lSprite);
 		mPosition = aPosition;
 		mScale.mX = 3.0f;
 		mScale.mY = 3.0f;
