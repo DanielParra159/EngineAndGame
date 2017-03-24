@@ -3,8 +3,6 @@
 #include "Graphics\Texture.h"
 #include "Graphics\Material.h"
 
-#include "SDL.h"
-
 namespace graphics
 {
 	void Sprite::Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength,

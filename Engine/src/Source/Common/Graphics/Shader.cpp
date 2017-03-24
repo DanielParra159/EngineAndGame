@@ -4,7 +4,6 @@
 #include "Core/Log.h"
 
 #include <GL/glew.h>
-#include <SDL_opengl.h>
 
 #include <SOIL.h>
 

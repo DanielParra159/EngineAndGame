@@ -15,6 +15,11 @@ namespace ui
 	class Menu;
 }
 
+namespace graphics
+{
+	class TextRenderer;
+}
+
 namespace game
 {
 	class MenuState : public core::IGameState
@@ -22,6 +27,7 @@ namespace game
 	private:
 		ui::Menu*										mMenu;
 		audio::Sound2D*									mMusic;
+		graphics::TextRenderer*							mTextRenderer;
 	public:
 		MenuState() {}
 		~MenuState() {}

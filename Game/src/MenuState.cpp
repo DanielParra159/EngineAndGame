@@ -12,6 +12,7 @@
 
 #include "Graphics/RenderManager.h"
 #include "Graphics/Camera.h"
+#include "Graphics/TextRenderer.h"
 
 #include "Logic/World.h"
 #include "Logic/IGameObject.h"
@@ -82,7 +83,7 @@ namespace game
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
-		mMenu->AddButton(Rect<>(140, 160, 200, 90), &StartGame1);
+		mMenu->AddButton(Rect<>(140, 160, 200, 90), &StartGame1, "Menu1.png");
 		mMenu->AddButton(Rect<>(450, 160, 200, 90), &StartGame2);
 		mMenu->AddButton(Rect<>(300, 340, 200, 90), &Exit);
 
@@ -95,12 +96,16 @@ namespace game
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("Menu.mp3");
 		mMusic->Play(audio::eAudioGroups::eMusic, TRUE);
+
+		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
+		mTextRenderer = graphics::RenderManager::Instance()->LoadTextRenderer("PerfectPixel.ttf", 24);
 		return TRUE;
 	}
 
 	void MenuState::Release()
 	{
 		mMusic->Stop();
+		graphics::RenderManager::Instance()->UnloadTextRenderer(mTextRenderer);
 		ui::MenuManager::Instance()->RemoveMenu(mMenu);
 		logic::World::Instance()->Release();
 		mMenu = 0;
@@ -131,9 +136,11 @@ namespace game
 	void MenuState::Render()
 	{
 		graphics::RenderManager::Instance()->BeginRender();
+		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Vector3D<float32>(1.0f, 1.0f, 1.0f), mTextRenderer);
 		ui::MenuManager::Instance()->Render();
 
 		logic::World::Instance()->Render();
+
 		graphics::RenderManager::Instance()->EndRender();
 	}
 

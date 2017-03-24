@@ -19,6 +19,10 @@ struct  SDL_Renderer;
 struct  SDL_Window;
 struct  SDL_Texture;
 struct  SDL_Surface;
+/*#include <GL/glew.h>
+#include <GL/glut.h>
+#include <GLFW/glfw3.h>*/
+
 class Color;
 
 namespace core
@@ -36,6 +40,7 @@ namespace graphics
 	class Camera;
 	class Shader;
 	class MeshReferences;
+	class TextRenderer;
 
 
 	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
@@ -44,6 +49,7 @@ namespace graphics
 	typedef std::unordered_map<std::string, Shader*>			TShaderIds;
 	typedef std::unordered_map<std::string, MeshReferences*>	TMeshesIds;
 	typedef std::unordered_set<Mesh*>							TLoadedMeshes;
+	typedef std::unordered_set<TextRenderer*>					TLoadedTextRenderer;
 	/**
 	This manager is responsible for painting in screen.
 	*/
@@ -62,9 +68,11 @@ namespace graphics
 		TShaderIds										mLoadedFragmentShaders;
 		TMeshesIds										mMeshesIds;
 		TLoadedMeshes									mMeshInstances;
+		TLoadedTextRenderer								mLoadedTextRenderers;
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
+		//GLFWwindow*										mWindow;
 		Camera*											mRenderCamera;
 	public:
 		void											BeginRender();
@@ -152,6 +160,13 @@ namespace graphics
 		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh);
 		//-----------------------------------------END MESHES-----------------------------------------
 
+		//-----------------------------------------TEXT-----------------------------------------
+		TextRenderer*									LoadTextRenderer(std::string aFont, uint32 aFontSize);
+		void											UnloadTextRenderer(TextRenderer* aTextRenderer);
+		void											RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor, TextRenderer* textRenderer);
+		//----------------------------------------END TEXT---------------------------------------
+
+
 		Camera*											CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
 																				float32 aFov, float32 aAspect, float32 aNear, float32 aFar);
 		Camera*											CreateOrthographicCamera(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar);
@@ -164,7 +179,8 @@ namespace graphics
 			mLoadedVertexShaders(),
 			mLoadedFragmentShaders(),
 			mMeshesIds(), mMeshInstances(),
-			mRenderer(0), mWindow(0){}
+			mLoadedTextRenderers(),
+			mWindow(0){}
 		~RenderManager(){}
 		BOOL											Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize,
 															 const Vector2D<int32> &aWindowPosition, const Color& aClearColor,

@@ -7,6 +7,7 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/MeshComponent.h"
 #include "Graphics/Camera.h"
+#include "Graphics/TextRenderer.h"
 
 #include "Support/Matrix4.h"
 #include "Support/Math.h"
@@ -23,6 +24,7 @@
 #include <GL/glut.h>
 #include "SDL.h"
 #include <SDL_opengl.h>
+
 #include <SOIL.h>
 
 #include <assimp/cimport.h>
@@ -36,21 +38,25 @@ namespace graphics
 
 	BOOL RenderManager::Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize, const Vector2D<int32> &aWindowPosition, const Color& aClearColor, BOOL aFullscreen)
 	{
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-		//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
-			return FALSE;
-
 		mWindowSize.mX = aWindowSize.mX;
 		mWindowSize.mY = aWindowSize.mY;
 
 		mWindowPosition.mX = aWindowPosition.mX;
 		mWindowPosition.mX = aWindowPosition.mX;
 
+
+		
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+			return FALSE;
+
+
+		
 		mWindow = SDL_CreateWindow(aWindowTitle,
 								   EXPOSE_VECTOR2D(aWindowPosition),
 								   EXPOSE_VECTOR2D(aWindowSize),
@@ -96,13 +102,8 @@ namespace graphics
 
 		if (mRenderer == NULL)
 			return FALSE;
-
+			
 		mClearColor = aClearColor;
-		/*SDL_SetRenderDrawColor(mRenderer,
-							   (uint32)(aClearColor.mR * 255),
-							   (uint32)(aClearColor.mG * 255),
-							   (uint32)(aClearColor.mB * 255),
-							   (uint32)(aClearColor.mA * 255));*/
 
 		return TRUE;
 	}
@@ -160,22 +161,19 @@ namespace graphics
 		SDL_GL_DeleteContext(mContext);
 		SDL_DestroyRenderer(mRenderer);
 		SDL_DestroyWindow(mWindow);
+
+		//glfwTerminate();
 	}
 
 	void RenderManager::BeginRender()
 	{
-		// Clear the screen to black
 		glClearColor(EXPOSE_COLOR_RGBA(mClearColor));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//SDL_RenderClear(mRenderer);
-
-		
 	}
 
 	void RenderManager::EndRender()
 	{
 		SDL_GL_SwapWindow(mWindow);
-		//SDL_RenderPresent(mRenderer);
 	}
 
 	void RenderManager::RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite)
@@ -708,6 +706,35 @@ namespace graphics
 	}
 
 	//-----------------------------------------END MESHES-----------------------------------------
+
+	//-----------------------------------------TEXT-----------------------------------------
+	TextRenderer* RenderManager::LoadTextRenderer(std::string aFont, uint32 aFontSize)
+	{
+		// @TODO: Text/Font Manager
+		TextRenderer* lTextRenderer = new TextRenderer();
+		if (lTextRenderer->Init(mWindowSize.mX, mWindowSize.mY, aFont, aFontSize)) {
+			mLoadedTextRenderers.insert(lTextRenderer);
+		}
+		else {
+			delete lTextRenderer;
+			lTextRenderer = NULL;
+		}
+
+		return lTextRenderer;
+	}
+
+	void RenderManager::UnloadTextRenderer(TextRenderer* aTextRenderer)
+	{
+		aTextRenderer->Release();
+		mLoadedTextRenderers.erase(aTextRenderer);
+		delete aTextRenderer;
+	}
+
+	void RenderManager::RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor, TextRenderer* aTextRenderer)
+	{
+		aTextRenderer->Render(text, aX, aY, aScale, aColor);
+	}
+	//----------------------------------------END TEXT---------------------------------------
 
 	Camera* RenderManager::CreatePerspectiveCamera(const Vector3D<float32>& aEye, const Vector3D<float32>& aPosition, const Vector3D<float32>& aUp,
 																			float32 aFov, float32 aAspect, float32 aNear, float32 aFar)

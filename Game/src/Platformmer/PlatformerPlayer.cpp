@@ -8,6 +8,8 @@
 
 #include "System/Time.h"
 
+#include "IO/FileSystem.h"
+
 #include "Core/Game.h"
 #include "Core/Log.h"
 
@@ -17,6 +19,7 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 #include "Graphics/Camera.h"
+//#include "Graphics/TextRenderer.h"
 
 #include "Support/Vector3D.h"
 
@@ -61,6 +64,10 @@ namespace game
 
 		mScale.mX = 1.0f * 2.0f;
 		mScale.mY = 1.77f * 2.0f;
+
+		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
+		/*mTextRenderer = new graphics::TextRenderer(800,600);
+		mTextRenderer->Load("PerfectPixel.ttf", 18);*/
 	}
 
 	void PlatformerPlayer::Update()
@@ -124,6 +131,7 @@ namespace game
 	void PlatformerPlayer::Render()
 	{
 		IGameObject::Render();
+		//mTextRenderer->RenderText("HOLA", 20, 20, 1.0f, Vector3D<float32>(1.0f,1.0f,1.0f));
 	}
 
 	void PlatformerPlayer::Release()

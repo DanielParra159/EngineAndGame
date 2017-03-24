@@ -58,15 +58,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX;..\..\extern\ASSIMP\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\GLFW\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX;..\..\extern\ASSIMP\include;..\..\extern\FREETYPE\include;..\..\extern\FREETYPE\include\freetype2</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\extern\FMOD\lib;..\..\extern\GLEW\lib;..\..\extern\LUA\lib;..\..\extern\LUABIND\lib;..\..\extern\SDL2\lib;..\..\extern\SOIL\lib;..\..\extern\PHYSX\lib\win32;..\..\extern\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SOILd.lib;lua52d.lib;luabindd.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PxTaskDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\extern\FMOD\lib;..\..\extern\SDL2\lib;..\..\extern\GLEW\lib;..\..\extern\LUA\lib;..\..\extern\LUABIND\lib;..\..\extern\GLFW\lib;..\..\extern\SOIL\lib;..\..\extern\PHYSX\lib\win32;..\..\extern\ASSIMP\lib;..\..\extern\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;glfw3dll.lib;freetype.lib;SDL2.lib;SOILd.lib;lua52d.lib;luabindd.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PxTaskDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -82,7 +82,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX;..\..\extern\ASSIMP\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\Include\Common;..\..\src\Include\Win32;..\..\extern\SDL2\include;..\..\extern\GLFW\include;..\..\extern\FMOD\include;..\..\extern\GLEW\include;..\..\extern\SOIL\include;..\..\extern\GLM\include;..\..\extern\BOOST\include;..\..\extern\LUA\include\lua;..\..\extern\LUABIND\include;..\..\extern\PHYSX\include\PhysX;..\..\extern\ASSIMP\include;..\..\extern\FREETYPE\include;..\..\extern\FREETYPE\include\freetype2</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -91,8 +91,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\extern\FMOD\lib;..\..\extern\GLEW\lib;..\..\extern\LUA\lib;..\..\extern\LUABIND\lib;..\..\extern\SDL2\lib;..\..\extern\SOIL\lib;..\..\extern\PHYSX\lib\win32;..\..\extern\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SOIL.lib;lua52.lib;luabind.lib;PhysX3_x86.lib;PhysX3Common_x86.lib;PhysX3Cooking_x86.lib;PhysX3Extensions.lib;PhysXProfileSDK.lib;PhysX3CharacterKinematic_x86.lib;PxTask.lib;PhysXVisualDebuggerSDK.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\extern\FMOD\lib;..\..\extern\SDL2\lib;..\..\extern\GLEW\lib;..\..\extern\LUA\lib;..\..\extern\LUABIND\lib;..\..\extern\GLFW\lib;..\..\extern\SOIL\lib;..\..\extern\PHYSX\lib\win32;..\..\extern\ASSIMP\lib;..\..\extern\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;freeglut.lib;glew32.lib;glfw3dll.lib;freetype.lib;SDL2.lib;SOIL.lib;lua52.lib;luabind.lib;PhysX3_x86.lib;PhysX3Common_x86.lib;PhysX3Cooking_x86.lib;PhysX3Extensions.lib;PhysXProfileSDK.lib;PhysX3CharacterKinematic_x86.lib;PxTask.lib;PhysXVisualDebuggerSDK.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
       <Command>
@@ -117,6 +117,7 @@
     <ClInclude Include="..\..\src\Include\Common\Graphics\Shader.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Sprite.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\SpriteComponent.h" />
+    <ClInclude Include="..\..\src\Include\Common\Graphics\TextRenderer.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Texture.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\IController.h" />
     <ClInclude Include="..\..\src\Include\Common\Input\InputAction.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="..\..\src\Source\Common\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\SpriteComponent.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Graphics\TextRenderer.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Input\InputManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\IO\FileSystem.cpp" />

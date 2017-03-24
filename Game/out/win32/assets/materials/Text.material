@@ -1,0 +1,6 @@
+material Test01
+{
+	texture sample.png;
+	vertexShader Text;
+	fragmentProgram Text;
+}
