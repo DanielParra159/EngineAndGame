@@ -60,5 +60,9 @@ public:
 	{
 		return glm::ortho(aLeft, aRight, aBottom, aUp, aZNear, aZFar);
 	}
+	static Matrix4 Orthographic(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp)
+	{
+		return glm::ortho(aLeft, aRight, aBottom, aUp);
+	}
 };
 #endif // _ENGINE_MATRIX4_H_

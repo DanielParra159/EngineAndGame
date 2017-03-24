@@ -57,6 +57,8 @@ namespace game
 		mNextShoot = 0.0f;
 		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
 
+		mPosition.mZ = 0.8f;
+
 		mScale.mX = 1.0f * 2.0f;
 		mScale.mY = 1.77f * 2.0f;
 	}

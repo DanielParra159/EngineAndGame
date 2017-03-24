@@ -11,7 +11,7 @@ namespace core
 		mScreenSize.mY = aY;
 	}
 
-	void GameDescription::SetScreenPosition(uint32 aX, uint32 aY)
+	void GameDescription::SetScreenPosition(int32 aX, int32 aY)
 	{
 		mScreenPosition.mX = aX;
 		mScreenPosition.mY = aY;

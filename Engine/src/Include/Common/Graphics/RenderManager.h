@@ -52,6 +52,8 @@ namespace graphics
 		friend class core::Game;
 		SINGLETON_HEAD(RenderManager);
 	private:
+		Vector2D<uint32>								mWindowSize;
+		Vector2D<int32>									mWindowPosition;
 		Color											mClearColor;
 		TTexturesIds									mLoadedTextures;
 		//TLoadedTextures									mLoadedTexturesOLD;
@@ -68,6 +70,9 @@ namespace graphics
 		void											BeginRender();
 		void											EndRender();
 		
+		const Vector2D<uint32>&							GetWindowSize() const { return mWindowSize; }
+		const Vector2D<int32>&							GetWindowPositionSize() const { return mWindowPosition; }
+
 		void											SetClearColor(const Color& aColor) { mClearColor = aColor; }
 
 		/**
@@ -161,8 +166,8 @@ namespace graphics
 			mMeshesIds(), mMeshInstances(),
 			mRenderer(0), mWindow(0){}
 		~RenderManager(){}
-		BOOL											Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize,
-															 const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor,
+		BOOL											Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize,
+															 const Vector2D<int32> &aWindowPosition, const Color& aClearColor,
 															 BOOL aFullscreen);
 		void											Release();
 

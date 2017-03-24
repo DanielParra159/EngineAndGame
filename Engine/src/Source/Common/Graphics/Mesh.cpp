@@ -30,6 +30,7 @@ namespace graphics
 	void Mesh::Release()
 	{
 		RenderManager::Instance()->UnloadMaterial(mMaterial);
+		mMaterial = NULL;
 		delete[] mVertexData;
 	}
 

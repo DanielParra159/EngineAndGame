@@ -17,7 +17,7 @@ namespace core
 	friend class Game;
 	protected:
 		Vector2D<uint32>								mScreenSize;
-		Vector2D<uint32>								mScreenPosition;
+		Vector2D<int32>									mScreenPosition;
 		Color											mClearColor;
 		BOOL											mFullScreen;
 		Vector3D<float32>								mPhysicsGravity;
@@ -36,7 +36,7 @@ namespace core
 		@param aX X pos
 		@param aY Y pos
 		*/
-		void											SetScreenPosition(uint32 aX, uint32 aY);
+		void											SetScreenPosition(int32 aX, int32 aY);
 		/** Assigns draw color
 		@param aColor Color to assign
 		*/

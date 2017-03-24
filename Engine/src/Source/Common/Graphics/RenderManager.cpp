@@ -34,7 +34,7 @@ namespace graphics
 	SINGLETON_BODY(RenderManager);
 
 
-	BOOL RenderManager::Init(const int8* aWindowsTitle, const Vector2D<uint32> &aWindowsSize, const Vector2D<uint32> &aWindowsPosition, const Color& aClearColor, BOOL aFullscreen)
+	BOOL RenderManager::Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize, const Vector2D<int32> &aWindowPosition, const Color& aClearColor, BOOL aFullscreen)
 	{
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -45,9 +45,15 @@ namespace graphics
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 			return FALSE;
 
-		mWindow = SDL_CreateWindow(aWindowsTitle,
-								   EXPOSE_VECTOR2D(aWindowsPosition),
-								   EXPOSE_VECTOR2D(aWindowsSize),
+		mWindowSize.mX = aWindowSize.mX;
+		mWindowSize.mY = aWindowSize.mY;
+
+		mWindowPosition.mX = aWindowPosition.mX;
+		mWindowPosition.mX = aWindowPosition.mX;
+
+		mWindow = SDL_CreateWindow(aWindowTitle,
+								   EXPOSE_VECTOR2D(aWindowPosition),
+								   EXPOSE_VECTOR2D(aWindowSize),
 								   SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 								   //aFullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN); @TODO
 
@@ -77,6 +83,9 @@ namespace graphics
 			// Problem: glewInit failed, something is seriously wrong.
 			fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 		}
+
+		// Define the viewport dimensions
+		glViewport(0, 0, mWindowSize.mX, mWindowSize.mY);
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);

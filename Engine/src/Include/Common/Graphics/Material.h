@@ -54,10 +54,13 @@ namespace graphics
 
 		void											SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
 		void											SetVertexFloatAttribPointer(int32 aAttribId, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO);
-		void											SetBool(const std::string& aAttribName, BOOL value);
-		void											SetFloat(const std::string& aAttribName, float32 value);
-		void											SetVector3(const std::string& aAttribName, const Vector3D<float32>& value);
-		void											SetColor(const std::string& aAttribName, const Color& value);
+		void											SetBool(const std::string& aAttribName, BOOL aValue);
+		void											SetInteger(const std::string& aAttribName, int32 aValue);
+		void											SetFloat(const std::string& aAttribName, float32 aValue);
+		void											SetVector3(const std::string& aAttribName, const Vector3D<float32>& aValue);
+		void											SetColor(const std::string& aAttribName, const Color& aValue);
+
+		void											UseMaterial();
 
 		const std::string&								GetName() const { return mName; }
 	protected:
