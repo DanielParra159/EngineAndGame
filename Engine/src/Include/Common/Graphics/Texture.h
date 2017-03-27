@@ -26,6 +26,9 @@ namespace graphics
 	public:
 		const std::string&								GetName() const { return mName; }
 		int32											GetId() const { return mId; }
+		int32											GetWidth() const { return mWidth; }
+		int32											GetHeight() const { return mHeight; }
+		eTextureFormats									GetFormat() const { return mFormat; }
 
 		void											AddReference();
 		uint32											RemoveReference();

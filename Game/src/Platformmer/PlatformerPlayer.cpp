@@ -16,6 +16,7 @@
 #include "Graphics/RenderManager.h"
 #include "Graphics/MeshComponent.h"
 #include "Graphics/SpriteComponent.h"
+#include "Graphics/SpriteAnimatorComponent.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 #include "Graphics/Camera.h"
@@ -41,9 +42,16 @@ namespace game
 		//physics::Collider* lCapsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(aX, aY, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(mCapsuleController);
 
+		graphics::SpriteAnimatorComponent* lSpriteAnimatorComponent = graphics::RenderManager::Instance()->CreateSpriteAnimatorComponent("NinjaSprites.png", graphics::eRGBA, 2, 5);
+		lSpriteAnimatorComponent->AddState(0, 0, 5, 5.0f, TRUE);
+		lSpriteAnimatorComponent->AddState(1, 5, 5, 5.0f, TRUE);
+		lSpriteAnimatorComponent->PlayState(1);
+		lSpriteAnimatorComponent->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
+		AddComponent(lSpriteAnimatorComponent);
+
 		mSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Ninja.png", graphics::eRGBA);
 		mSprite->SetFlipX(FALSE);
-		AddComponent(mSprite);
+		//AddComponent(mSprite);
 
 		/*graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Human.obj");
 		lPlayerMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("T_SnakeHead.png", graphics::eRGB));

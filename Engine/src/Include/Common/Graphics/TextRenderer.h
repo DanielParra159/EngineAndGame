@@ -12,11 +12,9 @@
 #include "Types.h"
 #include "Support/Vector3D.h"
 #include "Support/Vector2D.h"
+#include "Support/Color.h"
 
 #include <map>
-
-#include <GL/glew.h>
-#include <glm/glm.hpp>
 
 
 namespace graphics
@@ -56,7 +54,7 @@ namespace graphics
 		BOOL Load(const std::string& aFont, uint32 aFontSize);
 
 		// Renders a string of text using the precompiled list of characters
-		void Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor);
+		void Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color& aColor);
 	}; //TextRender
 } // graphics
 #endif 

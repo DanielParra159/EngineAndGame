@@ -32,6 +32,8 @@ namespace core
 
 namespace graphics
 {
+	class SpriteAnimator;
+	class SpriteAnimatorComponent;
 	class Sprite;
 	class SpriteComponent;
 	class Material;
@@ -83,13 +85,12 @@ namespace graphics
 
 		void											SetClearColor(const Color& aColor) { mClearColor = aColor; }
 
+		//-----------------------------------------SPRITES-----------------------------------------
 		/**
-		Allow to render a texture on screen
-		@param aTexture, texture
-		@param aSrcRect, the rect in source texture to render
-		@param aPosition, position on screen
-		@param aSize, size on screen
-		@param aAgnel, rotation on screen
+		Allow to render sprite
+		@param aSrcRect, 
+		@param aPosition, 
+		@param aRotation, 
 		*/
 		void											RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite);
 		
@@ -101,11 +102,15 @@ namespace graphics
 		*/
 		Sprite*											CreateSprite(const std::string& aFileName, eTextureFormats aFormat);
 		SpriteComponent*								CreateSpriteComponent(const std::string& aFileName, eTextureFormats aFormat);
+		
 		/**
 		Delete a sprite previously created
 		@param aSprite, the sprite to delete
 		*/
 		void											DeleteSprite(Sprite* aSprite);
+
+		//-----------------------------------------END SPRITES-----------------------------------------
+
 		/**
 		Unload a texture
 		@param aId, id of the texture
@@ -119,6 +124,28 @@ namespace graphics
 		*/
 		const Texture*									LoadTexture(const std::string& aFileName, eTextureFormats aFormat);
 
+		//-----------------------------------------SPRITE ANIMATOR-----------------------------------------
+		/**
+		Create a sprite animator from texture file
+		@param aFileName, file name
+		@param aFormat, texture format (RGB/RGBA)
+		@param aRows, num. of rows
+		@param aCols, num. of colums
+		@return the sprite animator created or null
+		*/
+		SpriteAnimator*									CreateSpriteAnimator(const std::string& aFileName, eTextureFormats aFormat, uint32 aRows, uint32 aCols);
+		SpriteAnimatorComponent*						CreateSpriteAnimatorComponent(const std::string& aFileName, eTextureFormats aFormat, uint32 aRows, uint32 aCols);
+
+		void											DeleteSpriteAnimator(SpriteAnimator* mSpriteAnimator);
+		void											DeleteSpriteAnimatorComponent(SpriteAnimatorComponent* mSpriteAnimatorComponent);
+		/**
+		Allow to render animated sprite
+		@param aSrcRect,
+		@param aPosition,
+		@param aRotation,
+		*/
+		void											RenderSpriteAnimator(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const SpriteAnimator* aSpriteAnimator);
+		//----------------------------------------END SPRITE ANIMATOR---------------------------------------
 
 		//-----------------------------------------MATERIALS-----------------------------------------
 
@@ -163,7 +190,7 @@ namespace graphics
 		//-----------------------------------------TEXT-----------------------------------------
 		TextRenderer*									LoadTextRenderer(std::string aFont, uint32 aFontSize);
 		void											UnloadTextRenderer(TextRenderer* aTextRenderer);
-		void											RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor, TextRenderer* textRenderer);
+		void											RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color& aColor, TextRenderer* textRenderer);
 		//----------------------------------------END TEXT---------------------------------------
 
 

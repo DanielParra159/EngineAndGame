@@ -136,7 +136,7 @@ namespace game
 	void MenuState::Render()
 	{
 		graphics::RenderManager::Instance()->BeginRender();
-		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Vector3D<float32>(1.0f, 1.0f, 1.0f), mTextRenderer);
+		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
 		ui::MenuManager::Instance()->Render();
 
 		logic::World::Instance()->Render();

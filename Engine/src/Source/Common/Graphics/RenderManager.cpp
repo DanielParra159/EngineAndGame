@@ -1,4 +1,6 @@
 #include "Graphics/RenderManager.h"
+#include "Graphics/SpriteAnimator.h"
+#include "Graphics/SpriteAnimatorComponent.h"
 #include "Graphics/Sprite.h"
 #include "Graphics/SpriteComponent.h"
 #include "Graphics/Texture.h"
@@ -222,7 +224,7 @@ namespace graphics
 		if (lTexture->Init(lTexturePath, aFormat))
 		{
 			//mLoadedTexturesOLD.insert(lTexture);
-			mLoadedTextures[aFileName] = lTexture;
+			mLoadedTextures.insert(std::pair<std::string, Texture*>(aFileName, lTexture));
 		}
 		else
 		{
@@ -266,7 +268,7 @@ namespace graphics
 			lResult = new Sprite();
 			// @HACK "SpriteBase"
 			lResult->Init("SpriteBase", lVBO, 0, lVertexData, lVertexDataLength, 0, lTextureCoords, lNumVertex, TRUE);
-			mMeshesIds["SpriteBase"] = new MeshReferences(lResult);
+			mMeshesIds.insert(std::pair<std::string, MeshReferences*>("SpriteBase", new MeshReferences(lResult)));
 		}
 		else {
 			lResult = (Sprite*)iterator->second->mMesh;
@@ -300,6 +302,73 @@ namespace graphics
 		UnloadMesh(aSprite, false);
 	}
 
+	//-----------------------------------------SPRITE ANIMATOR-----------------------------------------
+
+	SpriteAnimator* RenderManager::CreateSpriteAnimator(const std::string& aFileName, eTextureFormats aFormat, uint32 aRows, uint32 aCols)
+	{
+		SpriteAnimator* lResult = new SpriteAnimator();
+		lResult->Init(aFileName, aFormat, aRows, aCols);
+		return lResult;
+	}
+
+	void RenderManager::DeleteSpriteAnimator(SpriteAnimator* mSpriteAnimator)
+	{
+		mSpriteAnimator->Release();
+		delete mSpriteAnimator;
+	}
+
+	SpriteAnimatorComponent* RenderManager::CreateSpriteAnimatorComponent(const std::string& aFileName, eTextureFormats aFormat, uint32 aRows, uint32 aCols)
+	{
+		SpriteAnimatorComponent* lResult = new SpriteAnimatorComponent();
+		lResult->SetSpriteAnimator(CreateSpriteAnimator(aFileName, aFormat, aRows, aCols));
+		lResult->Init(TRUE);
+		return lResult;
+	}
+
+	void RenderManager::DeleteSpriteAnimatorComponent(SpriteAnimatorComponent* mSpriteAnimatorComponent)
+	{
+		mSpriteAnimatorComponent->Release();
+		delete mSpriteAnimatorComponent;
+	}
+
+	void RenderManager::RenderSpriteAnimator(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const SpriteAnimator* aSpriteAnimator)
+	{
+		Matrix4 lModelMatrix;
+		Matrix4x4::translate(&lModelMatrix, aPosition);
+		Matrix4x4::rotate(&lModelMatrix, aRotation);
+		Matrix4x4::scale(&lModelMatrix, aScale);
+
+
+		static float32 lLihgtPosX = 0.0f;
+		static int32 lSign = 1;
+		lLihgtPosX += sys::Time::GetDeltaSec() * lSign * 4;
+		if (Math::Abs(lLihgtPosX) > 50.0f)
+			lSign *= -1;
+
+		aSpriteAnimator->mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
+		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aSpriteAnimator->mVBO);
+		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aSpriteAnimator->mVBO);
+		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aSpriteAnimator->mVBO);
+		//@TODO: if is the same material only need to asign these attrib. one time
+		aSpriteAnimator->mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
+		aSpriteAnimator->mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
+		if (aSpriteAnimator->mMaterial->mDiffuseTexture != NULL)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, aSpriteAnimator->mMaterial->mDiffuseTexture->mId);
+			//glUniform1i(mMaterial->mTextureParam, 0);
+		}
+		if (aSpriteAnimator->mMaterial->mNormalTexture != NULL)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, aSpriteAnimator->mMaterial->mNormalTexture->mId);
+			//glUniform1i(mMaterial->mTextureParam, 0);
+		}
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
+	//----------------------------------------END SPRITE ANIMATOR---------------------------------------
 
 	//-----------------------------------------MATERIALS-----------------------------------------
 
@@ -367,7 +436,7 @@ namespace graphics
 
 			lShader = new Shader();
 			if (lShader->Init(aVertexShaderName, EShaderTypes::eVertex, lBuffer.c_str())) {
-				mLoadedVertexShaders[aVertexShaderName] = lShader;
+				mLoadedVertexShaders.insert(std::pair<std::string, Shader*>(aVertexShaderName, lShader));
 			}
 			else {
 				int8 lBuffer[512];
@@ -411,7 +480,7 @@ namespace graphics
 
 			lShader = new Shader();
 			if (lShader->Init(aFragmentShaderName, EShaderTypes::eFragment, lBuffer.c_str())) {
-				mLoadedFragmentShaders[aFragmentShaderName] = lShader;
+				mLoadedFragmentShaders.insert(std::pair<std::string, Shader*>(aFragmentShaderName, lShader));
 			}
 			else {
 				int8 lBuffer[512];
@@ -620,7 +689,7 @@ namespace graphics
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(lTextureCoords), lTextureCoords, GL_STATIC_DRAW);
 
 			lResult->Init(lMeshPath, lVBO, 0, aVertexData, aVertexDataLength, 0, lTextureCoords, aNumVertex, FALSE);
-			mMeshesIds[lMeshPath] = new MeshReferences(lResult);
+			mMeshesIds.insert(std::pair<std::string, MeshReferences*> (lMeshPath, new MeshReferences(lResult)));
 		}
 		else
 		{
@@ -730,7 +799,7 @@ namespace graphics
 		delete aTextRenderer;
 	}
 
-	void RenderManager::RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor, TextRenderer* aTextRenderer)
+	void RenderManager::RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color& aColor, TextRenderer* aTextRenderer)
 	{
 		aTextRenderer->Render(text, aX, aY, aScale, aColor);
 	}

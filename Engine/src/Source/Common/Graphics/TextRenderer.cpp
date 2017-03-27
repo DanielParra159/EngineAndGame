@@ -17,7 +17,7 @@
 
 #include "Core/Log.h"
 
-#include <iostream>
+#include <GL/glew.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -116,11 +116,11 @@ namespace graphics
 		FT_Done_FreeType(lFT);
 	}
 
-	void TextRenderer::Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Vector3D<float32>& aColor)
+	void TextRenderer::Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color& aColor)
 	{
 		// Activate corresponding render state	
 		mMaterial->UseMaterial();
-		mMaterial->SetVector3("textColor", aColor);
+		mMaterial->SetColor("textColor", aColor);
 		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(mVAO);
 
@@ -130,13 +130,13 @@ namespace graphics
 		{
 			Character lChar = mCharacters[*c];
 
-			GLfloat lPosX = aX + lChar.Bearing.mX * aScale;
-			GLfloat lPosY = aY + (mCharacters['H'].Bearing.mY - lChar.Bearing.mY) * aScale;
+			float32 lPosX = aX + lChar.Bearing.mX * aScale;
+			float32 lPosY = aY + (mCharacters['H'].Bearing.mY - lChar.Bearing.mY) * aScale;
 
-			GLfloat lWidth = lChar.Size.mX * aScale;
-			GLfloat lHeight = lChar.Size.mY * aScale;
+			float32 lWidth = lChar.Size.mX * aScale;
+			float32 lHeight = lChar.Size.mY * aScale;
 			// Update VBO for each character
-			GLfloat vertices[6][4] = {
+			float32 lVertices[6][4] = {
 				{ lPosX,     lPosY + lHeight,   0.0, 1.0 },
 				{ lPosX + lWidth, lPosY,       1.0, 0.0 },
 				{ lPosX,     lPosY,       0.0, 0.0 },
@@ -149,7 +149,7 @@ namespace graphics
 			glBindTexture(GL_TEXTURE_2D, lChar.TextureID);
 			// Update content of VBO memory
 			glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(lVertices), lVertices); // Be sure to use glBufferSubData and not glBufferData
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			// Render quad
