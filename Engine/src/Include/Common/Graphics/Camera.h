@@ -16,7 +16,8 @@ namespace graphics
 	{
 		ePerspective,
 		eOrthographic
-	};
+	};
+
 
 	class Camera : public logic::IComponent
 	{

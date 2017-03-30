@@ -3,12 +3,17 @@
 
 #include "Types.h"
 
-//#define EXPOSE_COLOR32_RGB(color) color.mR, color.mG, color.mB
-//#define EXPOSE_COLOR_RGBA(color) EXPOSE_COLOR_RGB(color), color.mA
+#define EXPOSE_COLOR32_RGB(color) ((color.mColor & 0x000000FF) / 255.0f), (((color.mColor & 0x0000FF00) >> 8) / 255.0f), (((color.mColor & 0x00FF0000) >> 16) / 255.0f)
+#define EXPOSE_COLOR32_RGBA(color) EXPOSE_COLOR32_RGB(color), (((color.mColor & 0xFF000000) >> 24) / 255.0f)
 
 class Color32 {
 public:
 	uint32 mColor;
+	static const Color32 white;
+	static const Color32 black;
+	static const Color32 red;
+	static const Color32 green;
+	static const Color32 blue;
 public:
 	Color32() : mColor(0) {}
 	~Color32() {}

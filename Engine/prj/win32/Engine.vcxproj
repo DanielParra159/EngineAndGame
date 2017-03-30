@@ -109,6 +109,7 @@
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h" />
     <ClInclude Include="..\..\src\Include\Common\Defs.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Camera.h" />
+    <ClInclude Include="..\..\src\Include\Common\Graphics\Light.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Material.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\Mesh.h" />
     <ClInclude Include="..\..\src\Include\Common\Graphics\IRenderable.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="..\..\src\Source\Common\Core\GameDescription.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Camera.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Graphics\Light.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Material.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Graphics\MeshComponent.cpp" />
@@ -184,6 +186,8 @@
     <ClCompile Include="..\..\src\Source\Common\Physics\ErrorManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Script\ScriptManager.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Support\Color.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\Support\Color32.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Support\Vector3D.cpp" />
     <ClCompile Include="..\..\src\Source\Common\System\Time.cpp" />
     <ClCompile Include="..\..\src\Source\Common\UI\ButtonMenu.cpp" />

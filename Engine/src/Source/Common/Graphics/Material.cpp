@@ -1,7 +1,8 @@
-#include "Graphics\Material.h"
-#include "Graphics\RenderManager.h"
-#include "Graphics\Texture.h"
-#include "Graphics\Shader.h"
+#include "Graphics/Material.h"
+#include "Graphics/RenderManager.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Light.h"
 
 #include <GL/glew.h>
 
@@ -134,7 +135,7 @@ namespace graphics
 		glUseProgram(mProgramShader);
 	}
 
-	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition)
+	void Material::PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos)
 	{
 		UseMaterial();
 		SetMatrix4("model", aModelMatrix);
@@ -147,10 +148,11 @@ namespace graphics
 			glUniform3f(mViewPos, EXPOSE_VECTOR3D(aViewPos));
 		}
 		
-		if (mLightPosParam > 0)
+		Light* lMainLight = RenderManager::Instance()->GetMainLight();
+		if (mLightPosParam > 0 && lMainLight)
 		{
-			glUniform3f(mLightColorParam, EXPOSE_VECTOR3D(aLightColor));
-			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D(aLightPosition));
+			glUniform3f(mLightColorParam, EXPOSE_COLOR32_RGB((*lMainLight->GetColor())));
+			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D((*lMainLight->GetPosition())));
 		}
 	}
 

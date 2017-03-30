@@ -6,6 +6,7 @@
 #include "Graphics\Texture.h"
 #include "Support\Rect.h"
 #include "Support\Color.h"
+#include "Support\Color32.h"
 #include "Support\Vector2D.h"
 #include "Support\Vector3D.h"
 #include "Support\IdReferences.h"
@@ -45,6 +46,7 @@ namespace graphics
 	class MeshReferences;
 	class TextRenderer;
 	class IRenderable;
+	class Light;
 
 
 	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
@@ -77,7 +79,6 @@ namespace graphics
 		Vector2D<int32>									mWindowPosition;
 		Color											mClearColor;
 		TTexturesIds									mLoadedTextures;
-		//TLoadedTextures									mLoadedTexturesOLD;
 		TLoadedMaterials								mLoadedMaterials;
 		TShaderIds										mLoadedVertexShaders;
 		TShaderIds										mLoadedFragmentShaders;
@@ -87,9 +88,9 @@ namespace graphics
 		SDL_Renderer*									mRenderer;
 		void *											mContext;
 		SDL_Window*										mWindow;
-		//GLFWwindow*										mWindow;
 		Camera*											mRenderCamera;
 		TRenderManagerToRender							mRenderablesToRender;
+		Light*											mMainLight;
 	public:
 		void											BeginRender();
 		void											EndRender();
@@ -198,7 +199,8 @@ namespace graphics
 		Camera*											GetRenderCamera();
 
 
-
+		void											CreateMainLight(const Vector3D<float32>& aPosition, const Color32& aColor = Color32::white);
+		Light*											GetMainLight();
 		void											PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const IRenderable* aRenderable);
 
 	private:
@@ -208,6 +210,7 @@ namespace graphics
 			mLoadedFragmentShaders(),
 			mMeshesIds(), mMeshInstances(),
 			mLoadedTextRenderers(),
+			mMainLight(NULL),
 			mWindow(0){}
 		~RenderManager(){}
 		BOOL											Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize,

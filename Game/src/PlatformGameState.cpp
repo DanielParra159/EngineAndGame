@@ -12,6 +12,7 @@
 
 #include "Graphics/RenderManager.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Light.h"
 
 #include "UI/MenuManager.h"
 #include "UI/Menu.h"
@@ -31,6 +32,8 @@
 #include "System/Time.h"
 
 #include "Support/Math.h"
+
+#include "Core/Log.h"
 
 #include "Defs.h"
 
@@ -88,6 +91,8 @@ namespace game
 		lWorld->AddGameObject(lGameObject, TRUE);
 
 		graphics::RenderManager::Instance()->SetClearColor(Color(0.3f, 0.2f, 0.2f, 1.0f));
+
+		graphics::RenderManager::Instance()->CreateMainLight(Vector3D<float32>(0.0f, 8.0f, 4.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("PlatformGame.wav");
@@ -152,6 +157,10 @@ namespace game
 	BOOL PlatformGameState::Update()
 	{
 		logic::World::Instance()->Update();
+
+		graphics::Light* lMainLight = graphics::RenderManager::Instance()->GetMainLight();
+
+		lMainLight->SetPosition(Vector3D<float32>(20.0f + 25.0f * Math::Cosf(sys::Time::GetCurrentSec() * 0.8f), 8.0f, 4.0f));
 
 		if (input::InputManager::Instance()->IsActionDown(ePltatformmerExit))
 		{

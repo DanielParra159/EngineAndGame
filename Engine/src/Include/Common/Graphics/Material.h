@@ -2,9 +2,10 @@
 #define _ENGINE_GRAPHICS_MATERIAL_H_
 
 #include "Types.h"
-#include "Support\Color.h"
-#include "Support\Vector3D.h"
-#include "Support\Matrix4.h"
+#include "Support/Color.h"
+#include "Support/Color32.h"
+#include "Support/Vector3D.h"
+#include "Support/Matrix4.h"
 
 #include <string>
 #include <unordered_map>
@@ -64,7 +65,7 @@ namespace graphics
 
 		const std::string&								GetName() const { return mName; }
 
-		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
+		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos);
 
 		void											ActiveDiffuseTexture();
 		void											ActiveNormalTexture();

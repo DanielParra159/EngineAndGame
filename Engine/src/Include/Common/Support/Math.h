@@ -3,6 +3,8 @@
 
 #include "Types.h"
 
+#include <math.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -38,6 +40,14 @@ public:
 	static int32 Abs(int32 aValue)
 	{
 		return abs(aValue);
+	}
+	static float32 Sinf(float32 aValue)
+	{
+		return sinf(aValue);
+	}
+	static float32 Cosf(float32 aValue)
+	{
+		return cosf(aValue);
 	}
 };
 #endif // _ENGINE_MATH_H_

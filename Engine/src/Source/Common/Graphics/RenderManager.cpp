@@ -11,6 +11,7 @@
 #include "Graphics/Camera.h"
 #include "Graphics/TextRenderer.h"
 #include "Graphics/IRenderable.h"
+#include "Graphics/Light.h"
 
 #include "Support/Matrix4.h"
 #include "Support/Math.h"
@@ -161,11 +162,29 @@ namespace graphics
 		//mLoadedTexturesOLD.clear();
 		mLoadedTextures.clear();
 
+		if (mMainLight) {
+			mMainLight->Release();
+			delete mMainLight;
+			mMainLight = NULL;
+		}
+
 		SDL_GL_DeleteContext(mContext);
 		SDL_DestroyRenderer(mRenderer);
 		SDL_DestroyWindow(mWindow);
 
 		//glfwTerminate();
+	}
+
+	void RenderManager::CreateMainLight(const Vector3D<float32>& aPosition, const Color32& aColor)
+	{
+		assert(mMainLight == NULL);
+		mMainLight = new Light();
+		mMainLight->Init(aPosition, aColor);
+	}
+
+	Light* RenderManager::GetMainLight()
+	{ 
+		return mMainLight;
 	}
 
 	void RenderManager::PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const IRenderable* aRenderable) {

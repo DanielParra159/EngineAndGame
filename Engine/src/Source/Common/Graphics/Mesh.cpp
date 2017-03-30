@@ -63,15 +63,9 @@ namespace graphics
 		Matrix4x4::scale(&lModelMatrix, aScale);
 
 
-		static float32 lLihgtPosX = 0.0f;
-		static int32 lSign = 1;
-		lLihgtPosX += sys::Time::GetDeltaSec() * lSign * 4;
-		if (Math::Abs(lLihgtPosX) > 50.0f)
-			lSign *= -1;
-
 		Camera* mRenderCamera = RenderManager::Instance()->GetRenderCamera();
 
-		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
+		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition());
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
 		mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, mVBO);
 		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, mVBO);
