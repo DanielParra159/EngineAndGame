@@ -100,6 +100,7 @@
     <ClCompile Include="..\..\src\MenuState.cpp" />
     <ClCompile Include="..\..\src\NormalMap\NormalMapState.cpp" />
     <ClCompile Include="..\..\src\PlatformGameState.cpp" />
+    <ClCompile Include="..\..\src\Platformmer\PlatformerGrass.cpp" />
     <ClCompile Include="..\..\src\Platformmer\PlatformerPlayer.cpp" />
     <ClCompile Include="..\..\src\Platformmer\PlatformerProjectile.cpp" />
     <ClCompile Include="..\..\src\Platformmer\PlatformerWall.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="..\..\src\MenuState.h" />
     <ClInclude Include="..\..\src\NormalMap\NormalMapState.h" />
     <ClInclude Include="..\..\src\PlatformGameState.h" />
+    <ClInclude Include="..\..\src\Platformmer\PlatformerGrass.h" />
     <ClInclude Include="..\..\src\Platformmer\PlatformerPlayer.h" />
     <ClInclude Include="..\..\src\Platformmer\PlatformerProjectile.h" />
     <ClInclude Include="..\..\src\Platformmer\PlatformerWall.h" />

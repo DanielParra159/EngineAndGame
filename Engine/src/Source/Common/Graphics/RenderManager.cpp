@@ -758,6 +758,7 @@ namespace graphics
 		//@TODO: if is the same material only need to asign these attrib. one time
 		aMesh->mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
 		aMesh->mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
+		aMesh->mMaterial->SetFloat("time", sys::Time::GetCurrentSec());
 		if (aMesh->mMaterial->mDiffuseTexture != NULL)
 		{
 			glActiveTexture(GL_TEXTURE0);

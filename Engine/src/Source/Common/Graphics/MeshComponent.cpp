@@ -15,7 +15,7 @@ namespace graphics {
 		
 	void MeshComponent::Render()
 	{
-		mMesh->Render(mParent->GetPosition(), mParent->GetScale(), &(*mParent->GetRotation() + mRotationOffset));
+		mMesh->Render(&(*mParent->GetPosition() + mPositionOffset), mParent->GetScale(), &(*mParent->GetRotation() + mRotationOffset));
 	}
 
 	void MeshComponent::SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)

@@ -1,0 +1,6 @@
+material SpriteDiffuse
+{
+	texture Grass.png;
+	vertexShader WindDiffuse;
+	fragmentProgram WindDiffuse;
+}

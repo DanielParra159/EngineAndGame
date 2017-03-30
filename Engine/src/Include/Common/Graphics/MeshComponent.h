@@ -23,8 +23,9 @@ namespace graphics
 	protected:
 		Mesh*											mMesh;
 		Vector3D<float32>								mRotationOffset;
+		Vector3D<float32>								mPositionOffset;
 	protected:
-		MeshComponent() : logic::IComponent(), mMesh(NULL), mRotationOffset(){}
+		MeshComponent() : logic::IComponent(), mMesh(NULL), mRotationOffset(), mPositionOffset(){}
 		virtual ~MeshComponent() {}
 		virtual void									Release();
 		virtual void									Render();
@@ -35,6 +36,7 @@ namespace graphics
 		Material*										GetMaterial() { return mMesh->GetMaterial(); }
 		void											SetMaterial(Material *aMaterial) { mMesh->SetMaterial(aMaterial); };
 		void											SetRotationOffset(const Vector3D<float32>& aRotationOffset) { mRotationOffset = aRotationOffset; }
+		void											SetPositionOffset(const Vector3D<float32>& aPositionOffset) { mPositionOffset = aPositionOffset; }
 		
 	}; // MeshComponent
 } // namespace graphics

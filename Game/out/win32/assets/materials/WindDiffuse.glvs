@@ -1,0 +1,53 @@
+#version 150 core
+
+in vec3 position;
+in vec2 texcoord;
+in vec3 normal;
+
+out vec3 Normal;
+out vec3 FragPos;
+out vec4 Color;
+out vec2 Texcoord;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 proj;
+uniform vec4 color;
+uniform bool flipX;
+uniform bool flipY;
+
+uniform float time;
+
+void main()
+{
+
+	float dx = 0.0;
+	float dz = 0.0;
+	vec3 displacedVertex;
+
+	if(position.y > 0.0)
+	{
+	dx = 0.1*sin( time );
+	dz = 0.1*cos( time + 0.5 );
+	}
+
+	displacedVertex.x = position.x + dx;
+	displacedVertex.y = position.y;
+	displacedVertex.z = position.z + dz;
+
+    FragPos = vec3(model * vec4(displacedVertex, 1.0f));
+    Normal = mat3(transpose(inverse(model))) * normal; 
+	
+    Color = color * vec4(1.0, 1.0, 1.0, 1.0);
+	
+	Texcoord = texcoord;
+	if (flipX){
+		Texcoord.x = 1.0 - texcoord.x;
+	}
+	if (flipY){
+		Texcoord.y = 1.0 - texcoord.y;
+	}
+
+
+    gl_Position = proj * view * model * vec4(displacedVertex, 1.0);
+}

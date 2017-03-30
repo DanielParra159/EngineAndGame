@@ -66,6 +66,9 @@
     <ClCompile Include="..\..\src\NormalMap\NormalMapState.cpp">
       <Filter>Source Files\NormalMapState</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformerGrass.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\NormalMap\NormalMapState.h">
       <Filter>Source Files\NormalMapState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformerGrass.h">
+      <Filter>Source Files\Platformmer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "MenuState.h"
 #include "Platformmer/PlatformerWall.h"
 #include "Platformmer/PlatformerPlayer.h"
+#include "Platformmer/PlatformerGrass.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -129,6 +130,12 @@ namespace game
 		std::string lAux = "ParseMap(\""+ lDir+"\",\"HOLA\")";
 
 		script::ScriptManager::Instance()->ExecuteScript(lAux.c_str());
+
+
+		PlatformerGrass* lPlatformerGrass = new PlatformerGrass();
+		lWorld->AddGameObject(lPlatformerGrass, TRUE);
+		lPlatformerGrass->Init(TRUE, 0, 0);
+		
 
 		return TRUE;
 	}
