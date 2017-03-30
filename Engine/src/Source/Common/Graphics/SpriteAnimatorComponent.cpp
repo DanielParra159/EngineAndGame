@@ -13,9 +13,9 @@ namespace graphics {
 		mSpriteAnimator = NULL;
 	}
 		
-	void SpriteAnimatorComponent::Render()
+	void SpriteAnimatorComponent::PrepareToRender()
 	{
-		mSpriteAnimator->Render(mParent->GetPosition(), mParent->GetScale(), &(*mParent->GetRotation() + mRotationOffset));
+		mSpriteAnimator->PrepareToRender(mParent->GetPosition(), mParent->GetScale(), &(*mParent->GetRotation() + mRotationOffset));
 	}
 
 	void SpriteAnimatorComponent::Update()

@@ -10,6 +10,7 @@
 #include "Graphics/MeshComponent.h"
 #include "Graphics/Camera.h"
 #include "Graphics/TextRenderer.h"
+#include "Graphics/IRenderable.h"
 
 #include "Support/Matrix4.h"
 #include "Support/Math.h"
@@ -167,6 +168,30 @@ namespace graphics
 		//glfwTerminate();
 	}
 
+	void RenderManager::PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const IRenderable* aRenderable) {
+		RenderData* lRenderData = new RenderData();
+		lRenderData->mPosition = *aPosition;
+		lRenderData->mScale = *aScale;
+		lRenderData->mRotation = *aRotation;
+		lRenderData->mRenderable = aRenderable;
+		lRenderData->mDistanceFromCamera = mRenderCamera->mCameraPosition.GetDistanceSqrt(*aPosition);
+		//TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin();
+		BOOL lInsert = FALSE;
+		for (TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin(), itEnd = mRenderablesToRender.end(); lIterator != itEnd; ++lIterator)
+		{
+			if (lRenderData->mDistanceFromCamera < (*lIterator)->mDistanceFromCamera)
+			{
+				mRenderablesToRender.insert(lIterator, lRenderData);
+				lInsert = true;
+				break;
+			}
+		}
+		if (!lInsert)
+		{
+			mRenderablesToRender.push_back(lRenderData);
+		}
+	}
+
 	void RenderManager::BeginRender()
 	{
 		glClearColor(EXPOSE_COLOR_RGBA(mClearColor));
@@ -175,12 +200,13 @@ namespace graphics
 
 	void RenderManager::EndRender()
 	{
+		REVERSE_LOOP_ITERATOR(TRenderManagerToRender::const_reverse_iterator, mRenderablesToRender, lIterator, lEndElement)
+		{
+			(*lIterator)->mRenderable->Render(&(*lIterator)->mPosition, &(*lIterator)->mScale, &(*lIterator)->mRotation);
+			delete (*lIterator);
+		}
+		mRenderablesToRender.clear();
 		SDL_GL_SwapWindow(mWindow);
-	}
-
-	void RenderManager::RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite)
-	{
-		RenderMesh(aPosition, aScale, aRotation, aSprite);
 	}
 
 	void RenderManager::UnloadTexture(const Texture* aTexture)
@@ -329,43 +355,6 @@ namespace graphics
 	{
 		mSpriteAnimatorComponent->Release();
 		delete mSpriteAnimatorComponent;
-	}
-
-	void RenderManager::RenderSpriteAnimator(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const SpriteAnimator* aSpriteAnimator)
-	{
-		Matrix4 lModelMatrix;
-		Matrix4x4::translate(&lModelMatrix, aPosition);
-		Matrix4x4::rotate(&lModelMatrix, aRotation);
-		Matrix4x4::scale(&lModelMatrix, aScale);
-
-
-		static float32 lLihgtPosX = 0.0f;
-		static int32 lSign = 1;
-		lLihgtPosX += sys::Time::GetDeltaSec() * lSign * 4;
-		if (Math::Abs(lLihgtPosX) > 50.0f)
-			lSign *= -1;
-
-		aSpriteAnimator->mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
-		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aSpriteAnimator->mVBO);
-		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aSpriteAnimator->mVBO);
-		aSpriteAnimator->mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aSpriteAnimator->mVBO);
-		//@TODO: if is the same material only need to asign these attrib. one time
-		aSpriteAnimator->mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
-		aSpriteAnimator->mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
-		if (aSpriteAnimator->mMaterial->mDiffuseTexture != NULL)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, aSpriteAnimator->mMaterial->mDiffuseTexture->mId);
-			//glUniform1i(mMaterial->mTextureParam, 0);
-		}
-		if (aSpriteAnimator->mMaterial->mNormalTexture != NULL)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, aSpriteAnimator->mMaterial->mNormalTexture->mId);
-			//glUniform1i(mMaterial->mTextureParam, 0);
-		}
-
-		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 
 	//----------------------------------------END SPRITE ANIMATOR---------------------------------------
@@ -736,43 +725,6 @@ namespace graphics
 				delete aMesh;
 			}
 		}
-	}
-	void RenderManager::RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh)
-	{
-		Matrix4 lModelMatrix;
-		Matrix4x4::translate(&lModelMatrix, aPosition);
-		Matrix4x4::rotate(&lModelMatrix, aRotation);
-		Matrix4x4::scale(&lModelMatrix, aScale);
-
-
-		static float32 lLihgtPosX = 0.0f;
-		static int32 lSign = 1;
-		lLihgtPosX += sys::Time::GetDeltaSec() * lSign *4;
-		if (Math::Abs(lLihgtPosX) > 50.0f)
-			lSign *= -1;
-
-		aMesh->mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 3.0f));
-		aMesh->mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, aMesh->mVBO);
-		aMesh->mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, aMesh->mVBO);
-		aMesh->mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, aMesh->mVBO);
-		//@TODO: if is the same material only need to asign these attrib. one time
-		aMesh->mMaterial->SetMatrix4("view", &mRenderCamera->mViewMatrix);
-		aMesh->mMaterial->SetMatrix4("proj", &mRenderCamera->mProjMatrix);
-		aMesh->mMaterial->SetFloat("time", sys::Time::GetCurrentSec());
-		if (aMesh->mMaterial->mDiffuseTexture != NULL)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, aMesh->mMaterial->mDiffuseTexture->mId);
-			//glUniform1i(mMaterial->mTextureParam, 0);
-		}
-		if (aMesh->mMaterial->mNormalTexture != NULL)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, aMesh->mMaterial->mNormalTexture->mId);
-			//glUniform1i(mMaterial->mTextureParam, 0);
-		}
-
-		glDrawArrays(GL_TRIANGLES, 0, aMesh->mNumVertex);		
 	}
 
 	//-----------------------------------------END MESHES-----------------------------------------

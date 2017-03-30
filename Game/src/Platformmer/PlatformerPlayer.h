@@ -34,7 +34,7 @@ namespace game
 		void											LuaInit(float32 aX, float32 aY);
 		virtual void									Init(BOOL aActive, float32 aX, float32 aY);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 
 

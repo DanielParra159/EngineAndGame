@@ -6,12 +6,13 @@
 
 namespace graphics
 {
-	class RenderManager;
 
 	class IRenderable {
+	friend class RenderManager;
 	public:
-		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero) = 0;
+		virtual void									PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero) = 0;
 	protected:
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero) const = 0;
 		virtual IRenderable*							CreateInstance() = 0;
 
 	}; // IRenderable

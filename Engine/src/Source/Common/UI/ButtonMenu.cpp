@@ -34,7 +34,7 @@ namespace ui
 	{
 		if (mSprite)
 		{
-			mSprite->Render(&Vector3D<float32>(mButtonRect.mX, mButtonRect.mY, 0.0f),
+			mSprite->PrepareToRender(&Vector3D<float32>(mButtonRect.mX, mButtonRect.mY, 0.0f),
 				&Vector3D<float32>(mButtonRect.mW, mButtonRect.mH, 1.0f));
 		}
 	}

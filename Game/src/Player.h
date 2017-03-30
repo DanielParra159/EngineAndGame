@@ -40,7 +40,7 @@ namespace game
 	
 		virtual void									Init(BOOL aActive);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 
 		void											AddCoin();

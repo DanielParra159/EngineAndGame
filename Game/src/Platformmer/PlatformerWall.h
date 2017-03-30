@@ -25,7 +25,7 @@ namespace game
 		void											LuaInit(float32 aX, float32 aY, float32 aSizeX, float32 aSizeY);
 		virtual void									Init(BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aSize);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 	
 	}; // PlatformmerWall

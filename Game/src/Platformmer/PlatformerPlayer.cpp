@@ -68,7 +68,7 @@ namespace game
 		mNextShoot = 0.0f;
 		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
 
-		mPosition.mZ = 0.8f;
+		mPosition.mZ = 0.5f;
 
 		mScale.mX = 1.0f * 2.0f;
 		mScale.mY = 1.77f * 2.0f;
@@ -136,9 +136,9 @@ namespace game
 
 	}
 
-	void PlatformerPlayer::Render()
+	void PlatformerPlayer::PrepareToRender()
 	{
-		IGameObject::Render();
+		IGameObject::PrepareToRender();
 		//mTextRenderer->RenderText("HOLA", 20, 20, 1.0f, Vector3D<float32>(1.0f,1.0f,1.0f));
 	}
 

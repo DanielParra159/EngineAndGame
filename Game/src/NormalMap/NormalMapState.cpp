@@ -112,8 +112,8 @@ namespace game
 		logic::World::Instance()->Render();
 		ui::MenuManager::Instance()->Render();
 
-		mMesh->Render(&Vector3D<float32>(6, 3, -3), &Vector3D<float32>(5, 5,5), &Vector3D<float32>(0, 0, 0));
-		mMeshNormal->Render(&Vector3D<float32>(0, 3, 0), &Vector3D<float32>(5, 5, 5), &Vector3D<float32>(0, 0, 0));
+		mMesh->PrepareToRender(&Vector3D<float32>(6, 3, -3), &Vector3D<float32>(5, 5,5), &Vector3D<float32>(0, 0, 0));
+		mMeshNormal->PrepareToRender(&Vector3D<float32>(0, 3, 0), &Vector3D<float32>(5, 5, 5), &Vector3D<float32>(0, 0, 0));
 		graphics::RenderManager::Instance()->EndRender();
 	}
 

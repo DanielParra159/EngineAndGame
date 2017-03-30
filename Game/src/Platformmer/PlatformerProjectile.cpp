@@ -52,9 +52,9 @@ namespace game
 			logic::World::Instance()->RemoveGameObject(this);
 	}
 
-	void PlatformerProjectile::Render()
+	void PlatformerProjectile::PrepareToRender()
 	{
-		IGameObject::Render();
+		IGameObject::PrepareToRender();
 	}
 
 	void PlatformerProjectile::Release()

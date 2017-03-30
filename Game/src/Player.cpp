@@ -110,15 +110,15 @@ namespace game
 
 	}
 
-	void Player::Render()
+	void Player::PrepareToRender()
 	{
-		IGameObject::Render();
+		IGameObject::PrepareToRender();
 
 		for (int32 i = 0; i < mMaxTailLength; ++i)
 		{
 			//@TODO Can be optimized
 			if (mTailStates[i]->mLife > 0)
-				mTail->Render(&mTailStates[i]->mPosition, &Vector3D<float32>::one, &mTailStates[i]->mRotation);
+				mTail->PrepareToRender(&mTailStates[i]->mPosition, &Vector3D<float32>::one, &mTailStates[i]->mRotation);
 		}
 
 	}

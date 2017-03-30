@@ -54,7 +54,7 @@ public:
 	}
 	T GetDistanceSqrt(const Vector3D<T>& aV3) const
 	{
-		return T(Vector3D<T>(mX - aV3.mX, mY - aV3.mY, mZ - aV3.mZ).LengthSq());
+		return T(Vector3D<T>(mX - aV3.mX, mY - aV3.mY, mZ - aV3.mZ).LengthSqrt());
 	}
 
 	bool operator==(const Vector3D<T>& aV3) const
@@ -129,6 +129,10 @@ public:
 		mY *= aScalar.mY;
 		mZ *= aScalar.mZ;
 		return *this;
+	}
+	Vector3D operator*(const Vector3D& aV3) const
+	{
+		return Vector3D(mX * aV3.mX, mY * aV3.mY, mZ * aV3.mZ);
 	}
 
 	Vector3D operator/(T aScalar) const

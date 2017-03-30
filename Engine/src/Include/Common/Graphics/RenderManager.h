@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
+#include <algorithm>
 
 struct  SDL_Renderer;
 struct  SDL_Window;
@@ -43,6 +44,7 @@ namespace graphics
 	class Shader;
 	class MeshReferences;
 	class TextRenderer;
+	class IRenderable;
 
 
 	typedef std::unordered_map<std::string, Texture*>			TTexturesIds;
@@ -52,11 +54,22 @@ namespace graphics
 	typedef std::unordered_map<std::string, MeshReferences*>	TMeshesIds;
 	typedef std::unordered_set<Mesh*>							TLoadedMeshes;
 	typedef std::unordered_set<TextRenderer*>					TLoadedTextRenderer;
+	
 	/**
 	This manager is responsible for painting in screen.
 	*/
 	class RenderManager
 	{
+		class RenderData {
+		public:
+			const IRenderable*							mRenderable;
+			Vector3D<float32>							mPosition;
+			Vector3D<float32>							mScale;
+			Vector3D<float32>							mRotation;
+			float32										mDistanceFromCamera;
+		};
+		typedef std::vector<RenderData*>				TRenderManagerToRender;
+
 		friend class core::Game;
 		SINGLETON_HEAD(RenderManager);
 	private:
@@ -76,6 +89,7 @@ namespace graphics
 		SDL_Window*										mWindow;
 		//GLFWwindow*										mWindow;
 		Camera*											mRenderCamera;
+		TRenderManagerToRender							mRenderablesToRender;
 	public:
 		void											BeginRender();
 		void											EndRender();
@@ -86,14 +100,6 @@ namespace graphics
 		void											SetClearColor(const Color& aColor) { mClearColor = aColor; }
 
 		//-----------------------------------------SPRITES-----------------------------------------
-		/**
-		Allow to render sprite
-		@param aSrcRect, 
-		@param aPosition, 
-		@param aRotation, 
-		*/
-		void											RenderSprite(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Sprite* aSprite);
-		
 		/**
 		Create a sprite from file
 		@param aFileName, file name
@@ -138,13 +144,6 @@ namespace graphics
 
 		void											DeleteSpriteAnimator(SpriteAnimator* mSpriteAnimator);
 		void											DeleteSpriteAnimatorComponent(SpriteAnimatorComponent* mSpriteAnimatorComponent);
-		/**
-		Allow to render animated sprite
-		@param aSrcRect,
-		@param aPosition,
-		@param aRotation,
-		*/
-		void											RenderSpriteAnimator(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const SpriteAnimator* aSpriteAnimator);
 		//----------------------------------------END SPRITE ANIMATOR---------------------------------------
 
 		//-----------------------------------------MATERIALS-----------------------------------------
@@ -183,8 +182,6 @@ namespace graphics
 		@param aMesh, mesh to Unload
 		*/
 		void											UnloadMesh(Mesh* aMesh, BOOL aPermanent);
-
-		void											RenderMesh(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const Mesh* aMesh);
 		//-----------------------------------------END MESHES-----------------------------------------
 
 		//-----------------------------------------TEXT-----------------------------------------
@@ -199,6 +196,10 @@ namespace graphics
 		Camera*											CreateOrthographicCamera(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar);
 		void											SetRenderCamera(Camera* aCamera);
 		Camera*											GetRenderCamera();
+
+
+
+		void											PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const IRenderable* aRenderable);
 
 	private:
 		RenderManager() : mLoadedTextures(), //mLoadedTexturesOLD(),

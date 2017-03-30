@@ -41,7 +41,7 @@ namespace logic
 		virtual void									Release();
 		virtual void									Update();
 		virtual void									FixedUpdate();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 	public:
 		IGameObject() : mPosition(), mScale(1,1,1), mRotation(), mActive(FALSE), mComponents(){}
 		virtual ~IGameObject() {}

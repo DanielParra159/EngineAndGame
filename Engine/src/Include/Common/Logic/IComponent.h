@@ -39,11 +39,11 @@ namespace logic
 		virtual void									Release() = 0;
 		virtual void									Update() {}
 		virtual void									FixedUpdate() {}
-		virtual void									Render() {}
+		virtual void									PrepareToRender() {}
 		virtual void									SetParent(IGameObject* aParent) { mParent = aParent; }
 		static void RenderCallbackFunction(IComponent* aComponent)
 		{
-			aComponent->Render();
+			aComponent->PrepareToRender();
 		}
 		static void UpdateCallbackFunction(IComponent* aComponent)
 		{

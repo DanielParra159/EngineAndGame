@@ -27,7 +27,7 @@ namespace graphics
 		SpriteAnimatorComponent() : logic::IComponent(), mSpriteAnimator(NULL){}
 		virtual ~SpriteAnimatorComponent() {}
 		virtual void									Release();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Update();
 		virtual void									SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction);
 		void											SetSpriteAnimator(SpriteAnimator* aSpriteAnimator);

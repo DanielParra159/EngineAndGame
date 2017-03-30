@@ -103,9 +103,9 @@ namespace game
 		IGameObject::Update();
 	}
 
-	void PlatformerWall::Render()
+	void PlatformerWall::PrepareToRender()
 	{
-		IGameObject::Render();
+		IGameObject::PrepareToRender();
 	}
 
 	void PlatformerWall::Release()

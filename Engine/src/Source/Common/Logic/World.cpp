@@ -95,12 +95,12 @@ namespace logic
 	{
 		if (mGameObjectsToRemove.size() > 0)
 			RemoveGameObjects();
-		//@TODO: sort
+
 		TGameObjectsSet::const_iterator lSetIterator = mActivatedGameObjects.begin();
 		TGameObjectsSet::const_iterator lSetIteratorEnd = mActivatedGameObjects.end();
 		for (; lSetIterator != lSetIteratorEnd; ++lSetIterator)
 		{
-			(*lSetIterator)->Render();
+			(*lSetIterator)->PrepareToRender();
 		}
 	}
 

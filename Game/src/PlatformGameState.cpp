@@ -93,6 +93,11 @@ namespace game
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("PlatformGame.wav");
 		mMusic->Play(audio::eAudioGroups::eMusic, TRUE);
 
+
+		PlatformerGrass* lPlatformerGrass = new PlatformerGrass();
+		lWorld->AddGameObject(lPlatformerGrass, TRUE);
+		lPlatformerGrass->Init(TRUE, 0, 0);
+
 		if (firstTime)
 		{
 			firstTime = FALSE;
@@ -132,9 +137,6 @@ namespace game
 		script::ScriptManager::Instance()->ExecuteScript(lAux.c_str());
 
 
-		PlatformerGrass* lPlatformerGrass = new PlatformerGrass();
-		lWorld->AddGameObject(lPlatformerGrass, TRUE);
-		lPlatformerGrass->Init(TRUE, 0, 0);
 		
 
 		return TRUE;

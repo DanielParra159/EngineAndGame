@@ -63,12 +63,16 @@ namespace graphics
 		void											UseMaterial();
 
 		const std::string&								GetName() const { return mName; }
+
+		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
+
+		void											ActiveDiffuseTexture();
+		void											ActiveNormalTexture();
 	protected:
 		Material() : mParameters(0) {}
 		virtual ~Material() {}
 		virtual void									Init(const std::string& aName, const Shader* aVertexShader, const Shader* aFragmentShader, int32 aProgramShader);
 		virtual void									Release();
-		virtual void									PrepareToRender(const Matrix4* aModelMatrix, const Vector3D<float32>& aViewPos, const Vector3D<float32>& aLightColor, const Vector3D<float32>& aLightPosition);
 		//virtual Material*								CreateInstance();
 
 	}; // Material

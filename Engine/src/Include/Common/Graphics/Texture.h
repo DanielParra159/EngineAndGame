@@ -16,6 +16,7 @@ namespace graphics
 	*/
 	class Texture {
 	friend class RenderManager;
+	friend class Material;
 	protected:
 		std::string										mName;
 		uint32											mId;

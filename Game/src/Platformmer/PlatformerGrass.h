@@ -4,26 +4,31 @@
 #include "Types.h"
 #include "Logic/IGameObject.h"
 
+#include <vector>
 
 namespace graphics
 {
-	class SpriteComponent;
+	class Sprite;
 }
 
 namespace game
 {
-
+	struct TSpriteData {
+		graphics::Sprite* mSprite;
+		Vector3D<float32> mPosition;
+		Vector3D<float32> mScale;
+	};
 	class PlatformerGrass : public logic::IGameObject
 	{
 	private:
-		graphics::SpriteComponent*						mSprite;
+		std::vector<TSpriteData*>						mSprites;
 	public:
 		PlatformerGrass() : IGameObject(){}
 		virtual ~PlatformerGrass() {}
 	
 		virtual void									Init(BOOL aActive, float32 aX, float32 aY);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 
 

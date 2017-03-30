@@ -89,9 +89,9 @@ namespace game
 
 	}
 
-	void Map::Render()
+	void Map::PrepareToRender()
 	{
-		mGround->Render(&Vector3D<float32>(0, -1, 0));
+		mGround->PrepareToRender(&Vector3D<float32>(0, -1, 0));
 
 		
 		/*mWall->Render(&Vector3D<float32>(0.0f, 0, -9.0f));

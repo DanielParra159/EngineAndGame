@@ -35,7 +35,7 @@ namespace graphics
 		TStates											mStates;
 		AnimateSpriteState*								mCurrentState;
 	public:
-		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
+		virtual void									PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
 
 		virtual void									Update();
 
@@ -53,6 +53,8 @@ namespace graphics
 		virtual void									Init(const std::string& aTextureName, eTextureFormats aTextureFormat,
 			uint32 aRows, uint32 aCols);
 		virtual void									Release();
+
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero)  const;
 		virtual IRenderable*							CreateInstance();
 
 	}; // AnimateSprite

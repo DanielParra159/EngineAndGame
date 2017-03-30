@@ -48,7 +48,7 @@ namespace logic
 		}
 	}
 
-	void IGameObject::Render()
+	void IGameObject::PrepareToRender()
 	{
 		TComponents::const_iterator lComponentIterator = mComponents.begin();
 		TComponents::const_iterator lComponentIteratorEnd = mComponents.end();
@@ -60,7 +60,8 @@ namespace logic
 		}
 	}
 
-	
+	
+
 
 	void IGameObject::SetEnabled(BOOL aActive)
 	{

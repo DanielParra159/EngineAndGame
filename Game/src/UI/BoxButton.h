@@ -20,7 +20,7 @@ namespace game
 	
 		virtual void									Init(const Vector3D<float32> aPosition, int32 aId);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 	
 	}; // BoxButton

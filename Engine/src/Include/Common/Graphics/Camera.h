@@ -36,6 +36,7 @@ namespace graphics
 		virtual void									LookAt(const Vector3D<float32>& aCameraPosition, const Vector3D<float32>& aCameraLookAt, const Vector3D<float32>& aUp);
 
 		const Matrix4*									GetView() const { return &mViewMatrix; }
+		const Matrix4*									GetProj() const { return &mProjMatrix; }
 		eTypeCameras									GetType() const { return mType; }
 		void											SetPosition(const Vector3D<float32>& aCameraPosition);
 		void											SetLookAt(const Vector3D<float32>& aCameraLookAt);

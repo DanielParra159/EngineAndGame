@@ -29,7 +29,7 @@ namespace game
 	
 		virtual void									Init(const Vector3D<float32> aPosition, const Vector3D<float32> aDirection, BOOL aPlayerProjectile);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 
 	private:

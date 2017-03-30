@@ -13,9 +13,9 @@ namespace graphics {
 		mMesh = NULL;
 	}
 		
-	void MeshComponent::Render()
+	void MeshComponent::PrepareToRender()
 	{
-		mMesh->Render(&(*mParent->GetPosition() + mPositionOffset), mParent->GetScale(), &(*mParent->GetRotation() + mRotationOffset));
+		mMesh->PrepareToRender(&(*mParent->GetPosition() + mPositionOffset), &(*mParent->GetScale() * mLocalScale), &(*mParent->GetRotation() + mRotationOffset));
 	}
 
 	void MeshComponent::SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)

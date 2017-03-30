@@ -28,7 +28,7 @@ namespace game
 	
 		virtual void									Init(eBoxType aBoxType, BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aBoxSize, const Vector3D<float32> aRotationOffset, const float32 lWallVertexData[], uint32 aSize);
 		virtual void									Update();
-		virtual void									Render();
+		virtual void									PrepareToRender();
 		virtual void									Release();
 
 	private:

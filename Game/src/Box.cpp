@@ -53,9 +53,9 @@ namespace game
 		IGameObject::Update();
 	}
 
-	void Box::Render()
+	void Box::PrepareToRender()
 	{
-		IGameObject::Render();
+		IGameObject::PrepareToRender();
 	}
 
 	void Box::Release()

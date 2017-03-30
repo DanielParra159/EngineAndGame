@@ -22,7 +22,7 @@ namespace graphics
 		BOOL											mFlipX;
 		BOOL											mFlipY;
 	public:
-		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
+		virtual void									PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero);
 		void											SetFlipXY(BOOL aFlipX, BOOL aFlipY);
 		void											SetFlipX(BOOL aFlipX);
 		BOOL											GetFlipX() const { return mFlipX; }
@@ -36,6 +36,7 @@ namespace graphics
 		virtual void									Init(const std::string& aName, uint32 aVBO, uint32 aEBO, const float32* aVertexData, uint32 aVertexDataLength, const uint32* aElementData, const float32* aTextureCoords, uint32 aNumVertex, BOOL aInstance);
 		virtual void									Release();
 
+		virtual void									Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale = &Vector3D<float32>::one, const Vector3D<float32>* aRotation = &Vector3D<float32>::zero) const;
 		virtual IRenderable*							CreateInstance();
 
 	}; // Renderer

@@ -153,4 +153,21 @@ namespace graphics
 			glUniform3f(mLightPosParam, EXPOSE_VECTOR3D(aLightPosition));
 		}
 	}
+
+	void Material::ActiveDiffuseTexture() {
+		if (mDiffuseTexture != NULL)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, mDiffuseTexture->mId);
+			//glUniform1i(mMaterial->mTextureParam, 0);
+		}
+	}
+	void Material::ActiveNormalTexture() {
+		if (mNormalTexture != NULL)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, mNormalTexture->mId);
+			//glUniform1i(mMaterial->mTextureParam, 0);
+		}
+	}
 } // namespace graphics

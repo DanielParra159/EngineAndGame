@@ -1,7 +1,14 @@
-#include "Graphics\Sprite.h"
-#include "Graphics\RenderManager.h"
-#include "Graphics\Texture.h"
-#include "Graphics\Material.h"
+#include "Graphics/Sprite.h"
+#include "Graphics/RenderManager.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Material.h"
+#include "Graphics/Camera.h"
+
+#include "System/Time.h"
+
+#include "Support/Math.h"
+
+#include <GL/glew.h>
 
 namespace graphics
 {
@@ -24,9 +31,39 @@ namespace graphics
 		return lSprite;
 	}
 
-	void Sprite::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
+	void Sprite::PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)
 	{
-		RenderManager::Instance()->RenderSprite(aPosition, aScale, aRotation, this);
+		RenderManager::Instance()->PrepareToRender(aPosition, aScale, aRotation, this);
+	}
+	void Sprite::Render(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation)  const
+	{
+		Matrix4 lModelMatrix;
+		Matrix4x4::translate(&lModelMatrix, aPosition);
+		Matrix4x4::rotate(&lModelMatrix, aRotation);
+		Matrix4x4::scale(&lModelMatrix, aScale);
+
+
+		static float32 lLihgtPosX = 0.0f;
+		static int32 lSign = 1;
+		lLihgtPosX += sys::Time::GetDeltaSec() * lSign * 4;
+		if (Math::Abs(lLihgtPosX) > 50.0f)
+			lSign *= -1;
+
+		Camera* mRenderCamera = RenderManager::Instance()->GetRenderCamera();
+
+		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition(), Vector3D<float32>(1.0f, 1.0f, 1.0f), Vector3D<float32>(lLihgtPosX, 8.0f, 4.0f));
+		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);
+		mMaterial->SetVertexFloatAttribPointer("normal", 3, FALSE, 8, 3, mVBO);
+		mMaterial->SetVertexFloatAttribPointer("texcoord", 2, FALSE, 8, 6, mVBO);
+		//@TODO: if is the same material only need to asign these attrib. one time
+		mMaterial->SetMatrix4("view", mRenderCamera->GetView());
+		mMaterial->SetMatrix4("proj", mRenderCamera->GetProj());
+		mMaterial->SetFloat("time", sys::Time::GetCurrentSec());
+		mMaterial->ActiveDiffuseTexture();
+		mMaterial->ActiveNormalTexture();
+
+
+		glDrawArrays(GL_TRIANGLES, 0, mNumVertex);
 	}
 
 	void Sprite::SetFlipXY(BOOL aFlipX, BOOL aFlipY)

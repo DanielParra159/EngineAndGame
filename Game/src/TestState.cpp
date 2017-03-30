@@ -60,10 +60,10 @@ namespace game
 	{
 		graphics::RenderManager::Instance()->BeginRender();
 		ui::MenuManager::Instance()->Render();
-		mMesh->Render(&Vector3D<float32>(0, 0, -1));
-		mMesh->Render(&Vector3D<float32>(0, -1, -1), &Vector3D<float32>(2, 2, 2), &Vector3D<float32>(0, 45, 0));
+		mMesh->PrepareToRender(&Vector3D<float32>(0, 0, -1));
+		mMesh->PrepareToRender(&Vector3D<float32>(0, -1, -1), &Vector3D<float32>(2, 2, 2), &Vector3D<float32>(0, 45, 0));
 
-		mMesh2->Render(&Vector3D<float32>(1,0,0));
+		mMesh2->PrepareToRender(&Vector3D<float32>(1,0,0));
 		graphics::RenderManager::Instance()->EndRender();
 	}
 
