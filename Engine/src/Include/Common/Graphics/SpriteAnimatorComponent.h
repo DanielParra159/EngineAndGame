@@ -41,6 +41,13 @@ namespace graphics
 		void											PlayState(uint32 aId, uint32 aFrame = 0) { mSpriteAnimator->PlayState(aId, aFrame); }
 
 		void											AddState(uint32 aId, uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop) { mSpriteAnimator->AddState(aId, aFrameStart, aNumFrames, aAnimDuration, aLoop); }
+		void											AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, float32 aFloatValue, const std::string& aParameter) { mSpriteAnimator->AddTransition(aFromState, aToState, aType, aFloatValue, aParameter); }
+		void											AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, int32 aIntValue, const std::string& aParameter) { mSpriteAnimator->AddTransition(aFromState, aToState, aType, aIntValue, aParameter); }
+		void											AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, const std::string& aParameter) { mSpriteAnimator->AddTransition(aFromState, aToState, aType, aParameter); }
+		void											SetFloatParameter(const std::string& aName, float32 aFloatValue) { mSpriteAnimator->SetFloatParameter(aName, aFloatValue); }
+		void											SetIntParameter(const std::string& aName, int32 aIntValue) { mSpriteAnimator->SetIntParameter(aName, aIntValue); }
+		void											SetBoolParameter(const std::string& aName, BOOL aBoolValue) { mSpriteAnimator->SetBoolParameter(aName, aBoolValue); }
+		void											SetTriggerParameter(const std::string& aName) { mSpriteAnimator->SetTriggerParameter(aName); }
 
 		void											SetFlipXY(BOOL aFlipX, BOOL aFlipY) { mSpriteAnimator->SetFlipX(aFlipX); mSpriteAnimator->SetFlipY(aFlipY); }
 		void											SetFlipX(BOOL aFlipX) { mSpriteAnimator->SetFlipX(aFlipX); }

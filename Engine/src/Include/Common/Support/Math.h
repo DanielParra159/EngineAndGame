@@ -49,5 +49,9 @@ public:
 	{
 		return cosf(aValue);
 	}
+	static float32 Atan2f(float32 aValue1, float32 aValue2)
+	{
+		return atan2f(aValue1, aValue2);
+	}
 };
 #endif // _ENGINE_MATH_H_

@@ -68,8 +68,9 @@ namespace game
 		lController->RegisterInputAction(ePltatformmerDown, input::KeyboardController::eDown);
 		lController->RegisterInputAction(ePltatformmerLeft, input::KeyboardController::eLeft);
 		lController->RegisterInputAction(ePltatformmerRight, input::KeyboardController::eRight);
-		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eLeftControl);
-		lController->RegisterInputAction(ePltatformmerShoot, input::KeyboardController::eSpace);
+		lController->RegisterInputAction(ePltatformmerJump, input::KeyboardController::eSpace);
+		lController->RegisterInputAction(ePltatformmerKunai, input::KeyboardController::eQ);
+		lController->RegisterInputAction(ePltatformmerMelee, input::KeyboardController::eLeftControl);
 
 		/*if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;*/
@@ -92,7 +93,7 @@ namespace game
 
 		graphics::RenderManager::Instance()->SetClearColor(Color(0.3f, 0.2f, 0.2f, 1.0f));
 
-		graphics::RenderManager::Instance()->CreateMainLight(Vector3D<float32>(0.0f, 8.0f, 4.0f));
+		graphics::RenderManager::Instance()->CreateMainLight(Vector3D<float32>(0.0f, 8.0f, 8.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("PlatformGame.wav");
@@ -160,7 +161,7 @@ namespace game
 
 		graphics::Light* lMainLight = graphics::RenderManager::Instance()->GetMainLight();
 
-		lMainLight->SetPosition(Vector3D<float32>(20.0f + 25.0f * Math::Cosf(sys::Time::GetCurrentSec() * 0.8f), 8.0f, 4.0f));
+		lMainLight->SetPosition(Vector3D<float32>(20.0f + 25.0f * Math::Cosf(sys::Time::GetCurrentSec() * 0.8f), 8.0f, 8.0f));
 
 		if (input::InputManager::Instance()->IsActionDown(ePltatformmerExit))
 		{

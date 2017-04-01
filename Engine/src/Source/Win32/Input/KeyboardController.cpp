@@ -103,6 +103,8 @@ namespace input
 				return EKeyCode::eLeftControl;
 			case SDL_SCANCODE_LSHIFT:
 				return EKeyCode::eLeftShift;
+			case SDL_SCANCODE_Q:
+				return EKeyCode::eQ;
 		}
 		return EKeyCode::eUnknown;
 	}

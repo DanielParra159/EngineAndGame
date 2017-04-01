@@ -20,13 +20,19 @@ namespace game
 
 	class PlatformerPlayer : public logic::IGameObject
 	{
+		enum eAnims {
+			eIdle, eRun, eKunai, eJumpKunai, eStartJump, eEndJump, eMelee, eJumpMelee
+		};
 	private:
 		physics::CapsuleController*						mCapsuleController;
 		graphics::SpriteAnimatorComponent*				mSprite;
 		graphics::TextRenderer*							mTextRenderer;
 		BOOL											mJumping;
-		float64											mTimeEndJump;
-		float64											mNextShoot;
+		float32											mTimeEndJump;
+		float32											mNextTimeKunaiAllowed;
+		float32											mDelayBetweenKunais;
+		float32											mNextTimeMeleeAllowed;
+		float32											mDelayBetweenMelee;
 	public:
 		PlatformerPlayer() : IGameObject(){}
 		virtual ~PlatformerPlayer() {}

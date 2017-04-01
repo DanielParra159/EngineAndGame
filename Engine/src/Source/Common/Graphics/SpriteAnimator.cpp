@@ -13,6 +13,8 @@
 
 #include <GL/glew.h>
 
+#include <unordered_set>
+
 namespace graphics
 {
 	float32 sVertexData[] = {
@@ -54,10 +56,22 @@ namespace graphics
 		RenderManager::Instance()->UnloadMaterial(mMaterial);
 		mMaterial = NULL;
 
-		LOOP_ITERATOR(TStates::iterator, mStates, lIterator, lEndElement) {
+		LOOP_ITERATOR(TStates::iterator, mStates, lIterator, lEndElement) 
+		{
 			delete lIterator->second;
 		}
 		mStates.clear();
+
+		LOOP_ITERATOR(TStateTransitions::iterator, mTransitions, lIterator, lEndElement)
+		{
+			TConditionsList lConditions = (*lIterator).second;
+			LOOP_ITERATOR(TConditionsList::iterator, lConditions, lConditionsIterator, lConditionsEndElement)
+			{
+				delete (*lConditionsIterator);
+			}
+			lConditions.clear();
+		}
+		mTransitions.clear();
 		mCurrentState = NULL;
 	}
 
@@ -71,14 +85,26 @@ namespace graphics
 		uint32 lXFrame = lFrame % mCols;
 		uint32 lYFrame = lFrame / mCols;
 
-		float32 UMin = lXFrame * mFrameWidth / mMaterial->GetDiffuseTexture()->GetWidth();
+		float32 lUMin = lXFrame * mFrameWidth / mMaterial->GetDiffuseTexture()->GetWidth();
+		float32 lUMax = (lXFrame +1) * mFrameWidth / mMaterial->GetDiffuseTexture()->GetWidth();
 		float32 VMin = lYFrame * mFrameHeight / mMaterial->GetDiffuseTexture()->GetHeight();
-		float32 UMax = (lXFrame +1) * mFrameWidth / mMaterial->GetDiffuseTexture()->GetWidth();
 		float32 VMax = (lYFrame + 1) * mFrameHeight / mMaterial->GetDiffuseTexture()->GetHeight();
+		if (mFlipX)
+		{
+			float32 lAux = lUMin;
+			lUMin = lUMax;
+			lUMax = lAux;
+		}
+		if (mFlipY)
+		{
+			float32 lAux = VMin;
+			VMin = VMax;
+			VMax = lAux;
+		}
 
-		sVertexData[6] = sVertexData[38] = sVertexData[46] = UMin;
+		sVertexData[6] = sVertexData[38] = sVertexData[46] = lUMin;
 		sVertexData[23] = sVertexData[31] = sVertexData[39] = VMin;
-		sVertexData[14] = sVertexData[22] = sVertexData[30] = UMax;
+		sVertexData[14] = sVertexData[22] = sVertexData[30] = lUMax;
 		sVertexData[7] = sVertexData[15] = sVertexData[47] = VMax;
 
 		mMaterial->UseMaterial();
@@ -111,8 +137,10 @@ namespace graphics
 
 	void SpriteAnimator::Update()
 	{
-		if (!mCurrentState->mPlaying)
+		if (!mCurrentState->mPlaying) {
+			CheckStateConditions();
 			return;
+		}
 
 		float32 lSpeed = mCurrentState->mNumFrames / mCurrentState->mAnimDuration;
 		mCurrentState->mCurrentTime += sys::Time::GetDeltaSec() * lSpeed * mSpeedScale;
@@ -128,6 +156,83 @@ namespace graphics
 			}
 		}
 		mCurrentState->mCurrentFrame = (uint32)(mCurrentState->mCurrentTime / (mCurrentState->mAnimDuration / mCurrentState->mNumFrames));
+
+		CheckStateConditions();
+	}
+
+	void SpriteAnimator::CheckStateConditions() {
+		TConditionsList lConditions = mTransitions[mCurrentState->mId];
+		BOOL lAllowedCondition = FALSE;
+		std::unordered_set<StateCondition*> lAllowedStates, lNoAllowedStates;
+		LOOP_ITERATOR(TConditionsList::const_iterator, lConditions, lConditionsIterator, lConditionsEndElement)
+		{
+			lAllowedCondition = FALSE;
+			switch ((*lConditionsIterator)->mType)
+			{
+			case eCurrentTime:
+				if ((*lConditionsIterator)->mValue.mFloatValue >= mCurrentState->mCurrentTime
+					&& lNoAllowedStates.find(*lConditionsIterator) == lNoAllowedStates.end()) {
+					lAllowedStates.insert(*lConditionsIterator);
+					lAllowedCondition = TRUE;
+				}
+				break;
+			case eEnd:
+				if (!mCurrentState->mPlaying 
+					&& lNoAllowedStates.find(*lConditionsIterator) == lNoAllowedStates.end()) {
+					lAllowedStates.insert(*lConditionsIterator);
+					lAllowedCondition = TRUE;
+				}
+				break;
+			case eGreaterInt:
+				break;
+			case eGreaterFloat:
+				break;
+			case eFalseBool:
+			{
+				TParameters::const_iterator lParameter = mParameters.find((*lConditionsIterator)->mParameter);
+				if (lParameter != mParameters.end() && !(*lParameter).second.mBoolValue
+					&& lNoAllowedStates.find(*lConditionsIterator) == lNoAllowedStates.end()) {
+					lAllowedStates.insert(*lConditionsIterator);
+					lAllowedCondition = TRUE;
+				}
+				break;
+			}
+			case eTrueBool:
+			{
+				TParameters::const_iterator lParameter = mParameters.find((*lConditionsIterator)->mParameter);
+				if (lParameter != mParameters.end() && (*lParameter).second.mBoolValue
+					&& lNoAllowedStates.find(*lConditionsIterator) == lNoAllowedStates.end()) {
+					lAllowedStates.insert(*lConditionsIterator);
+					lAllowedCondition = TRUE;
+				}
+				break;
+			}
+			case eTrigger:
+				if (mParameters.find((*lConditionsIterator)->mParameter) != mParameters.end()
+					&& lNoAllowedStates.find(*lConditionsIterator) == lNoAllowedStates.end()) {
+					lAllowedStates.insert(*lConditionsIterator);
+					lAllowedCondition = TRUE;
+				}
+				break;
+			}
+			
+
+			if (!lAllowedCondition) {
+				lNoAllowedStates.insert(*lConditionsIterator);
+				lAllowedStates.erase(*lConditionsIterator);
+			}
+		}
+
+		std::unordered_set<StateCondition*>::const_iterator lIterator = lAllowedStates.begin();
+		if (lIterator != lAllowedStates.end())
+		{
+			if ((*lIterator)->mType == eTrigger)
+			{
+				mParameters.erase((*lIterator)->mParameter);
+			}
+			PlayState((*lIterator)->mNextState);
+		}
+
 	}
 
 	void SpriteAnimator::SetSpeedScale(float32 aSpeedScale)
@@ -147,43 +252,108 @@ namespace graphics
 		mCurrentState = mStates[aId];
 		assert(aFrame <= mCurrentState->mNumFrames && "SpriteAnimator::PlayState aFrame <= mCurrentState->mNumFrames");
 		mCurrentState->mCurrentFrame = aFrame;
-		mCurrentState->mCurrentTime = (uint32)(aFrame * (mCurrentState->mAnimDuration / mCurrentState->mNumFrames));
+		mCurrentState->mCurrentTime = aFrame * (mCurrentState->mAnimDuration / mCurrentState->mNumFrames);
 		mCurrentState->mPlaying = TRUE;
 	}
 
 	void SpriteAnimator::AddState(uint32 aId, uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop)
 	{
 		AnimateSpriteState* lAnimateSpriteState = new AnimateSpriteState();
-		lAnimateSpriteState->Init(aFrameStart, aNumFrames, aAnimDuration, aLoop);
+		lAnimateSpriteState->Init(aId, aFrameStart, aNumFrames, aAnimDuration, aLoop);
 
 		mStates.insert(std::pair<int32, AnimateSpriteState*>(aId, lAnimateSpriteState));
+	}
+
+	void SpriteAnimator::AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, float32 aFloatValue, const std::string& aParameter)
+	{
+		StateCondition* lStateCondition = new StateCondition();
+		lStateCondition->Init(aToState, aFloatValue, aType, aParameter);
+		mTransitions[aFromState].push_back(lStateCondition);
+	}
+	void SpriteAnimator::AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, int32 aIntValue, const std::string& aParameter)
+	{
+		StateCondition* lStateCondition = new StateCondition();
+		lStateCondition->Init(aToState, aIntValue, aType, aParameter);
+		mTransitions[aFromState].push_back(lStateCondition);
+	}
+	void SpriteAnimator::AddTransition(uint32 aFromState, uint32 aToState, eConditionType aType, const std::string& aParameter)
+	{
+		assert(aType == eTrigger || aType == eEnd || aType == eTrueBool || aType == eFalseBool);
+		StateCondition* lStateCondition = new StateCondition();
+		lStateCondition->Init(aToState, aType, aParameter);
+		mTransitions[aFromState].push_back(lStateCondition);
+	}
+	void SpriteAnimator::SetFloatParameter(const std::string& aName, float32 aFloatValue)
+	{
+		uValue lValue = uValue();
+		lValue.mFloatValue = aFloatValue;
+		mParameters[aName] = lValue;
+	}
+	void SpriteAnimator::SetIntParameter(const std::string& aName, int32 aIntValue)
+	{
+		uValue lValue = uValue();
+		lValue.mIntValue = aIntValue;
+		mParameters[aName] = lValue;
+	}
+	void SpriteAnimator::SetBoolParameter(const std::string& aName, BOOL aBoolValue)
+	{
+		uValue lValue = uValue();
+		lValue.mBoolValue = aBoolValue;
+		mParameters[aName] = lValue;
+	}
+	void SpriteAnimator::SetTriggerParameter(const std::string& aName)
+	{
+		mParameters[aName] = uValue();
 	}
 
 	void SpriteAnimator::SetFlipXY(BOOL aFlipX, BOOL aFlipY)
 	{
 		mFlipX = aFlipX;
-		mMaterial->SetBool("flipX", mFlipX);
+		//mMaterial->SetBool("flipX", mFlipX);
 		mFlipY = aFlipY;
-		mMaterial->SetBool("flipY", mFlipY);
+		//mMaterial->SetBool("flipY", mFlipY);
 	}
 	void SpriteAnimator::SetFlipX(BOOL aFlipX)
 	{
 		mFlipX = aFlipX;
-		mMaterial->SetBool("flipX", mFlipX);
+		//mMaterial->SetBool("flipX", mFlipX);
 	}
 	void SpriteAnimator::SetFlipY(BOOL aFlipY)
 	{
 		mFlipY = aFlipY;
-		mMaterial->SetBool("flipY", mFlipY);
+		//mMaterial->SetBool("flipY", mFlipY);
 	}
 
 	//-----------------------------------------------------------AnimateSpriteState------------------------------------
 
-	void AnimateSpriteState::Init(uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop)
+	void AnimateSpriteState::Init(uint32 aId, uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop)
 	{
+		mId = aId;
 		mStartFrame = aFrameStart-1;
 		mNumFrames = aNumFrames;
 		mAnimDuration = aAnimDuration;
 		mLoop = aLoop;
+	}
+
+	//-----------------------------------------------------------StateCondition------------------------------------
+	void StateCondition::Init(uint32 aNextState, int32 aIntValue, eConditionType aType, const std::string& aParameter)
+	{
+		mParameter = aParameter;
+		mNextState = aNextState;
+		mType = aType;
+		mValue.mIntValue = aIntValue;
+	}
+	void StateCondition::Init(uint32 aNextState, float32 aFloatValue, eConditionType aType, const std::string& aParameter)
+	{
+		mParameter = aParameter;
+		mNextState = aNextState;
+		mType = aType;
+		mValue.mFloatValue = aFloatValue;
+	}
+	void StateCondition::Init(uint32 aNextState, eConditionType aType, const std::string& aParameter)
+	{
+		mParameter = aParameter;
+		mNextState = aNextState;
+		mType = aType;
 	}
 } // namespace graphics
