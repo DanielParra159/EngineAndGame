@@ -15,7 +15,6 @@
 
 #include "Graphics/RenderManager.h"
 #include "Graphics/MeshComponent.h"
-#include "Graphics/SpriteComponent.h"
 #include "Graphics/SpriteAnimatorComponent.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
@@ -42,15 +41,18 @@ namespace game
 		//physics::Collider* lCapsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(aX, aY, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
 		AddComponent(mCapsuleController);
 
-		graphics::SpriteAnimatorComponent* lSpriteAnimatorComponent = graphics::RenderManager::Instance()->CreateSpriteAnimatorComponent("NinjaSprites.png", graphics::eRGBA, 2, 5);
-		lSpriteAnimatorComponent->AddState(0, 0, 5, 5.0f, TRUE);
-		lSpriteAnimatorComponent->AddState(1, 5, 5, 5.0f, TRUE);
-		lSpriteAnimatorComponent->PlayState(1);
-		lSpriteAnimatorComponent->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
-		AddComponent(lSpriteAnimatorComponent);
+		mSprite = graphics::RenderManager::Instance()->CreateSpriteAnimatorComponent("NinjaSprites.png", graphics::eRGBA, 4, 10);
+		mSprite->AddState(0, 1, 10, 2.5f, FALSE);
+		mSprite->AddState(1, 11, 10, 2.5f, TRUE);
+		mSprite->AddState(2, 21, 6, 2.5f, FALSE);
+		mSprite->AddState(3, 27, 4, 2.5f, FALSE);
+		mSprite->AddState(4, 31, 10, 2.0f, FALSE);
+		mSprite->PlayState(1);
+		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
+		AddComponent(mSprite);
 
-		mSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Ninja.png", graphics::eRGBA);
-		mSprite->SetFlipX(FALSE);
+		//mSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Ninja.png", graphics::eRGBA);
+		//mSprite->SetFlipX(FALSE);
 		//AddComponent(mSprite);
 
 		/*graphics::MeshComponent* lPlayerMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Human.obj");
@@ -66,7 +68,7 @@ namespace game
 		graphics::RenderManager::Instance()->GetRenderCamera()->FollowTarget(this, Vector3D<float32>(0.0f, 3.0f, 12.0f), Vector3D<float32>(0.0f, 0.0f, 0.0f));
 
 		mNextShoot = 0.0f;
-		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
+		//mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
 
 		mPosition.mZ = 0.5f;
 
@@ -100,14 +102,17 @@ namespace game
 			{
 				mJumping = TRUE;
 				mTimeEndJump = sys::Time::GetCurrentSec() + 0.5f;
+				mSprite->PlayState(2);
 			}
 		}
 		if (mJumping)
 		{
-			if (mTimeEndJump > sys::Time::GetCurrentSec())
+			if (mTimeEndJump > sys::Time::GetCurrentSec()) {
 				mCapsuleController->AddForce(Vector3D<float32>::up * 30 * sys::Time::GetDeltaSec());
-			else
+			} else if (mCapsuleController->GetGround()) {
 				mJumping = FALSE;
+				mSprite->PlayState(1);
+			}
 		}
 		mCapsuleController->Move(lDir * 20 * sys::Time::GetDeltaSec());
 
@@ -115,6 +120,7 @@ namespace game
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerShoot) 
 			&& mNextShoot < sys::Time::GetCurrentSec())
 		{
+			mSprite->PlayState(4);
 			if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerUp))
 			{
 				lDir.mY = 1.0f;
@@ -130,7 +136,7 @@ namespace game
 			PlatformerProjectile* lProjectile = new PlatformerProjectile();
 			logic::World::Instance()->AddGameObject(lProjectile, TRUE);
 			lProjectile->Init(mPosition + lDir * 3.0f, lDir, TRUE);
-			mNextShoot = sys::Time::GetCurrentSec() + 0.1f;
+			mNextShoot = sys::Time::GetCurrentSec() + 2.0f;
 		}
 
 

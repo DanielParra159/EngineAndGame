@@ -41,6 +41,12 @@ namespace graphics
 		void											PlayState(uint32 aId, uint32 aFrame = 0) { mSpriteAnimator->PlayState(aId, aFrame); }
 
 		void											AddState(uint32 aId, uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop) { mSpriteAnimator->AddState(aId, aFrameStart, aNumFrames, aAnimDuration, aLoop); }
+
+		void											SetFlipXY(BOOL aFlipX, BOOL aFlipY) { mSpriteAnimator->SetFlipX(aFlipX); mSpriteAnimator->SetFlipY(aFlipY); }
+		void											SetFlipX(BOOL aFlipX) { mSpriteAnimator->SetFlipX(aFlipX); }
+		BOOL											GetFlipX() const { return mSpriteAnimator->GetFlipX(); }
+		void											SetFlipY(BOOL aFlipY) { mSpriteAnimator->SetFlipY(aFlipY); }
+		BOOL											GetFlipY() const { return mSpriteAnimator->GetFlipY(); }
 		
 	}; // SpriteAnimatorComponent
 } // namespace graphics

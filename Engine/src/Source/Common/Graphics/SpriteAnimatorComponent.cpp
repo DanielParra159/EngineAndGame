@@ -34,5 +34,4 @@ namespace graphics {
 	{
 		mSpriteAnimator = aSpriteAnimator;
 	}
-
 } // namespace graphics

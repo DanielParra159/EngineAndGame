@@ -147,6 +147,7 @@ namespace graphics
 		mCurrentState = mStates[aId];
 		assert(aFrame <= mCurrentState->mNumFrames && "SpriteAnimator::PlayState aFrame <= mCurrentState->mNumFrames");
 		mCurrentState->mCurrentFrame = aFrame;
+		mCurrentState->mCurrentTime = (uint32)(aFrame * (mCurrentState->mAnimDuration / mCurrentState->mNumFrames));
 		mCurrentState->mPlaying = TRUE;
 	}
 
@@ -158,11 +159,29 @@ namespace graphics
 		mStates.insert(std::pair<int32, AnimateSpriteState*>(aId, lAnimateSpriteState));
 	}
 
+	void SpriteAnimator::SetFlipXY(BOOL aFlipX, BOOL aFlipY)
+	{
+		mFlipX = aFlipX;
+		mMaterial->SetBool("flipX", mFlipX);
+		mFlipY = aFlipY;
+		mMaterial->SetBool("flipY", mFlipY);
+	}
+	void SpriteAnimator::SetFlipX(BOOL aFlipX)
+	{
+		mFlipX = aFlipX;
+		mMaterial->SetBool("flipX", mFlipX);
+	}
+	void SpriteAnimator::SetFlipY(BOOL aFlipY)
+	{
+		mFlipY = aFlipY;
+		mMaterial->SetBool("flipY", mFlipY);
+	}
+
 	//-----------------------------------------------------------AnimateSpriteState------------------------------------
 
 	void AnimateSpriteState::Init(uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop)
 	{
-		mStartFrame = aFrameStart;
+		mStartFrame = aFrameStart-1;
 		mNumFrames = aNumFrames;
 		mAnimDuration = aAnimDuration;
 		mLoop = aLoop;

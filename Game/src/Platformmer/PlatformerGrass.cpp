@@ -31,6 +31,7 @@ namespace game
 		lSprite->SetMaterial(lMaterial);
 		lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Tree.png", graphics::eRGBA));
 		lMaterial->SetFloat("windForce", 0.01f);
+		lMaterial->SetFloat("initialTime", 1.0f);
 
 		TSpriteData* lSpriteData = new TSpriteData(); 
 		lSpriteData->mSprite = lSprite;
@@ -45,11 +46,39 @@ namespace game
 		lSprite->SetMaterial(lMaterial);
 		lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("Tree.png", graphics::eRGBA));
 		lMaterial->SetFloat("windForce", 0.01f);
+		lMaterial->SetFloat("initialTime", 2.0f);
 
 		lSpriteData = new TSpriteData();
 		lSpriteData->mSprite = lSprite;
 		lSpriteData->mPosition = Vector3D<float32>(18.0f, 16.0f, -1.5f);
 		lSpriteData->mScale = Vector3D<float32>(10.0f, 10.0f, 1.0f);
+
+		mSprites.push_back(lSpriteData);
+
+
+		lSprite = graphics::RenderManager::Instance()->CreateSprite("Grass.png", graphics::eRGBA);
+		lMaterial = graphics::RenderManager::Instance()->LoadMaterial("WindDiffuse");
+		lSprite->SetMaterial(lMaterial);
+		lMaterial->SetFloat("windForce", 0.05f);
+		lMaterial->SetFloat("initialTime", 3.0f);
+
+		lSpriteData = new TSpriteData();
+		lSpriteData->mSprite = lSprite;
+		lSpriteData->mPosition = Vector3D<float32>(10.0f, 6.25f, 4.05f);
+		lSpriteData->mScale = Vector3D<float32>(2.5f, 2.5f, 1.0f);
+
+		mSprites.push_back(lSpriteData);
+
+		lSprite = graphics::RenderManager::Instance()->CreateSprite("Grass.png", graphics::eRGBA);
+		lMaterial = graphics::RenderManager::Instance()->LoadMaterial("WindDiffuse");
+		lSprite->SetMaterial(lMaterial);
+		lMaterial->SetFloat("windForce", 0.1f);
+		lMaterial->SetFloat("initialTime", 4.0f);
+
+		lSpriteData = new TSpriteData();
+		lSpriteData->mSprite = lSprite;
+		lSpriteData->mPosition = Vector3D<float32>(12.0f, 6.23f, 4.1f);
+		lSpriteData->mScale = Vector3D<float32>(2.5f, 2.5f, 1.0f);
 
 		mSprites.push_back(lSpriteData);
 

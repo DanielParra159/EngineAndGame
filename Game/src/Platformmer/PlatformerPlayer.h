@@ -11,7 +11,7 @@ namespace physics
 
 namespace graphics
 {
-	class SpriteComponent;
+	class SpriteAnimatorComponent;
 	class TextRenderer;
 }
 
@@ -22,7 +22,7 @@ namespace game
 	{
 	private:
 		physics::CapsuleController*						mCapsuleController;
-		graphics::SpriteComponent*						mSprite;
+		graphics::SpriteAnimatorComponent*				mSprite;
 		graphics::TextRenderer*							mTextRenderer;
 		BOOL											mJumping;
 		float64											mTimeEndJump;

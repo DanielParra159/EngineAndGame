@@ -18,6 +18,7 @@ uniform bool flipY;
 
 uniform float time;
 uniform float windForce;
+uniform float initialTime;
 
 void main()
 {
@@ -28,8 +29,8 @@ void main()
 
 	if(position.y > 0.0)
 	{
-		dx = 0.01*sin( time );
-		dz = 0.01*cos( time + 0.5 );
+		dx = windForce*sin( time + initialTime );
+		dz = windForce*cos( time + initialTime + 0.5 );
 	}
 
 	displacedVertex.x = position.x + dx;
