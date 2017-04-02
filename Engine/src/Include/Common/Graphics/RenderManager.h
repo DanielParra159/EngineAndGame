@@ -200,6 +200,7 @@ namespace graphics
 
 
 		void											CreateMainLight(const Vector3D<float32>& aPosition, const Color32& aColor = Color32::white);
+		void											RemoveMainLight();
 		Light*											GetMainLight();
 		void											PrepareToRender(const Vector3D<float32>* aPosition, const Vector3D<float32>* aScale, const Vector3D<float32>* aRotation, const IRenderable* aRenderable);
 

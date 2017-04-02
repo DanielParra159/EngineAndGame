@@ -20,13 +20,16 @@ namespace game
 	};
 	class PlatformerGrass : public logic::IGameObject
 	{
+	public:
+		static PlatformerGrass* Instance;
 	private:
 		std::vector<TSpriteData*>						mSprites;
 	public:
-		PlatformerGrass() : IGameObject(){}
+		PlatformerGrass() : IGameObject() { Instance = this; }
 		virtual ~PlatformerGrass() {}
 	
 		virtual void									Init(BOOL aActive, float32 aX, float32 aY);
+		void											AddElement(float32 aX, float32 aY, float32 aZ, int32 aType);
 		virtual void									Update();
 		virtual void									PrepareToRender();
 		virtual void									Release();

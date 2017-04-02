@@ -56,6 +56,7 @@ namespace game
 	{
 		ui::MenuManager::Instance()->RemoveMenu(mMenu);
 		mMenu = 0;
+		graphics::RenderManager::Instance()->RemoveMainLight();
 	}
 
 	BOOL TestState::Update()

@@ -22,8 +22,8 @@ namespace game
 		PlatformerWall() : IGameObject(){}
 		virtual ~PlatformerWall() {}
 	
-		void											LuaInit(float32 aX, float32 aY, float32 aSizeX, float32 aSizeY);
-		virtual void									Init(BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aSize);
+		void											LuaInit(float32 aX, float32 aY, float32 aSizeX, float32 aSizeY, int32 aType);
+		virtual void									Init(BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aSize, int32 aType);
 		virtual void									Update();
 		virtual void									PrepareToRender();
 		virtual void									Release();

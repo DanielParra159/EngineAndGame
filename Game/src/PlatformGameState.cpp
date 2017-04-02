@@ -48,6 +48,10 @@ namespace
 	{
 		logic::World::Instance()->AddGameObject(aGameObject, TRUE);
 	}
+	void AddGlass(float32 aX, float32 aY, float32 aZ, int32 aType)
+	{
+		game::PlatformerGrass::Instance->AddElement(aX, aY, aZ, aType);
+	}
 }
 
 //HACK to register lua functions once
@@ -118,7 +122,7 @@ namespace game
 				[
 					luabind::class_<game::PlatformerWall>("PlatformmerWall")
 					.def(luabind::constructor<>())
-					.def("Init", (void(game::PlatformerWall::*)(float32, float32, float32, float32))&game::PlatformerWall::LuaInit)
+					.def("Init", (void(game::PlatformerWall::*)(float32, float32, float32, float32, int32))&game::PlatformerWall::LuaInit)
 				];
 			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
 				[
@@ -131,14 +135,13 @@ namespace game
 		io::FileSystem::Instance()->ChangeDirectory(".\\Maps");
 		script::ScriptManager::Instance()->LoadScript("MapParser.lua");
 
-		std::string orden2 = "Test2(\""+ io::FileSystem::Instance()->GetCurrentDir() +"\\Map01.lua\")";
 
 		std::string lDir = io::FileSystem::Instance()->GetCurrentDir();
 		lDir.replace(lDir.find("\\"), 1, "/");
 		lDir.replace(lDir.find("\\"), 1, "/");
-		lDir += "/Map01.lua";
+		lDir += "/Map02.lua";
 
-		std::string lAux = "ParseMap(\""+ lDir+"\",\"HOLA\")";
+		std::string lAux = "ParseMap(\""+ lDir+"\",\"Map02\")";
 
 		script::ScriptManager::Instance()->ExecuteScript(lAux.c_str());
 
@@ -151,6 +154,8 @@ namespace game
 	void PlatformGameState::Release()
 	{
 		mMusic->Stop();
+
+		graphics::RenderManager::Instance()->RemoveMainLight();
 
 		logic::World::Instance()->Release();
 	}

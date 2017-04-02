@@ -15,12 +15,12 @@ class Math
 public:
 	static float32 Radians(float32 aAngle)
 	{
-		return glm::radians(aAngle);
+		return aAngle * 0.01745329251994329576923690768489f;
 	}
 
 	static float32 Degrees(float32 aAngle)
 	{
-		return glm::degrees(aAngle);
+		return aAngle * 57.295779513082320876798154814105f;
 	}
 
 	static int32 Random(int32 aMin, int32 aMax)

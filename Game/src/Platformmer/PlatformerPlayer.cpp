@@ -37,7 +37,7 @@ namespace game
 	{
 		IGameObject::Init(aActive);
 		mDelayBetweenKunais = 0.5f;
-		mDelayBetweenMelee = 1.0f;
+		mDelayBetweenMelee = 0.7f;
 
 		mCapsuleController = physics::PhysicsManager::Instance()->CreateCapsuleController(Vector3D<float32>(aX, aY+1.0f, 0), 1.0f, 1.5f, 0.7f, physics::CapsuleController::eClimbingMode::eEASY, (1 << 1), (1 << 1) | (1 << 0));
 		//physics::Collider* lCapsule = physics::PhysicsManager::Instance()->CreateBoxCollider(Vector3D<float32>(aX, aY, 0), Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 1), (1 << 1) | (1 << 0), physics::Collider::eKinematic, 0.1f);
@@ -110,15 +110,17 @@ namespace game
 		IGameObject::Update();
 
 		Vector3D<float32> lDir;
-		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerLeft))
-		{
-			lDir.mX = -1;
-			mSprite->SetFlipX(TRUE);
-		} 
-		else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerRight))
-		{
-			lDir.mX = 1;
-			mSprite->SetFlipX(FALSE);
+		if (mJumping || mNextTimeMeleeAllowed < sys::Time::GetCurrentSec()) {
+			if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerLeft))
+			{
+				lDir.mX = -1;
+				mSprite->SetFlipX(TRUE);
+			}
+			else if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerRight))
+			{
+				lDir.mX = 1;
+				mSprite->SetFlipX(FALSE);
+			}
 		}
 		
 		if (input::InputManager::Instance()->IsActionDown(EPltatformmerInputActions::ePltatformmerJump))

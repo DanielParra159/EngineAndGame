@@ -162,11 +162,7 @@ namespace graphics
 		//mLoadedTexturesOLD.clear();
 		mLoadedTextures.clear();
 
-		if (mMainLight) {
-			mMainLight->Release();
-			delete mMainLight;
-			mMainLight = NULL;
-		}
+		RemoveMainLight();
 
 		SDL_GL_DeleteContext(mContext);
 		SDL_DestroyRenderer(mRenderer);
@@ -181,6 +177,14 @@ namespace graphics
 		mMainLight = new Light();
 		mMainLight->Init(aPosition, aColor);
 	}
+	void RenderManager::RemoveMainLight()
+	{
+		if (mMainLight) {
+			mMainLight->Release();
+			delete mMainLight;
+			mMainLight = NULL;
+		}
+	}
 
 	Light* RenderManager::GetMainLight()
 	{ 
@@ -193,7 +197,7 @@ namespace graphics
 		lRenderData->mScale = *aScale;
 		lRenderData->mRotation = *aRotation;
 		lRenderData->mRenderable = aRenderable;
-		lRenderData->mDistanceFromCamera = mRenderCamera->mCameraPosition.GetDistanceSqrt(*aPosition);
+		lRenderData->mDistanceFromCamera = mRenderCamera->mCameraPosition.mZ - (*aPosition).mZ;
 		//TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin();
 		BOOL lInsert = FALSE;
 		for (TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin(), itEnd = mRenderablesToRender.end(); lIterator != itEnd; ++lIterator)

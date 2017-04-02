@@ -1,5 +1,8 @@
 function ParseMap(mapFile, mapName)
 	map = dofile(mapFile)
+	
+	--print("mapFile "..mapFile)
+	--print("mapName "..mapName)
 
 	width = map["width"]
 	heightMap = map["height"]
@@ -32,16 +35,18 @@ function ParseObjects()
         local width = object["width"]
 		local height = object["height"]
 		local x = object["x"] + width/2
-        local y = (heightMap-object["y"])+height/2
+        local y = (heightMap-(object["y"]+height))+height/2
+		local properties = object["properties"]
 		
 
 		local type = object["type"]
 
 		if type == "Wall" then
 			platformmerWall = PlatformmerWall()
+			local wallType = tonumber(properties["WallType"])
 			
 			AddWall(platformmerWall)
-			platformmerWall:Init(x,y,width,height)
+			platformmerWall:Init(x,y,width,height, wallType)
 		elseif type == "Player" then
 			platformmerPlayer = PlatformmerPlayer()
 			
