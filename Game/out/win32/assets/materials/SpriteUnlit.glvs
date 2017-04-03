@@ -1,0 +1,28 @@
+#version 150 core
+
+in vec3 position;
+in vec2 texcoord;
+
+out vec4 Color;
+out vec2 Texcoord;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 proj;
+uniform vec4 color;
+uniform bool flipX;
+uniform bool flipY;
+
+void main()
+{	
+    Color = color * vec4(1.0, 1.0, 1.0, 1.0);
+	
+	Texcoord = texcoord;
+	if (flipX){
+		Texcoord.x = 1.0 - texcoord.x;
+	}
+	if (flipY){
+		Texcoord.y = 1.0 - texcoord.y;
+	}
+    gl_Position = proj * view * model * vec4(position, 1.0);
+}

@@ -293,16 +293,16 @@ namespace graphics
 
 		if (iterator == mMeshesIds.end()) {
 			float32* lTextureCoords = NULL;
-
 			const float32 lVertexData[] = {
 				// X      Y     Z     Nx    Ny     Nz    U     V
 				//Front
-				-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f,
-				0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 1.0f,
-				0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
-				0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
-				-0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 0.0f,
-				-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f
+				-0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 1.0f,
+				0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 0.0f,
+				-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 0.0f,
+
+				-0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 1.0f,
+				0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 1.0f,
+				0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 0.0f
 			};
 
 			uint32 lVertexDataLength = sizeof(lVertexData);

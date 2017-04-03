@@ -2,6 +2,9 @@
 
 #include "Graphics\Sprite.h"
 #include "Graphics\RenderManager.h"
+#include "Graphics\Material.h"
+
+#include "Support/Color.h"
 
 namespace ui
 {
@@ -15,15 +18,18 @@ namespace ui
 		if (aImage)
 		{
 			mSprite = graphics::RenderManager::Instance()->CreateSprite(aImage, graphics::eRGBA);
+			graphics::Material* lMaterial = graphics::RenderManager::Instance()->LoadMaterial("SpriteUnlit");
+			lMaterial->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture(aImage, graphics::eRGBA));
+			mSprite->SetMaterial(lMaterial);
 		}
 	}
 
 	void ButtonMenu::OnMouseClick(const Vector2D<>& aPos)
 	{
-		if (aPos.mX < (mButtonRect.mX + mButtonRect.mW)
-			&& aPos.mX > mButtonRect.mX
-			&& aPos.mY < (mButtonRect.mY + mButtonRect.mH)
-			&& aPos.mY > mButtonRect.mY)
+		if (aPos.mX < (mButtonRect.mX + mButtonRect.mW * 0.5f)
+			&& aPos.mX > mButtonRect.mX - mButtonRect.mW * 0.5f
+			&& aPos.mY < (mButtonRect.mY + mButtonRect.mH * 0.5f)
+			&& aPos.mY > mButtonRect.mY - mButtonRect.mH * 0.5f)
 		{
 			mCallback();
 		}

@@ -30,7 +30,6 @@ namespace game
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 
 		physics::Collider* lCollider;
-		uint32 lCollisionLayerMask = (1 << 1) | (1 << 0);
 		lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aSize * 0.5f, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
 
 		lCollider->SetOnTriggerEnterCallback(physics::Collider::eTriggerEnter);
@@ -39,6 +38,7 @@ namespace game
 		graphics::SpriteComponent* lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Coin.png", graphics::eRGBA);
 
 		AddComponent(lSprite);
+		lSprite->SetRotationOffset(Vector3D<float32>(0.0f, 180.0f, 180.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mSound = audio::AudioManager::Instance()->CreateSound2D("Coin.wav");

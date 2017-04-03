@@ -20,12 +20,13 @@ namespace graphics
 	float32 sVertexData[] = {
 		// X      Y     Z     Nx    Ny     Nz    U     V
 		//Front
-		-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f,
-		0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 1.0f,
-		0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
-		0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, 1.0f, 0.0f, 1.0f
+		-0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 1.0f,
+		0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 0.0f,
+		-0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 0.0f,
+
+		-0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 0.0f, 1.0f,
+		0.5f, 0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 1.0f,
+		0.5f, -0.5f,  0.0f, 0.0f ,0.0f, -1.0f, 1.0f, 0.0f
 	};
 
 	void SpriteAnimator::Init(const std::string& aTextureName, eTextureFormats aTextureFormat, uint32 aRows, uint32 aCols) {
@@ -102,10 +103,10 @@ namespace graphics
 			VMax = lAux;
 		}
 
-		sVertexData[6] = sVertexData[38] = sVertexData[46] = lUMin;
-		sVertexData[23] = sVertexData[31] = sVertexData[39] = VMin;
-		sVertexData[14] = sVertexData[22] = sVertexData[30] = lUMax;
-		sVertexData[7] = sVertexData[15] = sVertexData[47] = VMax;
+		sVertexData[6] = sVertexData[22] = sVertexData[30] = lUMin;
+		sVertexData[14] = sVertexData[38] = sVertexData[46] = lUMax;
+		sVertexData[23] = sVertexData[15] = sVertexData[47] = VMin;
+		sVertexData[7] = sVertexData[39] = sVertexData[31] = VMax;
 
 		mMaterial->UseMaterial();
 		glBindBuffer(GL_ARRAY_BUFFER, mVBO);

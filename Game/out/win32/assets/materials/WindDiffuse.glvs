@@ -27,7 +27,7 @@ void main()
 	float dz = 0.0;
 	vec3 displacedVertex;
 
-	if(position.y > 0.0)
+	if(position.y < 0.0)
 	{
 		dx = windForce*sin( time + initialTime );
 		dz = windForce*cos( time + initialTime + 0.5 );

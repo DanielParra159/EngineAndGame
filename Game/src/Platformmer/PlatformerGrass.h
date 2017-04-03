@@ -17,6 +17,7 @@ namespace game
 		graphics::Sprite* mSprite;
 		Vector3D<float32> mPosition;
 		Vector3D<float32> mScale;
+		Vector3D<float32> mRotation;
 	};
 	class PlatformerGrass : public logic::IGameObject
 	{

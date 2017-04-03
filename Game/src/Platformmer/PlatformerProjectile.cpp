@@ -42,7 +42,7 @@ namespace game
 		//lSprite->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png", graphics::eRGB));
 		lCollider->SetOnTriggerEnterCallback(physics::Collider::eCollisionEnter);
 		
-		lSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, Math::Degrees(Math::Atan2f(aDirection.mY, aDirection.mX)) -90.0f));
+		lSprite->SetRotationOffset(Vector3D<float32>(0.0f, 180.0f, Math::Degrees(Math::Atan2f(aDirection.mX, aDirection.mY)) +180.0f));
 
 		mScale.mY = 5.0f * 0.5f;
 		mScale.mX = 1.0f * 0.5f;

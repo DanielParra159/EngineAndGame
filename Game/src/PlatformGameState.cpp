@@ -4,6 +4,7 @@
 #include "Platformmer/PlatformerPlayer.h"
 #include "Platformmer/PlatformerGrass.h"
 #include "Platformmer/PlatformerCoin.h"
+#include "Platformmer/PlatformerBackground.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -100,7 +101,7 @@ namespace game
 		lGameObject->AddComponent(lCamera);
 		lWorld->AddGameObject(lGameObject, TRUE);
 
-		graphics::RenderManager::Instance()->SetClearColor(Color(0.3f, 0.2f, 0.2f, 1.0f));
+		graphics::RenderManager::Instance()->SetClearColor(Color(0.5f, 0.75f, 0.92f, 1.0f));
 
 		graphics::RenderManager::Instance()->CreateMainLight(Vector3D<float32>(0.0f, 8.0f, 8.0f));
 
@@ -112,6 +113,10 @@ namespace game
 		PlatformerGrass* lPlatformerGrass = new PlatformerGrass();
 		lWorld->AddGameObject(lPlatformerGrass, TRUE);
 		lPlatformerGrass->Init(TRUE, 0, 0);
+
+		PlatformerBackground* lPlatformerBackground = new PlatformerBackground();
+		lWorld->AddGameObject(lPlatformerBackground, TRUE);
+		lPlatformerBackground->Init(TRUE);
 
 		if (firstTime)
 		{
@@ -177,9 +182,9 @@ namespace game
 	{
 		logic::World::Instance()->Update();
 
-		graphics::Light* lMainLight = graphics::RenderManager::Instance()->GetMainLight();
+		//graphics::Light* lMainLight = graphics::RenderManager::Instance()->GetMainLight();
 
-		lMainLight->SetPosition(Vector3D<float32>(20.0f + 25.0f * Math::Cosf(sys::Time::GetCurrentSec() * 0.8f), 8.0f, 8.0f));
+		//lMainLight->SetPosition(Vector3D<float32>(20.0f + 25.0f * Math::Cosf(sys::Time::GetCurrentSec() * 0.8f), 8.0f, 8.0f));
 
 		if (input::InputManager::Instance()->IsActionDown(ePltatformmerExit))
 		{

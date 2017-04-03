@@ -60,32 +60,20 @@ namespace game
 		Vector3D<float32>(0.0f, 0.0f, 0.0f),
 		Vector3D<float32>(0.0f, 1.0f, 0.0f),
 		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);*/
-		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(-5.0f, 5.0f, -5.0f, 5.0f, -100.0f, 100.0f);
+		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
 		
 		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
 		logic::IGameObject* lGameObject = new logic::IGameObject();
 		lGameObject->AddComponent(lCamera);
 		lWorld->AddGameObject(lGameObject, TRUE);
 
-		BoxButton* lBoxButton = new BoxButton();
-		lWorld->AddGameObject(lBoxButton, TRUE);
-		lBoxButton->Init(Vector3D<float32>(0, -1.5f, 0), -1);
-
-		lBoxButton = new BoxButton();
-		lWorld->AddGameObject(lBoxButton, TRUE);
-		lBoxButton->Init(Vector3D<float32>(-2, 1.5f, 0), 0);
-
-		lBoxButton = new BoxButton();
-		lWorld->AddGameObject(lBoxButton, TRUE);
-		lBoxButton->Init(Vector3D<float32>(2, 1.5f, 0), 1);
-
 
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
-		mMenu->AddButton(Rect<>(140, 160, 200, 90), &StartGame1, "Menu1.png");
-		mMenu->AddButton(Rect<>(450, 160, 200, 90), &StartGame2);
-		mMenu->AddButton(Rect<>(300, 340, 200, 90), &Exit);
+		mMenu->AddButton(Rect<>(240, 210, 200, 200), &StartGame1, "Menu1.png");
+		mMenu->AddButton(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
+		mMenu->AddButton(Rect<>(400, 390, 200, 200), &Exit, "Menu3.png");
 
 		graphics::RenderManager::Instance()->SetClearColor(Color(0.25f, 0.5f, 0.6f, 1.0f));
 

@@ -18,6 +18,8 @@
 
 #include "IO/FileSystem.h"
 
+#include "Support/Math.h"
+
 namespace game
 {
 	void PlatformerWall::LuaInit(float32 aX, float32 aY, float32 aSizeX, float32 aSizeY, int32 aType)
@@ -122,9 +124,14 @@ namespace game
 				lXPosition = mPosition.mX - lSize.mX + lXOffset;
 				game::PlatformerGrass::Instance->AddElement(lXPosition, mPosition.mY + 2.3f, mPosition.mZ + aSize.mZ + (i % 2 == 0 ? 0.0f : -0.2f), 0);
 				game::PlatformerGrass::Instance->AddElement(lXPosition, mPosition.mY + 2.1f, mPosition.mZ + (i % 2 == 1 ? 0.2f : 0.4f), 0);
+				if (Math::Random(0, 100) < 5)
+					game::PlatformerGrass::Instance->AddElement(lXPosition, mPosition.mY + 2.1f, -1.2, 2);
 				lXOffset += 1.2f;
 				++i;
 			}
+
+			if (lSize.mX > 10 /*&& Math::Random(0, 100) < 100*/)
+				game::PlatformerGrass::Instance->AddElement(mPosition.mX, mPosition.mY + 2.1f, -4.0, 3);
 		}
 	}
 

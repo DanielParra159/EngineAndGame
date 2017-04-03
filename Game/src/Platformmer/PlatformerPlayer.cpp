@@ -19,7 +19,7 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 #include "Graphics/Camera.h"
-//#include "Graphics/TextRenderer.h"
+#include "Graphics/Light.h"
 
 #include "Support/Vector3D.h"
 
@@ -73,7 +73,7 @@ namespace game
 		mSprite->AddTransition(eIdle, eRun, graphics::eConditionType::eTrueBool, "Run");
 		mSprite->AddTransition(eRun, eIdle, graphics::eConditionType::eFalseBool, "Run");
 		mSprite->PlayState(eIdle);
-		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 0.0f, -90.0f));
+		mSprite->SetRotationOffset(Vector3D<float32>(0.0f, 180.0f, 90.0f));
 		AddComponent(mSprite);
 
 		//mSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Ninja.png", graphics::eRGBA);
@@ -173,7 +173,13 @@ namespace game
 			mSprite->SetTriggerParameter("Melee");
 		}
 
+		graphics::Light* lMainLight = graphics::RenderManager::Instance()->GetMainLight();
 
+		lDir = ((mPosition - *lMainLight->GetPosition()) * Vector3D<float32>(1.0f, 1.0f, 0.0f));
+		float32 lDistance = lDir.Length();
+		lDir.Normalize();
+
+		lMainLight->SetPosition(*lMainLight->GetPosition() + lDir * lDistance * 0.5f * sys::Time::GetDeltaSec());
 	}
 
 	void PlatformerPlayer::PrepareToRender()

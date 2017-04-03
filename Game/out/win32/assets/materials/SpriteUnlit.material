@@ -1,0 +1,6 @@
+material SpriteUnlit
+{
+	texture sample.png;
+	vertexShader SpriteUnlit;
+	fragmentProgram SpriteUnlit;
+}

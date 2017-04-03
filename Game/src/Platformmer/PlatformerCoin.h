@@ -9,6 +9,7 @@
 namespace graphics
 {
 	class SpriteComponent;
+	class Sprite;
 }
 
 namespace audio
