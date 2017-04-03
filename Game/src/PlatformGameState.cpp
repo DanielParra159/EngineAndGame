@@ -3,6 +3,7 @@
 #include "Platformmer/PlatformerWall.h"
 #include "Platformmer/PlatformerPlayer.h"
 #include "Platformmer/PlatformerGrass.h"
+#include "Platformmer/PlatformerCoin.h"
 
 #include "Input/InputManager.h"
 #include "Input/IController.h"
@@ -48,9 +49,13 @@ namespace
 	{
 		logic::World::Instance()->AddGameObject(aGameObject, TRUE);
 	}
-	void AddGlass(float32 aX, float32 aY, float32 aZ, int32 aType)
+	void AddDetail(float32 aX, float32 aY, float32 aZ, int32 aType)
 	{
 		game::PlatformerGrass::Instance->AddElement(aX, aY, aZ, aType);
+	}
+	void AddCoin(game::PlatformerCoin* aGameObject)
+	{
+		logic::World::Instance()->AddGameObject(aGameObject, TRUE);
 	}
 }
 
@@ -115,7 +120,9 @@ namespace game
 			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
 				[
 					luabind::def("AddWall", AddWall, luabind::adopt(_1)),
-					luabind::def("AddPlayer", AddPlayer, luabind::adopt(_1))
+					luabind::def("AddPlayer", AddPlayer, luabind::adopt(_1)),
+					luabind::def("AddCoin", AddCoin, luabind::adopt(_1)),
+					luabind::def("AddDetail", AddDetail)
 				];
 
 			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
@@ -129,6 +136,12 @@ namespace game
 					luabind::class_<game::PlatformerPlayer>("PlatformmerPlayer")
 					.def(luabind::constructor<>())
 					.def("Init", (void(game::PlatformerPlayer::*)(float32, float32))&game::PlatformerPlayer::LuaInit)
+				];
+			luabind::module(script::ScriptManager::Instance()->GetNativeInterpreter())
+				[
+					luabind::class_<game::PlatformerCoin>("PlatformmerCoin")
+					.def(luabind::constructor<>())
+				.def("Init", (void(game::PlatformerCoin::*)(float32, float32, int32))&game::PlatformerCoin::LuaInit)
 				];
 		}
 

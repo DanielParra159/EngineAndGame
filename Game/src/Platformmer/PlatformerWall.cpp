@@ -22,7 +22,13 @@ namespace game
 {
 	void PlatformerWall::LuaInit(float32 aX, float32 aY, float32 aSizeX, float32 aSizeY, int32 aType)
 	{
-		Init(TRUE, Vector3D<float32>(aX, aY, -4.0f), Vector3D<float32>(aSizeX, aSizeY, 8.0f), aType);
+		if (aType == 2)
+		{
+			Init(TRUE, Vector3D<float32>(aX, aY, -1.0f), Vector3D<float32>(aSizeX, aSizeY, 2.0f), aType);
+		}
+		else {
+			Init(TRUE, Vector3D<float32>(aX, aY, -4.0f), Vector3D<float32>(aSizeX, aSizeY, 8.0f), aType);
+		}
 	}
 	void PlatformerWall::Init(BOOL aActive, const Vector3D<float32> aPosition, const Vector3D<float32> aSize, int32 aType)
 	{

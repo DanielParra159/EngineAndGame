@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\src\Platformmer\PlatformerGrass.cpp">
       <Filter>Source Files\Platformmer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Platformmer\PlatformerCoin.cpp">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TestState.h">
@@ -111,6 +114,9 @@
       <Filter>Source Files\NormalMapState</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Platformmer\PlatformerGrass.h">
+      <Filter>Source Files\Platformmer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Platformmer\PlatformerCoin.h">
       <Filter>Source Files\Platformmer</Filter>
     </ClInclude>
   </ItemGroup>

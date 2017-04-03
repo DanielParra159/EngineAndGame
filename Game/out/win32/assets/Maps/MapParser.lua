@@ -52,7 +52,18 @@ function ParseObjects()
 			
 			AddPlayer(platformmerPlayer)
 			platformmerPlayer:Init(x,y)
+		elseif type == "Detail" then
+			y = (heightMap-(object["y"]))+height/2;
+			local detailType = tonumber(properties["DetailType"])
+			local z = tonumber(object["properties"]["z"])
+			AddDetail(x, y, z, detailType)
+		elseif type == "Coin" then
+			platformmerCoin = PlatformmerCoin()
+			local coinType = tonumber(properties["CoinType"])
+			AddCoin(platformmerCoin)
+			platformmerCoin:Init(x,y,coinType )
 		end
+		
 		--print(type.." "..x.." "..y.." "..width.." "..height)
 	end
 end

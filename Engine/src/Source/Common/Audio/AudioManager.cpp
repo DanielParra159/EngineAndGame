@@ -53,7 +53,7 @@ namespace audio {
 
 		mDistanceFactor = aDistanceFactor;
 
-		SetEffectsVolume(0.0f);
+		SetEffectsVolume(1.0f);
 		SetMusicVolume(0.0f);
 
 		mNextChannelId = 0;

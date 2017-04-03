@@ -200,7 +200,7 @@ namespace graphics
 		lRenderData->mDistanceFromCamera = mRenderCamera->mCameraPosition.mZ - (*aPosition).mZ;
 		//TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin();
 		BOOL lInsert = FALSE;
-		for (TRenderManagerToRender::const_iterator lIterator = mRenderablesToRender.begin(), itEnd = mRenderablesToRender.end(); lIterator != itEnd; ++lIterator)
+		LOOP_ITERATOR(TRenderManagerToRender::const_iterator, mRenderablesToRender, lIterator, itEnd)
 		{
 			if (lRenderData->mDistanceFromCamera < (*lIterator)->mDistanceFromCamera)
 			{

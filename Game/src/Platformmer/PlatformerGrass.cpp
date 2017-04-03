@@ -26,7 +26,7 @@ namespace game
 	{
 		IGameObject::Init(aActive);
 
-		AddElement(8.0f, 16.9f, -1.0f, 1);
+		//AddElement(8.0f, 16.9f, 3.0f, 1);
 		//AddElement(1.0f, 5.3f, 2.0f, 0);
 		//AddElement(2.0f, 5.3f, 1.8f, 0);
 
