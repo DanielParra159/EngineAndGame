@@ -161,17 +161,16 @@ namespace graphics
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	Vector2D<float32> TextRenderer::TextSize(const std::string& aText, float32 aScale) {
-		Vector2D<float32> lResult;
+	Vector2D<float32>& TextRenderer::TextSize(const std::string& aText, float32 aScale, Vector2D<float32>* aSize) {
 		std::string::const_iterator c;
 		float32 aX = 0.0f;
 		float32 aY = 0.0f;
 
-		GLfloat lPosX;
-		GLfloat lPosY;
+		float32 lPosX;
+		float32 lPosY;
 
-		GLfloat lWidth;
-		GLfloat lHeight;
+		float32 lWidth;
+		float32 lHeight;
 		for (c = aText.begin(); c != aText.end(); c++)
 		{
 			Character lChar = mCharacters[*c];
@@ -185,9 +184,9 @@ namespace graphics
 			aX += (lChar.Advance >> 6) * aScale; // Bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
 		}
 
-		lResult.mX = lPosX + lWidth;
-		lResult.mY = lPosY + lHeight;
+		aSize->mX = lPosX + lWidth;
+		aSize->mY = lPosY + lHeight;
 
-		return lResult;
+		return *aSize;
 	}
 }

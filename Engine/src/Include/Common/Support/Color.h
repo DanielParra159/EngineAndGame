@@ -20,6 +20,15 @@ public:
 	Color(uint8 aR, uint8 aG, uint8 aB, uint8 aA) : mR(aR / 255.0f), mG(aG / 255.0f), mB(aB / 255.0f), mA(aA / 255.0f) {}
 	Color(float32 aR, float32 aG, float32 aB, float32 aA) : mR(aR), mG(aG), mB(aB), mA(aA) {}
 	~Color() {}
+
+	static void Lerp(const Color& aColorSrc, const Color& aColorDst, Color& aColorResult, float32 aTime)
+	{
+		aTime = Math::Clamp(aTime, 0.0f, 1.0f);
+		aColorResult.mR = (aColorSrc.mR * (1.0f - aTime) + aColorDst.mR * aTime);
+		aColorResult.mG = (aColorSrc.mG * (1.0f - aTime) + aColorDst.mG * aTime);
+		aColorResult.mB = (aColorSrc.mB * (1.0f - aTime) + aColorDst.mB * aTime);
+		aColorResult.mA = (aColorSrc.mA * (1.0f - aTime) + aColorDst.mA * aTime);
+	}
 }; // Color
 
 #endif // _ENGINE_SUPPORT_COLOR_H_

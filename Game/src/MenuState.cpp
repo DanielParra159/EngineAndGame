@@ -19,6 +19,7 @@
 
 #include "UI/MenuManager.h"
 #include "UI/Menu.h"
+#include "UI/ButtonMenu.h"
 
 #include "Core/Log.h"
 #include "Core/Game.h"
@@ -73,7 +74,7 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		//mMenu->AddButtonWithImage(Rect<>(240, 210, 200, 200), &StartGame1, "Menu1.png");
-		mMenu->AddButtonWithText(Rect<>(240, 210, 200, 200), &StartGame1, "Menu");
+		mMenu->AddButtonWithText(Rect<>(240, 210, 200, 200), &StartGame1, "Menu")->ConfigureOnFocus(2.0f, Color32(1.0f, 0.0f, 0.0f, 1.0f), 0.2f);
 		mMenu->AddButtonWithImage(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
 		mMenu->AddButtonWithImage(Rect<>(400, 390, 200, 200), &Exit, "Menu3.png");
 
@@ -126,7 +127,8 @@ namespace game
 	void MenuState::Render()
 	{
 		graphics::RenderManager::Instance()->BeginRender();
-		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Color32(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
+		Vector2D<float32> lTextSize;
+		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f, &lTextSize).mX * 0.5f, 100, 1.0f, Color32(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
 		ui::MenuManager::Instance()->Render();
 
 		logic::World::Instance()->Render();

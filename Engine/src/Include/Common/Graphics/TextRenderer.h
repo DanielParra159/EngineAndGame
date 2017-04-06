@@ -45,7 +45,7 @@ namespace graphics
 		Material* mMaterial;
 		uint32 mTexture;
 	public:
-		Vector2D<float32>								TextSize(const std::string& aText, float32 aScale);
+		Vector2D<float32>&										TextSize(const std::string& aText, float32 aScale, Vector2D<float32>* aSize);
 	private:
 		TextRenderer(){}
 		virtual ~TextRenderer(){}

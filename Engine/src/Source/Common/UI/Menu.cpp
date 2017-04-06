@@ -5,25 +5,28 @@
 
 namespace ui
 {
-	void Menu::AddButton(const Rect<int32> &aButtonRect, CallbackFunction aCallback, float32 aTextScale, const Color32& aTextColor, const std::string& aText, const char* aImage)
+	ButtonMenu* Menu::AddButton(const Rect<int32> &aButtonRect, CallbackFunction aCallback, float32 aTextScale, const Color32& aTextColor, const std::string& aText, const char* aImage)
 	{
 		ButtonMenu *lButtonMenu = new ButtonMenu();
 		lButtonMenu->Init(aButtonRect, aCallback, aTextScale, aTextColor, aText, aImage);
 		mButtons.push_back(lButtonMenu);
+		return lButtonMenu;
 	}
 
-	void Menu::AddButtonWithImage(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
+	ButtonMenu* Menu::AddButtonWithImage(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
 	{
 		ButtonMenu *lButtonMenu = new ButtonMenu();
 		lButtonMenu->InitWithImage(aButtonRect, aCallback, aImage);
 		mButtons.push_back(lButtonMenu);
+		return lButtonMenu;
 	}
 
-	void Menu::AddButtonWithText(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale, const Color32& aTextColor)
+	ButtonMenu* Menu::AddButtonWithText(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale, const Color32& aTextColor)
 	{
 		ButtonMenu *lButtonMenu = new ButtonMenu();
 		lButtonMenu->InitWithText(aButtonRect, aCallback, aText, aTextScale, aTextColor);
 		mButtons.push_back(lButtonMenu);
+		return lButtonMenu;
 	}
 
 	void Menu::Update(const Vector2D<>& aPos)

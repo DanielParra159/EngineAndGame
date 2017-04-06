@@ -7,6 +7,10 @@
 
 #include "Support/Color.h"
 
+#include "System/Time.h"
+
+#include "Core/Log.h"
+
 namespace ui
 {
 	void ButtonMenu::Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback)
@@ -49,9 +53,17 @@ namespace ui
 		Init(aButtonRect, aCallback);
 
 		mTextRenderer = graphics::RenderManager::Instance()->LoadTextRenderer("PerfectPixel.ttf", 24);
-		mTextScale = aScale;
-		mTextColor = aColor;
+		mCurrentTextScale = mOnFocusTextScale = mTextScale = aScale;
+		mCurrentTextColor = mOnFocusTextColor = mTextColor = aColor;
 		mText = aText;
+		mFocusSpeed = 0.0f;
+	}
+
+	void ButtonMenu::ConfigureOnFocus(float32 aTextScale, const Color32& aTextColor, float32 aFocusDuration)
+	{
+		mOnFocusTextScale = aTextScale;
+		mOnFocusTextColor = aTextColor;
+		mFocusSpeed = (mOnFocusTextScale - mTextScale) / aFocusDuration;
 	}
 
 	void ButtonMenu::OnMouseClick()
@@ -79,13 +91,23 @@ namespace ui
 	{
 		BOOL wasFocused = mFocused;
 		mFocused = CheckInside(aPos);
-		if (mFocused) 
+
+		if (mFocused)
 		{
-			mTextScale = 2.0f;
-		}
-		else 
+			if (mCurrentTextScale < mOnFocusTextScale)
+			{
+				if ((mCurrentTextScale += sys::Time::GetDeltaSec() * mFocusSpeed) > mOnFocusTextScale)
+					mCurrentTextScale = mOnFocusTextScale;
+				Color32::Lerp(mTextColor, mOnFocusTextColor, mCurrentTextColor, (mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale));
+				core::LogFormatString("%f %f %f %f %f\n", ((mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale)), EXPOSE_COLOR32_RGBA(mCurrentTextColor));
+			}
+		} 
+		else if (mCurrentTextScale > mTextScale)
 		{
-			mTextScale = 1.0f;
+			if ((mCurrentTextScale -= sys::Time::GetDeltaSec() * mFocusSpeed) < mTextScale)
+				mCurrentTextScale = mTextScale;
+			Color32::Lerp(mTextColor, mOnFocusTextColor, mCurrentTextColor, (mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale));
+			core::LogFormatString("%f %f %f %f %f\n", ((mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale)), EXPOSE_COLOR32_RGBA(mCurrentTextColor));
 		}
 	}
 
@@ -98,7 +120,9 @@ namespace ui
 		}
 		if (mText.size() > 0) 
 		{
-			graphics::RenderManager::Instance()->RenderText(mText, mButtonRect.mX, mButtonRect.mY, mTextScale, mTextColor, mTextRenderer);
+			Vector2D<float32> lTextSize;
+			mTextRenderer->TextSize(mText, mCurrentTextScale, &lTextSize);
+			graphics::RenderManager::Instance()->RenderText(mText, mButtonRect.mX - lTextSize.mX * 0.5f, mButtonRect.mY - lTextSize.mY * 0.5f, mCurrentTextScale, mCurrentTextColor, mTextRenderer);
 		}
 	}
 

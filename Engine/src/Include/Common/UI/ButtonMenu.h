@@ -38,21 +38,29 @@ namespace ui
 		graphics::Sprite*								mSprite;
 		graphics::TextRenderer*							mTextRenderer;
 		std::string										mText;
+		float32											mCurrentTextScale;
+		Color32											mCurrentTextColor;
 		float32											mTextScale;
 		Color32											mTextColor;
+		float32											mOnFocusTextScale;
+		Color32											mOnFocusTextColor;
+		float32											mFocusSpeed;
 
 		BOOL											mFocused;
 	public:
+		void											ConfigureOnFocus(float32 aTextScale, const Color32& aTextColor, float32 aFocusDuration);
+
+	protected:
+		ButtonMenu() : mButtonRect(), mCallback(NULL), mSprite(NULL),
+			mTextRenderer(NULL), mText(), mTextScale(), mTextColor(), mOnFocusTextScale(), mOnFocusTextColor(), mCurrentTextScale(), mCurrentTextColor(),
+			mFocusSpeed(FALSE), mFocused(FALSE){}
+		virtual ~ButtonMenu() {}
+	private:
+		void											Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback);
 		void											Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback, float32 aTextScale, const Color32& aTextColor, const std::string& aText, const char* aImage);
 		void											InitWithImage(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
 		void											InitWithText(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aScale, const Color32& aColor);
 
-	protected:
-		ButtonMenu() : mButtonRect(), mCallback(NULL), mSprite(NULL),
-			mTextRenderer(NULL), mText(), mTextScale(), mTextColor(), 
-			mFocused(FALSE){}
-		virtual ~ButtonMenu() {}
-	private:
 		/**
 		This function is called when the user clicked on screen and detect if he has clicked on the button
 		@param aPos, the cursor position on the screen
@@ -64,7 +72,6 @@ namespace ui
 		void											Update(const Vector2D<>& aPos);
 		void											Render();
 		void											Release();
-		void											Init(const Rect<int32>& aButtonRect, CallbackFunction aCallback);
 
 	}; // ButtonMenu
 

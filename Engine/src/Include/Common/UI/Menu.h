@@ -36,9 +36,9 @@ namespace ui
 		@param aCallback, function to callback if the button is clicked
 		@param aImage, image of the button, can be null
 		*/
-		void											AddButton(const Rect<int32>& aButtonRect, CallbackFunction aCallback, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white, const std::string& aText = NULL, const char* aImage = NULL);
-		void											AddButtonWithImage(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
-		void											AddButtonWithText(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white);
+		ButtonMenu*										AddButton(const Rect<int32>& aButtonRect, CallbackFunction aCallback, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white, const std::string& aText = NULL, const char* aImage = NULL);
+		ButtonMenu*										AddButtonWithImage(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
+		ButtonMenu*										AddButtonWithText(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white);
 	protected:
 		Menu() : mButtons() {};
 		virtual ~Menu() {}
