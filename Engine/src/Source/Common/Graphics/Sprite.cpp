@@ -43,7 +43,11 @@ namespace graphics
 		Matrix4x4::scale(&lModelMatrix, aScale);
 
 
-		Camera* mRenderCamera = RenderManager::Instance()->GetRenderCamera();
+		Camera* mRenderCamera;
+		if (mUseUICamera)
+			mRenderCamera = RenderManager::Instance()->GetUIRenderCamera();
+		else
+			mRenderCamera = RenderManager::Instance()->GetRenderCamera();
 
 		mMaterial->PrepareToRender(&lModelMatrix, mRenderCamera->GetCameraPosition());
 		mMaterial->SetVertexFloatAttribPointer("position", 3, FALSE, 8, 0, mVBO);

@@ -2,7 +2,7 @@
 #define _CORE_GAMESDESCRIPTION_H_
 
 #include "Types.h"
-#include "Support\Color.h"
+#include "Support\Color32.h"
 #include "Support\Vector2D.h"
 #include "Support\Vector3D.h"
 
@@ -18,7 +18,7 @@ namespace core
 	protected:
 		Vector2D<uint32>								mScreenSize;
 		Vector2D<int32>									mScreenPosition;
-		Color											mClearColor;
+		Color32											mClearColor;
 		BOOL											mFullScreen;
 		Vector3D<float32>								mPhysicsGravity;
 		std::string										mRootDir;
@@ -40,7 +40,7 @@ namespace core
 		/** Assigns draw color
 		@param aColor Color to assign
 		*/
-		void											SetClearColor(const Color &aColor);
+		void											SetClearColor(const Color32 &aColor);
 		/** Assigns draw color
 		@param aR Red component to assign
 		@param aG Green component to assign

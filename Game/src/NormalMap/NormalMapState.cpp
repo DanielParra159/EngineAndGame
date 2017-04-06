@@ -59,7 +59,7 @@ namespace game
 		lGameObject->AddComponent(lCamera);
 		lWorld->AddGameObject(lGameObject, TRUE);
 
-		graphics::RenderManager::Instance()->SetClearColor(Color(0.3f, 0.2f, 0.2f, 1.0f));
+		graphics::RenderManager::Instance()->SetClearColor(Color32(0.3f, 0.2f, 0.2f, 1.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("PlatformGame.wav");

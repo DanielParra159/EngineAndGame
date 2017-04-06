@@ -116,7 +116,7 @@ namespace graphics
 		FT_Done_FreeType(lFT);
 	}
 
-	void TextRenderer::Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color& aColor)
+	void TextRenderer::Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color32& aColor)
 	{
 		// Activate corresponding render state	
 		mMaterial->UseMaterial();

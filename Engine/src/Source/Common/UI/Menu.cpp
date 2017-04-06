@@ -5,11 +5,34 @@
 
 namespace ui
 {
-	void Menu::AddButton(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
+	void Menu::AddButton(const Rect<int32> &aButtonRect, CallbackFunction aCallback, float32 aTextScale, const Color32& aTextColor, const std::string& aText, const char* aImage)
 	{
 		ButtonMenu *lButtonMenu = new ButtonMenu();
-		lButtonMenu->Init(aButtonRect, aCallback, aImage);
+		lButtonMenu->Init(aButtonRect, aCallback, aTextScale, aTextColor, aText, aImage);
 		mButtons.push_back(lButtonMenu);
+	}
+
+	void Menu::AddButtonWithImage(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const char* aImage)
+	{
+		ButtonMenu *lButtonMenu = new ButtonMenu();
+		lButtonMenu->InitWithImage(aButtonRect, aCallback, aImage);
+		mButtons.push_back(lButtonMenu);
+	}
+
+	void Menu::AddButtonWithText(const Rect<int32> &aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale, const Color32& aTextColor)
+	{
+		ButtonMenu *lButtonMenu = new ButtonMenu();
+		lButtonMenu->InitWithText(aButtonRect, aCallback, aText, aTextScale, aTextColor);
+		mButtons.push_back(lButtonMenu);
+	}
+
+	void Menu::Update(const Vector2D<>& aPos)
+	{
+		TButtons::const_iterator lIterator = mButtons.begin();
+		TButtons::const_iterator lIteratorEnd = mButtons.end();
+
+		for (; lIterator != lIteratorEnd; ++lIterator)
+			(*lIterator)->Update(aPos);
 	}
 
 	void Menu::Render()
@@ -35,14 +58,15 @@ namespace ui
 		mButtons.clear();
 	}
 
-	void Menu::OnMouseClick(const Vector2D<>& aPos)
+	void Menu::OnMouseClick()
 	{
 		TButtons::const_iterator lIterator = mButtons.begin();
 		TButtons::const_iterator lIteratorEnd = mButtons.end();
 
 		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
-			(*lIterator)->OnMouseClick(aPos);
+			if ((*lIterator)->mFocused)
+				(*lIterator)->OnMouseClick();
 		}
 	}
 

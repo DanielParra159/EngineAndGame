@@ -129,6 +129,12 @@ namespace graphics
 		int32 lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
 		glUniform4f(lAttrib, EXPOSE_COLOR_RGBA(aValue));
 	}
+	void Material::SetColor(const std::string& aAttribName, const Color32& aValue)
+	{
+		UseMaterial();
+		int32 lAttrib = glGetUniformLocation(mProgramShader, aAttribName.c_str());
+		glUniform4f(lAttrib, EXPOSE_COLOR32_RGBA(aValue));
+	}
 
 	void Material::UseMaterial()
 	{

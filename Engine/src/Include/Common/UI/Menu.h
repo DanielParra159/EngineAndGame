@@ -2,9 +2,10 @@
 #define _ENGINE_UI_MENU_H_
 
 #include "Types.h"
-#include "Support\Rect.h"
-#include "Support\Vector2D.h"
-#include "UI\MenuManager.h"
+#include "Support/Rect.h"
+#include "Support/Vector2D.h"
+#include "Support/Color32.h"
+#include "UI/MenuManager.h"
 
 #include <vector>
 
@@ -35,19 +36,21 @@ namespace ui
 		@param aCallback, function to callback if the button is clicked
 		@param aImage, image of the button, can be null
 		*/
-		void											AddButton(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage = 0);
+		void											AddButton(const Rect<int32>& aButtonRect, CallbackFunction aCallback, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white, const std::string& aText = NULL, const char* aImage = NULL);
+		void											AddButtonWithImage(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const char* aImage);
+		void											AddButtonWithText(const Rect<int32>& aButtonRect, CallbackFunction aCallback, const std::string& aText, float32 aTextScale = 1.0f, const Color32& aTextColor = Color32::white);
 	protected:
 		Menu() : mButtons() {};
 		virtual ~Menu() {}
-		virtual void									Update() {};
 	private:
+		void											Update(const Vector2D<>& aPos);
 		void											Render();
 		void											Release();
 		/**
 		This function is called when the user clicked on screen and communicates to the buttons that contains
 		@param aPos, the cursor position on the screen
 		*/
-		void											OnMouseClick(const Vector2D<>& aPos);
+		void											OnMouseClick();
 
 
 	}; // Menu

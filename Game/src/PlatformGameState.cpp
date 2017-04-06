@@ -97,11 +97,12 @@ namespace game
 																		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
 		
 		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
+		graphics::RenderManager::Instance()->SetUIRenderCamera(graphics::RenderManager::Instance()->CreateOrthographicCamera(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f));
 		logic::IGameObject* lGameObject = new logic::IGameObject();
 		lGameObject->AddComponent(lCamera);
 		lWorld->AddGameObject(lGameObject, TRUE);
 
-		graphics::RenderManager::Instance()->SetClearColor(Color(0.5f, 0.75f, 0.92f, 1.0f));
+		graphics::RenderManager::Instance()->SetClearColor(Color32(0.5f, 0.75f, 0.92f, 1.0f));
 
 		graphics::RenderManager::Instance()->CreateMainLight(Vector3D<float32>(0.0f, 8.0f, 8.0f));
 

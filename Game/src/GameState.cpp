@@ -137,7 +137,7 @@ namespace game
 
 		mNextCoinSpawnTime = sys::Time::GetCurrentSec() + Math::Random(1.0f, 3.0f);
 		
-		graphics::RenderManager::Instance()->SetClearColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
+		graphics::RenderManager::Instance()->SetClearColor(Color32(0.2f, 0.2f, 0.2f, 1.0f));
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("Game.wav");

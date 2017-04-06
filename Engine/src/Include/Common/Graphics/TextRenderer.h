@@ -12,7 +12,7 @@
 #include "Types.h"
 #include "Support/Vector3D.h"
 #include "Support/Vector2D.h"
-#include "Support/Color.h"
+#include "Support/Color32.h"
 
 #include <map>
 
@@ -54,7 +54,7 @@ namespace graphics
 		BOOL Load(const std::string& aFont, uint32 aFontSize);
 
 		// Renders a string of text using the precompiled list of characters
-		void Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color& aColor);
+		void Render(const std::string& aText, float32 aX, float32 aY, float32 aScale, const Color32& aColor);
 	}; //TextRender
 } // graphics
 #endif 

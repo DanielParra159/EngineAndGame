@@ -49,10 +49,10 @@ namespace ui
 		TMenus::const_iterator lIteratorEnd = mMenus.end();
 		for (; lIterator != lIteratorEnd; ++lIterator)
 		{
-			(*lIterator)->Update();
+			(*lIterator)->Update(lMousePos);
 			if (lButtonPressed)
 			{
-				(*lIterator)->OnMouseClick(lMousePos);
+				(*lIterator)->OnMouseClick();
 			}
 		}
 	}

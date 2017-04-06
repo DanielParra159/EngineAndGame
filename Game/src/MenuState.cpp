@@ -63,6 +63,7 @@ namespace game
 		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
 		
 		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
+		graphics::RenderManager::Instance()->SetUIRenderCamera(graphics::RenderManager::Instance()->CreateOrthographicCamera(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f));
 		logic::IGameObject* lGameObject = new logic::IGameObject();
 		lGameObject->AddComponent(lCamera);
 		lWorld->AddGameObject(lGameObject, TRUE);
@@ -71,11 +72,12 @@ namespace game
 		mMenu = ui::MenuManager::Instance()->CreateMenu();
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
-		mMenu->AddButton(Rect<>(240, 210, 200, 200), &StartGame1, "Menu1.png");
-		mMenu->AddButton(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
-		mMenu->AddButton(Rect<>(400, 390, 200, 200), &Exit, "Menu3.png");
+		//mMenu->AddButtonWithImage(Rect<>(240, 210, 200, 200), &StartGame1, "Menu1.png");
+		mMenu->AddButtonWithText(Rect<>(240, 210, 200, 200), &StartGame1, "Menu");
+		mMenu->AddButtonWithImage(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
+		mMenu->AddButtonWithImage(Rect<>(400, 390, 200, 200), &Exit, "Menu3.png");
 
-		graphics::RenderManager::Instance()->SetClearColor(Color(0.25f, 0.5f, 0.6f, 1.0f));
+		graphics::RenderManager::Instance()->SetClearColor(Color32(0.25f, 0.5f, 0.6f, 1.0f));
 
 		core::LogString("Press 1 on the Game Screen to play snake game");
 		core::LogString("Press 2 on the Game Screen to play platform game");
@@ -124,7 +126,7 @@ namespace game
 	void MenuState::Render()
 	{
 		graphics::RenderManager::Instance()->BeginRender();
-		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
+		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f).mX * 0.5f, 100, 1.0f, Color32(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
 		ui::MenuManager::Instance()->Render();
 
 		logic::World::Instance()->Render();

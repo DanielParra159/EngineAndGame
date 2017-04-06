@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-down" width="50" height="50" tilewidth="1" tileheight="1" nextobjectid="20">
+<map version="1.0" orientation="orthogonal" renderorder="left-down" width="150" height="150" tilewidth="1" tileheight="1" nextobjectid="25">
  <tileset firstgid="1" name="Detalles" tilewidth="1" tileheight="1" tilecount="0" columns="0"/>
  <tileset firstgid="1" name="Tree" tilewidth="256" tileheight="256" tilecount="1" columns="0">
   <tile id="0">
@@ -11,59 +11,74 @@
   </tile>
  </tileset>
  <objectgroup name="ObjectCap">
-  <object id="1" type="Wall" x="4" y="38" width="34" height="2">
+  <object id="1" type="Wall" x="4" y="138" width="34" height="2">
    <properties>
     <property name="WallType" value="1"/>
    </properties>
   </object>
-  <object id="3" type="Player" x="7.04348" y="35.6957" width="1" height="1"/>
-  <object id="4" type="Wall" x="38" y="28" width="12" height="2">
+  <object id="3" type="Player" x="7.04348" y="135.696" width="1" height="1"/>
+  <object id="4" type="Wall" x="38" y="128" width="12" height="2">
    <properties>
     <property name="WallType" value="1"/>
    </properties>
   </object>
-  <object id="5" type="Wall" x="38" y="30" width="12" height="10">
+  <object id="5" type="Wall" x="38" y="130" width="12" height="10">
    <properties>
     <property name="WallType" value="0"/>
    </properties>
   </object>
-  <object id="6" type="Wall" x="4" y="40" width="46" height="10">
+  <object id="6" type="Wall" x="4" y="140" width="46" height="10">
    <properties>
     <property name="WallType" value="0"/>
    </properties>
   </object>
-  <object id="7" type="Wall" x="0" y="18" width="4" height="32">
+  <object id="7" type="Wall" x="0" y="118" width="4" height="32">
    <properties>
     <property name="WallType" value="0"/>
    </properties>
   </object>
-  <object id="8" type="Wall" x="0" y="16" width="4" height="2">
+  <object id="8" type="Wall" x="0" y="116" width="4" height="2">
    <properties>
     <property name="WallType" value="1"/>
    </properties>
   </object>
-  <object id="14" type="Detail" gid="1" x="18.1875" y="38" width="6" height="9">
+  <object id="14" type="Detail" gid="1" x="18.1875" y="138" width="6" height="9">
    <properties>
     <property name="DetailType" value="1"/>
     <property name="z" value="-1"/>
    </properties>
   </object>
-  <object id="17" type="Detail" gid="1" x="6" y="38" width="6" height="9">
+  <object id="17" type="Detail" gid="1" x="6" y="138" width="6" height="9">
    <properties>
     <property name="DetailType" value="1"/>
     <property name="z" value="2"/>
    </properties>
   </object>
-  <object id="18" type="Detail" gid="1" x="30.25" y="38" width="6" height="9">
+  <object id="18" type="Detail" gid="1" x="30.25" y="138" width="6" height="9">
    <properties>
     <property name="DetailType" value="1"/>
     <property name="z" value="-1"/>
    </properties>
   </object>
-  <object id="19" type="Detail" gid="1" x="25.125" y="38" width="6" height="9">
+  <object id="19" type="Detail" gid="1" x="25.125" y="138" width="6" height="9">
    <properties>
     <property name="DetailType" value="1"/>
     <property name="z" value="2"/>
+   </properties>
+  </object>
+  <object id="20" type="Wall" x="14.625" y="128.25" width="2" height="2">
+   <properties>
+    <property name="WallType" value="2"/>
+   </properties>
+  </object>
+  <object id="21" type="Wall" x="21.1875" y="121.25" width="2" height="2">
+   <properties>
+    <property name="WallType" value="2"/>
+   </properties>
+  </object>
+  <object id="22" type="Coin" x="14.5" y="124.562" width="1" height="1">
+   <properties>
+    <property name="CoinType" value="0"/>
    </properties>
   </object>
  </objectgroup>

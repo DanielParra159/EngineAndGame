@@ -40,7 +40,7 @@ namespace graphics
 	SINGLETON_BODY(RenderManager);
 
 
-	BOOL RenderManager::Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize, const Vector2D<int32> &aWindowPosition, const Color& aClearColor, BOOL aFullscreen)
+	BOOL RenderManager::Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize, const Vector2D<int32> &aWindowPosition, const Color32& aClearColor, BOOL aFullscreen)
 	{
 		mWindowSize.mX = aWindowSize.mX;
 		mWindowSize.mY = aWindowSize.mY;
@@ -217,7 +217,7 @@ namespace graphics
 
 	void RenderManager::BeginRender()
 	{
-		glClearColor(EXPOSE_COLOR_RGBA(mClearColor));
+		glClearColor(EXPOSE_COLOR32_RGBA(mClearColor));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -775,7 +775,7 @@ namespace graphics
 		delete aTextRenderer;
 	}
 
-	void RenderManager::RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color& aColor, TextRenderer* aTextRenderer)
+	void RenderManager::RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color32& aColor, TextRenderer* aTextRenderer)
 	{
 		aTextRenderer->Render(text, aX, aY, aScale, aColor);
 	}
@@ -809,6 +809,16 @@ namespace graphics
 	Camera* RenderManager::GetRenderCamera()
 	{
 		return mRenderCamera;
+	}
+
+	void RenderManager::SetUIRenderCamera(Camera* aCamera)
+	{
+		mUIRenderCamera = aCamera;
+	}
+
+	Camera* RenderManager::GetUIRenderCamera()
+	{
+		return mUIRenderCamera;
 	}
 
 } // namespace graphics

@@ -60,6 +60,7 @@ namespace graphics
 		void											SetFloat(const std::string& aAttribName, float32 aValue);
 		void											SetVector3(const std::string& aAttribName, const Vector3D<float32>& aValue);
 		void											SetColor(const std::string& aAttribName, const Color& aValue);
+		void											SetColor(const std::string& aAttribName, const Color32& aValue);
 
 		void											UseMaterial();
 

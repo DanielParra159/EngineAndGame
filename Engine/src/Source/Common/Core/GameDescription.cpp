@@ -18,17 +18,17 @@ namespace core
 	}
 
 
-	void GameDescription::SetClearColor(const Color &aColor)
+	void GameDescription::SetClearColor(const Color32& aColor)
 	{
-		mClearColor = Color(aColor);
+		mClearColor = Color32(aColor);
 	}
 	void GameDescription::SetClearColor(float32 aR, float32 aG, float32 aB, float32 aA)
 	{
-		mClearColor = Color(aR, aG, aB, aA);
+		mClearColor = Color32(aR, aG, aB, aA);
 	}
 	void GameDescription::SetClearColor(uint8 aR, uint8 aG, uint8 aB, uint8 aA)
 	{
-		mClearColor = Color(aR, aG, aB, aA);
+		mClearColor = Color32(aR, aG, aB, aA);
 	}
 
 	void GameDescription::SetFullScreen(BOOL aFullScreen)

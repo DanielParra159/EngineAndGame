@@ -77,7 +77,7 @@ namespace graphics
 	private:
 		Vector2D<uint32>								mWindowSize;
 		Vector2D<int32>									mWindowPosition;
-		Color											mClearColor;
+		Color32											mClearColor;
 		TTexturesIds									mLoadedTextures;
 		TLoadedMaterials								mLoadedMaterials;
 		TShaderIds										mLoadedVertexShaders;
@@ -89,6 +89,7 @@ namespace graphics
 		void *											mContext;
 		SDL_Window*										mWindow;
 		Camera*											mRenderCamera;
+		Camera*											mUIRenderCamera;
 		TRenderManagerToRender							mRenderablesToRender;
 		Light*											mMainLight;
 	public:
@@ -98,7 +99,7 @@ namespace graphics
 		const Vector2D<uint32>&							GetWindowSize() const { return mWindowSize; }
 		const Vector2D<int32>&							GetWindowPositionSize() const { return mWindowPosition; }
 
-		void											SetClearColor(const Color& aColor) { mClearColor = aColor; }
+		void											SetClearColor(const Color32& aColor) { mClearColor = aColor; }
 
 		//-----------------------------------------SPRITES-----------------------------------------
 		/**
@@ -188,7 +189,7 @@ namespace graphics
 		//-----------------------------------------TEXT-----------------------------------------
 		TextRenderer*									LoadTextRenderer(std::string aFont, uint32 aFontSize);
 		void											UnloadTextRenderer(TextRenderer* aTextRenderer);
-		void											RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color& aColor, TextRenderer* textRenderer);
+		void											RenderText(std::string text, float32 aX, float32 aY, float32 aScale, const Color32& aColor, TextRenderer* textRenderer);
 		//----------------------------------------END TEXT---------------------------------------
 
 
@@ -197,7 +198,8 @@ namespace graphics
 		Camera*											CreateOrthographicCamera(float32 aLeft, float32 aRight, float32 aBottom, float32 aUp, float32 aZNear, float32 aZFar);
 		void											SetRenderCamera(Camera* aCamera);
 		Camera*											GetRenderCamera();
-
+		void											SetUIRenderCamera(Camera* aCamera);
+		Camera*											GetUIRenderCamera();
 
 		void											CreateMainLight(const Vector3D<float32>& aPosition, const Color32& aColor = Color32::white);
 		void											RemoveMainLight();
@@ -215,7 +217,7 @@ namespace graphics
 			mWindow(0){}
 		~RenderManager(){}
 		BOOL											Init(const int8* aWindowTitle, const Vector2D<uint32> &aWindowSize,
-															 const Vector2D<int32> &aWindowPosition, const Color& aClearColor,
+															 const Vector2D<int32> &aWindowPosition, const Color32& aClearColor,
 															 BOOL aFullscreen);
 		void											Release();
 

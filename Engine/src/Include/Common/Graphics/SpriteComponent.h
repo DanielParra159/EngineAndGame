@@ -24,6 +24,8 @@ namespace graphics
 		BOOL											GetFlipX() const { return mSprite->GetFlipX(); }
 		void											SetFlipY(BOOL aFlipY) { mSprite->SetFlipY(aFlipY); }
 		BOOL											GetFlipY() const { return mSprite->GetFlipY(); }
+		void											SetUseUICamera(BOOL aUseUICamera) { mSprite->SetUseUICamera(aUseUICamera); }
+		BOOL											GetUseUICamera() const { return mSprite->GetUseUICamera(); }
 	protected:
 		SpriteComponent() : MeshComponent(){}
 		virtual ~SpriteComponent() {}
