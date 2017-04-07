@@ -44,10 +44,10 @@ namespace game
 
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eKeyboard)) == 0)
 			return FALSE;
-		lController->RegisterInputAction(eExit, input::KeyboardController::eEscape);
+		/*lController->RegisterInputAction(eExit, input::KeyboardController::eEscape);
 		lController->RegisterInputAction(eNum1, input::KeyboardController::e1);
 		lController->RegisterInputAction(eNum2, input::KeyboardController::e2);
-		lController->RegisterInputAction(eNum3, input::KeyboardController::e3);
+		lController->RegisterInputAction(eNum3, input::KeyboardController::e3);*/
 
 		if ((lController = lInputManager->CreateController(input::ETypeControls::eMouse)) == 0)
 			return FALSE;
@@ -57,10 +57,6 @@ namespace game
 
 		lWorld->Init();
 
-		/*graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreatePerspectiveCamera(Vector3D<float32>(0.0f, 0.0f, 4.0f),
-		Vector3D<float32>(0.0f, 0.0f, 0.0f),
-		Vector3D<float32>(0.0f, 1.0f, 0.0f),
-		75.0f, 800.0f / 600.0f, 1.0f, 1000.0f);*/
 		graphics::Camera* lCamera = graphics::RenderManager::Instance()->CreateOrthographicCamera(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
 		
 		graphics::RenderManager::Instance()->SetRenderCamera(lCamera);
@@ -74,15 +70,15 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		//mMenu->AddButtonWithImage(Rect<>(240, 210, 200, 200), &StartGame1, "Menu1.png");
-		mMenu->AddButtonWithText(Rect<>(240, 210, 200, 200), &StartGame1, "Menu")->ConfigureOnFocus(2.0f, Color32(1.0f, 0.0f, 0.0f, 1.0f), 0.2f);
-		mMenu->AddButtonWithImage(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
-		mMenu->AddButtonWithImage(Rect<>(400, 390, 200, 200), &Exit, "Menu3.png");
+		mMenu->AddButtonWithText(Rect<>(400, 280, 200, 70), &StartGame2, "Start", 2.0f )->ConfigureOnFocus(2.5f, Color32(1.0f, 0.0f, 0.0f, 1.0f), 0.2f);
+		//mMenu->AddButtonWithImage(Rect<>(550, 210, 200, 200), &StartGame2, "Menu2.png");
+		mMenu->AddButtonWithText(Rect<>(400, 355, 200, 70), &Exit, "Exit", 2.0f)->ConfigureOnFocus(2.5f, Color32(1.0f, 0.0f, 0.0f, 1.0f), 0.2f);
 
 		graphics::RenderManager::Instance()->SetClearColor(Color32(0.25f, 0.5f, 0.6f, 1.0f));
 
-		core::LogString("Press 1 on the Game Screen to play snake game");
-		core::LogString("Press 2 on the Game Screen to play platform game");
-		core::LogString("Press ESC to exit");
+		//core::LogString("Press 1 on the Game Screen to play snake game");
+		//core::LogString("Press 2 on the Game Screen to play platform game");
+		//core::LogString("Press ESC to exit");
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\audio");
 		mMusic = audio::AudioManager::Instance()->CreateSound2D("Menu.mp3");
@@ -90,6 +86,7 @@ namespace game
 
 		io::FileSystem::Instance()->ChangeDirectory(".\\materials");
 		mTextRenderer = graphics::RenderManager::Instance()->LoadTextRenderer("PerfectPixel.ttf", 24);
+
 		return TRUE;
 	}
 
@@ -106,7 +103,7 @@ namespace game
 	{
 		if (exit)
 			return FALSE;
-		if (input::InputManager::Instance()->IsActionDown(eExit))
+		/*if (input::InputManager::Instance()->IsActionDown(eExit))
 			return FALSE;
 		else if (input::InputManager::Instance()->IsActionDown(eNum1))
 		{
@@ -119,7 +116,7 @@ namespace game
 		else if (input::InputManager::Instance()->IsActionDown(eNum3))
 		{
 			StartGame3();
-		}
+		}*/
 
 		return TRUE;
 	}
@@ -128,7 +125,7 @@ namespace game
 	{
 		graphics::RenderManager::Instance()->BeginRender();
 		Vector2D<float32> lTextSize;
-		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 1.0f, &lTextSize).mX * 0.5f, 100, 1.0f, Color32(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
+		graphics::RenderManager::Instance()->RenderText("MENU", 400 - mTextRenderer->TextSize("MENU", 3.0f, &lTextSize).mX * 0.5f, 100, 3.0f, Color32(1.0f, 1.0f, 1.0f, 1.0f), mTextRenderer);
 		ui::MenuManager::Instance()->Render();
 
 		logic::World::Instance()->Render();

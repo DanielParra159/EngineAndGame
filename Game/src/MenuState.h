@@ -18,6 +18,7 @@ namespace ui
 namespace graphics
 {
 	class TextRenderer;
+	class Sprite;
 }
 
 namespace game

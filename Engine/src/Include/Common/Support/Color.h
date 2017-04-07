@@ -2,6 +2,7 @@
 #define _ENGINE_COLOR_H_
 
 #include "Types.h"
+#include "Math.h"
 
 #define EXPOSE_COLOR_RGB(color) color.mR, color.mG, color.mB
 #define EXPOSE_COLOR_RGBA(color) EXPOSE_COLOR_RGB(color), color.mA

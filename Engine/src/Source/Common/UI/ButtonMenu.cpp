@@ -99,7 +99,6 @@ namespace ui
 				if ((mCurrentTextScale += sys::Time::GetDeltaSec() * mFocusSpeed) > mOnFocusTextScale)
 					mCurrentTextScale = mOnFocusTextScale;
 				Color32::Lerp(mTextColor, mOnFocusTextColor, mCurrentTextColor, (mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale));
-				core::LogFormatString("%f %f %f %f %f\n", ((mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale)), EXPOSE_COLOR32_RGBA(mCurrentTextColor));
 			}
 		} 
 		else if (mCurrentTextScale > mTextScale)
@@ -107,7 +106,6 @@ namespace ui
 			if ((mCurrentTextScale -= sys::Time::GetDeltaSec() * mFocusSpeed) < mTextScale)
 				mCurrentTextScale = mTextScale;
 			Color32::Lerp(mTextColor, mOnFocusTextColor, mCurrentTextColor, (mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale));
-			core::LogFormatString("%f %f %f %f %f\n", ((mCurrentTextScale - mTextScale) / (mOnFocusTextScale - mTextScale)), EXPOSE_COLOR32_RGBA(mCurrentTextColor));
 		}
 	}
 
