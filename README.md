@@ -8,6 +8,7 @@ It is a small game engine for creating games in C ++ with academic intentions. I
 - Developed with SDL and OpenGL 3.
 - Ability to render models by passing the vertices or file name.
 - Changes in texture and color of the material.
+- Render sprites and animated sprited with state machine.
 
 # Audio:
 - Developed with FMOD.
@@ -40,8 +41,9 @@ It is a small game engine for creating games in C ++ with academic intentions. I
 
 # Demos:
 - Snake Game 2D (in early versions of the engine).
-- Snake Game in 3D.
+- Snake Game in 3D (in early versions of the engine).
 - 3D platform game with charger map from LUA and lights (developing).
 
-You can find a compiled version in the"Build" folder. Once executed "Game.exe" or "Game_d.exe" you can select the demo by pressing "1" for the snake game or "2" for the platform game, "ESC" to close the game.
+You can find a compiled version in the"Build" folder.
+Use arrows to move, space to jump, left control to attack, Q to shoot and esc to exit.
 
