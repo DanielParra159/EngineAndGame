@@ -9,6 +9,8 @@ It is a small game engine for creating games in C ++ with academic intentions. I
 - Ability to render models by passing the vertices or file name.
 - Changes in texture and color of the material.
 - Render sprites and animated sprited with state machine.
+- Text renderer.
+- Basic wind shader.
 
 # Audio:
 - Developed with FMOD.
