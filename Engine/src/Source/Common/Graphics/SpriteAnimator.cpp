@@ -325,6 +325,14 @@ namespace graphics
 		//mMaterial->SetBool("flipY", mFlipY);
 	}
 
+	void SpriteAnimator::SetMaterial(Material *aMaterial)
+	{
+		assert(aMaterial && "Mesh::SetMaterial, aMaterial == NULL");
+		if (mMaterial != NULL)
+			RenderManager::Instance()->UnloadMaterial(mMaterial);
+		mMaterial = aMaterial;
+	}
+
 	//-----------------------------------------------------------AnimateSpriteState------------------------------------
 
 	void AnimateSpriteState::Init(uint32 aId, uint32 aFrameStart, uint32 aNumFrames, float32 aAnimDuration, BOOL aLoop)

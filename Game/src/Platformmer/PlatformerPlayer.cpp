@@ -44,6 +44,7 @@ namespace game
 		AddComponent(mCapsuleController);
 
 		mSprite = graphics::RenderManager::Instance()->CreateSpriteAnimatorComponent("NinjaSprites.png", graphics::eRGBA, 7, 10);
+		
 		mSprite->AddState(eMelee, 1, 10, 2.5f, FALSE);
 		mSprite->AddState(eRun, 11, 10, 2.5f, TRUE);
 		mSprite->AddState(eStartJump, 21, 6, 2.5f, FALSE);

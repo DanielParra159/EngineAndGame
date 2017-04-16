@@ -54,6 +54,9 @@ namespace graphics
 		BOOL											GetFlipX() const { return mSpriteAnimator->GetFlipX(); }
 		void											SetFlipY(BOOL aFlipY) { mSpriteAnimator->SetFlipY(aFlipY); }
 		BOOL											GetFlipY() const { return mSpriteAnimator->GetFlipY(); }
+
+		Material*										GetMaterial() { return mSpriteAnimator->GetMaterial(); }
+		void											SetMaterial(Material *aMaterial) { mSpriteAnimator->SetMaterial(aMaterial); }
 		
 	}; // SpriteAnimatorComponent
 } // namespace graphics

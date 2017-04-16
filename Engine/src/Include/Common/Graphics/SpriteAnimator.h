@@ -89,6 +89,9 @@ namespace graphics
 		void											SetFlipY(BOOL aFlipY);
 		BOOL											GetFlipY() const { return mFlipY; }
 
+		Material*										GetMaterial() { return mMaterial; }
+		void											SetMaterial(Material *aMaterial);
+
 	protected:
 		SpriteAnimator() : mVAO(0), mVBO(0), mMaterial(NULL), mTexture(0), 
 			mFrameWidth(0.0f), mFrameHeight(0.0f), mSpeedScale(0.0f),
