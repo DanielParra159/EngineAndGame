@@ -5,6 +5,10 @@
 #include "Types.h"
 #include "Logic/IComponent.h"
 
+#include <unordered_map>
+#include <assert.h>
+#include <functional>
+
 namespace logic{
 	class IGameObject;
 }
@@ -22,10 +26,6 @@ namespace physics
 	class Collider : public logic::IComponent {
 		REGISTER_COMPONENT_HEAD(Collider)
 	public:
-		friend class CollisionManager;
-		friend class PhysicsManager;
-		typedef physx::PxRigidActor PhysicActor;
-
 		enum eColliderType
 		{
 			eStatic = 0,
@@ -44,14 +44,40 @@ namespace physics
 			eCollisionStay = (1 << 6)
 		};
 
+		friend class CollisionManager;
+		friend class PhysicsManager;
+		typedef physx::PxRigidActor PhysicActor;
+		typedef void (CallbackMethodPtr2)(Collider*);
+
+		typedef std::unordered_map<eRegisterCollisionCallback, std::function<CallbackMethodPtr2>>	TPhysicsCallbacks;
+
+
+		template <typename UserClass>
+		struct ObjectMethodDelegate {
+			typedef void (UserClass::* CallbackMethodPtr)(Collider*);
+		};
+	
+		template<class UserClass>
+		void BindPhysicsCallback(eRegisterCollisionCallback aCallback, UserClass *obj, typename ObjectMethodDelegate<UserClass>::CallbackMethodPtr method)
+		{
+			assert((aCallback | eNone) != eNone && "eRegisterCollisionCallback can't be eNone");
+			assert(mPhysicsCallbacks.find(aCallback) == mPhysicsCallbacks.end() && "Callback already binded");
+
+			mRegisteredCollisionCallback |= aCallback;
+
+			mPhysicsCallbacks[aCallback] = std::bind(method, obj, std::placeholders::_1);
+		}
+
 	protected:
 		BOOL											mTrigger;
 		eColliderType									mColliderType;
 		PhysicActor*									mPhysicActor;
 		uint32											mRegisteredCollisionCallback;
+
+		TPhysicsCallbacks								mPhysicsCallbacks;
 	protected:
 		Collider() : logic::IComponent(), mPhysicActor(0), mTrigger(FALSE),
-			mColliderType(), mRegisteredCollisionCallback() {}
+			mColliderType(), mRegisteredCollisionCallback(eNone) {}
 		virtual ~Collider() {}
 		virtual void									Init(BOOL aActive, PhysicActor* aPhysicsActor, eColliderType aColliderType, BOOL aTrigger);
 		virtual void									Release();
@@ -82,10 +108,7 @@ namespace physics
 		virtual void									Move(const Vector3D<float32>& aDisplacement);
 		virtual BOOL									GetTrigger() { return mTrigger; }
 
-		/**
-		Set the callback function to collisions
-		*/
-		void											SetOnTriggerEnterCallback(uint32 aCollisionFlags);
+
 		virtual void									AddForce(const Vector3D<float32>& aForce);
 	}; // Collider
 } // namespace physics

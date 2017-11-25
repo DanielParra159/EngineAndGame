@@ -33,7 +33,7 @@ namespace game
 		virtual void									Release();
 
 	private:
-		virtual void									OnCollisionEnter(physics::Collider* other);
+		void											OnCollisionEnter(physics::Collider* other);
 	
 	}; // PlatformerProjectile
 } // namespace game

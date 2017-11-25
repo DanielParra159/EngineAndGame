@@ -34,7 +34,7 @@ namespace game
 		virtual void									PrepareToRender();
 		virtual void									Release();
 
-		virtual void									OnTriggerEnter(physics::Collider* other);
+		void											OnTriggerEnter(physics::Collider* other);
 	
 	}; // PlatformerCoin
 } // namespace game

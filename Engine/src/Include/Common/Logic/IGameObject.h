@@ -49,15 +49,6 @@ namespace logic
 		virtual void									SetEnabled(BOOL aActive);
 		virtual BOOL									GetEnabled() { return mActive;	}
 
-		
-		virtual void									OnTriggerEnter(physics::Collider* other) {}
-		virtual void									OnTriggerExit(physics::Collider* other) {}
-		virtual void									OnTriggerStay(physics::Collider* other) {}
-
-		virtual void									OnCollisionEnter(physics::Collider* other) {}
-		virtual void									OnCollisionExit(physics::Collider* other) {}
-		virtual void									OnCollisionStay(physics::Collider* other) {}
-
 		//POSITION FUNCTIONS
 		virtual void									SetPosition(const Vector3D<float32>& aPosition);
 		virtual void									SetPosition(float32 aX, float32 aY, float32 aZ);

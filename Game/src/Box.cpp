@@ -29,21 +29,21 @@ namespace game
 	{
 		IGameObject::Init(aActive);
 		mBoxType = aBoxType;
-		physics::Collider* b;
+		physics::Collider* lCollider;
 		graphics::MeshComponent* lMesh;
 
 		if (aBoxType == eCoin)
 		{
-			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
+			lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
 			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromFile("Box.obj");
 		}
 		else {
-			b = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
+			lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aBoxSize, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
 			lMesh = graphics::RenderManager::Instance()->LoadMeshComponentFromVertexArray("Box", aWallVertexData, aSize, 36);
 			lMesh->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("T_Bricks.png", graphics::eRGB));
 		}
-		b->SetOnTriggerEnterCallback(physics::Collider::eTriggerEnter);
-		AddComponent(b);
+		lCollider->BindPhysicsCallback(physics::Collider::eTriggerEnter, this, &Box::OnTriggerEnter);
+		AddComponent(lCollider);
 		lMesh->SetRotationOffset(aRotationOffset);
 		AddComponent(lMesh);
 	}
