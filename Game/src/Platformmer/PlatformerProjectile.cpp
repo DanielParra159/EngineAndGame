@@ -23,6 +23,7 @@
 
 #include "Core/Log.h"
 
+
 namespace game
 {
 	void PlatformerProjectile::Init(const Vector3D<float32> aPosition, const Vector3D<float32> aDirection, BOOL aPlayerProjectile)
@@ -40,8 +41,9 @@ namespace game
 		lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), Vector3D<float32>(0.5f, 0.5f, 0.5f), FALSE, (1 << 0), lCollisionLayerMask, physics::Collider::eDynamic, 0.1f);
 		lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Kunai.png", graphics::eRGBA);
 		//lSprite->GetMaterial()->SetDiffuseTexture(graphics::RenderManager::Instance()->LoadTexture("T_BrickTiled.png", graphics::eRGB));
-		lCollider->SetOnTriggerEnterCallback(physics::Collider::eCollisionEnter);
-		
+		lCollider->BindPhysicsCallback(physics::Collider::eCollisionEnter, this, &PlatformerProjectile::OnCollisionEnter);
+		//lCollider->SetOnTriggerEnterCallback(physics::Collider::eCollisionEnter);
+
 		lSprite->SetRotationOffset(Vector3D<float32>(0.0f, 180.0f, Math::Degrees(Math::Atan2f(aDirection.mX, aDirection.mY)) +180.0f));
 
 		mScale.mY = 5.0f * 0.5f;

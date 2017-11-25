@@ -8,7 +8,6 @@
 #include "Support/Math.h"
 
 #include <PxRigidDynamic.h>
-#include <assert.h>
 
 namespace physics
 {
@@ -36,6 +35,7 @@ namespace physics
 	void Collider::Release()
 	{
 		PhysicsManager::Instance()->RemoveCollider(this);
+		mPhysicsCallbacks.clear();
 	}
 
 	void Collider::SetCallbacks(logic::IGameObject* aGameObject, UpdateFunction& aUpdateFunction, FixedUpdateFunction& aFixedUpdateFunction, RenderFunction& aRenderFunction)
@@ -65,7 +65,8 @@ namespace physics
 			lTransform.p = physx::PxVec3(EXPOSE_VECTOR3D(aPosition));
 			((physx::PxRigidDynamic*)mPhysicActor)->setKinematicTarget(lTransform);
 		}
-	}
+	}
+
 
 	void Collider::Move(const Vector3D<float32>& aDisplacement)
 	{
@@ -77,39 +78,34 @@ namespace physics
 		}
 	}
 
-	void Collider::SetOnTriggerEnterCallback(uint32 aCollisionFlags)
-	{
-		mRegisteredCollisionCallback = aCollisionFlags;
-	}
-
 	void Collider::OnTriggerEnter(Collider* other)
 	{
-		mParent->OnTriggerEnter(other);
+		mPhysicsCallbacks[eTriggerEnter](other);
 	}
 
 	void Collider::OnTriggerExit(Collider* other)
 	{
-		mParent->OnTriggerExit(other);
+		mPhysicsCallbacks[eTriggerExit](other);
 	}
 
 	void Collider::OnTriggerStay(Collider* other)
 	{
-		mParent->OnTriggerStay(other);
+		mPhysicsCallbacks[eTriggerStay](other);
 	}
 
 	void Collider::OnCollisionEnter(Collider* other)
 	{
-		mParent->OnCollisionEnter(other);
+		mPhysicsCallbacks[eCollisionEnter](other);
 	}
 
 	void Collider::OnCollisionExit(Collider* other)
 	{
-		mParent->OnCollisionExit(other);
+		mPhysicsCallbacks[eCollisionExit](other);
 	}
 
 	void Collider::OnCollisionStay(Collider* other)
 	{
-		mParent->OnCollisionStay(other);
+		mPhysicsCallbacks[eCollisionStay](other);
 	}
 
 	void Collider::AddForce(const Vector3D<float32>& aForce)

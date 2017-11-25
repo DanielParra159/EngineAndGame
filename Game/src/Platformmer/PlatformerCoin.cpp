@@ -32,7 +32,7 @@ namespace game
 		physics::Collider* lCollider;
 		lCollider = physics::PhysicsManager::Instance()->CreateBoxCollider(aPosition, Vector3D<float32>(0, 0, 0), aSize * 0.5f, TRUE, (1 << 0), (1 << 1) | (1 << 0), physics::Collider::eStatic, 0.1f);
 
-		lCollider->SetOnTriggerEnterCallback(physics::Collider::eTriggerEnter);
+		lCollider->BindPhysicsCallback(physics::Collider::eTriggerEnter, this, &PlatformerCoin::OnTriggerEnter);
 		AddComponent(lCollider);
 
 		graphics::SpriteComponent* lSprite = graphics::RenderManager::Instance()->CreateSpriteComponent("Coin.png", graphics::eRGBA);
