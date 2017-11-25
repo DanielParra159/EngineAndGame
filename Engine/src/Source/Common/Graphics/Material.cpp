@@ -72,10 +72,7 @@ namespace graphics
 
 	void Material::SetColor(const Color* aParamValue)
 	{
-		mColor.mR = aParamValue->mR;
-		mColor.mG = aParamValue->mG;
-		mColor.mB = aParamValue->mB;
-		mColor.mA = aParamValue->mA;
+		ASSIGN_COLOR((*aParamValue), mColor);
 	}
 
 	void Material::SetVertexFloatAttribPointer(const std::string& aAttribName, int32 aNumberValues, BOOL aNormalize, uint32 aStride, uint32 aOffset, uint32 aVBO)

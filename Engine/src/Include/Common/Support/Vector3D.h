@@ -4,6 +4,7 @@
 #include <math.h>
 
 #define EXPOSE_VECTOR3D(vector) vector.mX, vector.mY, vector.mZ
+#define ASSIGN_VECTOR3D(fromVector, toVector) toVector.mX = fromVector.mX, toVector.mY = fromVector.mY, toVector.mZ = fromVector.mZ
 
 template <typename T = float32>
 class Vector3D
@@ -55,6 +56,10 @@ public:
 	T GetDistanceSqrt(const Vector3D<T>& aV3) const
 	{
 		return T(Vector3D<T>(mX - aV3.mX, mY - aV3.mY, mZ - aV3.mZ).LengthSqrt());
+	}
+	T GetDistanceSqrt(const Vector3D<T>* aV3) const
+	{
+		return T(Vector3D<T>(mX - aV3->mX, mY - aV3->mY, mZ - aV3->mZ).LengthSqrt());
 	}
 
 	bool operator==(const Vector3D<T>& aV3) const

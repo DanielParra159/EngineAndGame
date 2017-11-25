@@ -91,6 +91,12 @@
     <Filter Include="Header Files\Physics">
       <UniqueIdentifier>{13b4808b-d816-414d-a47d-33351cbae5db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{1788cffd-2305-44f5-b0ea-4d0b9014fb31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{ce915fcc-e143-4ef9-9a7f-0bd640981a9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Include\Common\Core\Log.h">
@@ -252,6 +258,18 @@
     <ClInclude Include="..\..\src\Include\Common\Graphics\Light.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\AI\Waypoint.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\AI\WaypointPath.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\AI\IWaypointDistanceCalculator.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Include\Common\AI\WaypointDistanceSqrtCalculator.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Source\Common\Core\Log.cpp">
@@ -376,6 +394,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Source\Common\Support\Color32.cpp">
       <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\AI\Waypoint.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\AI\WaypointPath.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Source\Common\AI\WaypointDistanceSqrtCalculator.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,6 +13,8 @@
 
 #define LOOP_ITERATOR(iteratorType, iterable, it, itEnd) \
 	for (iteratorType it = iterable.begin(), itEnd = iterable.end(); it != itEnd; ++it)
+#define LOOP_ITERATOR_WITH_POINTER(iteratorType, iterable, it, itEnd) \
+	for (iteratorType it = iterable->begin(), itEnd = iterable->end(); it != itEnd; ++it)
 #define REVERSE_LOOP_ITERATOR(iteratorType, iterable, it, itEnd) \
 	for (iteratorType it = iterable.rbegin(), itEnd = iterable.rend(); it != itEnd; ++it)
 

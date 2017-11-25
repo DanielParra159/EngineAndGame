@@ -6,6 +6,7 @@
 
 #define EXPOSE_COLOR_RGB(color) color.mR, color.mG, color.mB
 #define EXPOSE_COLOR_RGBA(color) EXPOSE_COLOR_RGB(color), color.mA
+#define ASSIGN_COLOR(fromColor, toColor) toColor.mR = fromColor.mR, toColor.mG = fromColor.mG, toColor.mB = fromColor.mB, toColor.mA = fromColor.mA
 
 class Color {
 public:

@@ -100,6 +100,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Include\Common\AI\IWaypointDistanceCalculator.h" />
+    <ClInclude Include="..\..\src\Include\Common\AI\Waypoint.h" />
+    <ClInclude Include="..\..\src\Include\Common\AI\WaypointDistanceSqrtCalculator.h" />
+    <ClInclude Include="..\..\src\Include\Common\AI\WaypointPath.h" />
     <ClInclude Include="..\..\src\Include\Common\Audio\AudioManager.h" />
     <ClInclude Include="..\..\src\Include\Common\Audio\Sound2D.h" />
     <ClInclude Include="..\..\src\Include\Common\Audio\Sound3D.h" />
@@ -155,6 +159,9 @@
     <ClInclude Include="..\..\src\Include\Win32\Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Source\Common\AI\Waypoint.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\AI\WaypointDistanceSqrtCalculator.cpp" />
+    <ClCompile Include="..\..\src\Source\Common\AI\WaypointPath.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Audio\AudioManager.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Audio\Sound2D.cpp" />
     <ClCompile Include="..\..\src\Source\Common\Audio\Sound3D.cpp" />
